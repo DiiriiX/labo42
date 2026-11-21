@@ -266,6 +266,12 @@ details.help ol{padding-left:20px}
 <section class="view" id="v-veille">
   <h1>Veille</h1>
   <p class="sub">Les actus importantes en tech, dev et cyber, expliquées simplement. Tu reçois aussi une notification quand une info vaut le coup.</p>
+  <div class="card" id="notifCard">
+    <b>Notifications</b>
+    <p class="small" id="notifTxt" style="margin:4px 0 0"></p>
+    <div id="notifBtns"></div>
+  </div>
+  <div class="chips" id="actuFilters"></div>
   <div id="actus"></div>
   <h2>Les sources à suivre</h2>
   <ul class="src" id="srcs"></ul>
@@ -693,7 +699,9 @@ Prochain cours de son parcours : ${n ? TOPIC[n].t : "parcours terminé"}.
 });
 
 /* ---------- Veille ---------- */
-let actus = [], actusState = "loading";
+let actus = [], actusState = "loading", actuCat = "Tout";
+const CATS = ["Tout","Cyber","Dev","Tech"];
+$("actuFilters").addEventListener("click", e => { const b = e.target.closest("[data-cat]"); if (!b) return; actuCat = b.dataset.cat; renderActus(); });
 const dayLabel = d => { const diff = Math.round((new Date(today) - new Date(d)) / 864e5); if (diff === 0) return "Aujourd'hui"; if (diff === 1) return "Hier"; try { return new Date(d + "T12:00:00").toLocaleDateString("fr-FR", {weekday:"long", day:"numeric", month:"long"}); } catch (e) { return d; } };
 const actuCard = a => `<article class="card"><div class="ftop"><span class="tag">${esc(a.cat || "Actu")}</span>${+a.importance >= 3 ? '<span class="imp">Important</span>' : ""}</div><h3>${esc(a.titre)}</h3>${fmt(a.resume)}${a.pourquoi ? `<div class="box"><h3>Pourquoi ça te concerne</h3>${fmt(a.pourquoi)}</div>` : ""}<div class="cfoot">${TOPIC[a.cours] ? `<a class="link" href="#cours-${a.cours}">Cours lié : ${esc(TOPIC[a.cours].t)}</a>` : ""}${/^https:\/\//.test(a.url || "") ? `<a class="link" href="${esc(a.url)}" target="_blank" rel="noopener" data-news="1">Lire sur ${esc(a.source || "la source")}</a>` : ""}</div></article>`;
 function renderActus(){
@@ -701,11 +709,14 @@ function renderActus(){
     : actusState === "loading" ? `<div class="loading"><span class="spin"></span><p>Chargement des actus…</p></div>`
     : actusState === "slow" ? `<p class="note">Les actus ne répondent pas pour l'instant. Réessaie un peu plus tard.</p>`
     : `<p class="note">Pas encore d'actus. Elles arrivent avec ton résumé du soir.</p>`;
+  $("actuFilters").innerHTML = actus.length ? CATS.map(c => { const n = c === "Tout" ? actus.length : actus.filter(a => a.cat === c).length; return `<button class="chip${c === actuCat ? " on" : ""}" type="button" data-cat="${c}">${c} (${n})</button>`; }).join("") : "";
   if (!actus.length) { $("actus").innerHTML = none; $("homeActus").innerHTML = none; return; }
-  const days = [...new Set(actus.map(a => a.date))].slice(0, 4);
-  $("actus").innerHTML = days.map(d => `<p class="dateh">${esc(dayLabel(d))}</p>` + actus.filter(a => a.date === d).sort((x,y) => (+y.importance||0) - (+x.importance||0)).map(actuCard).join("")).join("");
-  const last = actus.filter(a => a.date === days[0]).sort((x,y) => (+y.importance||0) - (+x.importance||0)).slice(0, 2);
-  $("homeActus").innerHTML = `<p class="dateh" style="margin-top:0">${esc(dayLabel(days[0]))}</p>` + last.map(actuCard).join("");
+  const shown = actus.filter(a => actuCat === "Tout" || a.cat === actuCat);
+  const days = [...new Set(shown.map(a => a.date))].slice(0, 7);
+  $("actus").innerHTML = shown.length ? days.map(d => `<p class="dateh">${esc(dayLabel(d))}</p>` + shown.filter(a => a.date === d).sort((x,y) => (+y.importance||0) - (+x.importance||0)).map(actuCard).join("")).join("") : `<p class="note">Pas d'actu « ${esc(actuCat)} » pour le moment.</p>`;
+  const lastDay = actus[0].date;
+  const last = actus.filter(a => a.date === lastDay).sort((x,y) => (+y.importance||0) - (+x.importance||0)).slice(0, 2);
+  $("homeActus").innerHTML = `<p class="dateh" style="margin-top:0">${esc(dayLabel(lastDay))}</p>` + last.map(actuCard).join("");
 }
 if (inClaude) dbp.then(db => {
   if (!db) { actusState = "off"; renderActus(); return; }
@@ -748,6 +759,42 @@ $("newsForm").addEventListener("submit", async e => {
   } catch (err) { if (dead(err)) aiOff(); out.innerHTML = `<p class="note">${esc(errMsg(err))}</p>`; }
   $("newsBtn").disabled = false;
 });
+
+/* ---------- Notifications ---------- */
+const VAPID_PUBLIC = "BCdHc_5YpE-A7qdJMIwfrym_HHdpyIQ6yq08HP_iT-t3jpiIz9XN6TUR2d4X1kkR0ccJ51cYZrOumKkumH4FxB0";
+const b64u = s => { const p = "=".repeat((4 - s.length % 4) % 4), b = atob((s + p).replace(/-/g, "+").replace(/_/g, "/")); return Uint8Array.from(b, c => c.charCodeAt(0)); };
+const swReady = () => Promise.race([navigator.serviceWorker.ready, new Promise((_, rej) => setTimeout(() => rej(new Error("timeout")), 6000))]);
+const canPush = !inClaude && "serviceWorker" in navigator && "PushManager" in window && "Notification" in window;
+let pushCode = "";
+async function renderNotif(){
+  const txt = $("notifTxt"), btns = $("notifBtns");
+  if (inClaude) { txt.textContent = "Les notifications marchent dans l'appli installée sur ton écran d'accueil."; btns.innerHTML = ""; return; }
+  if (!canPush) { txt.textContent = "Installe d'abord Labo 42 sur ton écran d'accueil (voir l'Accueil), puis ouvre-la depuis son icône et reviens ici."; btns.innerHTML = ""; return; }
+  if (Notification.permission === "denied") { txt.textContent = "Les notifications sont bloquées. Autorise-les dans les réglages du téléphone : Notifications, puis Labo 42."; btns.innerHTML = ""; return; }
+  let sub = null;
+  try { const reg = await swReady(); sub = await reg.pushManager.getSubscription(); } catch (e) {}
+  if (Notification.permission !== "granted" || !sub) {
+    txt.textContent = "Reçois une alerte quand une actu importante tombe.";
+    btns.innerHTML = `<button class="btn acc full" type="button" id="notifOn">Activer les notifications</button>`;
+    $("notifOn").onclick = enableNotif; return;
+  }
+  pushCode = JSON.stringify(sub);
+  txt.innerHTML = "Notifications activées sur ce téléphone. <b>Dernière étape :</b> copie ton code et envoie-le à ton prof dans Claude, pour qu'il puisse t'écrire.";
+  btns.innerHTML = `<button class="btn acc full" type="button" id="notifCopy">Copier mon code de notifications</button><textarea readonly rows="3" style="margin-top:10px;font:12px ui-monospace,Menlo,monospace">${esc(pushCode)}</textarea><button class="btn ghost full" type="button" id="notifTest">Tester sur ce téléphone</button>`;
+  $("notifCopy").onclick = async () => { try { await navigator.clipboard.writeText(pushCode); $("notifCopy").textContent = "Code copié !"; } catch (e) { $("notifCopy").textContent = "Copie impossible : sélectionne le code ci-dessous"; } };
+  $("notifTest").onclick = async () => { try { const reg = await swReady(); await reg.showNotification("Labo 42", {body: "Les notifications marchent sur ce téléphone.", icon: "icon-192.png", badge: "icon-192.png"}); } catch (e) { $("notifTest").textContent = "Le test n'a pas marché"; } };
+}
+async function enableNotif(){
+  const b = $("notifOn"); b.disabled = true; b.textContent = "Activation…";
+  try {
+    const perm = await Notification.requestPermission();
+    if (perm !== "granted") { renderNotif(); return; }
+    const reg = await swReady();
+    await reg.pushManager.subscribe({userVisibleOnly: true, applicationServerKey: b64u(VAPID_PUBLIC)});
+  } catch (e) { $("notifTxt").textContent = "L'activation n'a pas marché. Vérifie que tu as ouvert Labo 42 depuis son icône sur l'écran d'accueil."; b.disabled = false; b.textContent = "Réessayer"; return; }
+  renderNotif();
+}
+renderNotif();
 
 /* ---------- Installation ---------- */
 $("copyLink").addEventListener("click", async () => {

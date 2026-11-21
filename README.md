@@ -7,3 +7,4 @@ Installée depuis https://diiriix.github.io/labo42/ (Safari : Partager → Sur l
 - `index.html` : l'appli (une seule page).
 - `actus.json` : les actus du jour, mises à jour automatiquement.
 - `manifest.webmanifest`, `sw.js`, icônes : ce qui la rend installable et utilisable hors connexion.
+- `push/` : les notifications. `outbox.json` contient le prochain message ; à chaque changement, l'action GitHub « Notifier » l'envoie aux téléphones de `subscriptions.json`. La clé privée est le secret `VAPID_PRIVATE_KEY` du dépôt.
