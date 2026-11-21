@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#00a862">
+<title>Labo 42</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Labo 42">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* VOICE: un prof patient dans la poche : clair, calme, encourageant
+   IDEA: un cahier de cours où chaque notion a son schéma dessiné, rangé dans un parcours numéroté
+   PICTURE: les schémas clés en tête de chaque cours, et le parcours comme une ligne d'étapes
+   COLOUR and TYPE: blanc, encre presque noire, un seul vert d'accent ; Inter partout
+   LAYOUT: une colonne de téléphone, barre d'onglets en bas, cartes larges et boutons pleine largeur */
+:root{color-scheme:light dark;
+--bg:light-dark(#ffffff,#0d1110);--ink:light-dark(#121417,#eef2f0);--mute:light-dark(#5d6470,#9ba7a2);
+--surf:light-dark(#f3f5f4,#161c1a);--line:light-dark(#e3e7e5,#27312d);
+--acc:#00a862;--acc-ink:light-dark(#00774a,#38d18c);--acc-soft:light-dark(#e5f6ee,#0f271c);
+--red:light-dark(#c9363b,#ff7a7e);--red-soft:light-dark(#fdeced,#2c1415);
+--blue:light-dark(#2459d6,#7aa5ff);--blue-soft:light-dark(#e9effc,#121c33);
+--warn-soft:light-dark(#fff6e0,#2a2312)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 Inter,system-ui,sans-serif;overflow-x:clip;padding-bottom:calc(88px + env(safe-area-inset-bottom))}
+h1,h2,h3{line-height:1.2;margin:0;text-wrap:balance;font-weight:700;letter-spacing:-.01em}
+h1{font-size:30px}h2{font-size:22px;margin:32px 0 12px}h3{font-size:18px;margin:26px 0 8px}
+p{margin:0 0 12px}
+a{color:var(--acc-ink)}
+.wrap{max-width:680px;margin:0 auto;padding:26px max(5vw,18px)}
+.view{display:none}.view.on{display:block}
+.sub{color:var(--mute);margin:6px 0 0}
+.small{font-size:14px;color:var(--mute)}
+.off{display:none!important}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:22px 0 8px}
+.stat{background:var(--surf);border-radius:16px;padding:12px 14px}
+.stat b{display:block;font-size:24px}.stat span{font-size:13px;color:var(--mute)}
+.steps{display:grid;gap:10px}
+.step{display:flex;align-items:center;gap:14px;background:var(--bg);border:1px solid var(--line);border-radius:16px;padding:14px 16px;color:var(--ink);text-decoration:none;min-height:66px}
+.step b{display:block;font-weight:600}.step small{color:var(--mute);font-size:14px}
+.dot{flex:none;width:30px;height:30px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font-weight:700;font-size:14px;color:var(--mute)}
+.done .dot,.dot.done{background:var(--acc);border-color:var(--acc);color:#fff}
+.chev{margin-left:auto;color:var(--mute);font-size:22px}
+.schema{margin:0;background:var(--surf);border-radius:18px;padding:14px 14px 12px}
+.schema svg{display:block;width:100%;height:auto}
+.schema figcaption{font-size:14px;color:var(--mute);margin-top:6px}
+.schema ol{margin:6px 0 0;padding-left:20px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:14px;padding:12px 18px;font:600 16px Inter,sans-serif;min-height:50px;cursor:pointer;background:var(--ink);color:var(--bg);text-decoration:none}
+.btn.acc{background:var(--acc);color:#fff}.btn.ghost{background:var(--surf);color:var(--ink)}
+.btn.full{width:100%;margin-top:14px}.btn:disabled{opacity:.5}
+.row{display:flex;gap:10px;margin-top:14px}.row>.btn{flex:1}
+:focus-visible{outline:3px solid #ffb400;outline-offset:2px}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:2px 0 6px;margin:16px 0}
+.chips.wrapc{flex-wrap:wrap;overflow:visible}.chips.wrapc .chip{flex:0 1 auto;max-width:100%}
+.chip{flex:none;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:999px;padding:8px 14px;font:500 15px Inter,sans-serif;min-height:42px;cursor:pointer;text-align:left}
+.chip.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.flash{border:1px solid var(--line);border-radius:22px;padding:20px;min-height:260px;display:flex;flex-direction:column}
+.ftop{display:flex;justify-content:space-between;gap:8px;font-size:14px;color:var(--mute);flex-wrap:wrap}
+.tag{background:var(--acc-soft);color:var(--acc-ink);border-radius:999px;padding:2px 10px;font-weight:600}
+.imp{background:var(--red-soft);color:var(--red);border-radius:999px;padding:2px 10px;font-weight:600}
+.q{font-size:22px;font-weight:700;line-height:1.3;margin:18px 0}
+.ans{display:none;border-top:1px solid var(--line);padding-top:14px;margin-top:auto}
+.flash.open .ans{display:block}
+.link{background:none;border:0;padding:6px 0;color:var(--acc-ink);font:600 15px Inter,sans-serif;cursor:pointer;text-decoration:underline;text-underline-offset:3px;text-align:left;min-height:36px;display:inline-block}
+.bar{height:8px;background:var(--surf);border-radius:99px;overflow:hidden;margin:12px 0 6px}
+.bar i{display:block;height:100%;background:var(--acc);width:0;transition:width .4s}
+textarea{width:100%;font:16px/1.5 Inter,sans-serif;padding:12px 14px;border:1px solid var(--line);border-radius:14px;background:var(--bg);color:var(--ink);resize:vertical;min-height:52px}
+.etape{margin-top:30px}
+.etape-h{display:flex;gap:14px;align-items:flex-start}
+.etape-h .num{flex:none;width:40px;height:40px;border-radius:12px;background:var(--ink);color:var(--bg);display:grid;place-items:center;font-weight:700;font-size:18px}
+.etape-h h2{margin:0 0 2px;font-size:21px}
+.path{list-style:none;padding:0;margin:14px 0 0;display:grid;gap:8px}
+.pitem{display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:16px;padding:8px 12px 8px 8px;color:var(--ink);text-decoration:none;min-height:64px}
+.pitem.next{border:2px solid var(--acc);background:var(--acc-soft)}
+.pthumb{flex:none;width:84px;aspect-ratio:16/10;background:var(--surf);border-radius:10px;padding:4px;display:grid;place-items:center}
+.pitem.next .pthumb{background:var(--bg)}
+.pthumb svg{width:100%;height:100%}
+.ptxt b{display:block;font-weight:600;line-height:1.3}.ptxt small{font-size:13px;color:var(--mute)}
+.pitem.next small{color:var(--acc-ink);font-weight:600}
+.pnum{flex:none;margin-left:auto;width:28px;height:28px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font-size:13px;font-weight:700;color:var(--mute)}
+.pnum.done{background:var(--acc);border-color:var(--acc);color:#fff}
+.back{background:none;border:0;color:var(--mute);font:500 15px Inter,sans-serif;padding:6px 0;cursor:pointer;min-height:40px}
+.kicker{color:var(--acc-ink);font-weight:600;font-size:14px;margin:8px 0 4px}
+#cFig{margin:18px 0}
+.box{background:var(--surf);border-radius:16px;padding:14px 16px;margin:18px 0}
+.box h3{font-size:16px;margin:0 0 6px}.box p:last-child,.box ul:last-child,.box dl:last-child{margin-bottom:0}
+.box.acc{background:var(--acc-soft)}.box.warn{background:var(--warn-soft)}
+.box.qz{border:2px solid var(--acc);background:var(--bg)}
+.lead{font-size:18px}
+ul{padding-left:20px;margin:0 0 12px}li{margin:4px 0}
+dl{margin:0}dt{font-weight:700;margin-top:8px}dd{margin:0}
+.checks{list-style:none;padding:0}.checks li{padding-left:26px;position:relative}
+.checks li::before{content:"";position:absolute;left:2px;top:7px;width:12px;height:7px;border:solid var(--acc-ink);border-width:0 0 2.5px 2.5px;transform:rotate(-45deg)}
+code{font-family:ui-monospace,Menlo,monospace;background:var(--surf);padding:1px 6px;border-radius:6px;font-size:.9em;overflow-wrap:anywhere}
+.box code,.pitem.next code{background:var(--bg)}
+pre{background:var(--surf);border-radius:12px;padding:14px;overflow-x:auto;font:14px/1.5 ui-monospace,Menlo,monospace;margin:8px 0 12px}
+pre code{background:none;padding:0}
+.quiz{margin:14px 0 22px}
+.opt{display:block;width:100%;text-align:left;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:12px;padding:11px 14px;margin:8px 0;font:inherit;min-height:48px;cursor:pointer}
+.opt.ok{border:2px solid var(--acc);background:var(--acc-soft)}.opt.ko{border:2px solid var(--red);background:var(--red-soft)}
+.opt:disabled{cursor:default;color:var(--ink)}
+.loading{display:flex;gap:14px;align-items:center;background:var(--surf);border-radius:16px;padding:16px;margin:18px 0;flex-wrap:wrap}
+.loading p{margin:0;flex:1 1 180px}
+.spin{width:28px;height:28px;border-radius:50%;border:3px solid var(--line);border-top-color:var(--acc);animation:sp 1s linear infinite;flex:none}
+@keyframes sp{to{transform:rotate(360deg)}}
+.msg{border-radius:16px;padding:12px 14px;margin:10px 0}
+.msg.me{background:var(--acc-soft);margin-left:12%}.msg.prof{background:var(--surf);margin-right:4%}
+.msg .who{font-size:13px;font-weight:600;color:var(--mute);margin-bottom:4px}
+.card{border:1px solid var(--line);border-radius:18px;padding:16px;margin:12px 0}
+.card h3{margin:10px 0 6px;font-size:19px}
+.card .box{margin:12px 0}.card .box h3{font-size:16px;margin:0 0 6px}
+.cfoot{display:flex;flex-wrap:wrap;gap:2px 18px}
+.dateh{font-size:15px;font-weight:600;color:var(--mute);margin:24px 0 0}
+.sum{display:flex;gap:12px;align-items:flex-start}
+.sum .pthumb{width:72px}
+.sum h3{margin:0 0 6px;font-size:17px}
+.sum ul{margin:0}
+.prog{display:grid;gap:10px;margin-top:12px}
+.prog .card{margin:0}
+.prog b{display:block}
+.src{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.src a{display:flex;gap:14px;align-items:center;text-decoration:none;color:var(--ink);border:1px solid var(--line);border-radius:16px;padding:12px 14px;min-height:64px}
+.av{flex:none;width:40px;height:40px;border-radius:12px;background:var(--surf);display:grid;place-items:center;font-weight:700;color:var(--acc-ink)}
+.src b{display:block}.src span{font-size:14px;color:var(--mute)}
+.note{color:var(--mute);font-size:14px;border-left:3px solid var(--line);padding-left:12px;margin:16px 0}
+details.help{border:1px solid var(--line);border-radius:16px;padding:4px 16px;margin:26px 0 0}
+details.help summary{cursor:pointer;font-weight:600;padding:12px 0;min-height:44px}
+details.help ol{padding-left:20px}
+.tabbar{position:fixed;left:0;right:0;bottom:0;background:var(--bg);border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:6px 2px calc(6px + env(safe-area-inset-bottom));z-index:5}
+.tabbar a{flex:1;max-width:110px;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0;color:var(--mute);text-decoration:none;font-size:12px;font-weight:500;min-height:52px}
+.tabbar a.on{color:var(--acc-ink)}
+.tabbar svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.sv text{font:500 13px Inter,sans-serif;fill:var(--ink)}
+.sv .t{font-weight:700;font-size:15px}.sv .m{fill:var(--mute);font-weight:400}
+.sv .mono{font-family:ui-monospace,Menlo,monospace}
+.sv .b{fill:var(--bg);stroke:var(--ink);stroke-width:1.5}
+.sv .a{fill:var(--acc-soft);stroke:var(--acc);stroke-width:2}
+.sv .rd{fill:var(--red-soft);stroke:var(--red);stroke-width:2}
+.sv .bl{fill:var(--blue-soft);stroke:var(--blue);stroke-width:2}
+.sv .h{fill:none;stroke:var(--mute);stroke-width:1.5;stroke-dasharray:5 4}
+.sv .l{fill:none;stroke:var(--ink);stroke-width:1.6}
+.sv .lr{fill:none;stroke:var(--red);stroke-width:2}
+.mk{fill:var(--ink)}
+@media(prefers-reduced-motion:reduce){.spin{animation:none}.bar i{transition:none}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="mk"/></marker></defs></svg>
+
+<main class="wrap">
+<section class="view" id="v-accueil">
+  <h1>Salut !</h1>
+  <p class="sub" id="hello">Voici ta séance du jour.</p>
+  <div class="stats">
+    <div class="stat"><b id="sSeen">0</b><span>cours vus</span></div>
+    <div class="stat"><b id="sKnown">0</b><span>fiches sues</span></div>
+    <div class="stat"><b id="sDays">0</b><span>jours actifs</span></div>
+  </div>
+  <div id="installBox">
+    <button class="btn acc full off" type="button" id="installBtn">Installer Labo 42 sur ce téléphone</button>
+    <details class="help" id="helpBox">
+      <summary>Installer l'appli sur ton écran d'accueil</summary>
+      <p>Une fois installée, Labo 42 a son icône sur ton écran d'accueil et s'ouvre toute seule, comme une vraie appli.</p>
+      <div id="helpOpen">
+        <p><b>1. Ouvre Labo 42 dans ton navigateur</b> : Safari sur iPhone, Chrome sur Android, pas dans l'appli Claude.</p>
+        <a class="btn ghost" id="appLink" href="#" target="_blank" rel="noopener">Ouvrir dans le navigateur</a>
+        <button class="btn ghost" type="button" id="copyLink" style="margin-top:8px">Copier le lien</button>
+        <p class="small" style="margin-top:8px"><code id="appUrl"></code></p>
+      </div>
+      <p><b><span id="stepN">2</span>. Ajoute-la à l'écran d'accueil</b></p>
+      <ul>
+        <li>iPhone (Safari) : bouton Partager, le carré avec une flèche vers le haut, puis « Sur l'écran d'accueil », puis « Ajouter ».</li>
+        <li>Android (Chrome) : menu ⋮ en haut à droite, puis « Installer l'application » ou « Ajouter à l'écran d'accueil ».</li>
+      </ul>
+      <p class="small">Le prof et l'explication d'articles fonctionnent dans Claude : l'appli t'y emmène d'un bouton quand tu en as besoin.</p>
+    </details>
+  </div>
+  <h2>Ta séance du jour</h2>
+  <div class="steps" id="plan"></div>
+  <h2>Ton prochain cours</h2>
+  <div id="nextBox"></div>
+  <h2>Les actus du jour</h2>
+  <div id="homeActus"></div>
+  <a class="btn ghost full" href="#veille">Toutes les actus</a>
+</section>
+
+<section class="view" id="v-parcours">
+  <h1>Ton parcours</h1>
+  <p class="sub">Suis les cours dans cet ordre : chacun s'appuie sur les précédents. Le cours conseillé est en vert.</p>
+  <form id="askForm">
+    <textarea id="ask" rows="2" placeholder="Une question précise ? Le prof te fait un cours dessus."></textarea>
+    <button class="btn ghost full" type="submit">Demander un cours au prof</button>
+  </form>
+  <div class="note off" id="aiOff"></div>
+  <div id="path"></div>
+</section>
+
+<section class="view" id="v-cours">
+  <button class="back" type="button" data-act="back">← Le parcours</button>
+  <p class="kicker" id="cCat"></p>
+  <h1 id="cTitle"></h1>
+  <div id="cFig"></div>
+  <div class="box acc" id="cEssBox"><h3>L'essentiel en 30 secondes</h3><p id="cEss"></p></div>
+  <div id="cBody"></div>
+  <div id="cChat" class="off">
+    <h2>Discuter avec le prof</h2>
+    <div class="chips wrapc" id="quick"></div>
+    <div id="msgs" aria-live="polite"></div>
+    <form id="chatForm">
+      <textarea id="chatIn" rows="3" placeholder="Écris ta réponse ou ta question…"></textarea>
+      <button class="btn acc full" type="submit" id="chatBtn">Envoyer</button>
+    </form>
+  </div>
+  <div id="cNext"></div>
+</section>
+
+<section class="view" id="v-reviser">
+  <h1>Réviser</h1>
+  <p class="sub">Réfléchis à la réponse avant de la voir. Sois honnête : les fiches « à revoir » reviennent en premier.</p>
+  <div class="chips" id="decks"></div>
+  <div class="flash" id="flash">
+    <div class="ftop"><span class="tag" id="fTag"></span><span id="fNum"></span></div>
+    <p class="q" id="fQ"></p>
+    <div class="ans"><p id="fAns"></p><button class="link" id="fLesson" type="button"></button></div>
+  </div>
+  <button class="btn full" id="bShow" type="button">Voir la réponse</button>
+  <div class="row off" id="judge">
+    <button class="btn ghost" id="bKo" type="button">À revoir</button>
+    <button class="btn acc" id="bOk" type="button">Je savais</button>
+  </div>
+  <div class="bar"><i id="bar"></i></div>
+  <div class="small" id="barTxt"></div>
+</section>
+
+<section class="view" id="v-acquis">
+  <h1>Tes acquis</h1>
+  <p class="sub">Tout ce que tu sais déjà, en cartes. Chaque cours terminé ajoute sa carte.</p>
+  <div class="prog" id="prog"></div>
+  <h2>Validé avec ton prof</h2>
+  <div class="card">
+    <ul class="checks">
+      <li>Bandit, niveaux 0 à 3 : connexion <code>ssh</code>, <code>ls</code>, <code>cat</code>, <code>cd</code>, <code>find</code>, fichiers cachés.</li>
+      <li>Lire des fichiers aux noms piégés : <code>cat ./-</code>, <code>cat &lt; -</code>, <code>cat -- "nom avec espaces"</code>.</li>
+      <li>En C : une variable <code>char</code>, <code>scanf</code> avec <code>%c</code> et <code>&amp;</code>, <code>printf</code>, une condition <code>if</code>.</li>
+      <li>La table ASCII : les lettres sont des nombres, on peut calculer avec.</li>
+      <li>Chiffrement de César : versions 1 et 3 réussies, avec le retour au début de l'alphabet.</li>
+      <li>Compiler avec <code>cc -Wall -Wextra -Werror</code> et lancer avec <code>./a.out</code>.</li>
+    </ul>
+  </div>
+  <h2>Tes cartes résumé</h2>
+  <div id="sums"></div>
+  <h2>Ton bilan avec le prof</h2>
+  <p class="small">Le prof regarde tes fiches et tes cours, puis te dit où tu en es et quoi travailler.</p>
+  <button class="btn acc full" type="button" id="bilanBtn">Faire mon bilan</button>
+  <div id="bilanOff"></div>
+  <div id="bilan" aria-live="polite"></div>
+</section>
+
+<section class="view" id="v-veille">
+  <h1>Veille</h1>
+  <p class="sub">Les actus importantes en tech, dev et cyber, expliquées simplement. Tu reçois aussi une notification quand une info vaut le coup.</p>
+  <div id="actus"></div>
+  <h2>Les sources à suivre</h2>
+  <ul class="src" id="srcs"></ul>
+  <h2>Comprendre un article</h2>
+  <form id="newsForm">
+    <textarea id="news" rows="4" placeholder="Colle ici un passage d'article que tu veux comprendre"></textarea>
+    <button class="btn acc full" type="submit" id="newsBtn">M'expliquer simplement</button>
+  </form>
+  <div id="newsOff"></div>
+  <div id="newsOut" aria-live="polite"></div>
+</section>
+</main>
+
+<nav class="tabbar">
+  <a href="#accueil" data-v="accueil"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Accueil</a>
+  <a href="#parcours" data-v="parcours"><svg viewBox="0 0 24 24"><path d="M6 21V4M6 5h11l-2 4 2 4H6"/></svg>Parcours</a>
+  <a href="#reviser" data-v="reviser"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="14" height="14" rx="2"/><path d="M7 3h12a2 2 0 0 1 2 2v12"/></svg>Réviser</a>
+  <a href="#acquis" data-v="acquis"><svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="6"/><path d="M8.5 13.5 7.5 22l4.5-2.5 4.5 2.5-1-8.5"/></svg>Acquis</a>
+  <a href="#veille" data-v="veille"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9h10M7 13h10M7 17h6"/></svg>Veille</a>
+</nav>
+
+<script>
+{
+const $ = id => document.getElementById(id);
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+const inline = s => esc(s).replace(/`([^`]+)`/g, "<code>$1</code>").replace(/\*\*([^*]+)\*\*/g, "<b>$1</b>");
+const LI = /^\s*([-•*]|\d+[.)])\s+/;
+const fmt = t => String(t || "").trim().split(/\n{2,}/).filter(Boolean).map(b => {
+  const lines = b.split("\n");
+  if (lines.every(l => LI.test(l))) return "<ul>" + lines.map(l => "<li>" + inline(l.replace(LI, "")) + "</li>").join("") + "</ul>";
+  return "<p>" + lines.map(inline).join("<br>") + "</p>";
+}).join("");
+const arr = a => Array.isArray(a) ? a : [];
+
+/* ---------- Schémas ---------- */
+const A = 'marker-end="url(#ar)"';
+const R = (x,y,w,h,c="b",r=10) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${r}" class="${c}"/>`;
+const T = (x,y,s,c="",a="middle") => `<text x="${x}" y="${y}" text-anchor="${a}" class="${c}">${s}</text>`;
+const P = (d,arrow=true,c="l") => `<path d="${d}" class="${c}" ${arrow ? A : ""}/>`;
+const badge = (x,y,n) => `<circle cx="${x}" cy="${y}" r="11" class="a"/>` + T(x, y+5, n, "t");
+const cells = (y,list,c) => list.map((p,i) => R(10+i*70,y,62,52,c) + T(41+i*70,y+(p[1]?24:33),p[0],"t") + (p[1] ? T(41+i*70,y+43,p[1],"m") : "")).join("");
+const SCHEMAS = {
+  fichiers:{t:"Dossiers et fichiers cachés",h:212,g:()=>R(20,14,150,34)+T(95,36,"~  dossier perso","mono")+P("M40 48V87H58")+R(60,70,140,34)+T(130,92,"projet/","mono")+P("M80 104V143H98")+P("M80 143V189H98")+R(100,126,130,34)+T(165,148,"notes.txt","mono")+R(100,172,130,34,"h")+T(165,194,".config","mono m")+T(242,148,"visible avec ls","","start")+T(242,194,"caché : ls -a","m","start")},
+  permissions:{t:"Qui a le droit de faire quoi",h:178,g:()=>T(180,32,"-rwxr-x---  notes.txt","t mono")+[["propriétaire","rwx","a"],["groupe","r-x","b"],["les autres","---","b"]].map((g,i)=>R(10+i*118,52,104,72,g[2])+T(62+i*118,78,g[0],"m")+T(62+i*118,106,g[1],"t mono")).join("")+T(180,162,"r = lire   w = écrire   x = exécuter","mono m")},
+  redirections:{t:"Rediriger et enchaîner les commandes",h:168,g:()=>R(6,24,64,40)+T(38,49,"ls","t mono")+P("M70 44H104")+T(87,36,"|","t mono")+R(108,24,100,40)+T(158,49,"grep txt","mono")+P("M208 44H244")+T(226,36,"&gt;","t mono")+R(248,24,106,40,"a")+T(301,49,"liste.txt","mono")+R(6,104,106,40,"a")+T(59,129,"entree.txt","mono")+P("M112 124H146")+T(129,116,"&lt;","t mono")+R(150,104,80,40)+T(190,129,"sort","t mono")+P("M230 124H264")+T(306,129,"écran","m")},
+  ssh:{t:"SSH, une connexion chiffrée",h:176,g:()=>R(6,50,96,64)+T(54,80,"Ton PC","t")+T(54,98,"ici","m")+R(258,50,96,64)+T(306,80,"Serveur","t")+T(306,98,"à distance","m")+P("M102 64H258M102 100H258",false)+R(170,80,20,14,"a",3)+`<path d="M174 80v-4a6 6 0 0 1 12 0v4" class="l"/>`+T(180,52,"connexion chiffrée","m")+T(180,124,"port 22 par défaut","m")+T(180,160,"ssh user@serveur -p 2220","mono")},
+  git:{t:"Le trajet de ton code avec Git",h:178,g:()=>R(6,20,150,52)+T(81,43,"Ton dossier","t")+T(81,61,"tu modifies","m")+P("M156 46H200")+T(178,38,"add","mono m")+R(204,20,150,52)+T(279,43,"Préparé","t")+T(279,61,"prêt à enregistrer","m")+P("M279 72V106")+T(288,94,"commit","mono m","start")+R(204,110,150,52,"a")+T(279,133,"Historique","t")+T(279,151,"sur ta machine","m")+P("M204 136H160")+T(182,128,"push","mono m")+R(6,110,150,52)+T(81,133,"Serveur","t")+T(81,151,"GitHub, 42…","m")},
+  compilation:{t:"Du code au programme",h:198,g:()=>R(6,24,100,56)+T(56,48,"code.c","t mono")+T(56,68,"ton texte","m")+P("M106 52H128")+R(130,24,100,56,"a")+T(180,48,"cc","t mono")+T(180,68,"traduit","m")+P("M230 52H252")+R(254,24,100,56)+T(304,48,"a.out","t mono")+T(304,68,"le programme","m")+P("M304 80V112")+R(254,116,100,40)+T(304,141,"./a.out","mono")+T(244,141,"on le lance","m","end")+T(180,188,"cc -Wall -Wextra -Werror code.c","mono m")},
+  variables:{t:"Une variable : un nom, un type, une valeur",h:156,g:()=>[["int age","18","4 octets","a"],["char c","'A'","1 octet","b"],["float t","1.75","4 octets","b"]].map((v,i)=>T(58+i*122,30,v[0],"t mono")+R(10+i*122,42,96,60,v[3])+T(58+i*122,79,v[1],"t mono")+T(58+i*122,124,v[2],"m")).join("")},
+  conditions:{t:"Une condition choisit un chemin",h:214,g:()=>`<polygon points="180,16 266,52 180,88 94,52" class="a"/>`+T(180,57,"note &gt;= 10 ?","t mono")+P("M266 52H302V100")+T(284,44,"oui","m")+P("M94 52H58V100")+T(76,44,"non","m")+R(250,104,104,40)+T(302,129,"admis")+R(6,104,104,40)+T(58,129,"rattrapage")+P("M302 144V192H234")+P("M58 144V192H126")+R(130,176,100,32)+T(180,197,"suite")},
+  boucle:{t:"Le trajet d'une boucle while",h:206,g:()=>R(100,10,100,34)+T(150,32,"i = 0","mono")+P("M150 44V62")+`<polygon points="150,66 218,96 150,126 82,96" class="a"/>`+T(150,101,"i &lt; 3 ?","t mono")+P("M218 96H246")+T(232,88,"oui","m")+R(250,74,100,44)+T(300,92,"printf(i)","mono")+T(300,110,"i++","mono")+P("M300 74V52H158")+T(262,46,"on recommence","m")+P("M150 126V158")+T(162,147,"non","m","start")+R(90,162,120,36)+T(150,185,"après la boucle")},
+  fonctions:{t:"Une fonction : des entrées, une sortie",h:150,g:()=>T(56,30,"paramètres","m")+T(56,72,"3 et 4","t mono")+P("M92 67H122")+R(126,38,128,58,"a")+T(190,63,"addition","t mono")+T(190,83,"a + b","m mono")+P("M254 67H284")+T(318,30,"return","m mono")+T(318,72,"7","t mono")+T(180,130,"int addition(int a, int b)","mono m")},
+  write:{t:"Afficher avec write",h:172,g:()=>T(180,36,"write(1, &quot;Salut&quot;, 5);","t mono")+P("M144 46L72 86")+P("M198 46L180 86")+P("M252 46L292 86")+T(64,106,"où écrire","t")+T(64,124,"1 = l'écran","m")+T(180,106,"quoi","t")+T(180,124,"le texte","m")+T(300,106,"combien","t")+T(300,124,"5 octets","m")+T(180,160,"0 entrée · 1 sortie · 2 erreurs","m")},
+  memoire:{t:"Une chaîne en mémoire",h:196,g:()=>T(180,28,"char *str = &quot;Salut&quot;;","t mono")+["S","a","l","u","t","\\0"].map((c,i)=>T(43+i*56,60,i,"m")+R(18+i*56,70,50,50,i===5?"a":"b",8)+T(43+i*56,101,c,"t mono")).join("")+T(43,146,"str[0]","m mono")+T(323,146,"la fin","m")+T(180,184,"6 cases pour 5 lettres","m")},
+  ascii:{t:"Les lettres sont des nombres (table ASCII)",h:204,g:()=>T(10,22,"Majuscules","m","start")+cells(30,[["A","65"],["B","66"],["C","67"],["…",""],["Z","90"]],"b")+T(10,112,"Minuscules","m","start")+cells(120,[["a","97"],["b","98"],["c","99"],["…",""],["z","122"]],"b")+T(180,196,"'A' + 1 donne 'B'","mono")},
+  pointeur:{t:"Une variable, sa valeur et son adresse",h:186,g:()=>T(180,26,"char lettre = 'A';","t mono")+R(130,46,100,60,"a")+T(180,84,"'A'","t mono")+T(180,128,"adresse : 0x7ffd10","m mono")+T(20,72,"lettre","mono","start")+T(20,90,"la valeur","m","start")+P("M92 76H126")+T(340,158,"&amp;lettre","mono","end")+T(340,176,"l'adresse","m","end")+P("M276 146L248 134")},
+  malloc:{t:"La pile et le tas",h:204,g:()=>T(81,22,"La pile","t")+R(6,30,150,140)+R(20,48,122,30,"b",6)+T(81,68,"int i","mono")+R(20,86,122,30,"a",6)+T(81,106,"char *s","mono")+R(20,124,122,30,"b",6)+T(81,144,"char c","mono")+T(279,22,"Le tas","t")+R(204,30,150,140)+R(218,83,122,36,"a",6)+T(279,106,"6 octets","mono")+P("M142 101H214")+T(180,194,"malloc réserve, free rend la mémoire","m")},
+  osi:{t:"Les 7 couches du modèle OSI",h:204,g:()=>[[7,"Application","HTTP, DNS, SSH"],[6,"Présentation","formats, chiffrement"],[5,"Session","dialogue entre programmes"],[4,"Transport","TCP, UDP, ports"],[3,"Réseau","adresses IP"],[2,"Liaison","Ethernet, Wi-Fi"],[1,"Physique","câbles, ondes"]].map((l,i)=>{const y=4+i*28;return R(6,y,348,24,i===3||i===4?"a":"b",6)+T(22,y+17,l[0],"t")+T(42,y+17,l[1],"t","start")+T(346,y+17,l[2],"m","end")}).join("")},
+  reseaulocal:{t:"Ton réseau local et Internet",h:200,g:()=>R(6,10,226,176,"h")+T(18,30,"chez toi","m","start")+[["PC",".10"],["Tél",".11"],["Console",".12"]].map((d,i)=>R(18,42+i*46,104,36)+T(28,65+i*46,d[0],"","start")+T(112,65+i*46,d[1],"mono m","end")+P(`M122 ${60+i*46}L150 106`,false)).join("")+R(150,82,72,48,"a")+T(186,104,"Box","t")+T(186,121,".1","mono m")+P("M222 106H256")+R(260,82,94,48)+T(307,104,"Internet","t")+T(307,121,"IP publique","m")},
+  ports:{t:"Une machine, plusieurs portes",h:186,g:()=>R(10,20,120,150)+T(70,84,"Serveur","t")+T(70,104,"192.168.1.10","m mono")+[["22","SSH"],["80","HTTP"],["443","HTTPS"],["53","DNS"]].map((p,i)=>{const y=20+i*40;return P(`M130 ${y+15}H168`,false)+R(170,y,64,30,"a",8)+T(202,y+20,p[0],"t mono")+T(246,y+20,p[1],"","start")}).join(""),leg:["L'adresse IP, c'est l'adresse de l'immeuble.","Le port, c'est le numéro de la porte : chaque service a la sienne."]},
+  dns:{t:"Le DNS, l'annuaire d'Internet",h:184,g:()=>R(135,14,90,44)+T(180,41,"DNS","t")+R(10,130,90,44)+T(55,157,"Toi","t")+R(260,130,90,44)+T(305,157,"Site","t")+P("M45 128L132 60")+P("M150 62L68 128")+P("M100 152H256")+badge(71,107,1)+badge(125,82,2)+badge(178,152,3),leg:["Ton ordinateur demande : « Quelle est l'adresse de exemple.fr ? »","Le serveur DNS répond avec l'adresse IP, par exemple 203.0.113.7.","Ton ordinateur se connecte au site à cette adresse."]},
+  tcp:{t:"La poignée de main TCP",h:196,g:()=>R(20,8,100,30)+T(70,28,"Client","t")+R(240,8,100,30)+T(290,28,"Serveur","t")+P("M70 38V176M290 38V176",false,"h")+P("M70 62L290 82")+T(176,64,"SYN","t mono")+P("M290 100L70 120")+T(184,102,"SYN-ACK","t mono")+P("M70 138L290 158")+T(176,140,"ACK","t mono")+T(180,192,"la connexion est ouverte","m"),leg:["SYN : « On peut parler ? »","SYN-ACK : « Oui, je t'entends. »","ACK : « C'est parti. » UDP saute cette étape."]},
+  http:{t:"Une requête, une réponse",h:168,g:()=>R(6,36,100,90)+T(56,78,"Navigateur","t")+T(56,96,"toi","m")+R(254,36,100,90)+T(304,78,"Serveur","t")+T(304,96,"le site","m")+P("M106 62H250")+T(180,54,"GET /index.html","mono")+P("M254 102H110")+T(180,94,"200 OK + la page","mono")+T(180,156,"HTTP : port 80 · HTTPS : port 443, chiffré","m")},
+  redblue:{t:"Attaque et défense",h:130,g:()=>R(6,30,96,72,"rd")+T(54,62,"Red Team","t")+T(54,82,"attaque","m")+R(132,30,96,72)+T(180,62,"Système","t")+T(180,82,"à protéger","m")+R(258,30,96,72,"bl")+T(306,62,"Blue Team","t")+T(306,82,"défense","m")+P("M102 66H128")+P("M258 66H232"),leg:["Red Team : tests d'intrusion autorisés, recherche de failles, rapport pour les corriger.","Blue Team : surveillance des alertes (SOC), détection, réponse aux incidents."]},
+  triade:{t:"Les trois piliers de la sécurité",h:204,g:()=>`<polygon points="180,32 64,170 296,170" class="a"/>`+T(180,22,"Confidentialité","t")+T(64,194,"Intégrité","t")+T(296,194,"Disponibilité","t")+T(180,128,"Sécurité","t")+T(180,146,"de l'information","m"),leg:["Confidentialité : seules les bonnes personnes lisent.","Intégrité : personne ne modifie en cachette.","Disponibilité : le service marche quand on en a besoin."]},
+  cesar:{t:"Le chiffrement de César, clé 3",h:192,g:()=>T(10,22,"Message","m","start")+cells(30,[["A"],["B"],["C"],["…"],["Z"]],"b")+[0,1,2,4].map(i=>P(`M${41+i*70} 84V110`)+T(49+i*70,101,"+3","m","start")).join("")+cells(114,[["D"],["E"],["F"],["…"],["C"]],"a")+T(10,184,"Chiffré : après Z, on repart au début","m","start")},
+  hachage:{t:"Le hachage, une empreinte à sens unique",h:168,g:()=>R(6,40,96,44)+T(54,67,"password","mono")+P("M102 62H124")+R(128,32,104,60,"a")+T(180,58,"hachage","t")+T(180,78,"MD5","m")+P("M232 62H254")+R(258,40,96,44)+T(306,67,"5f4dcc3b…","mono")+`<path d="M306 92Q180 150 60 92" class="h" ${A}/>`+P("M172 112L188 128M188 112L172 128",false,"lr")+T(180,156,"impossible de revenir en arrière","m"),leg:["Les sites sérieux gardent l'empreinte de ton mot de passe, jamais le mot de passe.","MD5 est trop rapide et cassé : on utilise aujourd'hui bcrypt ou Argon2."]},
+  phishing:{t:"Le piège du phishing",h:178,g:()=>R(6,20,100,44,"rd")+T(56,47,"Pirate","t")+P("M106 42H250")+T(178,34,"envoie","m")+R(254,20,100,44)+T(304,47,"Faux e-mail","t")+P("M304 64V116")+T(296,96,"clic","m","end")+R(254,120,100,44)+T(304,147,"Toi","t")+P("M254 142H110")+T(180,134,"tu te connectes","m")+R(6,120,100,44,"rd")+T(56,147,"Faux site","t")+P("M56 120V68")+T(64,98,"volé !","m","start"),leg:["Vérifie l'adresse de l'expéditeur et celle du site avant de taper quoi que ce soit.","Méfie-toi de l'urgence : « votre compte sera bloqué dans 24 h »."]},
+  parefeu:{t:"Le pare-feu filtre le trafic",h:186,g:()=>R(6,50,90,80)+T(51,95,"Internet","t")+R(150,20,40,132,"b",4)+[46,72,98,124].map(y=>P(`M150 ${y}H190`,false)).join("")+R(244,50,110,80,"a")+T(299,88,"Ton","t")+T(299,106,"réseau","t")+P("M96 70H240")+T(122,62,"443","mono")+T(218,62,"oui","m")+P("M96 112H146")+T(122,132,"23","mono")+P("M196 104L212 120M212 104L196 120",false,"lr")+T(180,178,"seul ce qui est autorisé passe","m")},
+  logs:{t:"Les logs, journal de bord du système",h:168,g:()=>R(6,10,348,148)+R(12,44,336,78,"rd",6)+[["10:02 sshd: Accepted password for alex","b"],["10:15 sshd: Failed password for root",""],["10:15 sshd: Failed password for root",""],["10:15 sshd: Failed password for root",""],["10:16 nginx: GET /index.html 200","b"]].map((l,i)=>T(20,34+i*26,l[0],"mono"+(l[1]?" m":""),"start")).join(""),leg:["Trois échecs de suite sur le compte root en une minute : quelqu'un essaie peut-être de deviner le mot de passe.","Repérer ce genre de motif, c'est le métier de l'analyste SOC."]},
+  injection:{t:"L'injection : quand la donnée devient du code",h:200,g:()=>R(6,14,348,40)+T(18,39,"Identifiant :  ' OR '1'='1","mono","start")+P("M180 54V80")+R(6,84,348,44,"rd")+T(18,111,"… WHERE nom = '' OR '1'='1'","mono","start")+P("M180 128V152")+R(90,156,180,36)+T(180,179,"tous les comptes !","t"),leg:["La faille : le site colle ce que tu tapes directement dans sa requête.","La parade : les requêtes préparées, qui séparent toujours le code des données."]}
+};
+const svg = (id, label) => { const s = SCHEMAS[id]; return s ? `<svg class="sv" viewBox="0 0 360 ${s.h}" role="img" aria-label="${esc(label || s.t)}">${s.g()}</svg>` : ""; };
+const fig = id => { const s = SCHEMAS[id]; if (!s) return ""; return `<figure class="schema">${svg(id)}<figcaption><b>${esc(s.t)}</b>${s.leg ? `<ol>${s.leg.map(l => `<li>${esc(l)}</li>`).join("")}</ol>` : ""}</figcaption></figure>`; };
+
+/* ---------- Parcours ---------- */
+const ETAPES = [
+  {n:1,t:"Le terminal",w:"Pour finir Bandit et être à l'aise dès le premier jour de la Piscine.",ids:["fichiers","permissions","redirections","ssh","git"]},
+  {n:2,t:"Le C de la Piscine",w:"Le cœur de la Piscine. Dans cet ordre, chaque notion sert à la suivante.",ids:["compilation","variables","conditions","boucles","fonctions","write","chaines","ascii","pointeurs","malloc"]},
+  {n:3,t:"Le réseau",w:"La base de ton futur Master en architecture réseau.",ids:["osi","reseaulocal","ports","dns","tcp","http"]},
+  {n:4,t:"La cybersécurité",w:"Maintenant que tu sais comment tout marche, tu peux comprendre comment on l'attaque et le défend.",ids:["metiers","triade","cesar","hachage","phishing","parefeu","logs","injection"]}
+];
+const TOPICS = [
+  {id:"fichiers",t:"Fichiers et dossiers Linux",s:"fichiers",e:"Linux range tout dans des dossiers. Ton dossier personnel s'écrit ~. Un fichier dont le nom commence par un point est caché : ls ne le montre pas, ls -a si. cd change de dossier, cd .. remonte d'un niveau."},
+  {id:"permissions",t:"Les droits des fichiers",s:"permissions",e:"Chaque fichier a des droits pour trois catégories de personnes : son propriétaire, son groupe et tous les autres. Pour chacune : r (lire), w (écrire), x (exécuter). ls -l les affiche, chmod les modifie."},
+  {id:"redirections",t:"Redirections et pipes",s:"redirections",e:"Par défaut, une commande affiche son résultat à l'écran. Avec > tu l'envoies dans un fichier, avec >> tu l'ajoutes à la fin, avec < tu donnes un fichier en entrée. Le pipe | branche la sortie d'une commande sur l'entrée de la suivante."},
+  {id:"ssh",t:"SSH, se connecter à distance",s:"ssh",e:"SSH permet de contrôler une autre machine à distance, à travers une connexion chiffrée que personne ne peut lire. Il utilise le port 22 par défaut. C'est l'outil de base des administrateurs, et tu l'utilises déjà dans Bandit."},
+  {id:"git",t:"Git, sauvegarder son code",s:"git",e:"Git garde tout l'historique de ton code. git add prépare les fichiers modifiés, git commit enregistre une étape avec un message, git push l'envoie sur un serveur. À 42, tu rends tous tes projets avec Git."},
+  {id:"compilation",t:"Compiler un programme",s:"compilation",e:"Le fichier .c est du texte pour les humains. Le compilateur cc le traduit en langage machine et crée un programme, a.out par défaut, qu'on lance avec ./a.out. À chaque modification du code, il faut recompiler."},
+  {id:"variables",t:"Variables et types",s:"variables",e:"Une variable est une case mémoire avec un nom, un type et une valeur. Le type dit ce qu'elle contient et combien de place elle prend : int pour un entier, char pour un caractère, float pour un nombre à virgule."},
+  {id:"conditions",t:"Les conditions if / else",s:"conditions",e:"if exécute un bloc seulement si sa condition est vraie, else s'occupe du cas contraire. On compare avec ==, !=, <, >, <=, >=, et on combine avec && (et) et || (ou). Attention : = range une valeur, == compare."},
+  {id:"boucles",t:"La boucle while",s:"boucle",e:"Une boucle while répète un bloc tant que sa condition est vraie. À chaque tour, quelque chose doit changer, souvent un compteur, sinon elle ne s'arrête jamais. Quand la condition devient fausse, le programme continue après la boucle."},
+  {id:"fonctions",t:"Les fonctions",s:"fonctions",e:"Une fonction est un morceau de code qui porte un nom. Elle reçoit des paramètres, fait son travail et peut renvoyer un résultat avec return. À 42, presque chaque exercice consiste à écrire une fonction."},
+  {id:"write",t:"Afficher avec write",s:"write",e:"À la Piscine, printf est souvent interdit : on affiche avec write. Elle prend trois choses : où écrire (1 pour l'écran), quoi écrire et combien d'octets. write ne connaît pas les nombres : elle n'envoie que des caractères."},
+  {id:"chaines",t:"Tableaux et chaînes",s:"memoire",e:"Une chaîne, c'est une rangée de cases qui contiennent chacune un caractère. La dernière case contient toujours le caractère nul '\\0', qui indique où la chaîne s'arrête. On lit une case avec son numéro entre crochets, en commençant à 0."},
+  {id:"ascii",t:"La table ASCII",s:"ascii",e:"Pour l'ordinateur, chaque caractère est un nombre. 'A' vaut 65, 'B' 66, jusqu'à 'Z' qui vaut 90. Les minuscules ont leurs propres nombres, à partir de 'a' qui vaut 97. Comme les lettres se suivent, on peut calculer avec elles."},
+  {id:"pointeurs",t:"Adresses et pointeurs",s:"pointeur",e:"Chaque variable est rangée en mémoire à une adresse. Le symbole & donne cette adresse. Un pointeur est une variable qui contient une adresse : c'est pour ça que scanf a besoin de &, il doit savoir où écrire."},
+  {id:"malloc",t:"La mémoire : malloc et free",s:"malloc",e:"Les variables locales vivent dans la pile et disparaissent à la fin de la fonction. Pour de la mémoire qui dure, ou dont la taille n'est connue qu'à l'exécution, on la demande au tas avec malloc. Chaque malloc doit avoir son free, sinon la mémoire fuit."},
+  {id:"osi",t:"Le modèle OSI",s:"osi",e:"Le modèle OSI découpe le fonctionnement d'un réseau en 7 couches, du câble (couche 1) à l'application que tu utilises (couche 7). Chaque couche a un rôle précis et s'appuie sur celle du dessous. C'est la carte mentale de tout ingénieur réseau."},
+  {id:"reseaulocal",t:"Réseau local et IP privées",s:"reseaulocal",e:"Chez toi, chaque appareil a une adresse IP privée, souvent en 192.168.x.x, valable seulement dans ton réseau. Ta box fait le lien avec Internet grâce à son adresse IP publique. Le masque, comme 255.255.255.0, dit quelle partie de l'adresse désigne le réseau."},
+  {id:"ports",t:"Adresses IP et ports",s:"ports",e:"Une adresse IP identifie une machine sur un réseau. Un port identifie un service sur cette machine : le site web, SSH, le DNS… Une même machine peut ainsi offrir plusieurs services, chacun derrière son port."},
+  {id:"dns",t:"Le DNS",s:"dns",e:"Les machines se parlent avec des adresses IP, mais les humains retiennent des noms. Le DNS est l'annuaire d'Internet : il traduit un nom comme exemple.fr en adresse IP. Ton ordinateur l'interroge avant presque chaque connexion."},
+  {id:"tcp",t:"TCP et UDP",s:"tcp",e:"TCP ouvre une connexion avant d'envoyer des données, avec un échange en trois temps : SYN, SYN-ACK, ACK. Ensuite il vérifie que tout arrive, dans l'ordre. UDP envoie sans prévenir et sans vérifier : plus rapide, idéal pour la vidéo ou les jeux."},
+  {id:"http",t:"HTTP et HTTPS",s:"http",e:"HTTP est la langue du web : ton navigateur envoie une requête (GET pour demander une page), le serveur renvoie une réponse avec un code (200 = OK, 404 = introuvable). HTTPS, c'est le même HTTP dans un tunnel chiffré, sur le port 443."},
+  {id:"metiers",t:"Attaque ou défense : les métiers",s:"redblue",e:"La Red Team attaque légalement un système pour trouver ses failles avant les pirates : c'est le pentest. La Blue Team défend : elle surveille, détecte les attaques et y répond, souvent dans un SOC. Les deux reposent sur les mêmes bases."},
+  {id:"triade",t:"Les trois piliers de la sécurité",s:"triade",e:"La sécurité de l'information repose sur trois piliers : la confidentialité (seules les bonnes personnes lisent), l'intégrité (personne ne modifie en cachette) et la disponibilité (le service fonctionne quand on en a besoin). Chaque attaque vise au moins l'un des trois."},
+  {id:"cesar",t:"Le chiffrement de César",s:"cesar",e:"On décale chaque lettre d'un nombre fixe de positions : c'est la clé. Au bout de l'alphabet, on repart au début. Pour déchiffrer, on décale dans l'autre sens. Avec seulement 25 clés possibles, ce chiffrement se casse en quelques secondes."},
+  {id:"hachage",t:"Mots de passe et hachage",s:"hachage",e:"Un site sérieux ne stocke pas ton mot de passe, mais son empreinte : un hash. Une fonction de hachage transforme un texte en une suite de caractères, et on ne peut pas faire le chemin inverse. Pour vérifier, le site hache ce que tu tapes et compare."},
+  {id:"phishing",t:"Le phishing",s:"phishing",e:"Le phishing (hameçonnage) est un faux message qui imite une vraie entreprise pour te faire cliquer et taper tes identifiants sur un faux site. C'est la porte d'entrée de la plupart des attaques. Les signes : urgence, adresse bizarre, lien qui ne correspond pas."},
+  {id:"parefeu",t:"Le pare-feu",s:"parefeu",e:"Un pare-feu filtre le trafic réseau selon des règles : il laisse passer ce qui est autorisé (par exemple le port 443 d'un site web) et bloque le reste. Il protège une machine ou tout un réseau : c'est l'un des premiers outils de la Blue Team."},
+  {id:"logs",t:"Les logs et la détection",s:"logs",e:"Les logs sont le journal de bord d'un système : chaque connexion, erreur ou requête y laisse une ligne. En les analysant, un analyste SOC repère ce qui est anormal, comme des dizaines d'échecs de connexion en une minute. Pas de logs, pas de détection."},
+  {id:"injection",t:"Les failles web : l'injection",s:"injection",e:"Une injection arrive quand un site colle ce que tape l'utilisateur directement dans une commande, par exemple une requête SQL vers sa base de données. Un texte bien choisi change alors le sens de la requête. La parade : les requêtes préparées."}
+];
+const TOPIC = Object.fromEntries(TOPICS.map(t => [t.id, t]));
+const ORDER = ETAPES.flatMap(e => e.ids);
+const ETAPE_OF = Object.fromEntries(ETAPES.flatMap(e => e.ids.map(id => [id, e])));
+const BASE = ["fichiers","ssh","compilation","ascii","cesar"];
+
+const CARDS = [
+ ["Terminal","Que fait ls -a de plus que ls ?","Il affiche aussi les fichiers cachés, ceux dont le nom commence par un point.","fichiers"],
+ ["Terminal","Comment lire un fichier qui s'appelle juste - ?","Avec un chemin devant, <code>cat ./-</code>, ou avec une redirection, <code>cat &lt; -</code>.","fichiers"],
+ ["Terminal","Que veut dire -- dans une commande ?","« Fin des options » : tout ce qui suit est un nom de fichier, même s'il commence par un tiret.","fichiers"],
+ ["Terminal","Deux façons d'écrire un nom de fichier qui contient des espaces ?","Entre guillemets <code>\"mon fichier\"</code>, ou avec un antislash devant chaque espace <code>mon\\ fichier</code>.","fichiers"],
+ ["Terminal","À quoi sert cd .. ?","À remonter d'un dossier, vers le dossier parent.","fichiers"],
+ ["Terminal","Dans man, comment chercher un mot, et comment quitter ?","<code>/</code> puis le mot et Entrée pour chercher, <code>q</code> pour quitter.","fichiers"],
+ ["Terminal","Que fait find sans argument ?","Il liste tous les fichiers du dossier et de ses sous-dossiers, cachés compris.","fichiers"],
+ ["Terminal","Que veulent dire r, w et x ?","r : lire, w : écrire, x : exécuter.","permissions"],
+ ["Terminal","Différence entre > et >> ?","<code>&gt;</code> remplace le contenu du fichier, <code>&gt;&gt;</code> ajoute à la fin.","redirections"],
+ ["Terminal","À quoi sert le pipe | ?","À envoyer la sortie d'une commande dans l'entrée de la suivante.","redirections"],
+ ["Terminal","Que fait -p 2220 dans une commande ssh ?","Il indique le port à utiliser. SSH utilise le port 22 par défaut.","ssh"],
+ ["Terminal","Les trois commandes Git pour envoyer ton travail ?","<code>git add</code>, <code>git commit -m \"message\"</code>, <code>git push</code>.","git"],
+ ["C","Que fait l'option -Werror ?","Elle transforme chaque avertissement en erreur : pas de programme tant qu'il en reste un.","compilation"],
+ ["C","Combien d'octets prend un char ?","1 octet.","variables"],
+ ["C","Différence entre = et == ?","<code>=</code> range une valeur dans une variable, <code>==</code> compare deux valeurs.","conditions"],
+ ["C","Avec if / else, combien de blocs sont exécutés ?","Un seul : celui du if si la condition est vraie, sinon celui du else.","conditions"],
+ ["C","Que se passe-t-il si on oublie i++ dans une boucle while ?","i ne change jamais, la condition reste vraie : la boucle tourne à l'infini.","boucles"],
+ ["C","À quoi sert return dans une fonction ?","À renvoyer un résultat à celui qui a appelé la fonction, et à en sortir.","fonctions"],
+ ["C","Que veut dire le 1 dans write(1, ...) ?","C'est la sortie standard, c'est-à-dire l'écran.","write"],
+ ["C","Par quel caractère se termine toute chaîne en C ?","Par le caractère nul <code>'\\0'</code>, qui marque la fin.","chaines"],
+ ["C","Quel est le numéro de la première case d'un tableau ?","0 : la case <code>str[0]</code> est le premier caractère.","chaines"],
+ ["C","Quels formats pour un entier, un caractère, une chaîne ?","<code>%d</code> pour un entier, <code>%c</code> pour un caractère, <code>%s</code> pour une chaîne.","chaines"],
+ ["C","Combien valent 'A' et 'a' dans la table ASCII ?","65 pour <code>'A'</code>, 97 pour <code>'a'</code>.","ascii"],
+ ["C","Pourquoi met-on & devant la variable dans scanf ?","Pour lui donner son adresse en mémoire : scanf doit savoir où écrire.","pointeurs"],
+ ["C","Pourquoi pas de & devant un tableau dans scanf(\"%s\", mot) ?","Parce qu'un tableau donne déjà son adresse tout seul.","pointeurs"],
+ ["C","Que faut-il faire après chaque malloc ?","Libérer la mémoire avec <code>free</code> quand on n'en a plus besoin.","malloc"],
+ ["Réseau","Combien de couches compte le modèle OSI ?","7, de la couche physique (les câbles) à la couche application.","osi"],
+ ["Réseau","Qu'est-ce qu'une adresse IP privée ?","Une adresse valable seulement dans un réseau local, comme 192.168.1.10. Elle n'est pas visible depuis Internet.","reseaulocal"],
+ ["Réseau","Ports par défaut de SSH, HTTP, HTTPS et DNS ?","SSH 22, HTTP 80, HTTPS 443, DNS 53.","ports"],
+ ["Réseau","À quoi ressemble une adresse IPv4 ?","4 nombres de 0 à 255 séparés par des points, par exemple 192.168.1.10.","ports"],
+ ["Réseau","À quoi sert le DNS ?","À traduire un nom de site en adresse IP que les machines comprennent.","dns"],
+ ["Réseau","Les trois étapes de la poignée de main TCP ?","SYN, SYN-ACK, ACK.","tcp"],
+ ["Réseau","Différence principale entre TCP et UDP ?","TCP établit une connexion et vérifie que tout arrive. UDP envoie sans vérifier, plus vite.","tcp"],
+ ["Réseau","Que veut dire le code HTTP 404 ?","La page demandée est introuvable.","http"],
+ ["Cyber","Red Team et Blue Team, c'est quoi ?","La Red Team attaque légalement pour trouver les failles. La Blue Team défend et détecte les attaques.","metiers"],
+ ["Cyber","Que fait un SOC ?","Un centre opérationnel de sécurité surveille les alertes, détecte les attaques et réagit.","metiers"],
+ ["Cyber","Quand a-t-on le droit de tester les failles d'un système ?","Seulement avec une autorisation, ou sur des plateformes et machines prévues pour (Root-Me, TryHackMe, ses propres VM).","metiers"],
+ ["Cyber","Les trois piliers de la sécurité ?","Confidentialité, intégrité, disponibilité.","triade"],
+ ["Cyber","Pourquoi le chiffrement de César est-il faible ?","Il n'y a que 25 clés possibles : on peut toutes les essayer en quelques secondes.","cesar"],
+ ["Cyber","Pourquoi un site stocke-t-il le hash d'un mot de passe ?","Parce qu'on ne peut pas retrouver le mot de passe à partir du hash : une fuite expose moins de choses.","hachage"],
+ ["Cyber","Trois signes d'un e-mail de phishing ?","L'urgence, une adresse d'expéditeur bizarre, un lien qui mène vers un autre site que celui annoncé.","phishing"],
+ ["Cyber","À quoi sert un pare-feu ?","À filtrer le trafic réseau : il laisse passer ce qui est autorisé et bloque le reste.","parefeu"],
+ ["Cyber","Que cherche un analyste SOC dans les logs ?","Ce qui sort de l'ordinaire, par exemple beaucoup d'échecs de connexion en peu de temps.","logs"],
+ ["Cyber","Comment un site se protège-t-il de l'injection SQL ?","Avec des requêtes préparées, qui séparent le code de la requête et les données tapées.","injection"],
+ ["Cyber","Qu'est-ce que le CERT-FR ?","Le service officiel français qui publie les alertes et avis de sécurité, rattaché à l'ANSSI.","metiers"]
+];
+const SOURCES = [
+ ["CERT-FR","https://www.cert.ssi.gouv.fr/","Alertes et avis officiels sur les failles en cours"],
+ ["Cybermalveillance.gouv.fr","https://www.cybermalveillance.gouv.fr/","Les arnaques du moment, expliquées simplement"],
+ ["IT-Connect","https://www.it-connect.fr/actualites/actu-securite/","Actus cyber et tutos système, en français"],
+ ["Zataz","https://www.zataz.com/","Fuites de données et piratage"],
+ ["The Hacker News","https://thehackernews.com/","Les grosses actus cyber, en anglais"],
+ ["BleepingComputer","https://www.bleepingcomputer.com/","Ransomware, failles et attaques en détail, en anglais"]
+];
+const DECKS = ["Tout","Terminal","C","Réseau","Cyber"];
+const QUICK = ["Je n'ai pas compris, explique autrement","Donne-moi un autre exemple","Va plus loin","Donne-moi un exercice pour m'entraîner, sans la solution"];
+
+/* ---------- Mémoire locale ---------- */
+const today = new Date().toISOString().slice(0,10);
+let store = {known:{}, days:[], seen:{}, lessons:{}, order:[], day:{}};
+try { store = Object.assign(store, JSON.parse(localStorage.getItem("labo42") || "{}")); } catch (e) {}
+if (store.day.date !== today) store.day = {date:today, cards:0, lesson:false, news:false};
+const save = () => { try { localStorage.setItem("labo42", JSON.stringify(store)); } catch (e) {} };
+const keepLesson = (k, d) => { store.lessons[k] = d; store.order = store.order.filter(x => x !== k).concat(k); while (store.order.length > 40) delete store.lessons[store.order.shift()]; save(); };
+const lessonOf = id => store.lessons["v3:" + id] || store.lessons[id];
+const nextId = () => ORDER.find(id => !store.seen[id] && !BASE.includes(id)) || ORDER.find(id => !store.seen[id]) || null;
+const active = () => { if (!store.days.includes(today)) store.days.push(today); save(); refresh(); };
+const thumb = id => `<span class="pthumb" aria-hidden="true">${svg(TOPIC[id].s)}</span>`;
+
+/* ---------- Claude : prof et base de données ---------- */
+const CLAUDE_URL = "https://claude.ai/artifact/M2xAHTqzN99SGtXXkqLPbS";
+const APP_URL = "https://diiriix.github.io/labo42/";
+const inClaude = !!(window.claude && window.claude.use);
+const installed = (window.matchMedia && matchMedia("(display-mode: standalone)").matches) || navigator.standalone === true;
+const toClaude = (h, label) => `<a class="btn acc full" href="${CLAUDE_URL}#${h}" target="_blank" rel="noopener">${label}</a>`;
+const use = name => inClaude ? Promise.resolve(window.claude.use(name)).catch(() => null) : Promise.resolve(null);
+const samp = use("sample"), dbp = use("db");
+let sample = null, aiDead = false;
+const aiOff = () => {
+  aiDead = true; $("askForm").classList.add("off"); $("newsForm").classList.add("off"); $("bilanBtn").classList.add("off");
+  $("aiOff").innerHTML = inClaude ? "Le prof n'est pas disponible pour le moment. Les schémas et l'essentiel restent là." : "Une question précise ? Le prof te répond dans Claude." + toClaude("parcours", "Poser une question au prof");
+  $("aiOff").classList.remove("off");
+  if (!inClaude) { $("newsOff").innerHTML = toClaude("veille", "Faire expliquer un article par le prof"); $("bilanOff").innerHTML = toClaude("acquis", "Faire mon bilan avec le prof"); }
+};
+samp.then(s => { sample = s; if (!s) aiOff(); });
+const errMsg = e => ({not_granted:"Tu n'as pas autorisé l'appli à utiliser Claude, donc le prof ne peut pas répondre.", rate_limited:"Trop de demandes d'un coup. Attends un peu avant de réessayer.", session_expired:"Reconnecte-toi à Claude, puis réessaie.", invalid_json:"Le cours est arrivé dans un mauvais format.", sampling_disabled:"Claude n'est pas disponible sur ce compte.", refused:"Le prof ne peut pas répondre à cette demande. Essaie de la reformuler."}[e && e.code] || "Le prof n'a pas pu répondre. Réessaie dans un moment.");
+const dead = e => e && ["not_granted","sampling_disabled","not_declared","capability_disabled","capability_removed"].includes(e.code);
+
+const PROF = "Tu es le prof d'un élève débutant qui prépare la Piscine de l'école 42 Lyon (C, shell), puis veut faire le Master d'architecture réseau de 42 et travailler en cybersécurité. Il connaît déjà : les bases du terminal (ls, cd, cat, find, ssh, man), une variable char, scanf et printf, if, la table ASCII, et il a codé un début de chiffrement de César. Tu es un excellent prof, patient et chaleureux. Ta méthode : tu pars de ce qu'il connaît déjà, tu avances une seule idée à la fois, tu définis chaque mot technique la première fois que tu l'emploies, tu illustres chaque idée par un exemple concret ou une image du quotidien, et tu vérifies qu'il a compris. Français simple, tutoiement, phrases courtes, aucun jargon inutile. Règle absolue : ne donne jamais la solution d'un exercice ni d'un niveau de jeu (Bandit, Root-Me…), ni un programme complet à rendre ; donne des explications, des pistes et des questions. N'explique les techniques d'attaque que dans un cadre légal (plateformes d'entraînement, ses propres machines) et toujours avec la façon de s'en protéger.";
+const SCH_LIST = Object.entries(SCHEMAS).map(([k,v]) => k + " (" + v.t + ")").join(", ");
+const lessonPrompt = (subject, pick) => PROF + `
+
+Fais-lui un vrai cours, complet, progressif et très bien expliqué, sur : « ${subject} ».
+Réponds uniquement avec un objet JSON de cette forme :
+{"titre":"titre court","objectif":"ce qu'il saura faire à la fin, en une phrase qui commence par un verbe","pourquoi":"à quoi ça va lui servir concrètement (à 42, en cyber), 2 à 3 phrases","analogie":"une image du quotidien qui fait comprendre l'idée, 3 à 4 phrases","vocabulaire":[{"mot":"...","def":"définition simple en une phrase"}],"sections":[{"titre":"...","texte":"130 à 180 mots"}],"exemple":{"titre":"...","code":"un court extrait de code ou de commandes, 10 lignes au plus, ou une chaîne vide","explication":"80 à 140 mots, ligne par ligne si c'est du code"},"pieges":["..."],"retenir":["..."],"quiz":[{"q":"question","choix":["réponse A","réponse B","réponse C"],"bonne":0,"explication":"pourquoi c'est la bonne réponse, 1 à 2 phrases"}],"question":"une question ouverte qui le fait réfléchir","suite":["sujet 1","sujet 2"]${pick ? ',"schema":"identifiant ou null"' : ""}}
+Règles : 4 à 6 sections qui montent progressivement du plus simple au plus avancé, chacune avec un exemple concret ; 3 à 6 mots de vocabulaire ; 2 à 3 pièges fréquents ; 3 à 5 points à retenir ; exactement 3 questions de quiz (avec "bonne" = l'indice 0, 1 ou 2 de la bonne réponse, et une place de bonne réponse qui varie) ; 2 sujets pour continuer. Dans les textes, entoure les commandes et le code de backticks et sépare les paragraphes par une ligne vide. L'exemple illustre la notion mais n'est jamais la solution d'un exercice de l'élève (ft_strlen, chiffrement de César, niveaux de Bandit).` + (pick ? `
+Pour "schema", choisis le schéma le plus utile parmi : ${SCH_LIST}. Mets null si aucun ne correspond vraiment.` : "");
+const chatRules = d => PROF + `
+
+Tu viens de lui donner un cours intitulé « ${d.titre || ""} ». Points à retenir : ${arr(d.retenir).join(" ; ")}. Question posée à la fin du cours : « ${d.question || ""} ».
+Réponds maintenant à ses messages comme un prof en face à face. Développe vraiment : 180 à 320 mots, des paragraphes courts, des exemples concrets, des backticks pour le code. S'il répond à la question, commence par ce qui est juste, puis explique ce qui manque en le guidant, sans donner toute la réponse d'un coup. S'il n'a pas compris, réexplique autrement, avec une autre image. S'il demande un exercice, donne un énoncé clair, des exemples d'entrées et de sorties attendues, et jamais la solution. Termine toujours par une question ou une piste pour avancer.`;
+
+/* ---------- Accueil ---------- */
+function refresh(){
+  $("sKnown").textContent = Object.values(store.known).filter(Boolean).length;
+  $("sSeen").textContent = Object.keys(store.seen).filter(k => TOPIC[k]).length;
+  $("sDays").textContent = store.days.length;
+  const n = nextId(), d = store.day;
+  const steps = [
+    [d.cards >= 5, "Réviser 5 fiches", Math.min(d.cards,5) + " / 5 aujourd'hui", "#reviser"],
+    [d.lesson, n ? "Cours : " + TOPIC[n].t : "Revoir un cours", "Le suivant dans ton parcours", n ? "#cours-" + n : "#parcours"],
+    [d.news, "Lire les actus du jour", "Expliquées simplement", "#veille"]
+  ];
+  $("plan").innerHTML = steps.map((s,i) => `<a class="step${s[0] ? " done" : ""}" href="${s[3]}"><span class="dot">${s[0] ? "✓" : i+1}</span><span><b>${esc(s[1])}</b><small>${esc(s[2])}</small></span><span class="chev">›</span></a>`).join("");
+  $("hello").textContent = steps.every(s => s[0]) ? "Séance du jour terminée, bravo !" : "Voici ta séance du jour.";
+  $("nextBox").innerHTML = n ? `<p class="small">Étape ${ETAPE_OF[n].n} · ${esc(ETAPE_OF[n].t)} · cours ${ORDER.indexOf(n)+1} sur ${ORDER.length}</p>` + fig(TOPIC[n].s) + `<a class="btn acc full" href="#cours-${n}">Commencer : ${esc(TOPIC[n].t)}</a>` : `<p>Tu as vu tous les cours du parcours. Bravo ! Révise tes fiches et pose tes propres questions au prof.</p>`;
+  renderPath(); renderAcquis();
+}
+
+/* ---------- Parcours ---------- */
+function renderPath(){
+  const n = nextId();
+  $("path").innerHTML = ETAPES.map(e => {
+    const seen = e.ids.filter(id => store.seen[id]).length;
+    return `<section class="etape"><div class="etape-h"><span class="num">${e.n}</span><div><h2>${esc(e.t)}</h2><p class="small" style="margin:0">${esc(e.w)}</p></div></div><div class="bar"><i style="width:${Math.round(seen/e.ids.length*100)}%"></i></div><div class="small">${seen} / ${e.ids.length} cours vus</div><ol class="path">` +
+      e.ids.map(id => {
+        const st = store.seen[id] ? "Vu" : id === n ? "Conseillé maintenant" : BASE.includes(id) ? "Déjà travaillé avec ton prof" : "";
+        return `<li><a class="pitem${id === n ? " next" : ""}" href="#cours-${id}">${thumb(id)}<span class="ptxt"><b>${esc(TOPIC[id].t)}</b>${st ? `<small>${st}</small>` : ""}</span><span class="pnum${store.seen[id] ? " done" : ""}">${store.seen[id] ? "✓" : ORDER.indexOf(id)+1}</span></a></li>`;
+      }).join("") + "</ol></section>";
+  }).join("");
+}
+
+/* ---------- Cours ---------- */
+let cur = null, ctl = null;
+function lessonHTML(d){
+  const li = a => arr(a).map(x => `<li>${inline(x)}</li>`).join("");
+  const ex = d.exemple || {};
+  return (d.objectif ? `<div class="box qz"><h3>Ton objectif</h3><p>${inline(d.objectif)}</p></div>` : "")
+    + (d.pourquoi ? `<h3>Pourquoi c'est utile</h3>${fmt(d.pourquoi)}` : (d.intro ? `<p class="lead">${inline(d.intro)}</p>` : ""))
+    + (d.analogie ? `<div class="box"><h3>Pour bien imaginer</h3>${fmt(d.analogie)}</div>` : "")
+    + (arr(d.vocabulaire).length ? `<div class="box"><h3>Les mots à connaître</h3><dl>${arr(d.vocabulaire).map(v => `<dt>${inline(v.mot)}</dt><dd>${inline(v.def)}</dd>`).join("")}</dl></div>` : "")
+    + arr(d.sections).map((s,i) => `<h2>${i+1}. ${inline(s.titre)}</h2>${fmt(s.texte)}`).join("")
+    + (ex.titre || ex.code ? `<h2>Exemple : ${inline(ex.titre)}</h2>${ex.code ? `<pre><code>${esc(ex.code)}</code></pre>` : ""}${fmt(ex.explication)}` : "")
+    + (li(d.pieges) ? `<div class="box warn"><h3>Les pièges à éviter</h3><ul>${li(d.pieges)}</ul></div>` : "")
+    + (li(d.retenir) ? `<div class="box acc"><h3>À retenir</h3><ul class="checks">${li(d.retenir)}</ul></div>` : "")
+    + (arr(d.quiz).length ? `<h2>Vérifie que tu as compris</h2>` + arr(d.quiz).map((q,qi) => `<div class="quiz"><p><b>${qi+1}. ${inline(q.q)}</b></p>${arr(q.choix).map((c,ci) => `<button class="opt" type="button" data-act="quiz" data-qi="${qi}" data-ci="${ci}">${inline(c)}</button>`).join("")}<div class="qexp"></div></div>`).join("") : "")
+    + (d.question ? `<div class="box qz"><h3>À toi de jouer</h3><p>${inline(d.question)}</p><button class="btn acc" type="button" data-act="answer">Répondre au prof</button></div>` : "")
+    + (arr(d.suite).length ? `<h3>Pour aller plus loin</h3><div class="chips wrapc">${arr(d.suite).map(s => `<button class="chip" type="button" data-act="suite" data-s="${esc(s)}">${esc(s)}</button>`).join("")}</div>` : "")
+    + `<p><button class="link" type="button" data-act="regen">Refaire le cours autrement</button></p>`;
+}
+function showLesson(d){
+  $("cBody").innerHTML = lessonHTML(d);
+  if (cur.free && d.schema && SCHEMAS[d.schema]) $("cFig").innerHTML = fig(d.schema);
+  cur.data = d; cur.turns = [];
+  $("msgs").innerHTML = ""; $("cChat").classList.toggle("off", aiDead || !sample);
+  if (!cur.free) { store.seen[cur.id] = true; store.day.lesson = true; }
+  active();
+  const n = nextId();
+  $("cNext").innerHTML = !cur.free && n && n !== cur.id ? `<a class="btn ghost full" href="#cours-${n}">Prochain cours conseillé : ${esc(TOPIC[n].t)}</a>` : "";
+}
+const profBox = () => `<div class="box qz"><h3>Le cours complet avec le prof</h3><p>Il t'explique cette notion pas à pas, avec des exemples, un quiz et une discussion. Il fonctionne dans Claude.</p>${cur.free ? toClaude("parcours", "Ouvrir le prof") : toClaude("cours-" + cur.id, "Suivre ce cours avec le prof")}</div>` + (cur.free ? "" : `<button class="btn ghost full" type="button" data-act="done">J'ai compris ce cours</button>`);
+async function gen(refreshIt){
+  const key = cur.key, s = await samp;
+  if (!cur || key !== cur.key) return;
+  if (!s || aiDead) { $("cBody").innerHTML = profBox(); return; }
+  const my = new AbortController();
+  if (ctl) ctl.abort();
+  ctl = my;
+  $("cBody").innerHTML = `<div class="loading"><span class="spin"></span><p><b>Le prof prépare ton cours…</b><br><span class="small" id="lp">Un cours complet prend une à deux minutes. Lis l'essentiel et le schéma en attendant.</span></p><button class="btn ghost" type="button" data-act="stop">Arrêter</button></div>`;
+  try {
+    const d = await s.json(lessonPrompt(cur.subject, !cur.schema), {signal: my.signal, cache: refreshIt ? {gcTime: 864e5, refresh: true} : {gcTime: 864e5}, onText: ({text}) => { const lp = $("lp"); if (lp && ctl === my) lp.textContent = "Rédaction en cours : " + text.split(/\s+/).length + " mots écrits"; }});
+    if (ctl !== my || !cur || key !== cur.key) return;
+    if (!d || !Array.isArray(d.sections)) throw {code:"invalid_json"};
+    keepLesson(key, d); showLesson(d);
+  } catch (e) {
+    if (ctl !== my || !cur || key !== cur.key) return;
+    if (dead(e)) aiOff();
+    $("cBody").innerHTML = e && e.code === "cancelled" ? `<p class="note">Cours arrêté.</p><button class="btn acc" type="button" data-act="regen">Relancer le cours</button>`
+      : `<p class="note">${esc(errMsg(e))}</p>${dead(e) ? "" : `<button class="btn acc" type="button" data-act="regen">Réessayer</button>`}`;
+  }
+}
+function openLesson(id){
+  const t = TOPIC[id], free = id === "libre";
+  if (free && !store.free) { location.hash = "#parcours"; return; }
+  cur = free ? {key:"v3:libre:" + store.free, id:"libre", free:true, subject:store.free, schema:null}
+             : {key:"v3:" + id, id, free:false, subject:t.t, schema:t.s};
+  $("cCat").textContent = free ? "Ta question" : "Étape " + ETAPE_OF[id].n + " · " + ETAPE_OF[id].t + " · cours " + (ORDER.indexOf(id)+1) + " sur " + ORDER.length;
+  $("cTitle").textContent = free ? store.free : t.t;
+  $("cFig").innerHTML = free ? "" : fig(t.s);
+  $("cEssBox").classList.toggle("off", free);
+  $("cEss").textContent = free ? "" : t.e;
+  $("cChat").classList.add("off"); $("cNext").innerHTML = "";
+  const saved = store.lessons[cur.key];
+  if (saved) showLesson(saved); else gen(false);
+}
+
+/* ---------- Discussion ---------- */
+$("quick").innerHTML = QUICK.map(q => `<button class="chip" type="button" data-act="quick" data-s="${esc(q)}">${esc(q)}</button>`).join("");
+async function send(text){
+  const s = await samp;
+  if (!s || aiDead || !cur || !cur.data || !text.trim()) return;
+  const c = cur;
+  c.turns.push({role:"user", content:text.trim()});
+  $("msgs").insertAdjacentHTML("beforeend", `<div class="msg me"><div class="who">Toi</div>${fmt(text)}</div><div class="msg prof"><div class="who">Le prof</div><div class="body"><p class="small">Le prof réfléchit…</p></div></div>`);
+  const body = $("msgs").lastElementChild.querySelector(".body");
+  body.scrollIntoView({block:"nearest", behavior:"smooth"});
+  $("chatBtn").disabled = true; $("chatIn").value = "";
+  try {
+    const r = await s([{role:"user", content:chatRules(c.data)}, ...c.turns.slice(-10)], {cache:false, onText: ({text}) => { body.innerHTML = fmt(text); }});
+    body.innerHTML = fmt(r.text); c.turns.push({role:"assistant", content:r.text}); active();
+  } catch (e) {
+    if (dead(e)) aiOff();
+    body.innerHTML = (e && e.text ? fmt(e.text) : "") + `<p class="small">${esc(errMsg(e))}</p>`;
+    c.turns.pop();
+  }
+  $("chatBtn").disabled = false;
+}
+$("chatForm").addEventListener("submit", e => { e.preventDefault(); send($("chatIn").value); });
+const askFree = q => { store.free = q.slice(0, 200); save(); if (location.hash === "#cours-libre") { openLesson("libre"); scrollTo(0,0); } else location.hash = "#cours-libre"; };
+$("askForm").addEventListener("submit", e => { e.preventDefault(); const q = $("ask").value.trim(); if (!q) return; $("ask").value = ""; askFree(q); });
+
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-act]"); if (!b) return;
+  const act = b.dataset.act;
+  if (act === "back") location.hash = "#parcours";
+  else if (act === "stop" && ctl) ctl.abort();
+  else if (act === "regen") gen(true);
+  else if (act === "done" && cur && !cur.free) { store.seen[cur.id] = true; store.day.lesson = true; active(); const n = nextId(); location.hash = n ? "#cours-" + n : "#acquis"; }
+  else if (act === "answer") { $("cChat").classList.remove("off"); $("chatIn").focus(); $("chatIn").scrollIntoView({block:"center", behavior:"smooth"}); }
+  else if (act === "quick") send(b.dataset.s);
+  else if (act === "suite") askFree(b.dataset.s);
+  else if (act === "quiz" && cur && cur.data) {
+    const q = arr(cur.data.quiz)[+b.dataset.qi]; if (!q) return;
+    const box = b.closest(".quiz"), good = +q.bonne, chosen = +b.dataset.ci;
+    box.querySelectorAll(".opt").forEach((o,i) => { o.disabled = true; if (i === good) o.classList.add("ok"); else if (i === chosen) o.classList.add("ko"); });
+    box.querySelector(".qexp").innerHTML = `<p><b>${chosen === good ? "Bravo, c'est ça !" : "Pas tout à fait."}</b> ${inline(q.explication)}</p>`;
+  }
+});
+
+/* ---------- Réviser ---------- */
+let deck = "Tout", order = [], pos = 0;
+function build(){
+  order = CARDS.map((c,i) => i).filter(i => deck === "Tout" || CARDS[i][0] === deck);
+  order.sort((a,b) => (store.known[a] ? 1 : 0) - (store.known[b] ? 1 : 0) || Math.random() - .5);
+  pos = 0; show();
+}
+function show(){
+  const c = CARDS[order[pos]];
+  $("flash").classList.remove("open");
+  $("bShow").classList.remove("off"); $("judge").classList.add("off");
+  $("fTag").textContent = c[0];
+  $("fNum").textContent = (pos+1) + " / " + order.length;
+  $("fQ").textContent = c[1];
+  $("fAns").innerHTML = c[2];
+  $("fLesson").textContent = "Revoir le cours : " + TOPIC[c[3]].t;
+  $("fLesson").dataset.t = c[3];
+  const k = order.filter(j => store.known[j]).length;
+  $("bar").style.width = Math.round(k / order.length * 100) + "%";
+  $("barTxt").textContent = k + " sur " + order.length + " fiches sues dans ce paquet";
+}
+function answer(ok){ store.known[order[pos]] = ok; store.day.cards++; active(); pos = (pos+1) % order.length; show(); }
+$("decks").innerHTML = DECKS.map(d => `<button class="chip${d === deck ? " on" : ""}" type="button" data-d="${d}">${d} (${d === "Tout" ? CARDS.length : CARDS.filter(c => c[0] === d).length})</button>`).join("");
+$("decks").addEventListener("click", e => {
+  const b = e.target.closest("[data-d]"); if (!b) return;
+  deck = b.dataset.d;
+  document.querySelectorAll("#decks .chip").forEach(x => x.classList.toggle("on", x === b));
+  build();
+});
+$("bShow").addEventListener("click", () => { $("flash").classList.add("open"); $("bShow").classList.add("off"); $("judge").classList.remove("off"); });
+$("bOk").addEventListener("click", () => answer(true));
+$("bKo").addEventListener("click", () => answer(false));
+$("fLesson").addEventListener("click", e => { location.hash = "#cours-" + e.target.dataset.t; });
+
+/* ---------- Acquis ---------- */
+function renderAcquis(){
+  const deckCount = d => { const ids = CARDS.map((c,i) => i).filter(i => CARDS[i][0] === d); return [ids.filter(i => store.known[i]).length, ids.length]; };
+  $("prog").innerHTML = ETAPES.map((e,i) => {
+    const seen = e.ids.filter(id => store.seen[id]).length, k = deckCount(DECKS[i+1]);
+    return `<div class="card"><b>${e.n}. ${esc(e.t)}</b><div class="bar"><i style="width:${Math.round(seen/e.ids.length*100)}%"></i></div><span class="small">${seen} / ${e.ids.length} cours vus · ${k[0]} / ${k[1]} fiches « ${DECKS[i+1]} » sues</span></div>`;
+  }).join("");
+  const seen = ORDER.filter(id => store.seen[id]);
+  $("sums").innerHTML = seen.length ? seen.map(id => {
+    const d = lessonOf(id), pts = d && arr(d.retenir).length ? arr(d.retenir) : null;
+    return `<div class="card"><div class="sum">${thumb(id)}<div><h3>${esc(TOPIC[id].t)}</h3>${pts ? `<ul class="checks">${pts.map(p => `<li>${inline(p)}</li>`).join("")}</ul>` : `<p class="small" style="margin:0">${esc(TOPIC[id].e)}</p>`}</div></div><a class="link" href="#cours-${id}">Revoir le cours</a></div>`;
+  }).join("") : `<p class="note">Termine ton premier cours dans le parcours pour gagner ta première carte résumé.</p>`;
+}
+$("bilanBtn").addEventListener("click", async () => {
+  const s = await samp; if (!s || aiDead) return;
+  const out = $("bilan"), btn = $("bilanBtn");
+  const sues = CARDS.filter((c,i) => store.known[i] === true).map(c => c[1]);
+  const fragiles = CARDS.filter((c,i) => store.known[i] === false).map(c => c[1]);
+  const vus = ORDER.filter(id => store.seen[id]).map(id => TOPIC[id].t);
+  const n = nextId();
+  const prompt = PROF + `
+
+Fais à l'élève un bilan de ses acquis, comme un prof qui le connaît bien. Ce qu'il a validé avec toi en dehors de l'appli : Bandit niveaux 0 à 3, lecture de fichiers aux noms piégés, chiffrement de César versions 1 et 3, compilation avec cc -Wall -Wextra -Werror.
+Cours vus dans l'appli : ${vus.join(", ") || "aucun pour l'instant"}.
+Fiches qu'il sait : ${sues.join(" | ") || "aucune"}.
+Fiches à revoir : ${fragiles.join(" | ") || "aucune"}.
+Prochain cours de son parcours : ${n ? TOPIC[n].t : "parcours terminé"}.
+Écris 220 à 320 mots en 4 parties, chacune avec un titre en gras sur sa propre ligne : **Ce que tu maîtrises**, **Ce qui est encore fragile**, **Ton objectif de la semaine**, **Le conseil du prof**. Sois précis, honnête et encourageant. Paragraphes courts ou listes à tirets.`;
+  out.innerHTML = `<div class="loading"><span class="spin"></span><p><b>Le prof prépare ton bilan…</b></p></div>`; btn.disabled = true;
+  try { const r = await s(prompt, {cache:false, onText: ({text}) => { out.innerHTML = `<div class="card">${fmt(text)}</div>`; }}); out.innerHTML = `<div class="card">${fmt(r.text)}</div>`; }
+  catch (e) { if (dead(e)) aiOff(); out.innerHTML = `<p class="note">${esc(errMsg(e))}</p>`; }
+  btn.disabled = false;
+});
+
+/* ---------- Veille ---------- */
+let actus = [], actusState = "loading";
+const dayLabel = d => { const diff = Math.round((new Date(today) - new Date(d)) / 864e5); if (diff === 0) return "Aujourd'hui"; if (diff === 1) return "Hier"; try { return new Date(d + "T12:00:00").toLocaleDateString("fr-FR", {weekday:"long", day:"numeric", month:"long"}); } catch (e) { return d; } };
+const actuCard = a => `<article class="card"><div class="ftop"><span class="tag">${esc(a.cat || "Actu")}</span>${+a.importance >= 3 ? '<span class="imp">Important</span>' : ""}</div><h3>${esc(a.titre)}</h3>${fmt(a.resume)}${a.pourquoi ? `<div class="box"><h3>Pourquoi ça te concerne</h3>${fmt(a.pourquoi)}</div>` : ""}<div class="cfoot">${TOPIC[a.cours] ? `<a class="link" href="#cours-${a.cours}">Cours lié : ${esc(TOPIC[a.cours].t)}</a>` : ""}${/^https:\/\//.test(a.url || "") ? `<a class="link" href="${esc(a.url)}" target="_blank" rel="noopener" data-news="1">Lire sur ${esc(a.source || "la source")}</a>` : ""}</div></article>`;
+function renderActus(){
+  const none = actusState === "off" ? `<p class="note">Les actus ne peuvent pas s'afficher pour l'instant. Vérifie ta connexion. Tu les reçois aussi par notification chaque soir.</p>`
+    : actusState === "loading" ? `<div class="loading"><span class="spin"></span><p>Chargement des actus…</p></div>`
+    : actusState === "slow" ? `<p class="note">Les actus ne répondent pas pour l'instant. Réessaie un peu plus tard.</p>`
+    : `<p class="note">Pas encore d'actus. Elles arrivent avec ton résumé du soir.</p>`;
+  if (!actus.length) { $("actus").innerHTML = none; $("homeActus").innerHTML = none; return; }
+  const days = [...new Set(actus.map(a => a.date))].slice(0, 4);
+  $("actus").innerHTML = days.map(d => `<p class="dateh">${esc(dayLabel(d))}</p>` + actus.filter(a => a.date === d).sort((x,y) => (+y.importance||0) - (+x.importance||0)).map(actuCard).join("")).join("");
+  const last = actus.filter(a => a.date === days[0]).sort((x,y) => (+y.importance||0) - (+x.importance||0)).slice(0, 2);
+  $("homeActus").innerHTML = `<p class="dateh" style="margin-top:0">${esc(dayLabel(days[0]))}</p>` + last.map(actuCard).join("");
+}
+if (inClaude) dbp.then(db => {
+  if (!db) { actusState = "off"; renderActus(); return; }
+  const timer = setTimeout(() => { if (actusState === "loading") { actusState = "slow"; renderActus(); } }, 10000);
+  try {
+    db.collection("actus").orderBy("date", "desc").limit(30).onSnapshot(snap => {
+      actus = snap.docs.map(d => Object.assign({id:d.id}, d.data())).filter(a => a && a.titre && a.date);
+      if (!snap.metadata.fromCache) clearTimeout(timer);
+      actusState = "ok"; renderActus();
+    }, () => { clearTimeout(timer); actusState = "off"; renderActus(); });
+  } catch (e) { clearTimeout(timer); actusState = "off"; renderActus(); }
+});
+if (!inClaude) fetch("actus.json?v=" + Date.now(), {cache:"no-store"}).then(r => r.ok ? r.json() : Promise.reject()).then(list => {
+  actus = arr(list).filter(a => a && a.titre && a.date).sort((a,b) => a.date < b.date ? 1 : a.date > b.date ? -1 : 0);
+  actusState = "ok"; renderActus();
+}).catch(() => { actusState = "off"; renderActus(); });
+$("srcs").innerHTML = SOURCES.map(x => `<li><a href="${x[1]}" target="_blank" rel="noopener" data-news="1"><span class="av">${esc(x[0][0])}</span><span><b>${esc(x[0])}</b><span>${esc(x[2])}</span></span><span class="chev">›</span></a></li>`).join("");
+document.addEventListener("click", e => { if (e.target.closest("[data-news]")) { store.day.news = true; active(); } });
+const NEWS = PROF + `
+
+L'élève a collé un extrait d'article sur la tech ou la cybersécurité. Explique-le-lui. Réponds uniquement avec un objet JSON de cette forme :
+{"resume":"ce qui s'est passé, 3 à 5 phrases simples","mots":[{"mot":"terme technique","def":"définition simple en une phrase"}],"pourquoi":"pourquoi c'est important, 2 à 3 phrases","retenir":["comment se protéger ou ce qu'on peut en apprendre"],"lien":"le lien avec ce qu'il apprend (C, réseau, terminal, métiers), 1 à 2 phrases"}
+Mets 2 à 6 mots techniques et 2 à 3 points à retenir. N'invente aucun fait absent de l'extrait.
+
+Extrait :
+`;
+$("newsForm").addEventListener("submit", async e => {
+  e.preventDefault(); const t = $("news").value.trim(); if (!t) return;
+  const s = await samp; if (!s || aiDead) return;
+  const out = $("newsOut");
+  out.innerHTML = `<div class="loading"><span class="spin"></span><p><b>Lecture de l'article…</b></p></div>`; $("newsBtn").disabled = true;
+  try {
+    const d = await s.json(NEWS + t.slice(0, 6000));
+    out.innerHTML = `<div class="card"><h3>Ce qui s'est passé</h3>${fmt(d.resume)}`
+      + (arr(d.mots).length ? `<div class="box"><h3>Les mots techniques</h3><dl>${arr(d.mots).map(m => `<dt>${esc(m.mot)}</dt><dd>${inline(m.def)}</dd>`).join("")}</dl></div>` : "")
+      + (d.pourquoi ? `<h3>Pourquoi c'est important</h3>${fmt(d.pourquoi)}` : "")
+      + (arr(d.retenir).length ? `<div class="box acc"><h3>À retenir</h3><ul class="checks">${arr(d.retenir).map(x => `<li>${inline(x)}</li>`).join("")}</ul></div>` : "")
+      + (d.lien ? `<div class="box"><h3>Le lien avec ce que tu apprends</h3>${fmt(d.lien)}</div>` : "") + "</div>";
+    store.day.news = true; active();
+  } catch (err) { if (dead(err)) aiOff(); out.innerHTML = `<p class="note">${esc(errMsg(err))}</p>`; }
+  $("newsBtn").disabled = false;
+});
+
+/* ---------- Installation ---------- */
+$("copyLink").addEventListener("click", async () => {
+  const b = $("copyLink");
+  try { await navigator.clipboard.writeText(APP_URL); b.textContent = "Lien copié !"; }
+  catch (e) { b.textContent = "Copie impossible : recopie le lien ci-dessous"; }
+});
+
+/* ---------- Navigation ---------- */
+function route(){
+  let h = location.hash.slice(1);
+  if (h === "apprendre") h = "parcours";
+  let v = ["accueil","parcours","reviser","acquis","veille"].includes(h) ? h : "accueil";
+  if (h.startsWith("cours-") && (TOPIC[h.slice(6)] || h === "cours-libre")) { v = "cours"; openLesson(h.slice(6)); }
+  else { if (ctl) ctl.abort(); cur = null; }
+  if (v === "veille" && !store.day.news) { store.day.news = true; active(); }
+  document.querySelectorAll(".view").forEach(s => s.classList.toggle("on", s.id === "v-" + v));
+  document.querySelectorAll(".tabbar a").forEach(a => a.classList.toggle("on", a.dataset.v === (v === "cours" ? "parcours" : v)));
+  scrollTo(0, 0);
+}
+window.addEventListener("hashchange", route);
+const onApp = location.hostname.endsWith("github.io");
+if (installed) $("installBox").classList.add("off");
+else { $("appUrl").textContent = APP_URL; $("appLink").href = APP_URL; if (onApp) { $("helpOpen").classList.add("off"); $("stepN").textContent = "1"; } else $("helpBox").open = true; }
+let deferred = null;
+window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); deferred = e; $("installBtn").classList.remove("off"); });
+$("installBtn").addEventListener("click", async () => { if (!deferred) return; deferred.prompt(); try { await deferred.userChoice; } catch (e) {} deferred = null; $("installBtn").classList.add("off"); });
+if (!inClaude && "serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("sw.js").catch(() => {});
+if (!inClaude) aiOff();
+refresh(); build(); renderActus(); route();
+}
+</script>
+</body>
+</html>
