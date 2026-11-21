@@ -1,0 +1,814 @@
+{
+ "metiers": {
+  "titre": "Attaque ou défense : les métiers",
+  "objectif": "Décrire les grands métiers de la cybersécurité, ce qu'ils font au quotidien, et savoir lequel te ressemble le plus.",
+  "pourquoi": "Tu hésites entre tester les failles et protéger les systèmes : c'est normal, et les deux côtés se nourrissent l'un de l'autre. Connaître les métiers t'aide à choisir tes projets à 42 et ton option au Master.\n\nEt la demande est forte : en France, des milliers d'organisations vont devoir renforcer leur sécurité avec la directive européenne NIS2, comme tu l'as vu dans les actus.",
+  "analogie": "Pense à un château fort. Les attaquants autorisés (Red Team) jouent les envahisseurs pour trouver les points faibles des murailles avant les vrais ennemis. Les gardes (Blue Team) surveillent les remparts jour et nuit et sonnent l'alarme. Les architectes dessinent les murailles. Et les enquêteurs, après une attaque, cherchent par où l'ennemi est entré.\n\nTous défendent le même château, chacun à sa façon.",
+  "vocabulaire": [
+   {
+    "mot": "Red Team",
+    "def": "L'équipe qui attaque, avec autorisation, pour trouver les failles."
+   },
+   {
+    "mot": "Blue Team",
+    "def": "L'équipe qui défend : surveillance, détection, réponse aux incidents."
+   },
+   {
+    "mot": "Pentest (test d'intrusion)",
+    "def": "Une attaque autorisée et encadrée, suivie d'un rapport pour corriger les failles."
+   },
+   {
+    "mot": "SOC",
+    "def": "Le centre opérationnel de sécurité, où des analystes surveillent les alertes."
+   },
+   {
+    "mot": "Incident",
+    "def": "Un événement de sécurité réel : intrusion, fuite de données, rançongiciel…"
+   },
+   {
+    "mot": "Bug bounty",
+    "def": "Un programme qui récompense ceux qui signalent des failles de façon responsable."
+   }
+  ],
+  "sections": [
+   {
+    "titre": "Côté attaque : le pentester",
+    "texte": "Le pentester est payé pour attaquer des systèmes, avec un contrat signé qui définit précisément le périmètre : quelles machines, quelles dates, quelles techniques.\n\nIl cherche des failles dans des sites web, des réseaux, des applications ou même des bâtiments (social engineering). Mais son vrai livrable, c'est le rapport : expliquer chaque faille, son niveau de gravité et comment la corriger.\n\nQualités utiles : curiosité, ténacité, aimer comprendre comment les choses marchent pour les détourner, et savoir écrire clairement. Les plateformes comme Root-Me, TryHackMe ou Hack The Box sont l'entraînement idéal."
+   },
+   {
+    "titre": "Côté défense : l'analyste SOC",
+    "texte": "L'analyste SOC surveille les alertes produites par les outils de sécurité : connexions suspectes, logiciels malveillants détectés, comportements anormaux. Il trie les fausses alertes des vraies, enquête, et déclenche la réponse quand c'est sérieux.\n\nC'est souvent le premier poste en cybersécurité : il y a beaucoup d'offres, et on y apprend énormément sur le fonctionnement réel des systèmes et des attaques.\n\nQualités utiles : rigueur, calme sous pression, sens du détail, et goût pour l'enquête dans des milliers de lignes de logs."
+   },
+   {
+    "titre": "Les autres métiers",
+    "texte": "- Réponse à incident et forensique : intervenir pendant ou après une attaque, comprendre ce qui s'est passé, retrouver les traces, remettre en route.\n- Ingénieur sécurité : installer et configurer les protections (pare-feu, détection, gestion des accès).\n- Architecte sécurité : concevoir des infrastructures sûres dès le départ. C'est le prolongement direct du Master de 42.\n- Analyste en menace (CTI) : étudier les groupes d'attaquants, leurs méthodes et leurs outils.\n- Gouvernance et conformité (GRC) : règles, normes, audits, et le RSSI, responsable de la sécurité de toute l'entreprise."
+   },
+   {
+    "titre": "Le cadre légal : la ligne rouge",
+    "texte": "La différence entre un pentester et un pirate, c'est l'autorisation. En France, accéder sans droit à un système informatique ou s'y maintenir est un délit puni par le Code pénal, même « juste pour voir ».\n\nConcrètement : tu t'entraînes uniquement sur tes propres machines, sur des plateformes prévues pour (Root-Me, TryHackMe, OverTheWire), ou dans le cadre d'un contrat ou d'un programme de bug bounty, en respectant ses règles.\n\nSi tu trouves une faille par hasard sur un vrai site, tu ne l'exploites pas : tu la signales à l'organisation, ou à l'ANSSI."
+   },
+   {
+    "titre": "Ton chemin vers ces métiers",
+    "texte": "Les bases sont les mêmes pour tous : systèmes (Linux), réseau, programmation (C, puis Python). C'est exactement ce que tu construis avec la Piscine, puis le Master.\n\nEn parallèle, les CTF (compétitions de hacking) et les plateformes d'entraînement te donnent de l'expérience concrète, et une veille régulière te tient à jour.\n\nPas besoin de choisir maintenant entre attaque et défense : beaucoup de professionnels passent de l'un à l'autre, et un bon défenseur pense comme un attaquant."
+   }
+  ],
+  "exemple": {
+   "titre": "Une journée type, deux points de vue",
+   "code": "09:00  Pentester : réunion de lancement, lecture du périmètre autorisé\n10:00  Pentester : cartographie du site web du client\n14:00  Pentester : test d'une faille trouvée, preuve sans dégâts\n17:00  Pentester : rédaction du rapport\n------\n09:00  Analyste SOC : reprise des alertes de la nuit\n11:00  Analyste SOC : 40 échecs de connexion sur un compte, enquête\n15:00  Analyste SOC : poste infecté isolé du réseau, escalade\n17:30  Analyste SOC : rapport d'incident et passation",
+   "explication": "Le pentester travaille sur une mission avec un début et une fin : il découvre, teste, prouve, puis explique. Rien ne se fait hors du périmètre signé.\n\nL'analyste SOC travaille en continu : il trie, enquête, réagit et transmet à l'équipe suivante. Lequel de ces deux emplois du temps te fait le plus envie aujourd'hui ? Ta réponse peut changer avec l'expérience, et c'est très bien."
+  },
+  "pieges": [
+   "Croire qu'on peut « tester » un vrai site sans autorisation : c'est un délit.",
+   "Penser que la cyber, c'est seulement de l'attaque : la majorité des postes sont côté défense.",
+   "Négliger l'écrit : rapports et explications font partie de tous ces métiers."
+  ],
+  "retenir": [
+   "Red Team attaque avec autorisation, Blue Team défend.",
+   "Pentester : trouver, prouver, expliquer dans un rapport.",
+   "Analyste SOC : surveiller, trier, enquêter, réagir.",
+   "Sans autorisation, c'est illégal.",
+   "Les bases communes : Linux, réseau, programmation."
+  ],
+  "quiz": [
+   {
+    "q": "Quelle est la différence entre un pentester et un pirate ?",
+    "choix": [
+     "Les outils qu'ils utilisent",
+     "L'autorisation écrite",
+     "Le niveau technique"
+    ],
+    "bonne": 1,
+    "explication": "Le pentester agit dans un cadre signé ; sans autorisation, c'est un délit."
+   },
+   {
+    "q": "Que fait principalement un analyste SOC ?",
+    "choix": [
+     "Il surveille et trie les alertes de sécurité",
+     "Il écrit les lois sur la cybersécurité",
+     "Il vend des antivirus"
+    ],
+    "bonne": 0,
+    "explication": "Il trie les alertes, enquête et déclenche la réponse."
+   },
+   {
+    "q": "Tu trouves une faille par hasard sur un vrai site. Que fais-tu ?",
+    "choix": [
+     "Tu l'exploites pour prouver qu'elle existe",
+     "Tu la publies sur les réseaux sociaux",
+     "Tu la signales sans l'exploiter"
+    ],
+    "bonne": 2,
+    "explication": "On signale à l'organisation ou à l'ANSSI, sans exploiter."
+   }
+  ],
+  "question": "Entre l'emploi du temps du pentester et celui de l'analyste SOC, lequel t'attire le plus aujourd'hui, et pourquoi ?"
+ },
+ "triade": {
+  "titre": "Les trois piliers de la sécurité",
+  "objectif": "Expliquer la confidentialité, l'intégrité et la disponibilité, et classer une attaque selon le pilier qu'elle vise.",
+  "pourquoi": "Ces trois piliers, qu'on appelle aussi la triade CIA en anglais, sont le vocabulaire de base de tous les professionnels. Ils servent à analyser un risque, à choisir une protection et à expliquer un incident.\n\nDès que tu liras un rapport ou une alerte, tu pourras te demander : quel pilier est touché ?",
+  "analogie": "Pense à ton journal intime. Confidentialité : personne d'autre ne le lit. Intégrité : personne ne change ce que tu as écrit. Disponibilité : tu peux le retrouver quand tu veux.\n\nSi ton petit frère le lit, c'est la confidentialité qui tombe. S'il y ajoute des phrases, c'est l'intégrité. S'il le cache, c'est la disponibilité.",
+  "vocabulaire": [
+   {
+    "mot": "Confidentialité",
+    "def": "Seules les personnes autorisées peuvent lire l'information."
+   },
+   {
+    "mot": "Intégrité",
+    "def": "L'information n'est pas modifiée sans autorisation, et on peut le vérifier."
+   },
+   {
+    "mot": "Disponibilité",
+    "def": "L'information et les services sont accessibles quand on en a besoin."
+   },
+   {
+    "mot": "Risque",
+    "def": "La combinaison d'une menace, d'une faille et de son impact."
+   },
+   {
+    "mot": "Rançongiciel",
+    "def": "Un logiciel malveillant qui chiffre les fichiers et réclame une rançon."
+   }
+  ],
+  "sections": [
+   {
+    "titre": "La confidentialité",
+    "texte": "Seules les bonnes personnes doivent pouvoir lire une information : ton dossier médical, les mots de passe d'une entreprise, les plans d'un produit.\n\nAttaques typiques : vol de données, écoute d'un réseau non chiffré, accès à un fichier mal protégé, phishing pour voler des identifiants.\n\nProtections : le chiffrement (HTTPS, chiffrement des disques), les droits d'accès bien réglés, l'authentification solide avec un second facteur."
+   },
+   {
+    "titre": "L'intégrité",
+    "texte": "Une information doit rester exacte : personne ne doit pouvoir changer un montant de virement, une note, ou le code d'un logiciel sans que ce soit détecté.\n\nAttaques typiques : modifier une base de données, injecter du code dans un site, falsifier une mise à jour logicielle, modifier un message en route.\n\nProtections : les droits d'écriture limités, les empreintes (hachage) pour vérifier qu'un fichier n'a pas changé, les signatures numériques, et l'historique des modifications, comme avec Git."
+   },
+   {
+    "titre": "La disponibilité",
+    "texte": "Un service doit fonctionner quand on en a besoin : un site de vente, un hôpital, un réseau électrique.\n\nAttaques typiques : le déni de service, qui sature un serveur de requêtes, et le rançongiciel, qui chiffre les fichiers pour les rendre inutilisables. Mais une panne de courant ou un disque qui lâche menacent aussi la disponibilité, sans aucun attaquant.\n\nProtections : les sauvegardes régulières (et testées !), la redondance (plusieurs serveurs), les protections anti-déni de service, et un plan pour redémarrer après un incident."
+   },
+   {
+    "titre": "Les piliers en tension",
+    "texte": "Les trois piliers se contrarient parfois. Plus tu protèges la confidentialité avec des contrôles d'accès stricts, plus tu risques de gêner la disponibilité : un médecin bloqué par un mot de passe oublié en pleine urgence, c'est un problème.\n\nLa sécurité est donc toujours un équilibre, choisi selon ce qui compte le plus. Pour une banque, l'intégrité des montants est vitale. Pour un hôpital, la disponibilité des dossiers peut sauver des vies.\n\nOn ajoute souvent deux notions : la traçabilité (savoir qui a fait quoi) et l'authenticité (être sûr de qui parle)."
+   }
+  ],
+  "exemple": {
+   "titre": "Classer des incidents",
+   "code": "Incident                                          Pilier touché\nFuite de 10 000 adresses e-mail d'un site         Confidentialité\nUn pirate change l'IBAN d'un fournisseur          Intégrité\nRançongiciel qui chiffre les serveurs             Disponibilité (et souvent confidentialité)\nInondation de requêtes sur un site de billetterie  Disponibilité",
+   "explication": "Chaque ligne associe un incident au pilier principal touché. Le rançongiciel est un bon exemple d'attaque qui en touche plusieurs : les fichiers sont inutilisables, et les attaquants menacent souvent aussi de publier les données volées.\n\nPrends l'habitude de faire cet exercice avec chaque actu de l'onglet Veille : c'est exactement le réflexe d'un analyste."
+  },
+  "pieges": [
+   "Croire que la sécurité, c'est seulement empêcher le vol de données : l'intégrité et la disponibilité comptent autant.",
+   "Oublier qu'une panne ou une erreur humaine menacent aussi les piliers.",
+   "Faire des sauvegardes sans jamais tester qu'on peut les restaurer."
+  ],
+  "retenir": [
+   "Confidentialité : seules les bonnes personnes lisent.",
+   "Intégrité : personne ne modifie en cachette.",
+   "Disponibilité : le service marche quand il le faut.",
+   "Chaque attaque vise au moins un pilier.",
+   "La sécurité est un équilibre entre les trois."
+  ],
+  "quiz": [
+   {
+    "q": "Une attaque modifie les notes d'élèves dans une base de données. Quel pilier est touché ?",
+    "choix": [
+     "Confidentialité",
+     "Disponibilité",
+     "Intégrité"
+    ],
+    "bonne": 2,
+    "explication": "Les données ont été modifiées sans autorisation."
+   },
+   {
+    "q": "Quelle protection sert surtout la disponibilité ?",
+    "choix": [
+     "Des sauvegardes testées",
+     "Le chiffrement des e-mails",
+     "Un mot de passe plus long"
+    ],
+    "bonne": 0,
+    "explication": "Les sauvegardes permettent de remettre le service en route après un incident."
+   },
+   {
+    "q": "Quel pilier vise principalement un déni de service ?",
+    "choix": [
+     "L'intégrité",
+     "La disponibilité",
+     "La confidentialité"
+    ],
+    "bonne": 1,
+    "explication": "Le but est de rendre le service inaccessible."
+   }
+  ],
+  "question": "Prends une actu de l'onglet Veille : quel pilier est touché, et quelle protection aurait pu limiter les dégâts ?"
+ },
+ "cesar": {
+  "titre": "Le chiffrement de César",
+  "objectif": "Expliquer le principe du chiffrement par décalage, le casser par force brute et par analyse de fréquences, et comprendre pourquoi il ne protège plus rien.",
+  "pourquoi": "Tu as déjà commencé à le programmer : ce cours t'aide à comprendre ce que tu codes, et ce qui le rend fragile.\n\nC'est aussi la porte d'entrée de la cryptographie. Les idées que tu vas voir ici, clé, espace des clés, force brute, analyse statistique, sont exactement celles qu'on utilise pour juger les chiffrements modernes.",
+  "analogie": "Imagine deux roues de l'alphabet, l'une dans l'autre. Tu tournes la roue intérieure de 3 crans : sous le A apparaît le D, sous le B le E. Pour chiffrer, tu lis la roue intérieure ; pour déchiffrer, tu lis l'extérieure.\n\nLa clé, c'est simplement le nombre de crans. Celui qui connaît le nombre lit le message ; celui qui ne le connaît pas… n'a que 25 crans à essayer.",
+  "vocabulaire": [
+   {
+    "mot": "Message clair",
+    "def": "Le message avant chiffrement."
+   },
+   {
+    "mot": "Message chiffré",
+    "def": "Le message après chiffrement, illisible sans la clé."
+   },
+   {
+    "mot": "Clé",
+    "def": "Le secret qui règle le chiffrement : ici, le nombre de positions de décalage."
+   },
+   {
+    "mot": "Espace des clés",
+    "def": "L'ensemble de toutes les clés possibles."
+   },
+   {
+    "mot": "Force brute",
+    "def": "Essayer toutes les clés une par une."
+   },
+   {
+    "mot": "Analyse de fréquences",
+    "def": "Casser un chiffrement en comptant les lettres les plus fréquentes."
+   }
+  ],
+  "sections": [
+   {
+    "titre": "Le principe",
+    "texte": "Chaque lettre est remplacée par la lettre située un nombre fixe de positions plus loin dans l'alphabet. Avec une clé de 3, A devient D, B devient E, et ainsi de suite. Arrivé au bout, on repart au début : X devient A, Y devient B, Z devient C.\n\nPour déchiffrer, on décale dans l'autre sens, du même nombre de positions.\n\nLes caractères qui ne sont pas des lettres, comme les espaces ou la ponctuation, sont en général laissés tels quels. C'est déjà un indice pour un attaquant : on voit la longueur des mots."
+   },
+   {
+    "titre": "Le décalage et l'alphabet circulaire",
+    "texte": "Le passage de Z à A est la partie délicate, et tu l'as résolue toi-même dans ta version 3 : après avoir décalé, si on dépasse la fin de l'alphabet, on revient au début en retirant la taille de l'alphabet.\n\nLes mathématiciens appellent ça l'arithmétique modulaire, ou « modulo » : on compte comme sur une horloge, où après 12 h vient 1 h. En C, l'opérateur `%` donne le reste d'une division, et il sert justement à ce genre de calcul circulaire. Je te laisse réfléchir à la façon dont il pourrait simplifier ton code."
+   },
+   {
+    "titre": "Le casser par force brute",
+    "texte": "Avec 26 lettres, il n'y a que 25 décalages utiles (un décalage de 26 redonne le message d'origine). L'espace des clés est minuscule.\n\nPour casser un message, il suffit donc d'essayer les 25 clés et de regarder laquelle donne du texte qui a du sens. Un humain le fait en quelques minutes, un programme en une fraction de seconde.\n\nC'est la leçon la plus importante de ce cours : un bon chiffrement doit avoir tellement de clés possibles que les essayer toutes prendrait des milliards d'années."
+   },
+   {
+    "titre": "Le casser par l'analyse de fréquences",
+    "texte": "Dans un texte français, toutes les lettres ne sont pas aussi fréquentes : le E est de loin la plus courante, suivie par des lettres comme A, S, I, N, T.\n\nLe chiffrement de César décale toutes les lettres de la même façon : la lettre la plus fréquente du message chiffré correspond donc très probablement au E. Si c'est le H, la clé est sans doute 3.\n\nCette méthode, décrite par le savant Al-Kindi dès le IXe siècle, casse aussi des chiffrements plus complexes, où chaque lettre est remplacée par une autre lettre au hasard."
+   },
+   {
+    "titre": "Et aujourd'hui ?",
+    "texte": "Le chiffrement de César ne protège plus rien, mais ses idées restent. Les chiffrements modernes, comme AES, utilisés pour HTTPS ou ton téléphone, ont des clés de 128 ou 256 bits. Avec 128 bits, il y a un nombre de clés possibles à 39 chiffres : même en mobilisant tous les ordinateurs du monde, les essayer toutes prendrait plus longtemps que l'âge de l'univers.\n\nIls sont aussi conçus pour qu'aucune statistique du message clair ne transparaisse dans le message chiffré.\n\nRègle d'or de la cryptographie : la sécurité doit reposer sur le secret de la clé, pas sur le secret de la méthode. La méthode de César est connue de tous : sa seule protection est la clé, et elle est bien trop petite."
+   }
+  ],
+  "exemple": {
+   "titre": "Chiffrer à la main avec une clé de 5",
+   "code": "Clair    : P I S C I N E\nDécalage : +5 +5 +5 +5 +5 +5 +5\nChiffré  : U N X H N S J",
+   "explication": "Chaque lettre avance de 5 positions : P (16e lettre) devient U (21e), I devient N, S devient X. Aucune lettre ne dépasse Z ici, donc pas besoin de revenir au début.\n\nEssaie de déchiffrer « YJWRNSFQ » avec la même clé : il faut reculer de 5. Puis demande-toi : si tu ne connaissais pas la clé, combien d'essais au maximum te faudrait-il ?"
+  },
+  "pieges": [
+   "Oublier le retour au début de l'alphabet après Z.",
+   "Mélanger majuscules et minuscules : elles n'ont pas les mêmes codes ASCII.",
+   "Croire qu'un chiffrement est sûr parce que la méthode est secrète."
+  ],
+  "retenir": [
+   "Chaque lettre est décalée d'un même nombre : la clé.",
+   "Après Z, on repart à A : c'est un calcul circulaire.",
+   "Seulement 25 clés utiles : la force brute suffit.",
+   "L'analyse de fréquences trouve la clé sans tout essayer.",
+   "Un bon chiffrement repose sur une clé immense et secrète."
+  ],
+  "quiz": [
+   {
+    "q": "Combien de clés utiles a le chiffrement de César sur 26 lettres ?",
+    "choix": [
+     "25",
+     "26",
+     "Des milliards"
+    ],
+    "bonne": 0,
+    "explication": "Un décalage de 26 redonne le message d'origine, donc 25 clés utiles."
+   },
+   {
+    "q": "Dans un long texte chiffré, la lettre la plus fréquente est K. Quelle est probablement la clé ?",
+    "choix": [
+     "3",
+     "10",
+     "6"
+    ],
+    "bonne": 2,
+    "explication": "La lettre la plus fréquente en français est E ; de E à K, il y a 6 positions."
+   },
+   {
+    "q": "Sur quoi doit reposer la sécurité d'un chiffrement ?",
+    "choix": [
+     "Le secret de la méthode",
+     "Le secret de la clé",
+     "La longueur du message"
+    ],
+    "bonne": 1,
+    "explication": "La méthode peut être connue de tous ; seule la clé doit rester secrète."
+   }
+  ],
+  "question": "Comment pourrais-tu modifier le chiffrement de César pour qu'il résiste mieux à l'analyse de fréquences ?"
+ },
+ "hachage": {
+  "titre": "Mots de passe et hachage",
+  "objectif": "Expliquer ce qu'est une fonction de hachage, comment un site vérifie un mot de passe sans le connaître, et ce qui rend un mot de passe solide.",
+  "pourquoi": "Chaque mois, des bases de données de mots de passe fuitent. Ce qui fait la différence entre une catastrophe et un incident maîtrisé, c'est la façon dont les mots de passe étaient stockés.\n\nLe hachage sert aussi à vérifier l'intégrité des fichiers, à signer des documents et à faire fonctionner Git : c'est un outil que tu croiseras partout.",
+  "analogie": "Une fonction de hachage, c'est un hachoir à viande. Tu y mets un morceau de viande, il en sort de la viande hachée. À partir de la viande hachée, impossible de reconstituer le morceau d'origine.\n\nMais si tu repasses exactement le même morceau, tu obtiens exactement le même hachis. Le site garde le hachis, jamais le morceau.",
+  "vocabulaire": [
+   {
+    "mot": "Fonction de hachage",
+    "def": "Une fonction qui transforme n'importe quelle donnée en une empreinte de taille fixe."
+   },
+   {
+    "mot": "Empreinte (hash)",
+    "def": "Le résultat du hachage, comme 5f4dcc3b5aa765d61d8327deb882cf99."
+   },
+   {
+    "mot": "Sens unique",
+    "def": "On calcule facilement l'empreinte, mais on ne peut pas revenir au texte d'origine."
+   },
+   {
+    "mot": "Sel",
+    "def": "Une valeur aléatoire ajoutée à chaque mot de passe avant le hachage."
+   },
+   {
+    "mot": "Attaque par dictionnaire",
+    "def": "Essayer une liste de mots de passe courants en comparant leurs empreintes."
+   }
+  ],
+  "sections": [
+   {
+    "titre": "Ce que fait une fonction de hachage",
+    "texte": "Une fonction de hachage prend une donnée de n'importe quelle taille, un mot, un film, et produit une empreinte de taille fixe. Avec SHA-256, l'empreinte fait toujours 256 bits, soit 64 caractères hexadécimaux.\n\nSes propriétés essentielles :\n\n- Même entrée, même empreinte, à chaque fois.\n- Un tout petit changement de l'entrée change complètement l'empreinte.\n- Impossible de retrouver l'entrée à partir de l'empreinte.\n- Il doit être pratiquement impossible de trouver deux entrées avec la même empreinte.\n\nAttention : hacher n'est pas chiffrer. Un chiffrement se déchiffre avec la clé ; un hachage ne se « déhache » pas."
+   },
+   {
+    "titre": "Vérifier un mot de passe sans le connaître",
+    "texte": "À l'inscription, le site calcule l'empreinte de ton mot de passe et ne garde qu'elle. À la connexion, il calcule l'empreinte de ce que tu tapes et compare : si elles sont identiques, c'est le bon mot de passe.\n\nLe site n'a donc jamais besoin de stocker ton mot de passe. Si sa base de données fuit, les attaquants récupèrent des empreintes, pas des mots de passe.\n\nC'est aussi pour ça qu'un site sérieux ne peut pas te renvoyer ton mot de passe oublié : il ne le connaît pas. Il te propose seulement d'en créer un nouveau. Un site qui t'envoie ton ancien mot de passe par e-mail le stocke mal."
+   },
+   {
+    "titre": "Pourquoi une empreinte peut quand même être cassée",
+    "texte": "On ne peut pas inverser une empreinte, mais on peut deviner. L'attaquant prend une liste de millions de mots de passe courants, calcule leurs empreintes et compare avec celles volées. C'est l'attaque par dictionnaire.\n\nSi ton mot de passe est « soleil123 », son empreinte est déjà dans toutes les listes : il tombe en une seconde.\n\nAvec MD5 ou SHA-256 seuls, un ordinateur avec une bonne carte graphique peut tester des milliards de mots de passe par seconde. Ces fonctions sont conçues pour être rapides, ce qui est une qualité pour vérifier un fichier, mais un défaut pour protéger un mot de passe."
+   },
+   {
+    "titre": "Le stockage correct : sel et fonctions lentes",
+    "texte": "Deux protections rendent ces attaques beaucoup plus difficiles :\n\n- Le sel : une valeur aléatoire différente pour chaque utilisateur, ajoutée au mot de passe avant le hachage. Deux personnes avec le même mot de passe ont alors des empreintes différentes, et les listes d'empreintes précalculées deviennent inutiles.\n- Les fonctions volontairement lentes, comme bcrypt ou Argon2 : calculer une empreinte prend une fraction de seconde au lieu d'une microseconde. Pour l'utilisateur, ça ne se voit pas ; pour l'attaquant qui veut en tester des milliards, ça devient impraticable.\n\nMD5 et SHA-1 sont aujourd'hui considérés comme cassés pour la sécurité : on ne s'en sert plus pour protéger quoi que ce soit."
+   },
+   {
+    "titre": "Ce qui fait un bon mot de passe",
+    "texte": "La longueur compte plus que la complexité. Une phrase de passe de quatre ou cinq mots au hasard est à la fois plus solide et plus facile à retenir qu'un mot court plein de symboles.\n\nLes règles de base : un mot de passe différent pour chaque site (sinon une fuite ouvre tous tes comptes), un gestionnaire de mots de passe pour les retenir, et l'authentification à deux facteurs partout où c'est possible.\n\nTu peux vérifier si ton adresse e-mail est apparue dans une fuite connue sur le site haveibeenpwned.com."
+   }
+  ],
+  "exemple": {
+   "titre": "Une petite différence, une empreinte totalement différente",
+   "code": "$ echo -n \"password\" | md5sum\n5f4dcc3b5aa765d61d8327deb882cf99  -\n$ echo -n \"Password\" | md5sum\ndc647eb65e6711e155375218212b3964  -",
+   "explication": "`echo -n` affiche le mot sans retour à la ligne, et `md5sum` calcule son empreinte MD5. Une seule majuscule de différence, et l'empreinte n'a plus rien à voir : c'est l'effet avalanche.\n\nMD5 est utilisé ici seulement parce que ses empreintes sont courtes et faciles à afficher : il est cassé et ne doit plus servir à protéger des mots de passe. Essaie sur ta machine avec `sha256sum` à la place."
+  },
+  "pieges": [
+   "Confondre hachage et chiffrement : un hachage ne se déchiffre pas.",
+   "Utiliser MD5 ou SHA-256 seuls pour stocker des mots de passe.",
+   "Réutiliser le même mot de passe sur plusieurs sites."
+  ],
+  "retenir": [
+   "Une empreinte : taille fixe, sens unique, change totalement au moindre changement.",
+   "Les sites sérieux gardent l'empreinte, jamais le mot de passe.",
+   "Les attaques par dictionnaire devinent les mots de passe faibles.",
+   "Sel + fonction lente (bcrypt, Argon2) pour stocker correctement.",
+   "Longueur, un mot de passe par site, gestionnaire et double authentification."
+  ],
+  "quiz": [
+   {
+    "q": "Un site t'envoie ton ancien mot de passe par e-mail. Qu'en déduis-tu ?",
+    "choix": [
+     "Il le stocke en clair ou de façon réversible",
+     "Il utilise bcrypt",
+     "C'est une bonne pratique"
+    ],
+    "bonne": 0,
+    "explication": "Avec un vrai hachage, le site ne connaît pas ton mot de passe."
+   },
+   {
+    "q": "À quoi sert le sel ?",
+    "choix": [
+     "À rendre le hachage plus rapide",
+     "À ce que deux mots de passe identiques aient des empreintes différentes",
+     "À chiffrer la base de données"
+    ],
+    "bonne": 1,
+    "explication": "Le sel est unique par utilisateur et rend les listes précalculées inutiles."
+   },
+   {
+    "q": "Pourquoi bcrypt est-il volontairement lent ?",
+    "choix": [
+     "Pour économiser la batterie",
+     "Parce qu'il est ancien",
+     "Pour qu'un attaquant ne puisse pas tester des milliards de mots de passe"
+    ],
+    "bonne": 2,
+    "explication": "Une fraction de seconde par essai, c'est invisible pour toi et énorme pour un attaquant."
+   }
+  ],
+  "question": "Pourquoi un mot de passe très long fait de mots simples peut-il être plus solide qu'un mot court comme « P@s5!x » ?"
+ },
+ "phishing": {
+  "titre": "Le phishing",
+  "objectif": "Reconnaître un message de phishing, comprendre pourquoi il marche, et savoir quoi faire quand on en reçoit un.",
+  "pourquoi": "Le phishing est la porte d'entrée de la plupart des attaques contre les entreprises : il est souvent plus simple de tromper une personne que de casser un système.\n\nEn défense, savoir analyser un e-mail suspect est une compétence de base de l'analyste SOC. Et pour toi, c'est une protection immédiate dans la vie de tous les jours.",
+  "analogie": "Le phishing, c'est un faux facteur. Il porte le même uniforme que le vrai, il connaît ton nom, et il te dit : « Colis en attente, signez ici en urgence, sinon il repart. » Le formulaire ressemble au vrai, mais tout ce que tu y écris part chez le voleur.",
+  "vocabulaire": [
+   {
+    "mot": "Phishing (hameçonnage)",
+    "def": "Un faux message qui imite une organisation pour obtenir des informations ou faire cliquer."
+   },
+   {
+    "mot": "Spear phishing",
+    "def": "Un phishing ciblé, préparé pour une personne précise avec des détails réels."
+   },
+   {
+    "mot": "Ingénierie sociale",
+    "def": "Manipuler des personnes plutôt que des machines."
+   },
+   {
+    "mot": "Smishing",
+    "def": "Le phishing par SMS."
+   },
+   {
+    "mot": "Usurpation",
+    "def": "Se faire passer pour quelqu'un d'autre : une banque, un service, un collègue."
+   }
+  ],
+  "sections": [
+   {
+    "titre": "Pourquoi ça marche",
+    "texte": "Le phishing ne s'attaque pas à un ordinateur, mais à des réflexes humains :\n\n- L'urgence : « Votre compte sera bloqué dans 24 h. » On agit avant de réfléchir.\n- La peur : « Activité suspecte détectée sur votre compte. »\n- L'autorité : un message qui semble venir d'un patron, d'une banque ou de la police.\n- L'appât : « Vous avez gagné », « remboursement en attente ».\n\nLes attaquants envoient des milliers de messages : il suffit qu'une seule personne clique pour que l'opération soit rentable."
+   },
+   {
+    "titre": "Les signes qui doivent alerter",
+    "texte": "- L'adresse de l'expéditeur : le nom affiché dit « Service client », mais l'adresse réelle est bizarre ou ressemble au vrai nom avec une lettre changée.\n- Le lien : sur ordinateur, passe la souris dessus sans cliquer ; sur téléphone, fais un appui long. L'adresse réelle s'affiche. Méfie-toi des domaines qui imitent le vrai, comme `amaz0n-securite.com`.\n- La demande elle-même : aucune banque ne te demande ton mot de passe ou ton code de carte par e-mail ou SMS.\n- Les pièces jointes inattendues, surtout les fichiers compressés, les documents qui demandent d'activer les macros, ou les fichiers exécutables."
+   },
+   {
+    "titre": "Le phishing ciblé",
+    "texte": "Le spear phishing est préparé pour une personne précise. L'attaquant cherche d'abord des informations sur les réseaux sociaux, le site de l'entreprise, LinkedIn : le nom de ton responsable, un projet en cours, un fournisseur.\n\nLe message est alors crédible : « Salut, c'est Julie de la compta, peux-tu valider cette facture du fournisseur X avant ce soir ? »\n\nC'est ainsi que commencent beaucoup d'attaques contre les entreprises, y compris des rançongiciels. Moins tu publies d'informations sur toi, moins tu donnes de matière aux attaquants."
+   },
+   {
+    "titre": "Que faire face à un message suspect",
+    "texte": "- Ne clique pas, ne réponds pas, n'ouvre pas la pièce jointe.\n- Vérifie par un autre canal : va sur le site officiel en tapant l'adresse toi-même, ou appelle le numéro officiel, pas celui du message.\n- En entreprise, signale-le à l'équipe sécurité : un seul signalement peut protéger des centaines de collègues.\n- En France, les SMS frauduleux peuvent être signalés au 33700, et le site cybermalveillance.gouv.fr aide les victimes.\n\nSi tu as déjà cliqué et tapé un mot de passe : change-le immédiatement, partout où tu l'utilisais, et active la double authentification."
+   },
+   {
+    "titre": "Les protections techniques",
+    "texte": "Les entreprises ajoutent des défenses techniques : des filtres anti-spam, des vérifications de l'expéditeur avec les protocoles SPF, DKIM et DMARC (des enregistrements DNS qui disent quels serveurs ont le droit d'envoyer des e-mails pour un domaine), et des exercices de sensibilisation.\n\nMais la meilleure protection reste la double authentification, idéalement avec une clé physique ou une application : même si le mot de passe est volé, l'attaquant ne peut pas se connecter.\n\nAucune protection n'est parfaite : c'est la combinaison de la technique et des bons réflexes qui fonctionne."
+   }
+  ],
+  "exemple": {
+   "titre": "Analyser un e-mail suspect",
+   "code": "De : Service Client <securite@banque-verif-compte.com>\nObjet : URGENT : votre compte sera suspendu\n\nBonjour,\nUne activité inhabituelle a été détectée. Confirmez vos\nidentifiants sous 24 h pour éviter la suspension :\nhttps://banque-verif-compte.com/connexion",
+   "explication": "Trois signaux d'alarme : le domaine de l'expéditeur n'est pas celui de la banque, l'objet joue sur l'urgence et la peur, et le message demande de se connecter via un lien qui mène au même domaine douteux.\n\nLe bon réflexe : ne pas cliquer, ouvrir soi-même l'application ou le site officiel de la banque pour vérifier, et signaler le message. La banque et le domaine sont inventés pour l'exemple."
+  },
+  "pieges": [
+   "Se fier au nom affiché de l'expéditeur au lieu de l'adresse réelle.",
+   "Croire que le cadenas HTTPS garantit qu'un site est le vrai.",
+   "Utiliser le numéro de téléphone indiqué dans le message suspect pour « vérifier »."
+  ],
+  "retenir": [
+   "Le phishing exploite l'urgence, la peur, l'autorité et l'appât.",
+   "Vérifie l'adresse de l'expéditeur et l'adresse réelle des liens.",
+   "Aucune organisation sérieuse ne demande ton mot de passe par message.",
+   "Vérifie par un autre canal, puis signale.",
+   "La double authentification limite les dégâts d'un mot de passe volé."
+  ],
+  "quiz": [
+   {
+    "q": "Quel est le meilleur réflexe face à un e-mail urgent de ta banque ?",
+    "choix": [
+     "Cliquer vite pour éviter la suspension",
+     "Répondre pour demander si c'est vrai",
+     "Ouvrir toi-même l'appli ou le site officiel pour vérifier"
+    ],
+    "bonne": 2,
+    "explication": "On vérifie par un canal qu'on contrôle, jamais via le message."
+   },
+   {
+    "q": "Qu'est-ce que le spear phishing ?",
+    "choix": [
+     "Un phishing préparé pour une personne précise",
+     "Un phishing par SMS",
+     "Un antivirus spécialisé"
+    ],
+    "bonne": 0,
+    "explication": "L'attaquant utilise des détails réels pour être crédible."
+   },
+   {
+    "q": "Quelle protection limite le plus les dégâts d'un mot de passe volé ?",
+    "choix": [
+     "Un antivirus",
+     "La double authentification",
+     "Un écran de veille"
+    ],
+    "bonne": 1,
+    "explication": "Sans le second facteur, le mot de passe seul ne suffit pas."
+   }
+  ],
+  "question": "Si tu devais apprendre à tes proches à reconnaître un SMS frauduleux, quels trois conseils leur donnerais-tu ?"
+ },
+ "parefeu": {
+  "titre": "Le pare-feu",
+  "objectif": "Expliquer ce que fait un pare-feu, lire des règles de filtrage simples et savoir où on en place dans un réseau.",
+  "pourquoi": "Le pare-feu est l'un des premiers outils de la Blue Team et l'une des briques de base de toute architecture réseau. Au Master, tu en configureras pour séparer des réseaux.\n\nCôté attaque, comprendre ce qu'un pare-feu laisse passer, c'est comprendre par où on peut entrer.",
+  "analogie": "Un pare-feu, c'est le vigile à l'entrée d'une salle de concert, avec une liste de règles : « Les personnes avec un billet passent par la porte A. Le personnel passe par la porte B. Tout le reste est refusé. »\n\nIl ne vérifie pas ce que tu fais une fois à l'intérieur : il contrôle seulement qui entre et par où.",
+  "vocabulaire": [
+   {
+    "mot": "Pare-feu (firewall)",
+    "def": "Un filtre qui autorise ou bloque le trafic réseau selon des règles."
+   },
+   {
+    "mot": "Règle",
+    "def": "Une ligne qui dit quoi faire d'un type de trafic : autoriser ou bloquer."
+   },
+   {
+    "mot": "Trafic entrant / sortant",
+    "def": "Les connexions qui arrivent vers la machine ou le réseau / qui en partent."
+   },
+   {
+    "mot": "Politique par défaut",
+    "def": "Ce que fait le pare-feu quand aucune règle ne correspond."
+   },
+   {
+    "mot": "DMZ",
+    "def": "Une zone tampon où l'on place les serveurs accessibles depuis Internet."
+   }
+  ],
+  "sections": [
+   {
+    "titre": "Ce que regarde un pare-feu",
+    "texte": "Un pare-feu classique examine chaque paquet et regarde surtout : l'adresse IP de départ et d'arrivée, le protocole (TCP, UDP…) et le port de destination.\n\nIl compare ces informations à sa liste de règles, dans l'ordre. La première règle qui correspond décide : autoriser ou bloquer.\n\nLes pare-feu modernes sont « à états » : ils se souviennent des connexions ouvertes. Quand tu visites un site, la réponse du serveur est autorisée à revenir parce qu'elle correspond à une connexion que tu as demandée, même si le trafic entrant est bloqué par défaut."
+   },
+   {
+    "titre": "Tout bloquer, puis ouvrir le nécessaire",
+    "texte": "La bonne pratique est une politique par défaut qui bloque tout le trafic entrant, puis des règles qui ouvrent seulement ce qui est indispensable.\n\nPour un serveur web, par exemple : autoriser le port 443 (HTTPS) depuis tout Internet, le port 22 (SSH) seulement depuis l'adresse de l'équipe d'administration, et bloquer tout le reste.\n\nC'est encore le principe du moindre privilège : chaque ouverture est une porte supplémentaire à surveiller."
+   },
+   {
+    "titre": "Sur une machine et dans un réseau",
+    "texte": "Il y a des pare-feu à deux niveaux :\n\n- Sur une machine : le pare-feu de Windows ou de macOS, ou sous Linux, des outils comme `ufw` (simple) ou `nftables` (complet). Il protège cette machine seule.\n- Dans un réseau : un équipement placé entre deux réseaux, par exemple entre Internet et le réseau de l'entreprise, ou entre le réseau des bureaux et celui des serveurs.\n\nLes entreprises combinent les deux. On parle de défense en profondeur : si une barrière tombe, une autre prend le relais."
+   },
+   {
+    "titre": "La DMZ et la segmentation",
+    "texte": "Les serveurs accessibles depuis Internet, comme le site web, sont placés dans une zone à part, la DMZ. Un pare-feu la sépare d'Internet, un autre la sépare du réseau interne.\n\nSi un attaquant prend le contrôle du serveur web, il reste coincé dans la DMZ : il ne peut pas atteindre directement les postes des employés ou la base de données des clients.\n\nDécouper un réseau en zones séparées par des pare-feu s'appelle la segmentation : c'est l'un des sujets centraux d'un architecte réseau."
+   },
+   {
+    "titre": "Ce qu'un pare-feu ne fait pas",
+    "texte": "Un pare-feu classique laisse passer tout ce qui respecte ses règles. Si le port 443 est ouvert pour le site web, une attaque contre ce site passe aussi par le port 443.\n\nIl ne protège pas non plus contre une menace déjà à l'intérieur, comme un poste infecté par un e-mail de phishing, ni contre un employé qui abuse de ses droits.\n\nD'autres outils complètent le pare-feu : le pare-feu applicatif (WAF), qui analyse le contenu des requêtes web, les systèmes de détection d'intrusion, et la surveillance des logs par le SOC."
+   }
+  ],
+  "exemple": {
+   "titre": "Les règles d'un petit serveur web avec ufw",
+   "code": "sudo ufw default deny incoming\nsudo ufw default allow outgoing\nsudo ufw allow 443/tcp\nsudo ufw allow from 203.0.113.50 to any port 22 proto tcp\nsudo ufw enable\nsudo ufw status",
+   "explication": "Les deux premières lignes fixent la politique par défaut : tout ce qui entre est bloqué, tout ce qui sort est autorisé.\n\nOn ouvre ensuite le port 443 pour le site web, à tout le monde, et le port 22 pour SSH, mais seulement depuis une adresse précise, celle de l'administrateur (une adresse d'exemple ici). On active le pare-feu, puis on vérifie les règles avec `status`. À ne tester que sur ta propre machine virtuelle : une erreur sur un serveur distant peut te bloquer dehors."
+  },
+  "pieges": [
+   "Ouvrir des ports « pour tester » et oublier de les refermer.",
+   "Activer un pare-feu sur un serveur distant sans avoir autorisé SSH : tu te bloques dehors.",
+   "Croire qu'un pare-feu suffit : il ne voit pas une attaque qui passe par un port autorisé."
+  ],
+  "retenir": [
+   "Un pare-feu filtre selon les adresses, les protocoles et les ports.",
+   "Bloquer tout par défaut, puis ouvrir le strict nécessaire.",
+   "Sur une machine ou entre des réseaux : la défense en profondeur combine les deux.",
+   "La DMZ isole les serveurs exposés à Internet.",
+   "Un pare-feu ne voit pas les attaques qui passent par un port autorisé."
+  ],
+  "quiz": [
+   {
+    "q": "Quelle est la bonne politique par défaut pour le trafic entrant ?",
+    "choix": [
+     "Tout bloquer",
+     "Tout autoriser",
+     "Autoriser seulement la nuit"
+    ],
+    "bonne": 0,
+    "explication": "On bloque tout, puis on ouvre seulement ce qui est nécessaire."
+   },
+   {
+    "q": "À quoi sert une DMZ ?",
+    "choix": [
+     "À accélérer le site web",
+     "À stocker les sauvegardes",
+     "À isoler les serveurs exposés à Internet du réseau interne"
+    ],
+    "bonne": 2,
+    "explication": "Un serveur piraté dans la DMZ ne donne pas directement accès au réseau interne."
+   },
+   {
+    "q": "Le port 443 est ouvert pour le site. Une injection dans ce site est-elle bloquée par le pare-feu ?",
+    "choix": [
+     "Oui, toujours",
+     "Non, elle passe par le port autorisé",
+     "Seulement le week-end"
+    ],
+    "bonne": 1,
+    "explication": "Le pare-feu classique ne regarde pas le contenu ; il faut un WAF et un code sûr."
+   }
+  ],
+  "question": "Pour un serveur qui héberge seulement un site web en HTTPS, quelles règles de pare-feu écrirais-tu, en français ?"
+ },
+ "logs": {
+  "titre": "Les logs et la détection",
+  "objectif": "Lire des lignes de logs, repérer un comportement anormal et comprendre comment un SOC transforme les logs en alertes.",
+  "pourquoi": "Les logs sont la matière première de la Blue Team : sans eux, une attaque passe inaperçue, et après un incident, impossible de savoir ce qui s'est passé.\n\nLire des logs, c'est aussi ce que tu fais déjà en partie avec grep et les pipes : ce cours relie tes compétences de terminal au métier d'analyste SOC.",
+  "analogie": "Les logs, c'est la caméra de surveillance et le registre d'entrée d'un bâtiment réunis. Chaque passage est noté : qui, quand, par quelle porte, avec quel badge, et si la porte s'est ouverte.\n\nUn seul passage ne dit rien. Mais cent tentatives avec un mauvais badge en une minute, à 3 h du matin, ça se remarque… à condition que quelqu'un regarde le registre.",
+  "vocabulaire": [
+   {
+    "mot": "Log (journal)",
+    "def": "Un fichier où un système note ce qui se passe, une ligne par événement."
+   },
+   {
+    "mot": "Horodatage",
+    "def": "La date et l'heure précises de chaque événement."
+   },
+   {
+    "mot": "SIEM",
+    "def": "L'outil qui rassemble les logs de toutes les machines et produit des alertes."
+   },
+   {
+    "mot": "Faux positif",
+    "def": "Une alerte qui se déclenche alors qu'il n'y a pas d'attaque."
+   },
+   {
+    "mot": "Force brute",
+    "def": "Essayer beaucoup de mots de passe à la suite pour en trouver un bon."
+   },
+   {
+    "mot": "Indicateur de compromission",
+    "def": "Une trace qui révèle une attaque : une adresse IP, un nom de fichier, un domaine…"
+   }
+  ],
+  "sections": [
+   {
+    "titre": "Où sont les logs",
+    "texte": "Presque tout produit des logs : le système, les services (SSH, serveur web), les pare-feu, les applications.\n\nSous Linux, on les trouve souvent dans `/var/log` : par exemple `/var/log/auth.log` pour les connexions sur certaines distributions, ou les journaux du serveur web. Les systèmes récents utilisent aussi `journalctl` pour consulter le journal du système.\n\nUne ligne de log contient en général un horodatage, la machine, le programme qui écrit, et un message. Par exemple : `Nov 21 10:15:02 serveur sshd: Failed password for root from 198.51.100.23`."
+   },
+   {
+    "titre": "Lire une ligne de log",
+    "texte": "Prends l'habitude de décomposer chaque ligne :\n\n- Quand ? `Nov 21 10:15:02`\n- Où ? `serveur`\n- Quel programme ? `sshd`, le serveur SSH.\n- Quoi ? `Failed password`, un mot de passe faux.\n- Pour quel compte ? `root`, l'administrateur.\n- Depuis où ? `198.51.100.23`, l'adresse de celui qui essaie.\n\nUne seule ligne comme celle-là n'est pas grave : tout le monde se trompe de mot de passe. C'est la répétition, le compte visé et l'origine qui rendent un événement suspect."
+   },
+   {
+    "titre": "Repérer l'anormal",
+    "texte": "Le travail de détection consiste à chercher ce qui sort de l'ordinaire :\n\n- Beaucoup d'échecs de connexion en peu de temps : quelqu'un essaie de deviner un mot de passe.\n- Un échec suivi d'une réussite depuis la même adresse : il a peut-être trouvé.\n- Une connexion à une heure inhabituelle, ou depuis un pays où l'entreprise n'a personne.\n- Un compte qui accède soudain à des fichiers qu'il n'ouvre jamais.\n\nAvec les outils de ton cours de redirections, `grep`, `sort`, `wc`, tu peux déjà faire ces recherches sur un fichier de logs."
+   },
+   {
+    "titre": "Du log à l'alerte : le SIEM",
+    "texte": "Une entreprise produit des millions de lignes de logs par jour, sur des centaines de machines. Impossible de tout lire à la main.\n\nLe SIEM rassemble tous ces logs au même endroit, les met dans un format commun et applique des règles de détection : « plus de 20 échecs de connexion en 5 minutes sur un même compte, déclencher une alerte ».\n\nL'analyste SOC enquête ensuite sur chaque alerte. Une bonne partie sont des faux positifs, et tout l'art est d'ajuster les règles pour attraper les vraies attaques sans noyer l'équipe sous les fausses alertes."
+   },
+   {
+    "titre": "Protéger les logs eux-mêmes",
+    "texte": "Un attaquant malin essaie d'effacer ses traces en modifiant ou en supprimant les logs. Les logs doivent donc eux aussi être protégés : envoyés en temps réel vers un serveur séparé, avec des droits d'écriture très limités.\n\nIl faut aussi que toutes les machines soient à la bonne heure, synchronisées : sinon, impossible de reconstituer l'ordre des événements entre plusieurs serveurs.\n\nEt on garde les logs assez longtemps : beaucoup d'intrusions ne sont découvertes que des semaines après le début de l'attaque."
+   }
+  ],
+  "exemple": {
+   "titre": "Une enquête avec grep",
+   "code": "$ grep \"Failed password\" auth.log | wc -l\n214\n$ grep \"Failed password\" auth.log | grep \"root\" | head -n 3\nNov 21 03:12:01 serveur sshd: Failed password for root from 198.51.100.23\nNov 21 03:12:02 serveur sshd: Failed password for root from 198.51.100.23\nNov 21 03:12:02 serveur sshd: Failed password for root from 198.51.100.23\n$ grep \"Accepted\" auth.log | grep \"198.51.100.23\"",
+   "explication": "D'abord, on compte les échecs de connexion : 214, c'est beaucoup. On regarde ensuite ceux qui visent root : la même adresse essaie plusieurs fois par seconde, en pleine nuit. C'est une attaque par force brute automatisée.\n\nLa dernière commande vérifie la question la plus importante : cette adresse a-t-elle fini par réussir ? Si elle n'affiche rien, l'attaque a échoué ; il reste à bloquer l'adresse et à vérifier que la connexion directe en root est désactivée. Les adresses sont des exemples réservés à la documentation."
+  },
+  "pieges": [
+   "Paniquer devant un seul échec de connexion : c'est la répétition qui est suspecte.",
+   "Oublier de vérifier si une attaque a réussi, et pas seulement si elle a eu lieu.",
+   "Garder les logs sur la machine attaquée seulement : l'attaquant peut les effacer."
+  ],
+  "retenir": [
+   "Les logs notent chaque événement : quand, où, qui, quoi, depuis où.",
+   "On cherche l'anormal : répétition, horaire, origine, comportement inhabituel.",
+   "grep, sort et wc suffisent pour une première enquête.",
+   "Le SIEM centralise les logs et produit des alertes.",
+   "Les logs se protègent : copie séparée, horloges synchronisées, conservation."
+  ],
+  "quiz": [
+   {
+    "q": "Quel signe est le plus inquiétant ?",
+    "choix": [
+     "Un échec de connexion isolé",
+     "Des centaines d'échecs puis une réussite depuis la même adresse",
+     "Une connexion réussie à 9 h d'un employé"
+    ],
+    "bonne": 1,
+    "explication": "L'attaquant a peut-être trouvé le mot de passe."
+   },
+   {
+    "q": "Qu'est-ce qu'un faux positif ?",
+    "choix": [
+     "Une alerte qui se déclenche sans vraie attaque",
+     "Une attaque qui n'a pas été détectée",
+     "Un log effacé"
+    ],
+    "bonne": 0,
+    "explication": "Trop de faux positifs noient l'équipe et cachent les vraies alertes."
+   },
+   {
+    "q": "Pourquoi envoyer les logs vers un serveur séparé ?",
+    "choix": [
+     "Pour qu'ils prennent moins de place",
+     "Pour qu'ils soient plus faciles à lire",
+     "Pour qu'un attaquant ne puisse pas effacer ses traces"
+    ],
+    "bonne": 2,
+    "explication": "Sur la machine compromise, l'attaquant pourrait les modifier."
+   }
+  ],
+  "question": "Dans un fichier de logs, comment ferais-tu pour savoir quelle adresse IP a le plus d'échecs de connexion ? Décris les étapes, sans forcément écrire les commandes."
+ },
+ "injection": {
+  "titre": "Les failles web : l'injection",
+  "objectif": "Comprendre pourquoi une injection SQL est possible, ce qu'elle permet, et comment les développeurs s'en protègent.",
+  "pourquoi": "L'injection est l'une des familles de failles web les plus connues, et elle reste dans le classement des risques majeurs de l'OWASP, la référence mondiale de la sécurité web.\n\nQue tu deviennes pentester, analyste ou développeur, tu dois savoir la reconnaître. Et c'est une très bonne leçon de programmation : ne jamais faire confiance aux données qui viennent de l'utilisateur.",
+  "analogie": "Imagine un employé qui recopie mot pour mot des instructions sur un formulaire, sans réfléchir. Le formulaire dit : « Donnez le dossier de [nom du client]. » Un petit malin écrit dans la case : « Dupont. Et aussi tous les autres dossiers. »\n\nL'employé recopie et exécute la phrase entière. Le problème n'est pas le client : c'est que l'employé mélange ce qui est une donnée et ce qui est un ordre.",
+  "vocabulaire": [
+   {
+    "mot": "Base de données",
+    "def": "Le logiciel qui stocke les données d'un site : comptes, commandes, messages."
+   },
+   {
+    "mot": "SQL",
+    "def": "Le langage utilisé pour interroger la plupart des bases de données."
+   },
+   {
+    "mot": "Requête",
+    "def": "Une instruction envoyée à la base de données, comme SELECT pour lire."
+   },
+   {
+    "mot": "Injection",
+    "def": "Faire passer du code dans un champ prévu pour une donnée."
+   },
+   {
+    "mot": "Requête préparée",
+    "def": "Une requête où le code et les données sont envoyés séparément."
+   },
+   {
+    "mot": "OWASP",
+    "def": "Une fondation qui publie les références de la sécurité web, dont le classement des risques majeurs."
+   }
+  ],
+  "sections": [
+   {
+    "titre": "Comment un site parle à sa base de données",
+    "texte": "Quand tu te connectes à un site, le serveur doit vérifier ton identifiant dans sa base de données. Il lui envoie une requête en SQL, du genre : « sélectionne l'utilisateur dont le nom est Dupont ».\n\nEn SQL, ça ressemble à : `SELECT * FROM users WHERE nom = 'Dupont'`. Les apostrophes entourent la donnée, le reste est du code.\n\nLe danger apparaît quand le programme construit cette phrase en collant directement ce que l'utilisateur a tapé entre les apostrophes."
+   },
+   {
+    "titre": "Le principe de l'injection",
+    "texte": "Si l'utilisateur tape un texte qui contient lui-même une apostrophe, il peut fermer la zone de donnée et écrire la suite de la requête lui-même.\n\nLe schéma de ce cours montre le cas d'école : un identifiant contenant une condition toujours vraie, `' OR '1'='1`, transforme « l'utilisateur dont le nom est… » en « l'utilisateur dont le nom est vide, OU dont 1 égale 1 ». Comme 1 égale toujours 1, la base renvoie tous les comptes.\n\nLe site a mélangé la donnée et le code : c'est exactement le même problème que l'employé qui recopie sans réfléchir."
+   },
+   {
+    "titre": "Ce que peut faire un attaquant",
+    "texte": "Selon la façon dont le site est construit, une injection SQL peut permettre de :\n\n- se connecter sans mot de passe ;\n- lire des données qui ne lui sont pas destinées : comptes, adresses, empreintes de mots de passe ;\n- modifier ou supprimer des données ;\n- parfois aller plus loin et prendre le contrôle du serveur.\n\nElle touche les trois piliers : confidentialité, intégrité, et même disponibilité. Des fuites de millions de comptes ont commencé par une simple injection."
+   },
+   {
+    "titre": "La parade : séparer le code des données",
+    "texte": "La vraie protection est simple : ne jamais construire une requête en collant du texte venu de l'utilisateur. On utilise des requêtes préparées.\n\nLe programme envoie d'abord la structure de la requête avec un emplacement vide : « sélectionne l'utilisateur dont le nom est ? ». Puis il envoie la donnée séparément. La base sait alors que tout ce qui arrive dans l'emplacement est une donnée, même s'il contient des apostrophes ou du SQL : elle ne l'exécutera jamais.\n\nOn ajoute d'autres couches : vérifier le format des données, donner au site un compte de base de données avec le minimum de droits, et ne jamais afficher les messages d'erreur techniques aux visiteurs."
+   },
+   {
+    "titre": "Une même famille de failles",
+    "texte": "L'injection SQL n'est qu'un membre d'une grande famille. Le même mélange entre données et code donne :\n\n- l'injection de commandes, quand un site colle une donnée dans une commande du système ;\n- le XSS (cross-site scripting), quand un site affiche sans précaution un texte qui contient du code JavaScript, exécuté ensuite dans le navigateur des autres visiteurs.\n\nLa leçon est toujours la même : toute donnée qui vient de l'extérieur est suspecte. Pour t'entraîner légalement, la Web Security Academy de PortSwigger propose des laboratoires gratuits, faits exprès pour ça."
+   }
+  ],
+  "exemple": {
+   "titre": "Le code vulnérable et le code protégé",
+   "code": "// Vulnérable : la saisie est collée dans la requête\nrequete = \"SELECT * FROM users WHERE nom = '\" + saisie + \"'\";\n\n// Protégé : requête préparée, la saisie reste une donnée\nrequete = \"SELECT * FROM users WHERE nom = ?\";\nexecuter(requete, saisie);",
+   "explication": "Dans la première version, la saisie devient une partie du texte de la requête : si elle contient une apostrophe, elle peut en changer le sens.\n\nDans la seconde, la requête a un emplacement `?`, et la saisie est envoyée à part. Quoi qu'elle contienne, la base la traite comme un simple nom à chercher. C'est du pseudo-code : chaque langage a sa propre syntaxe pour les requêtes préparées, mais le principe est toujours celui-ci."
+  },
+  "pieges": [
+   "Croire que filtrer quelques caractères suffit : les attaquants trouvent des contournements, seule la séparation code/données est fiable.",
+   "Afficher les erreurs SQL aux visiteurs : elles donnent des indices aux attaquants.",
+   "Tester une injection sur un vrai site sans autorisation : c'est illégal."
+  ],
+  "retenir": [
+   "Une injection mélange une donnée et du code.",
+   "L'injection SQL change le sens d'une requête à la base de données.",
+   "Elle peut permettre de lire, modifier ou supprimer des données.",
+   "La parade : les requêtes préparées.",
+   "Toute donnée venue de l'extérieur est suspecte."
+  ],
+  "quiz": [
+   {
+    "q": "Quelle est la cause d'une injection SQL ?",
+    "choix": [
+     "Un mot de passe trop court",
+     "La saisie de l'utilisateur est collée dans la requête",
+     "Un serveur trop lent"
+    ],
+    "bonne": 1,
+    "explication": "La donnée se retrouve interprétée comme du code."
+   },
+   {
+    "q": "Quelle est la protection la plus fiable ?",
+    "choix": [
+     "Les requêtes préparées",
+     "Interdire les majuscules",
+     "Cacher la page de connexion"
+    ],
+    "bonne": 0,
+    "explication": "Le code et les données sont envoyés séparément : la donnée n'est jamais exécutée."
+   },
+   {
+    "q": "Où peut-on s'entraîner légalement aux failles web ?",
+    "choix": [
+     "Sur le site de son lycée",
+     "Sur n'importe quel site sans compte",
+     "Sur des laboratoires prévus pour, comme la Web Security Academy"
+    ],
+    "bonne": 2,
+    "explication": "Ces plateformes sont faites pour ça et l'autorisent explicitement."
+   }
+  ],
+  "question": "Pourquoi, à ton avis, se contenter d'interdire l'apostrophe dans un formulaire n'est-il pas une bonne protection ?"
+ }
+}

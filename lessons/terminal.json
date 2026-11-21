@@ -1,0 +1,498 @@
+{
+ "fichiers": {
+  "titre": "Fichiers et dossiers Linux",
+  "objectif": "Te déplacer dans les dossiers de Linux, lister ce qu'ils contiennent, fichiers cachés compris, et lire un fichier même quand son nom est piégé.",
+  "pourquoi": "À la Piscine, tu passes tes journées dans un terminal : pas de souris, pas d'explorateur de fichiers. Savoir où tu es et comment aller ailleurs, c'est la base de tout le reste.\n\nEn cybersécurité, c'est pareil : un serveur se pilote presque toujours en ligne de commande, et les fichiers intéressants sont souvent cachés.",
+  "analogie": "Imagine un immeuble. Le dossier racine / est le hall d'entrée. Chaque dossier est un couloir qui mène à d'autres couloirs ou à des pièces : les fichiers. Ton dossier personnel, c'est ton appartement : tu y arrives quand tu te connectes, et son raccourci est ~.\n\nUn chemin, c'est l'itinéraire écrit pour aller d'un point à un autre : « depuis le hall, couloir home, puis porte eleve ».",
+  "vocabulaire": [
+   {
+    "mot": "Dossier (répertoire)",
+    "def": "Un conteneur qui range des fichiers et d'autres dossiers."
+   },
+   {
+    "mot": "Chemin absolu",
+    "def": "Un chemin qui part de la racine /, par exemple /home/eleve/notes.txt. Il marche d'où que tu sois."
+   },
+   {
+    "mot": "Chemin relatif",
+    "def": "Un chemin qui part du dossier où tu te trouves, par exemple projets/notes.txt."
+   },
+   {
+    "mot": "Fichier caché",
+    "def": "Un fichier dont le nom commence par un point, comme .bashrc. ls ne l'affiche pas par défaut."
+   },
+   {
+    "mot": "Option",
+    "def": "Une lettre précédée d'un tiret qui change le comportement d'une commande, comme -a dans ls -a."
+   }
+  ],
+  "sections": [
+   {
+    "titre": "Où suis-je ?",
+    "texte": "Le terminal te place toujours quelque part dans l'arbre des dossiers. La commande `pwd` (print working directory) affiche ce dossier courant, par exemple `/home/eleve`.\n\nLe prompt t'aide aussi : dans `eleve@labo42:~$`, le `~` veut dire « ton dossier personnel ». Quand tu descends dans un sous-dossier, le prompt change, par exemple `~/projets`.\n\nPrends le réflexe de taper `pwd` dès que tu as un doute : beaucoup d'erreurs de débutant viennent d'une commande lancée dans le mauvais dossier."
+   },
+   {
+    "titre": "Regarder autour de soi avec ls",
+    "texte": "`ls` liste le contenu du dossier courant. On peut lui donner un chemin pour regarder ailleurs sans bouger : `ls /etc`.\n\nSes options les plus utiles :\n\n- `ls -a` affiche tout, y compris les fichiers cachés et les deux entrées spéciales `.` (le dossier actuel) et `..` (le dossier parent).\n- `ls -l` affiche une ligne détaillée par fichier : les droits, le propriétaire, la taille et la date.\n- On peut combiner les options : `ls -la`.\n\nSous Linux, un fichier n'est pas « caché » par une protection : son nom commence simplement par un point. C'est une convention pour ranger les fichiers de configuration hors de vue."
+   },
+   {
+    "titre": "Se déplacer avec cd",
+    "texte": "`cd` (change directory) te fait entrer dans un dossier : `cd projets`. Pour remonter d'un niveau, `cd ..`. Pour revenir chez toi d'où que tu sois, `cd` tout seul ou `cd ~`.\n\nTu peux enchaîner plusieurs niveaux d'un coup : `cd projets/piscine/ex00`, ou utiliser un chemin absolu : `cd /tmp`.\n\nLa touche Tab est ton meilleure amie : tape le début d'un nom puis Tab, le terminal complète. Si plusieurs noms commencent pareil, appuie deux fois sur Tab pour voir la liste. Tu tapes moins et tu fais moins de fautes."
+   },
+   {
+    "titre": "Lire un fichier, même au nom piégé",
+    "texte": "`cat fichier` affiche tout le contenu d'un fichier. Pour un long fichier, `less fichier` permet de le parcourir page par page (q pour quitter).\n\nCertains noms posent problème au terminal :\n\n- Un nom qui commence par un tiret, comme `-notes`, est pris pour une option. On s'en sort en ajoutant un chemin devant (`./-notes`) ou en écrivant `--` avant le nom, qui veut dire « fin des options ».\n- Un nom avec des espaces est coupé en plusieurs morceaux. On l'entoure de guillemets (`\"mon fichier\"`) ou on met un antislash devant chaque espace.\n\nTu as déjà trouvé ces astuces dans Bandit : c'est exactement ce qu'on attend à 42, comprendre pourquoi le terminal se trompe pour le contourner."
+   },
+   {
+    "titre": "Chercher un fichier avec find",
+    "texte": "Quand tu ne sais pas où est un fichier, `find` parcourt un dossier et tous ses sous-dossiers. Sans autre argument, `find .` liste absolument tout, fichiers cachés compris, avec leur chemin.\n\nOn peut filtrer par nom : `find ~ -name \"notes.txt\"`, ou avec une étoile qui veut dire « n'importe quoi » : `find . -name \"*.c\"` trouve tous les fichiers qui finissent par `.c`.\n\nMets le motif entre guillemets : sinon le terminal essaie de remplacer l'étoile lui-même avant que find ne la voie."
+   }
+  ],
+  "exemple": {
+   "titre": "Explorer un dossier pas à pas",
+   "code": "pwd\nls -la\ncd projets\nfind . -name \"*.c\"\ncd ..\ncat \"liste de courses.txt\"",
+   "explication": "On vérifie d'abord où on est avec `pwd`, puis on regarde tout ce qu'il y a avec `ls -la`, fichiers cachés compris.\n\nOn entre dans `projets`, on cherche tous les fichiers C de ce dossier et de ses sous-dossiers avec `find`, puis on remonte d'un niveau avec `cd ..`.\n\nEnfin, on lit un fichier dont le nom contient des espaces : les guillemets disent au terminal que c'est un seul nom."
+  },
+  "pieges": [
+   "Oublier que les noms sont sensibles à la casse : Notes.txt et notes.txt sont deux fichiers différents.",
+   "Croire qu'un dossier est vide parce que ls n'affiche rien : il contient peut-être des fichiers cachés.",
+   "Lancer une commande dans le mauvais dossier : vérifie avec pwd."
+  ],
+  "retenir": [
+   "pwd dit où tu es, ls montre ce qu'il y a, cd te déplace.",
+   "Les fichiers cachés commencent par un point : ls -a les affiche.",
+   ". est le dossier actuel, .. le dossier parent, ~ ton dossier personnel.",
+   "Pour un nom piégé : ./ devant, -- avant, ou des guillemets.",
+   "find cherche dans tous les sous-dossiers."
+  ],
+  "quiz": [
+   {
+    "q": "Que fait la commande cd .. ?",
+    "choix": [
+     "Elle remonte au dossier parent",
+     "Elle revient au dossier personnel",
+     "Elle affiche les fichiers cachés"
+    ],
+    "bonne": 0,
+    "explication": "Le dossier .. désigne toujours le parent du dossier où tu es."
+   },
+   {
+    "q": "Pourquoi ls ne montre pas .config ?",
+    "choix": [
+     "Parce que le fichier est protégé par un mot de passe",
+     "Parce que ls ne montre que les dossiers",
+     "Parce que son nom commence par un point"
+    ],
+    "bonne": 2,
+    "explication": "Les noms qui commencent par un point sont cachés par convention ; ls -a les affiche."
+   },
+   {
+    "q": "Lequel de ces chemins est absolu ?",
+    "choix": [
+     "projets/piscine",
+     "/home/eleve/projets",
+     "../notes.txt"
+    ],
+    "bonne": 1,
+    "explication": "Un chemin absolu commence par /, la racine."
+   }
+  ],
+  "question": "À ton avis, pourquoi les fichiers de configuration sont-ils cachés par défaut plutôt que protégés ?"
+ },
+ "permissions": {
+  "titre": "Les droits des fichiers",
+  "objectif": "Lire et modifier les droits d'un fichier pour décider qui peut le lire, le modifier ou l'exécuter.",
+  "pourquoi": "À 42, un script que tu viens d'écrire ne se lance pas tant qu'il n'a pas le droit d'exécution : tu vas le croiser dès les premiers jours.\n\nEn cybersécurité, les droits sont une protection de base. Un fichier de mots de passe lisible par tout le monde, ou un programme modifiable par n'importe qui, sont des failles classiques que les pentesters cherchent en premier.",
+  "analogie": "Pense à un casier de vestiaire avec trois sortes de clés. Le propriétaire a sa clé, l'équipe (le groupe) a une autre clé, et tous les autres en ont une troisième.\n\nPour chaque clé, on décide ce qu'elle permet : ouvrir pour regarder (lire), ranger ou retirer des affaires (écrire), ou utiliser ce qu'il y a dedans (exécuter).",
+  "vocabulaire": [
+   {
+    "mot": "Propriétaire (user)",
+    "def": "L'utilisateur à qui appartient le fichier, souvent celui qui l'a créé."
+   },
+   {
+    "mot": "Groupe (group)",
+    "def": "Un ensemble d'utilisateurs qui partagent les mêmes droits sur le fichier."
+   },
+   {
+    "mot": "Autres (others)",
+    "def": "Tous les utilisateurs qui ne sont ni le propriétaire, ni dans le groupe."
+   },
+   {
+    "mot": "chmod",
+    "def": "La commande qui change les droits d'un fichier (change mode)."
+   },
+   {
+    "mot": "root",
+    "def": "Le super-administrateur de Linux : les droits ne l'arrêtent pas."
+   }
+  ],
+  "sections": [
+   {
+    "titre": "Lire les droits avec ls -l",
+    "texte": "`ls -l` affiche une ligne comme `-rwxr-x--- 1 eleve piscine 220 nov. 21 script.sh`. Les dix premiers caractères décrivent le fichier :\n\n- Le premier dit le type : `-` pour un fichier, `d` pour un dossier.\n- Ensuite viennent trois groupes de trois lettres : pour le propriétaire, pour le groupe, pour les autres.\n- Dans chaque groupe : `r` (read, lire), `w` (write, écrire), `x` (execute, exécuter). Un tiret veut dire « pas ce droit ».\n\nIci, `rwx` pour le propriétaire (tout), `r-x` pour le groupe (lire et exécuter), `---` pour les autres (rien). Le propriétaire s'appelle `eleve` et le groupe `piscine`."
+   },
+   {
+    "titre": "Ce que veulent dire r, w et x",
+    "texte": "Pour un fichier, c'est intuitif : `r` permet de lire son contenu, `w` de le modifier, `x` de le lancer comme un programme.\n\nPour un dossier, c'est plus subtil, et c'est souvent là que les débutants se trompent :\n\n- `r` permet de lister ce qu'il contient (avec ls).\n- `w` permet d'y créer, renommer ou supprimer des fichiers.\n- `x` permet d'y entrer (avec cd) et d'accéder aux fichiers qu'il contient.\n\nUn dossier avec `r` mais sans `x`, c'est une vitrine : tu vois les noms, mais tu ne peux pas ouvrir les fichiers."
+   },
+   {
+    "titre": "Changer les droits avec des lettres",
+    "texte": "`chmod` accepte une écriture lisible : qui, puis + ou -, puis quel droit.\n\n- `chmod u+x script.sh` ajoute l'exécution pour le propriétaire (u comme user).\n- `chmod g-w notes.txt` retire l'écriture au groupe.\n- `chmod o-r secret.txt` retire la lecture aux autres (o comme others).\n- `chmod a+r public.txt` donne la lecture à tout le monde (a comme all).\n\nAprès chaque changement, vérifie avec `ls -l` : c'est le bon réflexe pour être sûr de ce que tu as fait."
+   },
+   {
+    "titre": "Changer les droits avec des chiffres",
+    "texte": "On peut aussi écrire les droits en chiffres. Chaque droit a une valeur : r = 4, w = 2, x = 1. On additionne pour chaque catégorie.\n\n- `rwx` = 4 + 2 + 1 = 7\n- `r-x` = 4 + 0 + 1 = 5\n- `r--` = 4\n- `---` = 0\n\nTrois chiffres, dans l'ordre propriétaire, groupe, autres : `chmod 750 script.sh` donne `rwxr-x---`. `chmod 644 page.html` donne `rw-r--r--`, un réglage classique pour un fichier que tout le monde peut lire mais que seul son propriétaire modifie."
+   },
+   {
+    "titre": "Les droits et la sécurité",
+    "texte": "Le principe de base s'appelle le moindre privilège : chacun ne reçoit que les droits dont il a vraiment besoin.\n\nLes erreurs classiques que cherche un pentester : un fichier de configuration avec des mots de passe lisible par tous, un script lancé par l'administrateur mais modifiable par n'importe qui, ou un `chmod 777` posé « pour que ça marche ».\n\n`777`, c'est tout pour tout le monde. Ça règle un problème de droits en ouvrant une faille : à éviter."
+   }
+  ],
+  "exemple": {
+   "titre": "Rendre un script exécutable",
+   "code": "ls -l bonjour.sh\n-rw-r--r-- 1 eleve eleve 32 nov. 21 bonjour.sh\n./bonjour.sh\nbash: ./bonjour.sh: Permission denied\nchmod u+x bonjour.sh\nls -l bonjour.sh\n-rwxr--r-- 1 eleve eleve 32 nov. 21 bonjour.sh",
+   "explication": "Le script existe, mais `ls -l` montre qu'il n'a aucun `x` : le lancer donne « Permission denied ».\n\n`chmod u+x` ajoute l'exécution pour le propriétaire seulement. Le nouveau `ls -l` le confirme : `rwx` pour toi, et rien n'a changé pour le groupe et les autres, qui peuvent seulement lire."
+  },
+  "pieges": [
+   "Confondre l'ordre : les trois groupes sont toujours propriétaire, groupe, autres.",
+   "Oublier le x sur un dossier : sans lui, impossible d'y entrer, même avec r.",
+   "Utiliser chmod 777 pour « réparer » un problème : c'est ouvrir une faille."
+  ],
+  "retenir": [
+   "ls -l affiche les droits : type, puis propriétaire, groupe, autres.",
+   "r = lire (4), w = écrire (2), x = exécuter (1).",
+   "chmod u+x ajoute un droit avec des lettres, chmod 750 fixe tout avec des chiffres.",
+   "Sur un dossier, x permet d'y entrer.",
+   "Moindre privilège : donne seulement les droits nécessaires."
+  ],
+  "quiz": [
+   {
+    "q": "Que donne chmod 640 ?",
+    "choix": [
+     "rw-r-----",
+     "rwxr-----",
+     "rw-rw----"
+    ],
+    "bonne": 0,
+    "explication": "6 = 4 + 2 (rw-), 4 = r--, 0 = ---."
+   },
+   {
+    "q": "Quel droit faut-il pour entrer dans un dossier avec cd ?",
+    "choix": [
+     "r",
+     "w",
+     "x"
+    ],
+    "bonne": 2,
+    "explication": "Sur un dossier, x donne le droit de le traverser et d'y entrer."
+   },
+   {
+    "q": "Dans -rwxr-x---, que peuvent faire les autres utilisateurs ?",
+    "choix": [
+     "Lire seulement",
+     "Rien du tout",
+     "Lire et exécuter"
+    ],
+    "bonne": 1,
+    "explication": "Le dernier groupe est ---, donc aucun droit pour les autres."
+   }
+  ],
+  "question": "Si tu avais un fichier avec tes mots de passe, quels droits lui mettrais-tu, et pourquoi ?"
+ },
+ "redirections": {
+  "titre": "Redirections et pipes",
+  "objectif": "Envoyer le résultat d'une commande dans un fichier ou dans une autre commande, pour enchaîner plusieurs petits outils.",
+  "pourquoi": "La force du terminal, c'est de combiner de petites commandes simples. Une seule ligne peut chercher, filtrer, trier et compter.\n\nÀ la Piscine, tu t'en serviras pour tester tes programmes. En cybersécurité, c'est l'outil numéro un pour fouiller des milliers de lignes de logs à la recherche d'une attaque.",
+  "analogie": "Imagine une chaîne de montage. Chaque commande est un poste de travail : elle reçoit des pièces, les transforme et les passe au poste suivant.\n\nLe pipe `|` est le tapis roulant entre deux postes. La redirection `>` est le carton où l'on range le produit fini au bout de la chaîne.",
+  "vocabulaire": [
+   {
+    "mot": "Entrée standard (stdin)",
+    "def": "Ce qu'une commande lit : par défaut, le clavier."
+   },
+   {
+    "mot": "Sortie standard (stdout)",
+    "def": "Ce qu'une commande écrit : par défaut, l'écran."
+   },
+   {
+    "mot": "Sortie d'erreur (stderr)",
+    "def": "Le canal séparé où une commande écrit ses messages d'erreur."
+   },
+   {
+    "mot": "Redirection",
+    "def": "Envoyer une entrée ou une sortie vers un fichier au lieu du clavier ou de l'écran."
+   },
+   {
+    "mot": "Pipe",
+    "def": "Le symbole | qui branche la sortie d'une commande sur l'entrée de la suivante."
+   }
+  ],
+  "sections": [
+   {
+    "titre": "Les trois canaux d'une commande",
+    "texte": "Chaque commande a trois canaux, numérotés : 0 pour l'entrée (stdin), 1 pour la sortie (stdout) et 2 pour les erreurs (stderr).\n\nPar défaut, l'entrée vient du clavier et les deux sorties vont à l'écran. C'est pour ça que tu vois les erreurs mélangées aux résultats.\n\nRetiens ces numéros : tu les retrouveras en C avec la fonction `write`, dont le premier paramètre est justement le numéro du canal."
+   },
+   {
+    "titre": "Écrire dans un fichier : > et >>",
+    "texte": "`>` envoie la sortie dans un fichier au lieu de l'écran : `ls > liste.txt`. Attention, si le fichier existe, il est écrasé sans prévenir.\n\n`>>` ajoute à la fin du fichier sans effacer ce qu'il contenait : `echo \"nouvelle ligne\" >> journal.txt`.\n\nLa commande `echo` affiche simplement le texte qu'on lui donne : combinée avec `>` ou `>>`, c'est la façon la plus rapide de créer un petit fichier."
+   },
+   {
+    "titre": "Lire depuis un fichier : <",
+    "texte": "`<` fait l'inverse : la commande lit son entrée dans un fichier au lieu du clavier. `sort < noms.txt` trie les lignes du fichier.\n\nC'est ce que tu as utilisé avec `cat < -` : le terminal ouvre lui-même le fichier et le donne à la commande, qui ne voit jamais son nom piégé.\n\nOn peut aussi rediriger les erreurs avec `2>` : `find / -name \"*.conf\" 2> /dev/null` envoie les messages d'erreur dans `/dev/null`, un fichier spécial qui avale tout. Il ne reste à l'écran que les vrais résultats."
+   },
+   {
+    "titre": "Enchaîner avec le pipe |",
+    "texte": "Le pipe branche la sortie d'une commande sur l'entrée de la suivante, sans fichier intermédiaire.\n\n- `ls | wc -l` compte le nombre de fichiers : `wc -l` compte les lignes qu'il reçoit.\n- `cat journal.txt | grep erreur` ne garde que les lignes qui contiennent « erreur ».\n- `grep erreur journal.txt | sort | head -n 5` filtre, trie, puis garde les 5 premières lignes.\n\nOn construit une chaîne pas à pas : lance la première commande seule, regarde le résultat, ajoute un `|` et la suivante, et ainsi de suite."
+   },
+   {
+    "titre": "Les outils à brancher",
+    "texte": "Quelques commandes qui deviennent puissantes avec les pipes :\n\n- `grep motif` garde les lignes qui contiennent le motif. `-i` ignore les majuscules, `-v` garde les lignes qui ne le contiennent pas, `-n` affiche les numéros de ligne.\n- `sort` trie les lignes, `sort -n` trie des nombres, `sort -r` inverse l'ordre.\n- `head -n 3` garde les 3 premières lignes, `tail -n 3` les 3 dernières.\n- `wc -l` compte les lignes.\n\nAvec ces cinq outils, tu peux déjà analyser un fichier de logs comme un analyste SOC."
+   }
+  ],
+  "exemple": {
+   "titre": "Analyser un journal en une ligne",
+   "code": "grep \"Failed\" auth.log | wc -l\ngrep -i \"erreur\" serveur.log > erreurs.txt\nsort -n scores.txt | tail -n 3",
+   "explication": "La première ligne garde les tentatives de connexion échouées, puis les compte : on obtient un nombre.\n\nLa deuxième cherche « erreur » sans tenir compte des majuscules et range le résultat dans un nouveau fichier, au lieu de l'afficher.\n\nLa troisième trie des scores comme des nombres, du plus petit au plus grand, puis garde les trois derniers : les trois meilleurs."
+  },
+  "pieges": [
+   "Utiliser > au lieu de >> et écraser un fichier important.",
+   "Écrire sort > fichier.txt en pensant lire le fichier : il faut <, sinon tu l'effaces.",
+   "Oublier -n avec sort pour des nombres : sinon 10 passe avant 9, comme dans un dictionnaire."
+  ],
+  "retenir": [
+   "0 = entrée, 1 = sortie, 2 = erreurs.",
+   "> écrase, >> ajoute, < lit depuis un fichier.",
+   "Le pipe | envoie la sortie d'une commande à la suivante.",
+   "grep filtre, sort trie, head et tail coupent, wc -l compte.",
+   "Construis une chaîne de commandes pas à pas, en vérifiant chaque étape."
+  ],
+  "quiz": [
+   {
+    "q": "Que fait echo salut >> notes.txt ?",
+    "choix": [
+     "Il remplace le contenu de notes.txt",
+     "Il ajoute « salut » à la fin de notes.txt",
+     "Il affiche notes.txt à l'écran"
+    ],
+    "bonne": 1,
+    "explication": ">> ajoute à la fin sans effacer."
+   },
+   {
+    "q": "Que compte ls | wc -l ?",
+    "choix": [
+     "Le nombre de lignes affichées par ls, donc de fichiers",
+     "La taille totale des fichiers",
+     "Le nombre de dossiers parents"
+    ],
+    "bonne": 0,
+    "explication": "ls écrit un nom par ligne quand sa sortie va dans un pipe, et wc -l compte ces lignes."
+   },
+   {
+    "q": "Quel numéro désigne la sortie d'erreur ?",
+    "choix": [
+     "0",
+     "1",
+     "2"
+    ],
+    "bonne": 2,
+    "explication": "0 est l'entrée, 1 la sortie normale, 2 la sortie d'erreur."
+   }
+  ],
+  "question": "Comment ferais-tu pour savoir combien de lignes d'un fichier ne contiennent pas le mot « OK » ?"
+ },
+ "ssh": {
+  "titre": "SSH, se connecter à distance",
+  "objectif": "Comprendre ce que fait SSH, te connecter à une machine distante et savoir pourquoi la connexion est sûre.",
+  "pourquoi": "SSH est l'outil de tous les jours des administrateurs, des développeurs et des équipes de sécurité : la plupart des serveurs du monde se pilotent à distance par SSH.\n\nTu l'utilises déjà dans Bandit. Comprendre comment il marche t'aidera au Master, où tu administreras des machines que tu ne verras jamais physiquement.",
+  "analogie": "Imagine que tu téléphones à un serveur pour lui donner des ordres. Sans protection, n'importe qui sur la ligne pourrait écouter, et même se faire passer pour le serveur.\n\nSSH, c'est un appel dans une langue secrète que seuls toi et le serveur comprenez, après avoir vérifié la carte d'identité du serveur.",
+  "vocabulaire": [
+   {
+    "mot": "Client",
+    "def": "Le programme qui demande la connexion : la commande ssh sur ta machine."
+   },
+   {
+    "mot": "Serveur SSH",
+    "def": "Le programme qui attend les connexions sur la machine distante, souvent appelé sshd."
+   },
+   {
+    "mot": "Port",
+    "def": "Le numéro de porte où le serveur écoute : 22 par défaut pour SSH."
+   },
+   {
+    "mot": "Chiffrement",
+    "def": "Transformer les données pour qu'elles soient illisibles sans la bonne clé."
+   },
+   {
+    "mot": "Empreinte (fingerprint)",
+    "def": "Une courte suite de caractères qui identifie la clé d'un serveur, comme une carte d'identité."
+   }
+  ],
+  "sections": [
+   {
+    "titre": "À quoi sert SSH",
+    "texte": "SSH (Secure Shell) ouvre un terminal sur une autre machine, à travers le réseau. Tout ce que tu tapes s'exécute là-bas, et tu vois le résultat chez toi.\n\nAvant SSH, on utilisait Telnet, qui envoyait tout en clair, mots de passe compris. N'importe qui placé sur le réseau pouvait les lire. SSH chiffre tout l'échange : c'est pour ça qu'il a remplacé Telnet partout."
+   },
+   {
+    "titre": "La commande de connexion",
+    "texte": "La forme de base est `ssh utilisateur@machine`. Par exemple `ssh eleve@serveur.exemple.fr`.\n\nSi le serveur n'écoute pas sur le port 22, on précise le port avec `-p` : `ssh eleve@serveur.exemple.fr -p 2220`. C'est exactement ce que tu fais dans Bandit.\n\nPour te déconnecter, tape `exit` ou Ctrl+D. Le prompt redevient celui de ta machine : vérifie toujours sur quelle machine tu es avant de lancer une commande importante."
+   },
+   {
+    "titre": "La première connexion et l'empreinte",
+    "texte": "À la première connexion, SSH affiche l'empreinte du serveur et te demande si tu lui fais confiance. Si tu réponds `yes`, il la note dans le fichier `~/.ssh/known_hosts`.\n\nAux connexions suivantes, il compare. Si l'empreinte a changé, il affiche un gros avertissement : soit le serveur a été réinstallé, soit quelqu'un se fait passer pour lui. C'est la protection contre l'attaque de « l'homme du milieu ».\n\nNe réponds jamais `yes` machinalement à cet avertissement sur un vrai serveur : vérifie d'abord pourquoi l'empreinte a changé."
+   },
+   {
+    "titre": "Mots de passe et clés",
+    "texte": "On peut se connecter avec un mot de passe, mais les professionnels utilisent surtout des clés : une paire de fichiers liés, une clé privée qui reste sur ta machine et une clé publique que tu déposes sur le serveur.\n\nLa clé privée se garde comme une clé de maison : jamais envoyée, jamais publiée. La clé publique, elle, peut être donnée sans risque.\n\nTu apprendras à créer et utiliser tes clés plus tard ; pour l'instant, retiens l'idée : une clé privée, c'est un secret."
+   }
+  ],
+  "exemple": {
+   "titre": "Une session SSH complète",
+   "code": "ssh eleve@serveur.exemple.fr -p 2220\neleve@serveur.exemple.fr's password:\neleve@serveur:~$ hostname\nserveur\neleve@serveur:~$ exit",
+   "explication": "On se connecte en précisant l'utilisateur, la machine et le port. Le mot de passe ne s'affiche pas pendant la frappe : c'est normal.\n\nLe prompt change et montre qu'on est sur `serveur`. La commande `hostname` le confirme en affichant le nom de la machine. `exit` ferme la session et nous ramène sur notre propre ordinateur."
+  },
+  "pieges": [
+   "Oublier -p quand le serveur n'écoute pas sur le port 22.",
+   "Lancer une commande en croyant être sur sa machine alors qu'on est sur le serveur : lis le prompt.",
+   "Accepter sans réfléchir un avertissement de changement d'empreinte."
+  ],
+  "retenir": [
+   "SSH ouvre un terminal chiffré sur une machine distante.",
+   "ssh utilisateur@machine -p port, puis exit pour sortir.",
+   "Le port par défaut est 22.",
+   "L'empreinte protège contre un faux serveur.",
+   "Une clé privée ne se partage jamais."
+  ],
+  "quiz": [
+   {
+    "q": "Pourquoi SSH a-t-il remplacé Telnet ?",
+    "choix": [
+     "Parce qu'il est plus rapide",
+     "Parce qu'il chiffre les échanges",
+     "Parce qu'il n'a pas besoin de réseau"
+    ],
+    "bonne": 1,
+    "explication": "Telnet envoyait tout en clair, mots de passe compris ; SSH chiffre tout."
+   },
+   {
+    "q": "Que signifie un avertissement de changement d'empreinte ?",
+    "choix": [
+     "Le serveur a peut-être été remplacé, ou quelqu'un se fait passer pour lui",
+     "Ton mot de passe a expiré",
+     "Le port 22 est fermé"
+    ],
+    "bonne": 0,
+    "explication": "L'empreinte identifie le serveur : si elle change, il faut comprendre pourquoi avant de continuer."
+   },
+   {
+    "q": "Quelle clé peut-on donner sans risque ?",
+    "choix": [
+     "La clé privée",
+     "Les deux",
+     "La clé publique"
+    ],
+    "bonne": 2,
+    "explication": "La clé publique est faite pour être partagée ; la clé privée reste secrète."
+   }
+  ],
+  "question": "À ton avis, pourquoi un attaquant aimerait-il se placer entre toi et le serveur pendant une connexion ?"
+ },
+ "git": {
+  "titre": "Git, sauvegarder son code",
+  "objectif": "Enregistrer les étapes de ton travail avec Git et l'envoyer sur un serveur, comme pour rendre un projet à 42.",
+  "pourquoi": "À 42, tu rends chaque projet en l'envoyant avec Git sur le serveur de l'école : ce qui n'est pas envoyé n'existe pas pour la correction.\n\nEn entreprise, tout le code passe par Git. Et en sécurité, on fouille aussi l'historique Git : un mot de passe envoyé par erreur reste dans l'historique même après l'avoir effacé du fichier.",
+  "analogie": "Git, c'est un appareil photo pour ton dossier de travail. Tu travailles, puis tu prends une photo de l'état du projet avec une légende. Si tu casses tout plus tard, tu peux revenir à n'importe quelle photo.\n\n`git push`, c'est envoyer ton album sur un serveur pour qu'il soit en sécurité et que d'autres puissent le voir.",
+  "vocabulaire": [
+   {
+    "mot": "Dépôt (repository)",
+    "def": "Un dossier suivi par Git, avec tout son historique."
+   },
+   {
+    "mot": "Commit",
+    "def": "Une photo enregistrée de ton projet, avec un message qui explique le changement."
+   },
+   {
+    "mot": "Index (staging)",
+    "def": "La zone où tu prépares les fichiers qui iront dans le prochain commit."
+   },
+   {
+    "mot": "Remote",
+    "def": "Une copie du dépôt sur un serveur, par exemple GitHub ou le serveur de 42."
+   },
+   {
+    "mot": "Clone",
+    "def": "Une copie complète d'un dépôt distant sur ta machine."
+   }
+  ],
+  "sections": [
+   {
+    "titre": "Récupérer un dépôt",
+    "texte": "Pour commencer, on récupère le dépôt : `git clone adresse-du-depot`. Git crée un dossier avec tous les fichiers et l'historique.\n\nÀ 42, l'intranet te donne l'adresse du dépôt de chaque projet. Tu le clones, tu travailles dedans, et tu y envoies ton travail.\n\n`git status` est la commande à lancer sans modération : elle te dit quels fichiers ont changé, lesquels sont prêts à être enregistrés, et s'il reste des choses à envoyer."
+   },
+   {
+    "titre": "Les trois zones de Git",
+    "texte": "Un fichier passe par trois zones :\n\n1. Ton dossier de travail : tu modifies tes fichiers normalement.\n2. L'index : avec `git add fichier`, tu choisis ce qui ira dans le prochain commit. `git add .` ajoute tout ce qui a changé dans le dossier.\n3. L'historique : avec `git commit -m \"message\"`, tu enregistres la photo.\n\nCette étape intermédiaire permet de faire des commits propres : par exemple, enregistrer l'exercice 00 sans les essais ratés de l'exercice 01."
+   },
+   {
+    "titre": "Envoyer et récupérer",
+    "texte": "Tes commits restent sur ta machine tant que tu ne les envoies pas. `git push` les envoie sur le serveur.\n\nDans l'autre sens, `git pull` récupère les commits des autres (ou ceux que tu as faits depuis un autre ordinateur).\n\nÀ la Piscine, le réflexe à prendre est simple : add, commit, push, puis `git status` pour vérifier qu'il ne reste rien. Beaucoup d'élèves ont eu 0 parce qu'ils avaient oublié le push."
+   },
+   {
+    "titre": "Remonter le temps",
+    "texte": "`git log` affiche l'historique des commits : auteur, date et message. `git log --oneline` le montre en version courte, un commit par ligne.\n\n`git diff` montre ce que tu as modifié depuis le dernier commit, ligne par ligne : les lignes ajoutées en vert avec un +, les lignes retirées en rouge avec un -.\n\nD'où l'importance des bons messages de commit : « ajout de ft_putchar » sera utile dans un mois, « truc » ne servira à personne."
+   },
+   {
+    "titre": "Git et sécurité",
+    "texte": "Un commit est permanent dans l'historique. Si tu envoies un fichier avec un mot de passe, puis que tu le supprimes au commit suivant, le mot de passe reste lisible dans l'ancien commit.\n\nDes robots fouillent en permanence les dépôts publics à la recherche de clés et de mots de passe oubliés. C'est une source réelle de fuites.\n\nLa protection : un fichier `.gitignore` qui liste ce que Git doit ignorer, et la règle d'or de ne jamais mettre de secret dans le code."
+   }
+  ],
+  "exemple": {
+   "titre": "Rendre un exercice",
+   "code": "git status\ngit add ex00/ft_putchar.c\ngit commit -m \"ex00 : ajout de ft_putchar\"\ngit push\ngit status",
+   "explication": "Le premier `git status` montre le fichier modifié. On l'ajoute à l'index avec `git add`, puis on enregistre la photo avec un message clair.\n\n`git push` envoie le commit sur le serveur. Le dernier `git status` doit dire que tout est à jour : rien à enregistrer, rien à envoyer. Ce n'est qu'à ce moment que ton travail est vraiment rendu."
+  },
+  "pieges": [
+   "Oublier git push : ton travail reste sur ta machine et n'est pas rendu.",
+   "Faire git add . et envoyer des fichiers inutiles (a.out, fichiers de test).",
+   "Croire qu'effacer un secret dans un nouveau commit le fait disparaître de l'historique."
+  ],
+  "retenir": [
+   "clone récupère un dépôt, status dit où tu en es.",
+   "add prépare, commit enregistre, push envoie.",
+   "log montre l'historique, diff montre les changements.",
+   "Écris des messages de commit clairs.",
+   "Jamais de mot de passe dans un dépôt."
+  ],
+  "quiz": [
+   {
+    "q": "Après git commit, ton travail est-il sur le serveur ?",
+    "choix": [
+     "Oui, automatiquement",
+     "Non, il faut encore git push",
+     "Seulement si le fichier est petit"
+    ],
+    "bonne": 1,
+    "explication": "commit enregistre sur ta machine ; push envoie sur le serveur."
+   },
+   {
+    "q": "À quoi sert git add ?",
+    "choix": [
+     "À choisir les fichiers du prochain commit",
+     "À créer un nouveau dépôt",
+     "À envoyer le code sur GitHub"
+    ],
+    "bonne": 0,
+    "explication": "git add place les fichiers dans l'index, la zone de préparation du commit."
+   },
+   {
+    "q": "Tu as supprimé un mot de passe dans un nouveau commit. Est-il en sécurité ?",
+    "choix": [
+     "Oui, il a disparu",
+     "Oui, si le dépôt est petit",
+     "Non, il reste dans l'historique"
+    ],
+    "bonne": 2,
+    "explication": "Chaque commit est conservé : l'ancien contenu reste lisible."
+   }
+  ],
+  "question": "Pourquoi, à ton avis, Git sépare-t-il l'étape add de l'étape commit au lieu d'enregistrer tout d'un coup ?"
+ }
+}

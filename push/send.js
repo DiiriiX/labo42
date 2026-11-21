@@ -6,7 +6,18 @@ if (!priv) { console.log("Le secret VAPID_PRIVATE_KEY manque : rien n'est envoy�
 const pub = fs.readFileSync("push/vapid-public.txt", "utf8").trim();
 webpush.setVapidDetails("https://diiriix.github.io/labo42/", pub, priv);
 const subs = JSON.parse(fs.readFileSync("push/subscriptions.json", "utf8"));
-const msg = JSON.parse(fs.readFileSync("push/outbox.json", "utf8"));
+const RAPPELS = [
+  "Dimanche tranquille : 10 minutes de fiches suffisent pour garder tout en tête.",
+  "Nouvelle semaine ! Tes fiches du jour t'attendent dans Labo 42.",
+  "Petite séance du soir : tes fiches, puis un défi du terminal ?",
+  "C'est l'heure de ta séance : quelques fiches et tu es tranquille.",
+  "Tes fiches du jour sont prêtes. La régularité bat l'intensité.",
+  "Un cours de ton parcours ce soir ? Le suivant t'attend.",
+  "Fin de semaine : révise tes fiches avant de souffler."
+];
+const msg = process.env.RAPPEL === "1"
+  ? {id: "rappel", title: "Labo 42", body: RAPPELS[new Date().getDay()], url: "./#reviser"}
+  : JSON.parse(fs.readFileSync("push/outbox.json", "utf8"));
 if (!Array.isArray(subs) || !subs.length) { console.log("Aucun téléphone abonné."); process.exit(0); }
 (async () => {
   for (const s of subs) {

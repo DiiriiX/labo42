@@ -1,0 +1,994 @@
+{
+ "compilation": {
+  "titre": "Compiler un programme",
+  "objectif": "Transformer ton fichier .c en programme, lire les erreurs du compilateur et lancer le résultat.",
+  "pourquoi": "À la Piscine, chaque exercice est compilé avec `cc -Wall -Wextra -Werror`. S'il reste un seul avertissement, ton code ne compile pas, et la correction s'arrête là.\n\nSavoir lire un message d'erreur, c'est la compétence qui te fera gagner le plus de temps pendant tout ton cursus.",
+  "analogie": "Ton fichier .c, c'est une recette écrite en français pour un cuisinier qui ne parle que japonais. Le compilateur est le traducteur : il lit toute la recette, vérifie qu'elle a du sens, et la réécrit dans la langue de la machine.\n\nS'il trouve une phrase incompréhensible, il refuse de traduire et te dit à quelle ligne est le problème.",
+  "vocabulaire": [
+   {
+    "mot": "Code source",
+    "def": "Le texte que tu écris, dans un fichier .c."
+   },
+   {
+    "mot": "Compilateur",
+    "def": "Le programme qui traduit le code source en langage machine : cc, gcc ou clang."
+   },
+   {
+    "mot": "Exécutable",
+    "def": "Le fichier produit par le compilateur, qu'on peut lancer : a.out par défaut."
+   },
+   {
+    "mot": "Erreur",
+    "def": "Un problème qui empêche la compilation."
+   },
+   {
+    "mot": "Avertissement (warning)",
+    "def": "Un problème suspect ; avec -Werror, il devient une erreur."
+   }
+  ],
+  "sections": [
+   {
+    "titre": "Du texte à la machine",
+    "texte": "Le processeur ne comprend que des instructions binaires. Le compilateur traduit ton code C en ces instructions, en plusieurs étapes.\n\n1. Le préprocesseur traite les lignes qui commencent par `#`, comme `#include <unistd.h>` : il colle le contenu des fichiers inclus.\n2. La compilation traduit le C en instructions pour le processeur.\n3. L'édition de liens assemble ton code avec les fonctions des bibliothèques, comme `write`, et produit l'exécutable.\n\nTout ça se passe en une seule commande : `cc main.c`."
+   },
+   {
+    "titre": "La commande de la Piscine",
+    "texte": "À 42, on compile toujours avec trois options :\n\n- `-Wall` active la plupart des avertissements.\n- `-Wextra` en ajoute d'autres.\n- `-Werror` transforme chaque avertissement en erreur.\n\nPar exemple : `cc -Wall -Wextra -Werror main.c ft_putchar.c`. On peut donner plusieurs fichiers d'un coup ; le compilateur les assemble en un seul programme.\n\nL'option `-o nom` choisit le nom de l'exécutable : `cc -Wall -Wextra -Werror main.c -o test` crée `test` au lieu de `a.out`."
+   },
+   {
+    "titre": "Lire un message d'erreur",
+    "texte": "Un message ressemble à ça : `main.c:5:2: error: expected ';' before 'return'`.\n\n- `main.c` : le fichier.\n- `5:2` : la ligne 5, colonne 2.\n- `error` : la gravité.\n- La suite : la description.\n\nRègle d'or : corrige toujours la première erreur d'abord. Une seule faute, comme un point-virgule oublié, peut en provoquer dix autres en cascade, qui disparaissent toutes une fois la première corrigée.\n\nEt lis vraiment le message : il dit souvent exactement ce qui manque."
+   },
+   {
+    "titre": "Lancer le programme",
+    "texte": "Une fois compilé, on lance l'exécutable avec `./a.out`. Le `./` veut dire « le fichier qui est dans ce dossier » : sans lui, le terminal chercherait une commande système appelée a.out.\n\nÀ chaque modification du code, il faut recompiler. Sinon tu relances l'ancienne version, et tu ne comprends pas pourquoi ta correction ne change rien.\n\nLe cycle de travail est toujours le même : écrire, compiler, lancer, observer, corriger."
+   }
+  ],
+  "exemple": {
+   "titre": "Une erreur, puis la correction",
+   "code": "cc -Wall -Wextra -Werror main.c\nmain.c:5:2: error: expected ';' before 'return'\n# on ajoute le ; oublié à la fin de la ligne 4\ncc -Wall -Wextra -Werror main.c\n./a.out",
+   "explication": "La première compilation échoue. Le message pointe la ligne 5, mais la vraie cause est souvent juste avant : ici, il manque un point-virgule à la fin de la ligne 4, et le compilateur ne s'en rend compte qu'en lisant la ligne suivante.\n\nAprès correction, la compilation ne dit rien : en C, le silence veut dire que tout s'est bien passé. On lance alors le programme avec `./a.out`."
+  },
+  "pieges": [
+   "Oublier de recompiler après une modification.",
+   "Corriger les erreurs dans le désordre au lieu de commencer par la première.",
+   "Taper a.out au lieu de ./a.out."
+  ],
+  "retenir": [
+   "Le compilateur traduit ton .c en exécutable.",
+   "À 42 : cc -Wall -Wextra -Werror.",
+   "fichier:ligne:colonne indique où regarder.",
+   "Corrige la première erreur d'abord.",
+   "Recompile à chaque modification, puis lance avec ./a.out."
+  ],
+  "quiz": [
+   {
+    "q": "Que fait -Werror ?",
+    "choix": [
+     "Il cache les avertissements",
+     "Il transforme les avertissements en erreurs",
+     "Il accélère la compilation"
+    ],
+    "bonne": 1,
+    "explication": "Avec -Werror, aucun avertissement n'est toléré."
+   },
+   {
+    "q": "Le compilateur ne dit rien. Que s'est-il passé ?",
+    "choix": [
+     "La compilation a réussi",
+     "La compilation a échoué",
+     "Le fichier est vide"
+    ],
+    "bonne": 0,
+    "explication": "En C, une compilation réussie est silencieuse."
+   },
+   {
+    "q": "Dans main.c:12:5, que veut dire 12 ?",
+    "choix": [
+     "La colonne",
+     "Le nombre d'erreurs",
+     "La ligne"
+    ],
+    "bonne": 2,
+    "explication": "Le premier nombre est la ligne, le second la colonne."
+   }
+  ],
+  "question": "Pourquoi une seule erreur peut-elle en provoquer plusieurs autres dans le message du compilateur ?"
+ },
+ "variables": {
+  "titre": "Variables et types",
+  "objectif": "Déclarer des variables du bon type, leur donner une valeur et comprendre la place qu'elles prennent en mémoire.",
+  "pourquoi": "En C, rien n'est automatique : tu dois dire à l'ordinateur quel genre de donnée tu ranges et combien de place réserver. C'est ce qui rend le C rapide, et ce qui le rend exigeant.\n\nComprendre les types, c'est aussi comprendre certaines failles : quand une valeur dépasse la place prévue, le résultat devient faux, et un attaquant peut en profiter.",
+  "analogie": "Une variable, c'est une boîte étiquetée. L'étiquette est son nom, la forme de la boîte est son type, et ce qu'il y a dedans est sa valeur.\n\nUne boîte à chaussures (char) ne contient qu'une seule petite chose. Un carton plus grand (int) contient un nombre plus grand. On ne range pas un frigo dans une boîte à chaussures.",
+  "vocabulaire": [
+   {
+    "mot": "Déclaration",
+    "def": "La ligne qui crée une variable en donnant son type et son nom : int age;"
+   },
+   {
+    "mot": "Affectation",
+    "def": "Ranger une valeur dans une variable avec = : age = 18;"
+   },
+   {
+    "mot": "Type",
+    "def": "Le genre de valeur et la taille de la boîte : int, char, float…"
+   },
+   {
+    "mot": "Octet",
+    "def": "L'unité de mémoire : 8 bits, de quoi ranger un char."
+   },
+   {
+    "mot": "Initialisation",
+    "def": "Donner une première valeur à une variable."
+   }
+  ],
+  "sections": [
+   {
+    "titre": "Déclarer une variable",
+    "texte": "En C, on déclare une variable avant de l'utiliser, en donnant son type puis son nom : `int age;`.\n\nEnsuite, on lui donne une valeur avec `=` : `age = 18;`. Le signe `=` ne veut pas dire « égal » comme en maths : il veut dire « range cette valeur dans cette boîte ».\n\nÀ 42, la Norme (les règles de style de l'école) demande de déclarer les variables au début de la fonction, puis de leur donner leur valeur sur des lignes séparées."
+   },
+   {
+    "titre": "Les types de base",
+    "texte": "Les types que tu croiseras tout de suite :\n\n- `char` : un caractère, ou un petit entier. 1 octet. Exemple : `'A'`.\n- `int` : un entier. 4 octets en général, de -2 147 483 648 à 2 147 483 647.\n- `float` et `double` : des nombres à virgule, avec plus ou moins de précision.\n- `long` : un entier qui peut être plus grand qu'un int.\n\nOn peut ajouter `unsigned` devant pour n'avoir que des valeurs positives : un `unsigned char` va de 0 à 255."
+   },
+   {
+    "titre": "Une variable non initialisée",
+    "texte": "Une variable déclarée mais sans valeur contient… n'importe quoi : ce qui traînait dans la mémoire avant. On appelle ça une valeur indéterminée.\n\n`int total;` puis `total = total + 5;` donne un résultat imprévisible, parce qu'on ajoute 5 à une valeur inconnue.\n\nLe bon réflexe : donne toujours une valeur à une variable avant de la lire. Les options `-Wall -Wextra` t'avertissent souvent de cet oubli."
+   },
+   {
+    "titre": "Quand la boîte déborde",
+    "texte": "Chaque type a une limite. Si on dépasse la valeur maximale d'un int, il « fait le tour » et devient un grand nombre négatif. On appelle ça un dépassement d'entier (integer overflow).\n\nExemple : 2 147 483 647 + 1 dans un int ne donne pas 2 147 483 648. Le résultat ne tient pas dans la boîte.\n\nEn sécurité, c'est une vraie source de failles : un calcul de taille qui déborde peut faire réserver trop peu de mémoire, et ouvrir la porte à une écriture hors des limites."
+   },
+   {
+    "titre": "Afficher une variable pour vérifier",
+    "texte": "Pendant que tu apprends, `printf` est pratique pour regarder ce que contient une variable : `printf(\"%d\\n\", age);` affiche un int, `%c` un char, `%f` un float.\n\nÀ la Piscine, `printf` sera souvent interdit dans le code que tu rends ; tu l'utiliseras seulement dans tes fichiers de test.\n\nAfficher les valeurs intermédiaires, c'est la façon la plus simple de comprendre pourquoi un programme ne fait pas ce que tu crois."
+   }
+  ],
+  "exemple": {
+   "titre": "Trois boîtes, trois types",
+   "code": "#include <stdio.h>\n\nint\tmain(void)\n{\n\tint\t\tage;\n\tchar\tinitiale;\n\tfloat\ttaille;\n\n\tage = 18;\n\tinitiale = 'D';\n\ttaille = 1.75;\n\tprintf(\"%d %c %.2f\\n\", age, initiale, taille);\n\treturn (0);\n}",
+   "explication": "On déclare trois variables de types différents au début de `main`, comme le veut la Norme, puis on leur donne une valeur.\n\nUn caractère s'écrit entre apostrophes : `'D'`. Un nombre à virgule s'écrit avec un point : `1.75`.\n\n`printf` affiche les trois avec le bon format pour chacune : `%d` pour l'int, `%c` pour le char, `%.2f` pour le float avec deux chiffres après la virgule. Le programme affiche `18 D 1.75`."
+  },
+  "pieges": [
+   "Lire une variable avant de lui avoir donné une valeur.",
+   "Confondre 'A' (un caractère) et \"A\" (une chaîne de caractères).",
+   "Oublier qu'un int a une limite et peut déborder."
+  ],
+  "retenir": [
+   "Une variable = un nom, un type, une valeur.",
+   "= range une valeur, ce n'est pas une égalité.",
+   "char = 1 octet, int = 4 octets en général.",
+   "Toujours initialiser avant de lire.",
+   "Un dépassement d'entier donne un résultat faux, parfois une faille."
+  ],
+  "quiz": [
+   {
+    "q": "Combien d'octets prend un char ?",
+    "choix": [
+     "1",
+     "2",
+     "4"
+    ],
+    "bonne": 0,
+    "explication": "Un char occupe un seul octet."
+   },
+   {
+    "q": "Que contient une variable déclarée sans valeur ?",
+    "choix": [
+     "Toujours 0",
+     "Une valeur indéterminée",
+     "Une erreur de compilation"
+    ],
+    "bonne": 1,
+    "explication": "Elle contient ce qui traînait dans la mémoire : impossible à prévoir."
+   },
+   {
+    "q": "Que se passe-t-il si on ajoute 1 au plus grand int possible ?",
+    "choix": [
+     "Le programme s'arrête toujours",
+     "Le nombre devient un float",
+     "Il déborde et donne un résultat faux"
+    ],
+    "bonne": 2,
+    "explication": "C'est un dépassement d'entier : la valeur fait le tour."
+   }
+  ],
+  "question": "À ton avis, quel type choisirais-tu pour stocker l'âge d'une personne, et pour stocker le nombre d'habitants de la Terre ? Pourquoi ?"
+ },
+ "conditions": {
+  "titre": "Les conditions if / else",
+  "objectif": "Faire prendre des décisions à ton programme avec if, else et les opérateurs de comparaison et de logique.",
+  "pourquoi": "Un programme qui fait toujours la même chose ne sert pas à grand-chose. Les conditions lui permettent de réagir : à une saisie, à une erreur, à un cas particulier.\n\nEn sécurité, les conditions sont partout : « si le mot de passe est correct, ouvrir la session ». Une condition mal écrite, et la porte reste ouverte.",
+  "analogie": "Une condition, c'est un aiguillage de train. Le train arrive, l'aiguillage regarde une question (« le feu est-il vert ? ») et envoie le train sur une voie ou sur l'autre. Jamais sur les deux.",
+  "vocabulaire": [
+   {
+    "mot": "Condition",
+    "def": "Une expression qui est vraie ou fausse, comme note >= 10."
+   },
+   {
+    "mot": "Opérateur de comparaison",
+    "def": "==, !=, <, >, <=, >= : ils comparent deux valeurs."
+   },
+   {
+    "mot": "Opérateur logique",
+    "def": "&& (et), || (ou), ! (non) : ils combinent des conditions."
+   },
+   {
+    "mot": "Bloc",
+    "def": "Les instructions entre accolades { } exécutées ensemble."
+   },
+   {
+    "mot": "else if",
+    "def": "Une condition supplémentaire testée seulement si les précédentes étaient fausses."
+   }
+  ],
+  "sections": [
+   {
+    "titre": "if : faire quelque chose seulement si…",
+    "texte": "La forme de base est `if (condition) { ... }`. Le bloc entre accolades ne s'exécute que si la condition est vraie.\n\nEn C, « vrai » veut dire « différent de 0 » et « faux » veut dire « égal à 0 ». Une comparaison comme `note >= 10` vaut 1 si elle est vraie, 0 sinon.\n\nÀ 42, la Norme impose les accolades sur leur propre ligne et des blocs bien indentés : c'est aussi ce qui rend ton code lisible pour ton correcteur."
+   },
+   {
+    "titre": "else et else if : les autres chemins",
+    "texte": "`else` donne le chemin à prendre quand la condition est fausse. Un seul des deux blocs est exécuté, jamais les deux.\n\nPour plus de deux cas, on enchaîne avec `else if` : le programme teste les conditions dans l'ordre et s'arrête à la première vraie.\n\nL'ordre compte donc. Si tu testes d'abord `note >= 10` puis `note >= 16`, une note de 18 s'arrêtera au premier test et n'atteindra jamais le second. Mets les cas les plus précis en premier."
+   },
+   {
+    "titre": "Comparer des valeurs",
+    "texte": "Les opérateurs de comparaison : `==` (égal), `!=` (différent), `<`, `>`, `<=`, `>=`.\n\nLe piège le plus célèbre du C : écrire `if (x = 5)` au lieu de `if (x == 5)`. Le premier range 5 dans x, puis teste 5, qui est vrai : le bloc s'exécute toujours. Les options `-Wall -Wextra` t'avertissent heureusement de cette erreur.\n\nOn peut comparer des caractères comme des nombres : `if (c >= 'a' && c <= 'z')` teste si c est une lettre minuscule, grâce à la table ASCII."
+   },
+   {
+    "titre": "Combiner avec && , || et !",
+    "texte": "- `&&` (et) : vrai si les deux conditions sont vraies. `age >= 18 && inscrit == 1`.\n- `||` (ou) : vrai si au moins une est vraie. `c == ' ' || c == '\\n'`.\n- `!` (non) : inverse une condition. `!(note >= 10)` est vrai si la note est sous 10.\n\nC évalue de gauche à droite et s'arrête dès qu'il connaît la réponse : avec `&&`, si la première condition est fausse, la seconde n'est même pas testée. On s'en sert pour éviter une opération dangereuse : `if (diviseur != 0 && total / diviseur > 2)`."
+   }
+  ],
+  "exemple": {
+   "titre": "Une mention selon la note",
+   "code": "if (note >= 16)\n{\n\tprintf(\"Très bien\\n\");\n}\nelse if (note >= 10)\n{\n\tprintf(\"Admis\\n\");\n}\nelse\n{\n\tprintf(\"Rattrapage\\n\");\n}",
+   "explication": "Le programme teste d'abord le cas le plus précis, une note d'au moins 16. Si c'est faux, il teste `note >= 10`. Si c'est encore faux, il prend le `else`.\n\nAvec 18, il affiche « Très bien » et ignore le reste. Avec 12, « Admis ». Avec 7, « Rattrapage ». Inverse les deux premiers tests et regarde ce qui arrive à 18 : c'est un bon exercice pour comprendre pourquoi l'ordre compte."
+  },
+  "pieges": [
+   "Écrire = au lieu de == dans une condition.",
+   "Mettre les conditions dans le mauvais ordre avec else if.",
+   "Écrire 0 < x < 10 comme en maths : en C, il faut 0 < x && x < 10."
+  ],
+  "retenir": [
+   "if exécute un bloc seulement si la condition est vraie.",
+   "else et else if : un seul chemin est pris.",
+   "== compare, = range une valeur.",
+   "&& (et), || (ou), ! (non).",
+   "En C, 0 est faux, tout le reste est vrai."
+  ],
+  "quiz": [
+   {
+    "q": "Que fait if (x = 0) ?",
+    "choix": [
+     "Il teste si x vaut 0",
+     "Il range 0 dans x et le bloc ne s'exécute jamais",
+     "Il provoque toujours une erreur de compilation"
+    ],
+    "bonne": 1,
+    "explication": "= range 0 dans x, puis le test vaut 0, donc faux."
+   },
+   {
+    "q": "Comment tester si x est entre 1 et 9 inclus ?",
+    "choix": [
+     "x >= 1 && x <= 9",
+     "1 <= x <= 9",
+     "x >= 1 || x <= 9"
+    ],
+    "bonne": 0,
+    "explication": "Il faut deux comparaisons reliées par && ; avec ||, presque tous les nombres passeraient."
+   },
+   {
+    "q": "Avec if / else if / else, combien de blocs s'exécutent ?",
+    "choix": [
+     "Tous ceux dont la condition est vraie",
+     "Aucun si plusieurs sont vraies",
+     "Un seul"
+    ],
+    "bonne": 2,
+    "explication": "Le programme s'arrête à la première condition vraie."
+   }
+  ],
+  "question": "Comment écrirais-tu une condition qui est vraie si un caractère est une lettre, majuscule ou minuscule ?"
+ },
+ "boucles": {
+  "titre": "La boucle while",
+  "objectif": "Répéter des instructions avec une boucle while qui s'arrête au bon moment, sans tourner à l'infini.",
+  "pourquoi": "Afficher l'alphabet, parcourir une chaîne de caractères, lire un fichier ligne par ligne : presque tous les exercices de la Piscine contiennent une boucle.\n\nÀ 42, la Norme interdit la boucle `for` : tu n'utiliseras que `while`. Autant bien la maîtriser.",
+  "analogie": "Une boucle, c'est faire des tours de piste. Avant chaque tour, l'entraîneur regarde le compteur et demande : « Il reste des tours à faire ? » Si oui, tu cours un tour et tu ajoutes 1 au compteur. Sinon, tu t'arrêtes.\n\nSi personne ne met à jour le compteur, tu cours pour toujours.",
+  "vocabulaire": [
+   {
+    "mot": "Boucle",
+    "def": "Un bloc d'instructions répété plusieurs fois."
+   },
+   {
+    "mot": "Condition d'arrêt",
+    "def": "La condition testée avant chaque tour ; quand elle devient fausse, la boucle s'arrête."
+   },
+   {
+    "mot": "Compteur",
+    "def": "Une variable qui change à chaque tour, souvent appelée i."
+   },
+   {
+    "mot": "Itération",
+    "def": "Un tour de boucle."
+   },
+   {
+    "mot": "Boucle infinie",
+    "def": "Une boucle dont la condition reste toujours vraie."
+   }
+  ],
+  "sections": [
+   {
+    "titre": "La forme de while",
+    "texte": "`while (condition) { ... }` : tant que la condition est vraie, on exécute le bloc, puis on revient tester la condition.\n\nLa condition est testée avant chaque tour, y compris le premier. Si elle est fausse dès le départ, le bloc ne s'exécute jamais.\n\nUne boucle bien écrite a trois parties : une initialisation avant la boucle (`i = 0;`), une condition (`i < 5`), et une mise à jour dans le bloc (`i++;`)."
+   },
+   {
+    "titre": "Suivre une boucle à la main",
+    "texte": "Le meilleur moyen de comprendre une boucle, c'est de la faire tourner sur papier, avec un tableau : une colonne pour chaque variable, une ligne par tour.\n\nPour `i = 0; while (i < 3) { i++; }` :\n\n- Avant : i = 0. Test 0 < 3, vrai.\n- Tour 1 : i devient 1. Test 1 < 3, vrai.\n- Tour 2 : i devient 2. Test 2 < 3, vrai.\n- Tour 3 : i devient 3. Test 3 < 3, faux : on sort.\n\nTrois tours, et i vaut 3 à la sortie. Cette technique te sauvera à chaque bug de boucle."
+   },
+   {
+    "titre": "Le piège de la boucle infinie",
+    "texte": "Si rien ne change dans la boucle, la condition reste vraie pour toujours. Le programme ne s'arrête plus : il faut l'interrompre avec Ctrl+C.\n\nCauses fréquentes : oublier `i++`, modifier la mauvaise variable, ou écrire une condition qui ne peut jamais devenir fausse, comme `i != 10` quand i avance de 3 en 3 (0, 3, 6, 9, 12…).\n\nPréfère `<` à `!=` quand c'est possible : la boucle s'arrête même si on dépasse la valeur visée."
+   },
+   {
+    "titre": "Compter de un en un… ou autrement",
+    "texte": "`i++` ajoute 1, `i--` retire 1. On peut aussi avancer de plusieurs pas : `i = i + 2;`, ou `i += 2;` en plus court.\n\nUne boucle peut compter à rebours, de 5 à 1, avec `i--` et une condition `i > 0`.\n\nLe compteur ne sert pas seulement à compter les tours : on s'en sert aussi comme numéro de case pour parcourir un tableau, et c'est ce que tu feras sans arrêt en C."
+   },
+   {
+    "titre": "Une boucle dans une boucle",
+    "texte": "On peut mettre une boucle à l'intérieur d'une autre. Pour chaque tour de la boucle extérieure, la boucle intérieure fait tous ses tours.\n\nPour dessiner un rectangle de 3 lignes et 5 colonnes, la boucle extérieure compte les lignes et la boucle intérieure dessine les 5 caractères de chaque ligne.\n\nAttention à bien remettre le compteur de la boucle intérieure à zéro avant qu'elle ne recommence : c'est l'oubli le plus fréquent."
+   }
+  ],
+  "exemple": {
+   "titre": "Un compte à rebours",
+   "code": "int\ti;\n\ni = 5;\nwhile (i > 0)\n{\n\tprintf(\"%d...\\n\", i);\n\ti--;\n}\nprintf(\"Décollage !\\n\");",
+   "explication": "On initialise le compteur à 5. Avant chaque tour, on teste `i > 0`. Dans le bloc, on affiche la valeur, puis on retire 1.\n\nLe programme affiche 5, 4, 3, 2, 1, puis i vaut 0 : le test devient faux et on sort de la boucle pour afficher « Décollage ! ».\n\nEssaie de supprimer `i--;` sur papier : que se passe-t-il ?"
+  },
+  "pieges": [
+   "Oublier de modifier le compteur : boucle infinie.",
+   "Se tromper d'une unité (< ou <=) et faire un tour de trop ou de moins.",
+   "Oublier de remettre à zéro le compteur d'une boucle intérieure."
+  ],
+  "retenir": [
+   "while teste la condition avant chaque tour.",
+   "Trois parties : initialisation, condition, mise à jour.",
+   "Fais tourner tes boucles à la main dans un tableau.",
+   "Ctrl+C arrête un programme bloqué.",
+   "À 42, pas de for : seulement while."
+  ],
+  "quiz": [
+   {
+    "q": "Combien de fois s'exécute while (i < 4) avec i qui part de 0 et i++ ?",
+    "choix": [
+     "4",
+     "3",
+     "5"
+    ],
+    "bonne": 0,
+    "explication": "i prend les valeurs 0, 1, 2, 3 : quatre tours."
+   },
+   {
+    "q": "i = 10; while (i < 5) { ... } : combien de tours ?",
+    "choix": [
+     "Un seul",
+     "Aucun",
+     "Cinq"
+    ],
+    "bonne": 1,
+    "explication": "La condition est fausse dès le départ, donc le bloc ne s'exécute jamais."
+   },
+   {
+    "q": "Quelle est la cause la plus fréquente d'une boucle infinie ?",
+    "choix": [
+     "Une variable de type char",
+     "Un printf dans la boucle",
+     "Un compteur qui n'est jamais mis à jour"
+    ],
+    "bonne": 2,
+    "explication": "Si rien ne change, la condition reste vraie pour toujours."
+   }
+  ],
+  "question": "Comment ferais-tu pour afficher seulement les nombres pairs entre 0 et 20 ? Trouve deux façons différentes."
+ },
+ "fonctions": {
+  "titre": "Les fonctions",
+  "objectif": "Découper un programme en fonctions qui reçoivent des paramètres et renvoient un résultat.",
+  "pourquoi": "À la Piscine, presque chaque exercice te demande d'écrire une fonction avec un prototype précis. Si ton prototype ne correspond pas exactement, l'exercice est faux, même si le reste marche.\n\nPlus tard, découper en fonctions est ce qui te permettra d'écrire de gros projets sans t'y perdre.",
+  "analogie": "Une fonction, c'est une machine à café. Tu mets des ingrédients (les paramètres), tu appuies sur le bouton (l'appel), la machine fait son travail à l'intérieur et te rend un café (la valeur de retour).\n\nTu n'as pas besoin de savoir comment elle marche dedans pour t'en servir : il suffit de connaître ce qu'elle attend et ce qu'elle rend.",
+  "vocabulaire": [
+   {
+    "mot": "Prototype",
+    "def": "La première ligne d'une fonction : type de retour, nom et paramètres."
+   },
+   {
+    "mot": "Paramètre",
+    "def": "Une variable qui reçoit une valeur donnée par l'appelant."
+   },
+   {
+    "mot": "Appel",
+    "def": "L'instruction qui lance une fonction : addition(3, 4)."
+   },
+   {
+    "mot": "return",
+    "def": "L'instruction qui renvoie un résultat et termine la fonction."
+   },
+   {
+    "mot": "void",
+    "def": "Le mot qui veut dire « rien » : pas de valeur renvoyée, ou pas de paramètre."
+   }
+  ],
+  "sections": [
+   {
+    "titre": "Anatomie d'une fonction",
+    "texte": "`int addition(int a, int b)` se lit : une fonction qui s'appelle `addition`, qui reçoit deux entiers `a` et `b`, et qui renvoie un entier.\n\nSon corps, entre accolades, contient les instructions. `return a + b;` renvoie le résultat et termine la fonction immédiatement.\n\nUne fonction qui ne renvoie rien a le type `void` : `void dire_bonjour(void)`. Le second `void` veut dire qu'elle ne prend aucun paramètre."
+   },
+   {
+    "titre": "Appeler une fonction",
+    "texte": "On appelle une fonction en écrivant son nom et les valeurs entre parenthèses : `resultat = addition(3, 4);`. La valeur renvoyée (7) est rangée dans `resultat`.\n\nLes valeurs données à l'appel sont copiées dans les paramètres. Si la fonction modifie `a`, l'original n'est pas touché : elle travaille sur une copie. Pour modifier la variable de l'appelant, il faudra des pointeurs : c'est un cours à part.\n\nL'ordre compte : le premier argument va dans le premier paramètre, et ainsi de suite."
+   },
+   {
+    "titre": "Où déclarer une fonction",
+    "texte": "Le compilateur lit le fichier de haut en bas. S'il rencontre un appel à une fonction qu'il ne connaît pas encore, il proteste.\n\nDeux solutions : écrire la fonction au-dessus de `main`, ou écrire son prototype suivi d'un point-virgule en haut du fichier.\n\nÀ 42, tes fonctions sont souvent dans un fichier, et ton `main` de test dans un autre. On compile les deux ensemble : `cc -Wall -Wextra -Werror ft_fonction.c main.c`. C'est pour ça qu'on te demande de ne pas rendre de `main`."
+   },
+   {
+    "titre": "Les variables locales",
+    "texte": "Une variable déclarée dans une fonction n'existe que dans cette fonction. Elle naît quand la fonction commence et disparaît quand elle se termine.\n\nDeux fonctions peuvent donc avoir chacune une variable `i` sans qu'elles se mélangent : chacune a la sienne.\n\nC'est une protection précieuse : une fonction ne peut pas modifier par erreur les variables d'une autre. Elles communiquent seulement par les paramètres et la valeur de retour."
+   },
+   {
+    "titre": "Bien découper",
+    "texte": "Une bonne fonction fait une seule chose et la fait bien. Son nom dit ce qu'elle fait : `est_une_lettre`, `afficher_ligne`, `compter_voyelles`.\n\nLa Norme de 42 limite une fonction à 25 lignes et 4 paramètres. Ce n'est pas une punition : ça t'oblige à découper, et un code découpé est plus facile à tester et à corriger.\n\nQuand une fonction devient longue, cherche le morceau qui pourrait devenir une petite fonction à part."
+   }
+  ],
+  "exemple": {
+   "titre": "Une fonction et son appel",
+   "code": "int\test_majeur(int age)\n{\n\tif (age >= 18)\n\t\treturn (1);\n\treturn (0);\n}\n\nint\tmain(void)\n{\n\tif (est_majeur(20))\n\t\tprintf(\"Majeur\\n\");\n\treturn (0);\n}",
+   "explication": "`est_majeur` reçoit un âge et renvoie 1 si la personne est majeure, 0 sinon. Le premier `return` termine la fonction : si l'âge est d'au moins 18, la ligne suivante n'est jamais atteinte.\n\nDans `main`, on appelle la fonction avec 20. Elle renvoie 1, qui est vrai en C, donc « Majeur » s'affiche. À 42, on écrit `return (valeur);` avec des parenthèses : c'est une règle de la Norme."
+  },
+  "pieges": [
+   "Un prototype différent de celui demandé dans le sujet : l'exercice est faux.",
+   "Oublier le return dans une fonction qui doit renvoyer une valeur.",
+   "Croire qu'une fonction modifie la variable de l'appelant alors qu'elle travaille sur une copie."
+  ],
+  "retenir": [
+   "Prototype : type de retour, nom, paramètres.",
+   "return renvoie une valeur et termine la fonction.",
+   "Les paramètres sont des copies des valeurs données.",
+   "Les variables locales n'existent que dans leur fonction.",
+   "Une fonction = une seule tâche, avec un nom clair."
+  ],
+  "quiz": [
+   {
+    "q": "Que renvoie une fonction de type void ?",
+    "choix": [
+     "Rien",
+     "Toujours 0",
+     "Un pointeur"
+    ],
+    "bonne": 0,
+    "explication": "void veut dire qu'aucune valeur n'est renvoyée."
+   },
+   {
+    "q": "Une fonction modifie son paramètre a. La variable de l'appelant change-t-elle ?",
+    "choix": [
+     "Oui, toujours",
+     "Non, a est une copie",
+     "Seulement si c'est un int"
+    ],
+    "bonne": 1,
+    "explication": "Les paramètres reçoivent une copie de la valeur."
+   },
+   {
+    "q": "Que se passe-t-il après un return ?",
+    "choix": [
+     "La fonction continue jusqu'à la fin",
+     "Le programme entier s'arrête",
+     "La fonction se termine immédiatement"
+    ],
+    "bonne": 2,
+    "explication": "return renvoie la valeur et quitte la fonction tout de suite."
+   }
+  ],
+  "question": "Pourquoi, à ton avis, 42 te demande-t-il de rendre tes fonctions sans main ?"
+ },
+ "write": {
+  "titre": "Afficher avec write",
+  "objectif": "Afficher du texte avec la fonction write et comprendre ses trois paramètres.",
+  "pourquoi": "Dans les premiers jours de la Piscine, `printf` est interdit : la seule façon d'afficher, c'est `write`. Tous les premiers exercices reposent sur elle.\n\n`write` est aussi plus proche du système : comprendre ce qu'elle fait, c'est comprendre comment un programme parle au système d'exploitation.",
+  "analogie": "`write`, c'est un tapis roulant vers une destination. Tu lui dis trois choses : vers quelle porte envoyer (l'écran, un fichier…), où se trouvent les colis à envoyer, et combien de colis prendre.\n\nElle ne regarde pas ce qu'il y a dans les colis : elle envoie exactement le nombre demandé, ni plus, ni moins.",
+  "vocabulaire": [
+   {
+    "mot": "Descripteur de fichier",
+    "def": "Un numéro qui désigne une sortie ou une entrée : 0 entrée, 1 sortie, 2 erreurs."
+   },
+   {
+    "mot": "Octet",
+    "def": "Un caractère simple occupe un octet."
+   },
+   {
+    "mot": "Appel système",
+    "def": "Une demande faite directement au système d'exploitation, comme write."
+   },
+   {
+    "mot": "unistd.h",
+    "def": "Le fichier d'en-tête à inclure pour utiliser write."
+   },
+   {
+    "mot": "Adresse",
+    "def": "L'endroit en mémoire où se trouvent des données."
+   }
+  ],
+  "sections": [
+   {
+    "titre": "Les trois paramètres",
+    "texte": "Le prototype est `ssize_t write(int fd, const void *buf, size_t count);`. Pas de panique, on le lit morceau par morceau :\n\n- `fd` : où écrire. 1 pour la sortie standard, donc l'écran. 2 pour la sortie d'erreur.\n- `buf` : l'adresse en mémoire où se trouvent les octets à écrire.\n- `count` : combien d'octets écrire.\n\nPour l'utiliser, il faut `#include <unistd.h>` en haut du fichier."
+   },
+   {
+    "titre": "Écrire un texte fixe",
+    "texte": "Un texte entre guillemets, comme `\"Salut\\n\"`, est rangé quelque part en mémoire, et le guillemet donne son adresse. On peut donc écrire `write(1, \"Salut\\n\", 6);`.\n\nPourquoi 6 ? Il y a 5 lettres et le retour à la ligne `\\n`, qui compte pour un seul caractère.\n\nSi tu mets un nombre trop petit, le texte est coupé. Si tu mets un nombre trop grand, write envoie aussi ce qui traîne en mémoire après le texte : des caractères bizarres, ou pire."
+   },
+   {
+    "titre": "write ne connaît que des octets",
+    "texte": "`write` ne sait pas ce qu'est un nombre. `write(1, 42, 2)` ne marche pas : 42 n'est pas une adresse.\n\nPour afficher le nombre 42, il faut envoyer les caractères '4' puis '2'. Transformer un nombre en caractères, c'est justement un exercice classique de la Piscine, que tu feras toi-même.\n\nGarde en tête la table ASCII : le caractère '4' n'a pas la valeur 4, mais 52."
+   },
+   {
+    "titre": "Écrire un caractère stocké dans une variable",
+    "texte": "Pour écrire un texte fixe, les guillemets donnent l'adresse. Mais si ton caractère est rangé dans une variable `char c`, write n'attend pas la valeur de c : elle attend l'endroit où c est rangé.\n\nComment obtenir l'adresse d'une variable ? Tu as déjà croisé le symbole qui fait ça avec scanf. C'est exactement la question à te poser pour ton premier exercice avec write."
+   },
+   {
+    "titre": "Sortie standard et sortie d'erreur",
+    "texte": "Les messages normaux vont sur 1, les messages d'erreur sur 2. À l'écran, on ne voit pas la différence, mais on peut les séparer : `./a.out 2> erreurs.txt` envoie seulement les erreurs dans un fichier.\n\nC'est une bonne habitude : un programme bien écrit affiche ses erreurs sur la sortie d'erreur. Les scripts et les outils qui l'utilisent pourront ainsi trier."
+   }
+  ],
+  "exemple": {
+   "titre": "Deux lignes avec write",
+   "code": "#include <unistd.h>\n\nint\tmain(void)\n{\n\twrite(1, \"Bonjour\\n\", 8);\n\twrite(2, \"Ceci est une erreur\\n\", 20);\n\treturn (0);\n}",
+   "explication": "On inclut `unistd.h` pour pouvoir utiliser write. La première ligne écrit 8 octets sur la sortie standard : 7 lettres plus le retour à la ligne.\n\nLa seconde écrit sur la sortie d'erreur. À l'écran, les deux lignes apparaissent. Lance `./a.out 2> /dev/null` : seule la première reste, la seconde est partie dans le fichier qui avale tout."
+  },
+  "pieges": [
+   "Se tromper dans le nombre d'octets : texte coupé ou caractères parasites.",
+   "Donner une valeur au lieu d'une adresse en deuxième paramètre.",
+   "Oublier #include <unistd.h>."
+  ],
+  "retenir": [
+   "write(où, adresse, combien).",
+   "1 = écran (sortie standard), 2 = erreurs.",
+   "\\n compte pour un seul caractère.",
+   "write envoie des octets, pas des nombres.",
+   "Le deuxième paramètre est toujours une adresse."
+  ],
+  "quiz": [
+   {
+    "q": "Combien d'octets faut-il pour écrire \"42\\n\" ?",
+    "choix": [
+     "2",
+     "3",
+     "4"
+    ],
+    "bonne": 1,
+    "explication": "Le 4, le 2 et le retour à la ligne : trois caractères."
+   },
+   {
+    "q": "Que désigne le premier paramètre de write ?",
+    "choix": [
+     "Où écrire",
+     "Le nombre de caractères",
+     "La couleur du texte"
+    ],
+    "bonne": 0,
+    "explication": "C'est le descripteur de fichier : 1 pour l'écran."
+   },
+   {
+    "q": "Pourquoi write(1, 7, 1) ne peut-il pas afficher 7 ?",
+    "choix": [
+     "Parce que 7 est trop grand",
+     "Parce que le descripteur 1 est faux",
+     "Parce que 7 n'est pas une adresse"
+    ],
+    "bonne": 2,
+    "explication": "Le deuxième paramètre doit être l'adresse des octets à écrire."
+   }
+  ],
+  "question": "Si ton caractère est dans une variable c, que dois-tu donner à write en deuxième paramètre, et pourquoi ?"
+ },
+ "chaines": {
+  "titre": "Tableaux et chaînes",
+  "objectif": "Comprendre comment un tableau et une chaîne de caractères sont rangés en mémoire, et comment lire chacune de leurs cases.",
+  "pourquoi": "Les chaînes de caractères sont au cœur de la Piscine : la plupart des exercices des premiers jours consistent à recoder des fonctions qui les manipulent.\n\nEn cybersécurité, les chaînes sont aussi au cœur des failles les plus célèbres : écrire au-delà de la fin d'un tableau, c'est le dépassement de tampon (buffer overflow).",
+  "analogie": "Un tableau, c'est une rangée de casiers numérotés, côte à côte dans un couloir. Le premier casier porte le numéro 0.\n\nUne chaîne de caractères, c'est une rangée de casiers qui contiennent chacun une lettre, avec un casier spécial à la fin, qui porte un panneau « fin de la chaîne ».",
+  "vocabulaire": [
+   {
+    "mot": "Tableau",
+    "def": "Une suite de cases du même type, rangées côte à côte en mémoire."
+   },
+   {
+    "mot": "Indice",
+    "def": "Le numéro d'une case, qui commence à 0."
+   },
+   {
+    "mot": "Chaîne de caractères",
+    "def": "Un tableau de char terminé par le caractère nul '\\0'."
+   },
+   {
+    "mot": "Caractère nul",
+    "def": "'\\0', de valeur 0, qui marque la fin d'une chaîne."
+   },
+   {
+    "mot": "Dépassement de tampon",
+    "def": "Écrire au-delà de la dernière case d'un tableau."
+   }
+  ],
+  "sections": [
+   {
+    "titre": "Déclarer un tableau",
+    "texte": "`int notes[5];` réserve 5 cases d'entiers, côte à côte. On accède à une case avec son indice entre crochets : `notes[0]` est la première, `notes[4]` la dernière.\n\nIl n'y a pas de `notes[5]` : avec 5 cases, les indices vont de 0 à 4. C'est le piège le plus fréquent, et le C ne te prévient pas si tu te trompes.\n\nOn peut lire une case (`x = notes[2];`) ou y écrire (`notes[2] = 15;`) comme avec une variable normale."
+   },
+   {
+    "titre": "Une chaîne, c'est un tableau de char",
+    "texte": "Quand tu écris `\"Salut\"`, le compilateur range 6 caractères : 'S', 'a', 'l', 'u', 't' et '\\0'.\n\nCe dernier caractère, de valeur 0, est le marqueur de fin. Une chaîne en C ne connaît pas sa propre longueur : la seule façon de savoir où elle s'arrête, c'est de trouver le '\\0'.\n\nToutes les fonctions qui manipulent des chaînes reposent sur ce principe. Garde-le en tête : c'est la clé de tes premiers exercices."
+   },
+   {
+    "titre": "Lire une case d'une chaîne",
+    "texte": "Avec `char *str = \"Salut\";`, on lit les caractères comme les cases d'un tableau : `str[0]` vaut 'S', `str[1]` vaut 'a', et `str[5]` vaut '\\0'.\n\nL'indice peut être une variable : `str[i]`. Si i vaut 2, on lit 'l'. En changeant i, on passe d'une case à l'autre : c'est ce qui permet de parcourir une chaîne avec une boucle.\n\nFais toujours un dessin des cases avec leurs numéros avant de coder : la moitié des bugs disparaissent sur papier."
+   },
+   {
+    "titre": "Le danger : sortir du tableau",
+    "texte": "Le C ne vérifie jamais que l'indice est valide. Si tu écris dans `notes[10]` avec un tableau de 5 cases, tu écris dans la mémoire voisine, qui appartient peut-être à une autre variable.\n\nAu mieux, le programme plante (segmentation fault). Au pire, il continue avec des données corrompues.\n\nC'est le dépassement de tampon : la faille qui a fait le plus de dégâts dans l'histoire de l'informatique. Un attaquant qui contrôle ce qui déborde peut parfois prendre le contrôle du programme."
+   },
+   {
+    "titre": "Chaîne modifiable ou non",
+    "texte": "`char *str = \"Salut\";` pointe vers un texte rangé dans une zone en lecture seule : essayer de le modifier fait planter le programme.\n\n`char str[] = \"Salut\";` crée un tableau de 6 cases avec une copie du texte : celui-là, on peut le modifier.\n\nLa différence paraît petite, mais elle explique beaucoup de plantages mystérieux dans les exercices qui modifient une chaîne."
+   }
+  ],
+  "exemple": {
+   "titre": "Lire des cases précises",
+   "code": "char\tmot[] = \"Piscine\";\n\nprintf(\"%c\\n\", mot[0]);\nprintf(\"%c\\n\", mot[6]);\nmot[0] = 'p';\nprintf(\"%s\\n\", mot);",
+   "explication": "`mot` est un tableau de 8 cases : les 7 lettres et le '\\0'. `mot[0]` affiche 'P', `mot[6]` affiche la dernière lettre, 'e'.\n\nComme c'est un tableau et non un texte en lecture seule, on peut modifier une case : on remplace la majuscule par une minuscule. `printf` avec `%s` affiche ensuite toute la chaîne, « piscine », en s'arrêtant tout seul au '\\0'."
+  },
+  "pieges": [
+   "Oublier que le premier indice est 0 et que le dernier est taille - 1.",
+   "Oublier la case du '\\0' en comptant la place d'une chaîne.",
+   "Modifier un texte déclaré avec char *str = \"...\" : il est en lecture seule."
+  ],
+  "retenir": [
+   "Les indices commencent à 0.",
+   "Une chaîne se termine toujours par '\\0'.",
+   "str[i] lit la case numéro i.",
+   "Le C ne vérifie pas les limites : c'est à toi de le faire.",
+   "Sortir d'un tableau = dépassement de tampon, une faille majeure."
+  ],
+  "quiz": [
+   {
+    "q": "Combien de cases occupe la chaîne \"42\" ?",
+    "choix": [
+     "2",
+     "4",
+     "3"
+    ],
+    "bonne": 2,
+    "explication": "Le 4, le 2 et le caractère nul de fin."
+   },
+   {
+    "q": "Avec int tab[10], quel est le dernier indice valide ?",
+    "choix": [
+     "9",
+     "10",
+     "11"
+    ],
+    "bonne": 0,
+    "explication": "Les indices vont de 0 à 9."
+   },
+   {
+    "q": "Comment une fonction sait-elle où s'arrête une chaîne ?",
+    "choix": [
+     "Elle lit sa longueur au début",
+     "Elle cherche le caractère '\\0'",
+     "Le compilateur lui donne la taille"
+    ],
+    "bonne": 1,
+    "explication": "Une chaîne C ne stocke pas sa longueur : seule la case '\\0' marque la fin."
+   }
+  ],
+  "question": "Dessine les cases de la chaîne \"Bonjour 42\". Combien y en a-t-il, et quel est l'indice du '\\0' ?"
+ },
+ "ascii": {
+  "titre": "La table ASCII",
+  "objectif": "Savoir que chaque caractère est un nombre, lire la table ASCII et faire des calculs simples avec des caractères.",
+  "pourquoi": "Beaucoup d'exercices de la Piscine jouent avec les caractères : passer en majuscules, reconnaître un chiffre, afficher l'alphabet. Tous reposent sur la table ASCII.\n\nEn cybersécurité, les données sont des octets avant d'être du texte : savoir passer de l'un à l'autre est indispensable pour lire un fichier inconnu ou décoder un message.",
+  "analogie": "La table ASCII, c'est un dictionnaire partagé par tous les ordinateurs : à chaque nombre de 0 à 127, il associe un caractère. Quand l'ordinateur range 'A', il range en réalité le nombre 65 ; quand il l'affiche, il consulte le dictionnaire.\n\nComme les lettres y sont rangées dans l'ordre, on peut « avancer dans l'alphabet » en ajoutant 1.",
+  "vocabulaire": [
+   {
+    "mot": "ASCII",
+    "def": "Le code qui associe un nombre de 0 à 127 à chaque caractère de base."
+   },
+   {
+    "mot": "Caractère imprimable",
+    "def": "Un caractère visible, de l'espace (32) au tilde (126)."
+   },
+   {
+    "mot": "Caractère de contrôle",
+    "def": "Un caractère invisible qui donne un ordre, comme le retour à la ligne (10)."
+   },
+   {
+    "mot": "man ascii",
+    "def": "La commande qui affiche la table complète dans le terminal."
+   },
+   {
+    "mot": "Conversion",
+    "def": "Passer d'un caractère à son code, ou l'inverse."
+   }
+  ],
+  "sections": [
+   {
+    "titre": "Chaque caractère est un nombre",
+    "texte": "En C, un `char` contient un nombre. `char c = 'A';` et `char c = 65;` rangent exactement la même chose.\n\nLa différence vient seulement de l'affichage : `printf(\"%c\", c)` affiche A, et `printf(\"%d\", c)` affiche 65.\n\nLes apostrophes ne servent qu'à te faciliter la vie : écrire `'A'` est plus lisible que de retenir 65."
+   },
+   {
+    "titre": "Les zones à connaître",
+    "texte": "Pas besoin d'apprendre la table par cœur, mais retiens ces repères :\n\n- 0 : le caractère nul '\\0', fin des chaînes.\n- 10 : le retour à la ligne '\\n'.\n- 32 : l'espace.\n- 48 à 57 : les chiffres de '0' à '9'.\n- 65 à 90 : les majuscules de 'A' à 'Z'.\n- 97 à 122 : les minuscules de 'a' à 'z'.\n\nTape `man ascii` dans un terminal : la table complète s'affiche, en décimal et en hexadécimal."
+   },
+   {
+    "titre": "Calculer avec des caractères",
+    "texte": "Comme les lettres se suivent, on peut faire des calculs : `'A' + 1` donne 'B', `'a' + 25` donne 'z'.\n\nOn peut aussi comparer : `c >= 'a' && c <= 'z'` est vrai si c est une minuscule. Pas besoin de connaître les nombres : le compilateur remplace les lettres par leurs codes.\n\nRegarde la distance entre une majuscule et sa minuscule dans la table : elle est toujours la même. C'est une observation précieuse pour plusieurs exercices de la Piscine, que je te laisse découvrir."
+   },
+   {
+    "titre": "Le caractère '7' n'est pas le nombre 7",
+    "texte": "Piège classique : le caractère '7' vaut 55, pas 7. Si un programme lit « 7 » au clavier, il reçoit 55.\n\nPour passer du caractère au chiffre, il faut donc un calcul. Indice : quel est le code de '0', et quel écart y a-t-il entre '0' et '7' ?\n\nCe petit calcul est à la base de plusieurs exercices de la Piscine, dans un sens comme dans l'autre."
+   }
+  ],
+  "exemple": {
+   "titre": "Explorer la table",
+   "code": "char\tc;\n\nc = 'A';\nprintf(\"%c vaut %d\\n\", c, c);\nc = c + 2;\nprintf(\"%c vaut %d\\n\", c, c);\nprintf(\"%d\\n\", 'a' - 'A');",
+   "explication": "La première ligne affiche « A vaut 65 » : le même char vu de deux façons. On ajoute 2 : c devient 67, c'est-à-dire 'C'.\n\nLa dernière ligne affiche la distance entre une minuscule et sa majuscule. Lance ce programme toi-même pour découvrir la valeur, puis vérifie avec une autre lettre : est-ce que l'écart change ?"
+  },
+  "pieges": [
+   "Confondre le caractère '0' (48) et le nombre 0 (le caractère nul).",
+   "Croire que '9' + 1 donne '10' : il donne ':', le caractère suivant dans la table.",
+   "Oublier les apostrophes : A sans apostrophes est un nom de variable, pas une lettre."
+  ],
+  "retenir": [
+   "Un char est un nombre ; l'affichage dépend du format.",
+   "'0' = 48, 'A' = 65, 'a' = 97.",
+   "Les lettres et les chiffres se suivent dans la table.",
+   "On peut comparer et calculer avec des caractères.",
+   "man ascii affiche toute la table."
+  ],
+  "quiz": [
+   {
+    "q": "Que vaut 'B' - 'A' ?",
+    "choix": [
+     "1",
+     "66",
+     "'B'"
+    ],
+    "bonne": 0,
+    "explication": "Les lettres se suivent : B est juste après A."
+   },
+   {
+    "q": "Quel est le code ASCII du caractère '0' ?",
+    "choix": [
+     "0",
+     "48",
+     "30"
+    ],
+    "bonne": 1,
+    "explication": "Les chiffres commencent à 48 ; 0 est le caractère nul."
+   },
+   {
+    "q": "Que teste c >= '0' && c <= '9' ?",
+    "choix": [
+     "Si c est une lettre",
+     "Si c est un nombre entre 0 et 9",
+     "Si c est un caractère chiffre"
+    ],
+    "bonne": 2,
+    "explication": "On compare avec les codes des caractères '0' à '9'."
+   }
+  ],
+  "question": "Sans écrire de code : comment pourrais-tu transformer une lettre minuscule en majuscule, en t'aidant de la table ?"
+ },
+ "pointeurs": {
+  "titre": "Adresses et pointeurs",
+  "objectif": "Comprendre ce qu'est une adresse, utiliser & et * et modifier une variable depuis une autre fonction.",
+  "pourquoi": "Les pointeurs arrivent très vite à la Piscine, et ils font peur à presque tout le monde. Pourtant, l'idée est simple, et une fois qu'elle est comprise, tout le C devient logique.\n\nEn cybersécurité, la plupart des failles mémoire viennent de pointeurs mal utilisés : comprendre les pointeurs, c'est comprendre ces failles.",
+  "analogie": "La mémoire, c'est une immense rue avec des maisons numérotées. Chaque variable habite une maison. Son adresse, c'est le numéro de la maison.\n\nUn pointeur, c'est un papier sur lequel on a écrit une adresse. Avec ce papier, tu peux aller à la maison et changer ce qu'il y a dedans, même si tu n'es pas celui qui l'a construite.",
+  "vocabulaire": [
+   {
+    "mot": "Adresse",
+    "def": "Le numéro de l'emplacement d'une variable en mémoire."
+   },
+   {
+    "mot": "Pointeur",
+    "def": "Une variable qui contient une adresse."
+   },
+   {
+    "mot": "&",
+    "def": "L'opérateur qui donne l'adresse d'une variable."
+   },
+   {
+    "mot": "* (déréférencement)",
+    "def": "L'opérateur qui va à l'adresse et lit ou modifie ce qui s'y trouve."
+   },
+   {
+    "mot": "NULL",
+    "def": "Une adresse spéciale qui veut dire « ne pointe vers rien »."
+   }
+  ],
+  "sections": [
+   {
+    "titre": "Toute variable a une adresse",
+    "texte": "Quand tu déclares `int n = 7;`, le programme réserve une place en mémoire pour n. Cette place a une adresse, un grand nombre souvent affiché en hexadécimal, comme `0x7ffd10`.\n\nL'opérateur `&` donne cette adresse : `&n` se lit « l'adresse de n ». Tu l'as déjà utilisé avec scanf : scanf a besoin de l'adresse pour savoir où écrire ce que tu tapes.\n\n`printf(\"%p\\n\", &n);` affiche l'adresse. Lance-le deux fois : elle change souvent d'une exécution à l'autre, c'est une protection du système."
+   },
+   {
+    "titre": "Déclarer un pointeur",
+    "texte": "Un pointeur se déclare avec une étoile : `int *p;` se lit « p est un pointeur vers un int ». Il est fait pour contenir l'adresse d'un int.\n\nOn lui donne une adresse : `p = &n;`. Maintenant, p « pointe vers » n.\n\nLe type compte : un `int *` pointe vers un int, un `char *` vers un char. Le compilateur s'en sert pour savoir combien d'octets lire à cette adresse."
+   },
+   {
+    "titre": "Aller à l'adresse avec *",
+    "texte": "Une fois que p contient l'adresse de n, `*p` veut dire « ce qu'il y a à l'adresse contenue dans p », c'est-à-dire n.\n\n- `printf(\"%d\", *p);` affiche 7.\n- `*p = 10;` range 10 à cette adresse : n vaut maintenant 10.\n\nL'étoile a donc deux rôles : dans une déclaration (`int *p;`), elle dit « p est un pointeur ». Ailleurs (`*p = 10;`), elle veut dire « va à l'adresse ». C'est la source de confusion numéro un : relis cette phrase deux fois."
+   },
+   {
+    "titre": "Modifier une variable depuis une fonction",
+    "texte": "Tu as vu qu'une fonction reçoit une copie de ses paramètres. Elle ne peut donc pas modifier la variable de l'appelant… sauf si on lui donne son adresse.\n\nAvec l'adresse, la fonction peut aller directement à la maison de la variable et changer ce qu'il y a dedans. C'est exactement ce que fait scanf.\n\nCe mécanisme est la base de plusieurs exercices de la Piscine : une fonction qui reçoit un pointeur et modifie la valeur pointée."
+   },
+   {
+    "titre": "Les pointeurs dangereux",
+    "texte": "Un pointeur non initialisé contient une adresse au hasard. Écrire à travers lui, c'est écrire n'importe où : plantage ou corruption de données.\n\n`NULL` sert à dire « ce pointeur ne pointe vers rien ». Lire ou écrire à travers NULL fait planter le programme (segmentation fault) : c'est bruyant, mais au moins on voit l'erreur.\n\nLe réflexe : initialise toujours tes pointeurs, et vérifie qu'ils ne valent pas NULL avant de t'en servir quand ils viennent d'une fonction qui peut échouer."
+   }
+  ],
+  "exemple": {
+   "titre": "Une fonction qui modifie une variable",
+   "code": "void\tajouter_dix(int *nombre)\n{\n\t*nombre = *nombre + 10;\n}\n\nint\tmain(void)\n{\n\tint\tscore;\n\n\tscore = 5;\n\tajouter_dix(&score);\n\tprintf(\"%d\\n\", score);\n\treturn (0);\n}",
+   "explication": "`main` donne l'adresse de score avec `&score`. La fonction la reçoit dans `nombre`, un pointeur vers un int.\n\nDans la fonction, `*nombre` veut dire « la variable qui habite à cette adresse », donc score. On lui ajoute 10. De retour dans main, score vaut 15 : la fonction a bien modifié la vraie variable, et pas une copie."
+  },
+  "pieges": [
+   "Confondre p (l'adresse) et *p (la valeur à cette adresse).",
+   "Utiliser un pointeur non initialisé.",
+   "Oublier le & à l'appel : la fonction reçoit une valeur au lieu d'une adresse."
+  ],
+  "retenir": [
+   "&x donne l'adresse de x.",
+   "int *p déclare un pointeur vers un int.",
+   "*p va à l'adresse et lit ou modifie la valeur.",
+   "Passer une adresse permet à une fonction de modifier une variable.",
+   "NULL veut dire « ne pointe vers rien » : ne pas déréférencer."
+  ],
+  "quiz": [
+   {
+    "q": "Si p = &n et n vaut 3, que vaut *p ?",
+    "choix": [
+     "L'adresse de n",
+     "3",
+     "0"
+    ],
+    "bonne": 1,
+    "explication": "*p lit la valeur rangée à l'adresse de n."
+   },
+   {
+    "q": "Que fait *p = 8 ?",
+    "choix": [
+     "Il range 8 dans la variable pointée par p",
+     "Il change l'adresse contenue dans p",
+     "Il déclare un nouveau pointeur"
+    ],
+    "bonne": 0,
+    "explication": "L'étoile va à l'adresse et modifie la valeur qui s'y trouve."
+   },
+   {
+    "q": "Pourquoi scanf a-t-il besoin de & ?",
+    "choix": [
+     "Pour aller plus vite",
+     "Pour afficher le résultat",
+     "Pour savoir où écrire la valeur lue"
+    ],
+    "bonne": 2,
+    "explication": "scanf doit modifier ta variable : il lui faut son adresse."
+   }
+  ],
+  "question": "Explique avec tes mots, en utilisant l'image des maisons, la différence entre p et *p."
+ },
+ "malloc": {
+  "titre": "La mémoire : malloc et free",
+  "objectif": "Réserver de la mémoire avec malloc, la libérer avec free et éviter les fuites et les accès après libération.",
+  "pourquoi": "Dès que la taille d'une donnée n'est connue qu'à l'exécution, par exemple une chaîne dont on ne connaît pas la longueur à l'avance, il faut demander de la mémoire au système. À 42, c'est le cœur de la libft, ton premier grand projet.\n\nCôté cybersécurité, les erreurs de gestion mémoire, comme utiliser une zone déjà libérée, sont parmi les failles les plus graves : tu en as vu une dans les actus avec NGINX.",
+  "analogie": "La pile, c'est ton bureau : tu y poses tes affaires quand tu commences une tâche, et tout est rangé automatiquement quand tu as fini.\n\nLe tas, c'est un garde-meuble : tu loues un box (malloc), tu le gardes aussi longtemps que tu veux, mais tu dois rendre la clé toi-même (free). Si tu oublies, le box reste loué pour rien. Si tu y retournes après avoir rendu la clé, tu tombes sur les affaires de quelqu'un d'autre.",
+  "vocabulaire": [
+   {
+    "mot": "Pile (stack)",
+    "def": "La zone où vivent les variables locales, libérées automatiquement à la fin de la fonction."
+   },
+   {
+    "mot": "Tas (heap)",
+    "def": "La zone où l'on demande de la mémoire à la main avec malloc."
+   },
+   {
+    "mot": "malloc",
+    "def": "La fonction qui réserve un nombre d'octets et renvoie l'adresse de la zone."
+   },
+   {
+    "mot": "free",
+    "def": "La fonction qui rend au système une zone réservée par malloc."
+   },
+   {
+    "mot": "Fuite de mémoire",
+    "def": "De la mémoire réservée et jamais libérée."
+   },
+   {
+    "mot": "Use-after-free",
+    "def": "Utiliser une zone après l'avoir libérée : une faille grave."
+   }
+  ],
+  "sections": [
+   {
+    "titre": "Pourquoi malloc ?",
+    "texte": "Les variables locales vivent dans la pile : elles disparaissent quand la fonction se termine. Une fonction ne peut donc pas renvoyer l'adresse d'un de ses tableaux locaux : la mémoire n'existe plus après le return.\n\nDe plus, la taille d'un tableau local doit souvent être fixée à l'avance. Si tu dois copier une chaîne dont tu ne connais pas la longueur, tu ne peux pas savoir combien de cases prévoir.\n\n`malloc` résout les deux problèmes : il réserve la taille exacte dont tu as besoin, et la zone reste valide jusqu'à ce que tu la libères."
+   },
+   {
+    "titre": "Utiliser malloc",
+    "texte": "`malloc` reçoit un nombre d'octets et renvoie l'adresse de la zone réservée. Il faut `#include <stdlib.h>`.\n\nPour 10 entiers : `int *tab = malloc(sizeof(int) * 10);`. `sizeof(int)` donne la taille d'un int en octets ; on multiplie par le nombre de cases.\n\nPour une chaîne de n lettres, n'oublie pas la case du '\\0' : il faut n + 1 octets. C'est l'oubli le plus fréquent de la libft.\n\nEnsuite, on se sert de `tab` comme d'un tableau normal : `tab[0] = 42;`."
+   },
+   {
+    "titre": "malloc peut échouer",
+    "texte": "S'il n'y a plus de mémoire disponible, `malloc` renvoie `NULL`. Utiliser ce NULL comme un tableau fait planter le programme.\n\nLe réflexe obligatoire, vérifié par les correcteurs de 42 : tester le résultat juste après l'appel, et s'arrêter proprement s'il vaut NULL, en général en renvoyant NULL à son tour.\n\nUn code qui ne vérifie pas le retour de malloc est considéré comme faux à 42, même s'il marche sur ta machine."
+   },
+   {
+    "titre": "Rendre la mémoire avec free",
+    "texte": "Quand tu n'as plus besoin d'une zone, tu la rends avec `free(tab);`. Chaque malloc doit avoir exactement un free.\n\n- Pas de free : fuite de mémoire. Le programme consomme de plus en plus de mémoire. À 42, des outils comme valgrind détectent les fuites, et elles comptent comme des erreurs.\n- Deux free sur la même zone (double free) : comportement imprévisible, souvent un plantage.\n\nBonne habitude : après `free(tab);`, écris `tab = NULL;`, pour ne pas réutiliser par erreur une adresse qui n'est plus à toi."
+   },
+   {
+    "titre": "Use-after-free : la faille",
+    "texte": "Après un free, l'adresse contenue dans ton pointeur ne t'appartient plus. Le système peut la donner à une autre partie du programme.\n\nSi tu écris encore à travers l'ancien pointeur, tu modifies peut-être les données de quelqu'un d'autre. Un attaquant qui arrive à contrôler ce qui est rangé à cet endroit peut parfois détourner le programme.\n\nC'est exactement la faille corrigée dans NGINX en novembre 2026. Des milliers de serveurs écrits en C étaient concernés : la rigueur sur malloc et free n'est pas un détail scolaire."
+   }
+  ],
+  "exemple": {
+   "titre": "Réserver, utiliser, libérer",
+   "code": "#include <stdlib.h>\n\nint\t*creer_tableau(int taille)\n{\n\tint\t*tab;\n\n\ttab = malloc(sizeof(int) * taille);\n\tif (tab == NULL)\n\t\treturn (NULL);\n\ttab[0] = 42;\n\treturn (tab);\n}\n\nint\tmain(void)\n{\n\tint\t*t;\n\n\tt = creer_tableau(5);\n\tif (t == NULL)\n\t\treturn (1);\n\tfree(t);\n\tt = NULL;\n\treturn (0);\n}",
+   "explication": "La fonction réserve la place de `taille` entiers dans le tas. Elle vérifie tout de suite que malloc n'a pas échoué. Comme la zone est dans le tas, elle reste valide après le return : on peut renvoyer son adresse.\n\nDans main, on vérifie à nouveau le résultat, puis on libère la zone quand on n'en a plus besoin, et on remet le pointeur à NULL. Un malloc, un free : le compte est bon."
+  },
+  "pieges": [
+   "Oublier la case du '\\0' en réservant la place d'une chaîne.",
+   "Ne pas tester si malloc a renvoyé NULL.",
+   "Oublier le free (fuite), le faire deux fois (double free), ou réutiliser la zone après (use-after-free)."
+  ],
+  "retenir": [
+   "Pile : automatique. Tas : malloc et free, à la main.",
+   "malloc(sizeof(type) * nombre), et +1 pour le '\\0' d'une chaîne.",
+   "Toujours tester si malloc renvoie NULL.",
+   "Un malloc = un free.",
+   "Après free, ne plus toucher la zone : pointeur = NULL."
+  ],
+  "quiz": [
+   {
+    "q": "Combien d'octets réserver pour copier une chaîne de 6 lettres ?",
+    "choix": [
+     "6",
+     "7",
+     "12"
+    ],
+    "bonne": 1,
+    "explication": "6 lettres plus le caractère nul de fin."
+   },
+   {
+    "q": "Que renvoie malloc quand il échoue ?",
+    "choix": [
+     "NULL",
+     "0 octet",
+     "Une adresse au hasard"
+    ],
+    "bonne": 0,
+    "explication": "Il renvoie NULL, qu'il faut toujours tester."
+   },
+   {
+    "q": "Qu'est-ce qu'un use-after-free ?",
+    "choix": [
+     "Oublier de libérer la mémoire",
+     "Réserver trop de mémoire",
+     "Utiliser une zone après l'avoir libérée"
+    ],
+    "bonne": 2,
+    "explication": "La zone peut avoir été donnée à autre chose : c'est une faille grave."
+   }
+  ],
+  "question": "Pourquoi une fonction ne peut-elle pas renvoyer l'adresse d'un tableau déclaré localement, alors qu'elle peut renvoyer celle d'une zone obtenue avec malloc ?"
+ }
+}

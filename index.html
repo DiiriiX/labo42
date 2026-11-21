@@ -134,7 +134,22 @@ details.help{border:1px solid var(--line);border-radius:16px;padding:4px 16px;ma
 details.help summary{cursor:pointer;font-weight:600;padding:12px 0;min-height:44px}
 details.help ol{padding-left:20px}
 .tabbar{position:fixed;left:0;right:0;bottom:0;background:var(--bg);border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:6px 2px calc(6px + env(safe-area-inset-bottom));z-index:5}
-.tabbar a{flex:1;max-width:110px;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0;color:var(--mute);text-decoration:none;font-size:12px;font-weight:500;min-height:52px}
+.tabbar a{flex:1;max-width:96px;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0;color:var(--mute);text-decoration:none;font-size:11px;font-weight:500;min-height:52px}
+.term{background:#0d1117;color:#e6edf3;border-radius:16px;padding:12px;font:14px/1.5 ui-monospace,Menlo,Consolas,monospace;margin-top:14px}
+#termOut{max-height:min(50vh,420px);min-height:170px;overflow-y:auto;white-space:pre-wrap;overflow-wrap:anywhere}
+#termOut div{margin:0 0 2px}
+.t-p{color:#3fd18f}.t-err{color:#ff7b72}.t-ok{color:#3fd18f;font-weight:700}.t-warn{color:#e3b341}.t-dim{color:#8b949e}
+#termForm{display:flex;gap:8px;align-items:center;border-top:1px solid #30363d;padding-top:8px;margin-top:6px}
+#termPrompt{color:#3fd18f;flex:none;white-space:nowrap;max-width:48%;overflow:hidden;text-overflow:ellipsis}
+#termIn{flex:1;background:transparent;border:0;color:#e6edf3;font:16px ui-monospace,Menlo,monospace;outline:none;min-width:0;padding:6px 0}
+#termIn:focus-visible{outline:none}
+.keys{display:flex;gap:6px;overflow-x:auto;padding:8px 0 2px}
+.key{flex:none;min-width:44px;height:44px;border-radius:10px;border:1px solid var(--line);background:var(--surf);color:var(--ink);font:600 16px ui-monospace,Menlo,monospace;cursor:pointer}
+button.pitem{width:100%;background:var(--bg);font:inherit;color:var(--ink);text-align:left;cursor:pointer}
+#defiList{list-style:none;padding:0;display:grid;gap:8px;margin:12px 0 0}
+#defiCard h3{margin:10px 0 6px;font-size:19px}
+#defiCard ol{margin:0;padding-left:20px}
+.lvl{font-weight:600}
 .tabbar a.on{color:var(--acc-ink)}
 .tabbar svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .sv text{font:500 13px Inter,sans-serif;fill:var(--ink)}
@@ -223,7 +238,7 @@ details.help ol{padding-left:20px}
 
 <section class="view" id="v-reviser">
   <h1>Réviser</h1>
-  <p class="sub">Réfléchis à la réponse avant de la voir. Sois honnête : les fiches « à revoir » reviennent en premier.</p>
+  <p class="sub">Les fiches reviennent au bon moment : le lendemain, puis 3 jours, une semaine, deux semaines, un mois plus tard. Sois honnête, c'est comme ça que tu retiens.</p>
   <div class="chips" id="decks"></div>
   <div class="flash" id="flash">
     <div class="ftop"><span class="tag" id="fTag"></span><span id="fNum"></span></div>
@@ -235,8 +250,22 @@ details.help ol{padding-left:20px}
     <button class="btn ghost" id="bKo" type="button">À revoir</button>
     <button class="btn acc" id="bOk" type="button">Je savais</button>
   </div>
+  <p class="small" id="revNote" style="margin-top:10px"></p>
+  <div id="revDone" class="off"></div>
   <div class="bar"><i id="bar"></i></div>
   <div class="small" id="barTxt"></div>
+</section>
+
+<section class="view" id="v-terminal">
+  <h1>Terminal</h1>
+  <p class="sub">Un terminal Linux d'entraînement : relève les défis sans risquer de rien casser.</p>
+  <div class="card" id="defiCard"></div>
+  <div class="term" id="term">
+    <div id="termOut" aria-live="polite"></div>
+    <form id="termForm" autocomplete="off"><span id="termPrompt"></span><input id="termIn" type="text" autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="send" aria-label="Commande"></form>
+  </div>
+  <div class="keys" id="termKeys"></div>
+  <details class="help" id="defiDetails"><summary>Tous les défis</summary><ol id="defiList"></ol></details>
 </section>
 
 <section class="view" id="v-acquis">
@@ -289,6 +318,7 @@ details.help ol{padding-left:20px}
   <a href="#accueil" data-v="accueil"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Accueil</a>
   <a href="#parcours" data-v="parcours"><svg viewBox="0 0 24 24"><path d="M6 21V4M6 5h11l-2 4 2 4H6"/></svg>Parcours</a>
   <a href="#reviser" data-v="reviser"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="14" height="14" rx="2"/><path d="M7 3h12a2 2 0 0 1 2 2v12"/></svg>Réviser</a>
+  <a href="#terminal" data-v="terminal"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9l3 3-3 3M12 15h5"/></svg>Terminal</a>
   <a href="#acquis" data-v="acquis"><svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="6"/><path d="M8.5 13.5 7.5 22l4.5-2.5 4.5 2.5-1-8.5"/></svg>Acquis</a>
   <a href="#veille" data-v="veille"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9h10M7 13h10M7 17h6"/></svg>Veille</a>
 </nav>
@@ -455,7 +485,9 @@ try { store = Object.assign(store, JSON.parse(localStorage.getItem("labo42") || 
 if (store.day.date !== today) store.day = {date:today, cards:0, lesson:false, news:false};
 const save = () => { try { localStorage.setItem("labo42", JSON.stringify(store)); } catch (e) {} };
 const keepLesson = (k, d) => { store.lessons[k] = d; store.order = store.order.filter(x => x !== k).concat(k); while (store.order.length > 40) delete store.lessons[store.order.shift()]; save(); };
-const lessonOf = id => store.lessons["v3:" + id] || store.lessons[id];
+let STATIC = {};
+const lessonsReady = Promise.all(["terminal", "c", "reseau", "cyber"].map(f => fetch("lessons/" + f + ".json").then(r => r.ok ? r.json() : {}).catch(() => ({})))).then(list => { list.forEach(o => Object.assign(STATIC, o)); });
+const lessonOf = id => STATIC[id] || store.lessons["v3:" + id] || store.lessons[id];
 const nextId = () => ORDER.find(id => !store.seen[id] && !BASE.includes(id)) || ORDER.find(id => !store.seen[id]) || null;
 const active = () => { if (!store.days.includes(today)) store.days.push(today); save(); refresh(); };
 const thumb = id => `<span class="pthumb" aria-hidden="true">${svg(TOPIC[id].s)}</span>`;
@@ -493,15 +525,34 @@ const chatRules = d => PROF + `
 Tu viens de lui donner un cours intitulé « ${d.titre || ""} ». Points à retenir : ${arr(d.retenir).join(" ; ")}. Question posée à la fin du cours : « ${d.question || ""} ».
 Réponds maintenant à ses messages comme un prof en face à face. Développe vraiment : 180 à 320 mots, des paragraphes courts, des exemples concrets, des backticks pour le code. S'il répond à la question, commence par ce qui est juste, puis explique ce qui manque en le guidant, sans donner toute la réponse d'un coup. S'il n'a pas compris, réexplique autrement, avec une autre image. S'il demande un exercice, donne un énoncé clair, des exemples d'entrées et de sorties attendues, et jamais la solution. Termine toujours par une question ou une piste pour avancer.`;
 
+/* ---------- Révisions espacées ---------- */
+const INTERVALS = [0, 1, 3, 7, 14, 30], NEW_PER_DAY = 10;
+const ckey = c => c[1];
+const addDays = (d, n) => { const x = new Date(d + "T12:00:00"); x.setDate(x.getDate() + n); return x.toISOString().slice(0, 10); };
+if (!store.srs) { store.srs = {}; Object.entries(store.known || {}).forEach(([i, ok]) => { const c = CARDS[+i]; if (c) store.srs[ckey(c)] = ok ? {b: 1, d: addDays(today, 1)} : {b: 0, d: today}; }); save(); }
+if (store.day.newSeen == null) store.day.newSeen = 0;
+const srsOf = c => store.srs[ckey(c)];
+const isKnown = c => { const e = srsOf(c); return !!(e && e.b >= 1); };
+const topicRank = c => (store.seen[c[3]] || BASE.includes(c[3]) ? 0 : 100) + ORDER.indexOf(c[3]);
+function dueList(){
+  const idx = CARDS.map((c, i) => i);
+  const due = idx.filter(i => { const e = srsOf(CARDS[i]); return e && e.d <= today; }).sort((a, b) => srsOf(CARDS[a]).b - srsOf(CARDS[b]).b);
+  const fresh = idx.filter(i => !srsOf(CARDS[i])).sort((a, b) => topicRank(CARDS[a]) - topicRank(CARDS[b]) || a - b).slice(0, Math.max(0, NEW_PER_DAY - store.day.newSeen));
+  return due.concat(fresh);
+}
+const dueOn = d => CARDS.filter(c => { const e = srsOf(c); return e && e.d === d; }).length;
+
 /* ---------- Accueil ---------- */
 function refresh(){
-  $("sKnown").textContent = Object.values(store.known).filter(Boolean).length;
+  $("sKnown").textContent = CARDS.filter(isKnown).length;
   $("sSeen").textContent = Object.keys(store.seen).filter(k => TOPIC[k]).length;
   $("sDays").textContent = store.days.length;
   const n = nextId(), d = store.day;
+  const dueNow = dueList().length, solved = store.term ? Object.keys(store.term.solved).length : 0, total = window.Labo && window.Labo.DEFI_TOTAL || 16;
   const steps = [
-    [d.cards >= 5, "Réviser 5 fiches", Math.min(d.cards,5) + " / 5 aujourd'hui", "#reviser"],
+    [dueNow === 0, "Tes fiches du jour", dueNow ? dueNow + " fiche" + (dueNow > 1 ? "s" : "") + " à réviser" : "Terminé pour aujourd'hui", "#reviser"],
     [d.lesson, n ? "Cours : " + TOPIC[n].t : "Revoir un cours", "Le suivant dans ton parcours", n ? "#cours-" + n : "#parcours"],
+    [d.term, "Un défi du terminal", solved + " / " + total + " défis réussis", "#terminal"],
     [d.news, "Lire les actus du jour", "Expliquées simplement", "#veille"]
   ];
   $("plan").innerHTML = steps.map((s,i) => `<a class="step${s[0] ? " done" : ""}" href="${s[3]}"><span class="dot">${s[0] ? "✓" : i+1}</span><span><b>${esc(s[1])}</b><small>${esc(s[2])}</small></span><span class="chev">›</span></a>`).join("");
@@ -539,15 +590,20 @@ function lessonHTML(d){
     + (arr(d.quiz).length ? `<h2>Vérifie que tu as compris</h2>` + arr(d.quiz).map((q,qi) => `<div class="quiz"><p><b>${qi+1}. ${inline(q.q)}</b></p>${arr(q.choix).map((c,ci) => `<button class="opt" type="button" data-act="quiz" data-qi="${qi}" data-ci="${ci}">${inline(c)}</button>`).join("")}<div class="qexp"></div></div>`).join("") : "")
     + (d.question ? `<div class="box qz"><h3>À toi de jouer</h3><p>${inline(d.question)}</p><button class="btn acc" type="button" data-act="answer">Répondre au prof</button></div>` : "")
     + (arr(d.suite).length ? `<h3>Pour aller plus loin</h3><div class="chips wrapc">${arr(d.suite).map(s => `<button class="chip" type="button" data-act="suite" data-s="${esc(s)}">${esc(s)}</button>`).join("")}</div>` : "")
-    + `<p><button class="link" type="button" data-act="regen">Refaire le cours autrement</button></p>`;
+    + lessonFoot();
+}
+function lessonFoot(){
+  if (cur && cur.free) return aiDead ? "" : `<p><button class="link" type="button" data-act="regen">Refaire le cours autrement</button></p>`;
+  const prof = inClaude ? (aiDead ? "" : `<button class="btn ghost full" type="button" data-act="regen">Une autre explication par le prof</button>`) : toClaude("cours-" + (cur ? cur.id : ""), "En parler avec le prof dans Claude");
+  return `<div class="box"><h3>Tu as fini ?</h3><p class="small">Marque le cours comme terminé : il rejoint tes acquis et le parcours passe au suivant.</p><button class="btn acc full" type="button" data-act="done">J'ai terminé ce cours</button>${prof}</div>`;
 }
 function showLesson(d){
   $("cBody").innerHTML = lessonHTML(d);
   if (cur.free && d.schema && SCHEMAS[d.schema]) $("cFig").innerHTML = fig(d.schema);
   cur.data = d; cur.turns = [];
   $("msgs").innerHTML = ""; $("cChat").classList.toggle("off", aiDead || !sample);
-  if (!cur.free) { store.seen[cur.id] = true; store.day.lesson = true; }
-  active();
+  if (!cur.free) { const words = JSON.stringify(d).split(/\s+/).length; $("cCat").textContent = "Étape " + ETAPE_OF[cur.id].n + " · " + ETAPE_OF[cur.id].t + " · cours " + (ORDER.indexOf(cur.id)+1) + " sur " + ORDER.length + " · " + Math.max(3, Math.round(words / 200)) + " min de lecture"; }
+  refresh();
   const n = nextId();
   $("cNext").innerHTML = !cur.free && n && n !== cur.id ? `<a class="btn ghost full" href="#cours-${n}">Prochain cours conseillé : ${esc(TOPIC[n].t)}</a>` : "";
 }
@@ -584,7 +640,10 @@ function openLesson(id){
   $("cEss").textContent = free ? "" : t.e;
   $("cChat").classList.add("off"); $("cNext").innerHTML = "";
   const saved = store.lessons[cur.key];
-  if (saved) showLesson(saved); else gen(false);
+  if (free) { if (saved) showLesson(saved); else gen(false); return; }
+  const key = cur.key;
+  $("cBody").innerHTML = `<div class="loading"><span class="spin"></span><p>Chargement du cours…</p></div>`;
+  lessonsReady.then(() => { if (!cur || cur.key !== key) return; if (STATIC[id]) showLesson(STATIC[id]); else if (saved) showLesson(saved); else gen(false); });
 }
 
 /* ---------- Discussion ---------- */
@@ -631,33 +690,52 @@ document.addEventListener("click", e => {
 });
 
 /* ---------- Réviser ---------- */
-let deck = "Tout", order = [], pos = 0;
+const MODES = ["Du jour"].concat(DECKS);
+let deck = "Du jour", order = [], pos = 0;
 function build(){
-  order = CARDS.map((c,i) => i).filter(i => deck === "Tout" || CARDS[i][0] === deck);
-  order.sort((a,b) => (store.known[a] ? 1 : 0) - (store.known[b] ? 1 : 0) || Math.random() - .5);
-  pos = 0; show();
+  if (deck === "Du jour") order = dueList();
+  else { order = CARDS.map((c,i) => i).filter(i => deck === "Tout" || CARDS[i][0] === deck); order.sort((a,b) => ((srsOf(CARDS[a]) || {b:-1}).b - (srsOf(CARDS[b]) || {b:-1}).b) || Math.random() - .5); }
+  pos = 0; renderDecks(); show();
+}
+function renderDecks(){
+  $("decks").innerHTML = MODES.map(d => { const n = d === "Du jour" ? dueList().length : d === "Tout" ? CARDS.length : CARDS.filter(c => c[0] === d).length; return `<button class="chip${d === deck ? " on" : ""}" type="button" data-d="${d}">${d} (${n})</button>`; }).join("");
 }
 function show(){
-  const c = CARDS[order[pos]];
-  $("flash").classList.remove("open");
-  $("bShow").classList.remove("off"); $("judge").classList.add("off");
+  const empty = !order.length;
+  ["flash","bShow"].forEach(id => $(id).classList.toggle("off", empty)); $("judge").classList.add("off");
+  $("revDone").classList.toggle("off", !empty);
+  if (empty) {
+    const t1 = dueOn(addDays(today, 1)), t3 = [2,3,4,5,6,7].reduce((n, k) => n + dueOn(addDays(today, k)), 0);
+    $("revDone").innerHTML = `<div class="box acc"><h3>Fiches du jour terminées !</h3><p>Reviens demain : ${t1} fiche${t1 > 1 ? "s" : ""} t'attendent, et ${t3} dans les 6 jours suivants. Tu peux aussi réviser un paquet librement avec les filtres ci-dessus.</p></div>`;
+    $("bar").style.width = "100%"; $("barTxt").textContent = ""; return;
+  }
+  if (pos >= order.length) pos = 0;
+  const c = CARDS[order[pos]], e = srsOf(c);
+  $("flash").classList.remove("open"); $("bShow").classList.remove("off");
   $("fTag").textContent = c[0];
-  $("fNum").textContent = (pos+1) + " / " + order.length;
+  $("fNum").innerHTML = `<span class="lvl">${!e ? "Nouvelle" : e.b === 0 ? "À revoir" : "Niveau " + e.b + " / 5"}</span> · ${pos + 1} / ${order.length}`;
   $("fQ").textContent = c[1];
   $("fAns").innerHTML = c[2];
   $("fLesson").textContent = "Revoir le cours : " + TOPIC[c[3]].t;
   $("fLesson").dataset.t = c[3];
-  const k = order.filter(j => store.known[j]).length;
-  $("bar").style.width = Math.round(k / order.length * 100) + "%";
-  $("barTxt").textContent = k + " sur " + order.length + " fiches sues dans ce paquet";
+  if (deck === "Du jour") { const done = store.day.cards, left = order.length; $("bar").style.width = Math.round(done / Math.max(1, done + left) * 100) + "%"; $("barTxt").textContent = left + " fiche" + (left > 1 ? "s" : "") + " restante" + (left > 1 ? "s" : "") + " aujourd'hui"; }
+  else { const k = order.filter(j => isKnown(CARDS[j])).length; $("bar").style.width = Math.round(k / order.length * 100) + "%"; $("barTxt").textContent = k + " sur " + order.length + " fiches sues dans ce paquet"; }
 }
-function answer(ok){ store.known[order[pos]] = ok; store.day.cards++; active(); pos = (pos+1) % order.length; show(); }
-$("decks").innerHTML = DECKS.map(d => `<button class="chip${d === deck ? " on" : ""}" type="button" data-d="${d}">${d} (${d === "Tout" ? CARDS.length : CARDS.filter(c => c[0] === d).length})</button>`).join("");
+function answer(ok){
+  const i = order[pos], c = CARDS[i], e = srsOf(c);
+  let next;
+  if (ok) { const b = Math.min((e ? e.b : 0) + 1, 5); next = {b, d: addDays(today, INTERVALS[b])}; }
+  else next = {b: 0, d: today};
+  if (!e) store.day.newSeen++;
+  store.srs[ckey(c)] = next; store.day.cards++;
+  $("revNote").textContent = ok ? (INTERVALS[next.b] === 1 ? "Bien ! Elle revient demain." : `Bien ! Elle revient dans ${INTERVALS[next.b]} jours.`) : "Pas grave : elle revient un peu plus tard aujourd'hui.";
+  if (deck === "Du jour") { order.splice(pos, 1); if (!ok) order.push(i); if (pos >= order.length) pos = 0; }
+  else pos = (pos + 1) % order.length;
+  active(); renderDecks(); show();
+}
 $("decks").addEventListener("click", e => {
   const b = e.target.closest("[data-d]"); if (!b) return;
-  deck = b.dataset.d;
-  document.querySelectorAll("#decks .chip").forEach(x => x.classList.toggle("on", x === b));
-  build();
+  deck = b.dataset.d; $("revNote").textContent = ""; build();
 });
 $("bShow").addEventListener("click", () => { $("flash").classList.add("open"); $("bShow").classList.add("off"); $("judge").classList.remove("off"); });
 $("bOk").addEventListener("click", () => answer(true));
@@ -666,7 +744,7 @@ $("fLesson").addEventListener("click", e => { location.hash = "#cours-" + e.targ
 
 /* ---------- Acquis ---------- */
 function renderAcquis(){
-  const deckCount = d => { const ids = CARDS.map((c,i) => i).filter(i => CARDS[i][0] === d); return [ids.filter(i => store.known[i]).length, ids.length]; };
+  const deckCount = d => { const list = CARDS.filter(c => c[0] === d); return [list.filter(isKnown).length, list.length]; };
   $("prog").innerHTML = ETAPES.map((e,i) => {
     const seen = e.ids.filter(id => store.seen[id]).length, k = deckCount(DECKS[i+1]);
     return `<div class="card"><b>${e.n}. ${esc(e.t)}</b><div class="bar"><i style="width:${Math.round(seen/e.ids.length*100)}%"></i></div><span class="small">${seen} / ${e.ids.length} cours vus · ${k[0]} / ${k[1]} fiches « ${DECKS[i+1]} » sues</span></div>`;
@@ -680,8 +758,8 @@ function renderAcquis(){
 $("bilanBtn").addEventListener("click", async () => {
   const s = await samp; if (!s || aiDead) return;
   const out = $("bilan"), btn = $("bilanBtn");
-  const sues = CARDS.filter((c,i) => store.known[i] === true).map(c => c[1]);
-  const fragiles = CARDS.filter((c,i) => store.known[i] === false).map(c => c[1]);
+  const sues = CARDS.filter(isKnown).map(c => c[1]);
+  const fragiles = CARDS.filter(c => { const e = srsOf(c); return e && e.b === 0; }).map(c => c[1]);
   const vus = ORDER.filter(id => store.seen[id]).map(id => TOPIC[id].t);
   const n = nextId();
   const prompt = PROF + `
@@ -807,7 +885,7 @@ $("copyLink").addEventListener("click", async () => {
 function route(){
   let h = location.hash.slice(1);
   if (h === "apprendre") h = "parcours";
-  let v = ["accueil","parcours","reviser","acquis","veille"].includes(h) ? h : "accueil";
+  let v = ["accueil","parcours","reviser","terminal","acquis","veille"].includes(h) ? h : "accueil";
   if (h.startsWith("cours-") && (TOPIC[h.slice(6)] || h === "cours-libre")) { v = "cours"; openLesson(h.slice(6)); }
   else { if (ctl) ctl.abort(); cur = null; }
   if (v === "veille" && !store.day.news) { store.day.news = true; active(); }
@@ -818,14 +896,17 @@ function route(){
 window.addEventListener("hashchange", route);
 const onApp = location.hostname.endsWith("github.io");
 if (installed) $("installBox").classList.add("off");
-else { $("appUrl").textContent = APP_URL; $("appLink").href = APP_URL; if (onApp) { $("helpOpen").classList.add("off"); $("stepN").textContent = "1"; } else $("helpBox").open = true; }
+else { $("appUrl").textContent = APP_URL; $("appLink").href = APP_URL; if (onApp) { $("helpOpen").classList.add("off"); $("stepN").textContent = "1"; } }
 let deferred = null;
 window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); deferred = e; $("installBtn").classList.remove("off"); });
 $("installBtn").addEventListener("click", async () => { if (!deferred) return; deferred.prompt(); try { await deferred.userChoice; } catch (e) {} deferred = null; $("installBtn").classList.add("off"); });
 if (!inClaude && "serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("sw.js").catch(() => {});
 if (!inClaude) aiOff();
+window.Labo = {store: () => store, save, active: () => active(), esc, TOPIC};
+lessonsReady.then(() => refresh());
 refresh(); build(); renderActus(); route();
 }
 </script>
+<script src="terminal.js"></script>
 </body>
 </html>

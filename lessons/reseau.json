@@ -1,0 +1,622 @@
+{
+ "osi": {
+  "titre": "Le modèle OSI",
+  "objectif": "Expliquer les 7 couches du modèle OSI, ce que fait chacune, et ranger un protocole dans la bonne couche.",
+  "pourquoi": "Le modèle OSI est la carte mentale de tous les ingénieurs réseau. Au Master d'architecture réseau, on t'en parlera dès le premier jour, et en entretien, c'est une question classique.\n\nEn sécurité, il sert à situer une attaque : une coupure de câble, une usurpation d'adresse et une injection dans un site web ne se passent pas à la même couche, et ne se défendent pas pareil.",
+  "analogie": "Envoyer un message sur un réseau, c'est comme envoyer un colis à l'étranger. Tu écris la lettre (application), tu la traduis dans la langue du destinataire (présentation), tu ouvres un échange suivi (session), tu choisis un service postal fiable ou rapide (transport), tu écris l'adresse de la ville (réseau), le facteur la porte jusqu'au prochain centre de tri (liaison), et le camion roule sur la route (physique).\n\nÀ l'arrivée, chaque étape est déballée dans l'ordre inverse.",
+  "vocabulaire": [
+   {
+    "mot": "Protocole",
+    "def": "Un ensemble de règles que deux machines suivent pour communiquer."
+   },
+   {
+    "mot": "Couche",
+    "def": "Un niveau du modèle, avec un rôle précis."
+   },
+   {
+    "mot": "Encapsulation",
+    "def": "Chaque couche ajoute ses informations autour des données de la couche du dessus."
+   },
+   {
+    "mot": "Trame",
+    "def": "Le nom des données à la couche 2."
+   },
+   {
+    "mot": "Paquet",
+    "def": "Le nom des données à la couche 3."
+   },
+   {
+    "mot": "Segment",
+    "def": "Le nom des données à la couche 4 avec TCP."
+   }
+  ],
+  "sections": [
+   {
+    "titre": "Pourquoi découper en couches ?",
+    "texte": "Faire communiquer deux machines est un problème énorme : câbles, ondes, adresses, fiabilité, format des données, applications… Le modèle OSI le découpe en 7 problèmes plus petits.\n\nChaque couche ne parle qu'à ses voisines et ne s'occupe que de son rôle. On peut ainsi changer une couche sans toucher aux autres : ton navigateur marche pareil en Wi-Fi ou en câble, parce que seules les couches basses changent.\n\nUn moyen mnémotechnique pour l'ordre, de la couche 1 à la 7 : « Pour Le Réseau, Tout Se Passe Automatiquement » (Physique, Liaison, Réseau, Transport, Session, Présentation, Application)."
+   },
+   {
+    "titre": "Les couches basses : 1, 2 et 3",
+    "texte": "1. Physique : faire passer des bits, des 0 et des 1, sous forme de courant, de lumière ou d'ondes radio. Câbles, fibre, Wi-Fi.\n2. Liaison : faire passer des trames entre deux machines voisines sur le même réseau local. On y trouve Ethernet, le Wi-Fi et les adresses MAC, gravées dans chaque carte réseau.\n3. Réseau : faire voyager des paquets d'un réseau à l'autre, jusqu'à la destination finale, en passant par des routeurs. C'est la couche des adresses IP.\n\nRetiens bien la différence : l'adresse MAC sert de voisin à voisin, l'adresse IP sert de bout en bout."
+   },
+   {
+    "titre": "La couche 4 : le transport",
+    "texte": "La couche transport fait le lien entre les programmes des deux machines. C'est là qu'apparaissent les ports, qui disent à quel programme est destiné un message.\n\nDeux protocoles principaux :\n\n- TCP : fiable. Il vérifie que tout arrive, dans l'ordre, et renvoie ce qui s'est perdu.\n- UDP : rapide. Il envoie sans vérifier, idéal pour la vidéo, les jeux ou le DNS.\n\nUn cours entier est consacré à TCP et UDP : c'est une couche essentielle en sécurité."
+   },
+   {
+    "titre": "Les couches hautes : 5, 6 et 7",
+    "texte": "5. Session : ouvrir, maintenir et fermer un dialogue entre deux programmes.\n6. Présentation : mettre les données dans un format commun, les compresser ou les chiffrer.\n7. Application : les protocoles utilisés directement par les programmes : HTTP pour le web, DNS pour les noms, SSH pour l'accès à distance, SMTP pour les e-mails.\n\nDans la pratique, les couches 5, 6 et 7 sont souvent regroupées. Le modèle TCP/IP, celui qu'Internet utilise vraiment, n'a que 4 couches : accès réseau, Internet, transport, application. OSI reste le vocabulaire commun pour en parler."
+   },
+   {
+    "titre": "L'encapsulation et la sécurité",
+    "texte": "Quand tu envoies une requête web, chaque couche ajoute son en-tête autour des données : l'en-tête HTTP, puis TCP avec les ports, puis IP avec les adresses, puis Ethernet avec les adresses MAC. À l'arrivée, chaque couche retire le sien.\n\nLes attaques visent toutes les couches : brouillage radio (1), usurpation d'adresse MAC (2), usurpation d'IP (3), inondation de connexions TCP (4), injection dans un site web (7).\n\nUn outil comme Wireshark montre ces couches une à une pour chaque paquet capturé : c'est la meilleure façon de voir le modèle OSI pour de vrai."
+   }
+  ],
+  "exemple": {
+   "titre": "Ce que voit Wireshark pour une page web",
+   "code": "Frame 12 : 74 octets sur le câble                (couche 1)\nEthernet II : MAC source → MAC destination      (couche 2)\nInternet Protocol : 192.168.1.10 → 203.0.113.7   (couche 3)\nTCP : port 51544 → port 443                     (couche 4)\nTLS : données chiffrées                         (couches 5-6)\nHTTP : GET /index.html                          (couche 7)",
+   "explication": "C'est le résumé d'un paquet tel que Wireshark le découpe. On lit les couches de bas en haut : la trame physique, puis Ethernet avec les adresses MAC, IP avec les adresses de bout en bout, TCP avec les ports (443 est le port du HTTPS), le chiffrement TLS, et enfin la requête HTTP elle-même.\n\nLes adresses et les numéros sont des exemples. Installe Wireshark et capture ta propre navigation : tu verras exactement cette structure."
+  },
+  "pieges": [
+   "Confondre adresse MAC (couche 2, voisin à voisin) et adresse IP (couche 3, de bout en bout).",
+   "Croire qu'Internet utilise exactement les 7 couches : il utilise le modèle TCP/IP à 4 couches.",
+   "Mélanger l'ordre des couches : apprends-le avec une phrase mnémotechnique."
+  ],
+  "retenir": [
+   "7 couches : Physique, Liaison, Réseau, Transport, Session, Présentation, Application.",
+   "Couche 2 : MAC et Ethernet. Couche 3 : IP. Couche 4 : TCP, UDP et ports.",
+   "Couche 7 : HTTP, DNS, SSH.",
+   "Chaque couche ajoute son en-tête : c'est l'encapsulation.",
+   "Chaque attaque vise une couche précise."
+  ],
+  "quiz": [
+   {
+    "q": "À quelle couche se trouvent les adresses IP ?",
+    "choix": [
+     "Couche 2",
+     "Couche 3",
+     "Couche 4"
+    ],
+    "bonne": 1,
+    "explication": "La couche réseau gère les adresses IP et le routage."
+   },
+   {
+    "q": "À quelle couche appartient HTTP ?",
+    "choix": [
+     "Application (7)",
+     "Transport (4)",
+     "Liaison (2)"
+    ],
+    "bonne": 0,
+    "explication": "HTTP est un protocole utilisé directement par les programmes."
+   },
+   {
+    "q": "Combien de couches a le modèle TCP/IP utilisé par Internet ?",
+    "choix": [
+     "7",
+     "5",
+     "4"
+    ],
+    "bonne": 2,
+    "explication": "Accès réseau, Internet, transport, application."
+   }
+  ],
+  "question": "Une personne coupe le câble réseau d'un serveur, une autre envoie un faux formulaire à un site : à quelles couches se passent ces deux attaques ?"
+ },
+ "reseaulocal": {
+  "titre": "Réseau local et IP privées",
+  "objectif": "Lire une adresse IP et un masque, distinguer IP privée et IP publique, et comprendre le rôle de ta box.",
+  "pourquoi": "Au Master d'architecture réseau, tu passeras beaucoup de temps à découper des réseaux, choisir des plans d'adresses et relier des réseaux entre eux. Tout commence par comprendre ton propre réseau, chez toi.\n\nEn sécurité, savoir si une machine est sur le réseau local ou exposée sur Internet change tout : c'est la différence entre une porte intérieure et la porte d'entrée.",
+  "analogie": "Ton réseau local, c'est un immeuble. Chaque appartement a un numéro intérieur (l'IP privée) : 1, 2, 3… Ces numéros n'ont de sens que dans l'immeuble : d'autres immeubles ont aussi un appartement 1.\n\nL'immeuble a une seule adresse postale dans la rue (l'IP publique). Le gardien (la box) reçoit tout le courrier et le redistribue au bon appartement.",
+  "vocabulaire": [
+   {
+    "mot": "Adresse IPv4",
+    "def": "Quatre nombres de 0 à 255 séparés par des points, comme 192.168.1.10."
+   },
+   {
+    "mot": "IP privée",
+    "def": "Une adresse valable seulement dans un réseau local, invisible depuis Internet."
+   },
+   {
+    "mot": "IP publique",
+    "def": "L'adresse visible sur Internet, en général celle de ta box."
+   },
+   {
+    "mot": "Masque de sous-réseau",
+    "def": "Il indique quelle partie de l'adresse désigne le réseau, comme 255.255.255.0."
+   },
+   {
+    "mot": "Passerelle",
+    "def": "La machine qui relie ton réseau aux autres réseaux : souvent ta box."
+   },
+   {
+    "mot": "NAT",
+    "def": "La traduction d'adresses faite par la box entre les IP privées et l'IP publique."
+   }
+  ],
+  "sections": [
+   {
+    "titre": "Lire une adresse IPv4",
+    "texte": "Une adresse IPv4 est faite de 4 nombres de 0 à 255, par exemple `192.168.1.10`. Chaque nombre tient sur un octet, soit 8 bits : l'adresse fait 32 bits en tout.\n\nIl y a environ 4,3 milliards d'adresses IPv4 possibles. C'est moins que le nombre d'appareils connectés dans le monde : c'est pour ça qu'on utilise des adresses privées, et que la nouvelle version, IPv6, a des adresses bien plus longues.\n\nSur ta machine Linux, `ip a` affiche tes adresses. Sur un Mac, `ifconfig`."
+   },
+   {
+    "titre": "Les adresses privées",
+    "texte": "Trois plages sont réservées aux réseaux privés :\n\n- `10.0.0.0` à `10.255.255.255`\n- `172.16.0.0` à `172.31.255.255`\n- `192.168.0.0` à `192.168.255.255`\n\nChez toi, tes appareils ont sûrement des adresses en `192.168.x.x`. Ces adresses ne circulent jamais sur Internet : des millions de foyers utilisent les mêmes, sans conflit, parce qu'elles restent à l'intérieur.\n\nUne adresse spéciale à connaître : `127.0.0.1`, « localhost », qui désigne ta propre machine."
+   },
+   {
+    "titre": "Le masque : quelle partie désigne le réseau",
+    "texte": "Une adresse IP a deux parties : le réseau et la machine. Le masque dit où est la frontière.\n\nAvec `192.168.1.10` et le masque `255.255.255.0`, les trois premiers nombres (`192.168.1`) désignent le réseau, et le dernier (`10`) la machine. Toutes les machines en `192.168.1.x` sont sur le même réseau local et peuvent se parler directement.\n\nOn écrit souvent ce masque `/24` : 24 bits pour le réseau. `192.168.1.0/24` veut dire « le réseau de 192.168.1.0 à 192.168.1.255 ». Les deux adresses extrêmes sont réservées : la première désigne le réseau, la dernière sert à parler à tout le monde à la fois."
+   },
+   {
+    "titre": "La box, passerelle et traductrice",
+    "texte": "Quand une machine veut parler à une adresse hors de son réseau, elle envoie le paquet à sa passerelle, en général la box (souvent `192.168.1.1`).\n\nLa box fait alors du NAT : elle remplace l'adresse privée de ton appareil par son adresse publique, note dans un tableau qui a demandé quoi, et quand la réponse revient, elle la renvoie au bon appareil.\n\nRésultat : vu d'Internet, tous les appareils de ta maison semblent avoir la même adresse, celle de la box."
+   },
+   {
+    "titre": "Ce que ça change pour la sécurité",
+    "texte": "Le NAT a un effet protecteur : une machine d'Internet ne peut pas contacter directement ton PC, puisqu'il n'a pas d'adresse publique. Seules les réponses à des demandes que tu as faites peuvent entrer.\n\nMais ce n'est pas un vrai pare-feu. Une redirection de port mal configurée sur la box, un objet connecté qui ouvre lui-même des accès, ou un appareil infecté à l'intérieur suffisent à contourner cette protection.\n\nEn entreprise, on découpe le réseau en plusieurs sous-réseaux (serveurs, postes, invités) pour qu'une machine compromise ne puisse pas atteindre tout le reste : c'est la segmentation, un sujet central de ton futur Master."
+   }
+  ],
+  "exemple": {
+   "titre": "Regarder son propre réseau",
+   "code": "$ ip a\n2: wlan0: <BROADCAST,MULTICAST,UP>\n    inet 192.168.1.23/24 brd 192.168.1.255\n$ ip route\ndefault via 192.168.1.1 dev wlan0",
+   "explication": "`ip a` montre que la carte Wi-Fi `wlan0` a l'adresse privée `192.168.1.23`, avec un masque `/24` : le réseau local va de `192.168.1.0` à `192.168.1.255`, et `brd` est l'adresse de diffusion, la dernière de la plage.\n\n`ip route` montre la route par défaut : tout ce qui sort du réseau local passe par `192.168.1.1`, la box. Lance ces deux commandes sur ta machine Linux et compare avec ce schéma."
+  },
+  "pieges": [
+   "Croire qu'une IP en 192.168.x.x est visible depuis Internet.",
+   "Confondre l'IP de son PC (privée) et l'IP vue par les sites (celle de la box).",
+   "Penser que le NAT remplace un pare-feu."
+  ],
+  "retenir": [
+   "IPv4 : 4 nombres de 0 à 255, 32 bits.",
+   "Privées : 10.x, 172.16 à 172.31, 192.168.x. 127.0.0.1 = ta machine.",
+   "Le masque (/24 = 255.255.255.0) sépare réseau et machine.",
+   "La box est la passerelle et fait du NAT.",
+   "Segmenter un réseau limite les dégâts d'une intrusion."
+  ],
+  "quiz": [
+   {
+    "q": "Laquelle de ces adresses est privée ?",
+    "choix": [
+     "8.8.8.8",
+     "172.20.4.1",
+     "203.0.113.5"
+    ],
+    "bonne": 1,
+    "explication": "172.16.0.0 à 172.31.255.255 est une plage privée."
+   },
+   {
+    "q": "Avec 192.168.1.10/24, quelle machine est sur le même réseau local ?",
+    "choix": [
+     "192.168.1.200",
+     "192.168.2.10",
+     "10.0.0.10"
+    ],
+    "bonne": 0,
+    "explication": "Avec /24, les trois premiers nombres doivent être identiques."
+   },
+   {
+    "q": "Que fait le NAT de la box ?",
+    "choix": [
+     "Il chiffre les connexions",
+     "Il donne une IP publique à chaque appareil",
+     "Il remplace les IP privées par l'IP publique de la box"
+    ],
+    "bonne": 2,
+    "explication": "La box traduit les adresses et redistribue les réponses."
+   }
+  ],
+  "question": "Si deux de tes appareils ont les adresses 192.168.1.5 et 192.168.1.80 avec un masque /24, peuvent-ils se parler sans passer par la box ? Pourquoi ?"
+ },
+ "ports": {
+  "titre": "Adresses IP et ports",
+  "objectif": "Comprendre à quoi sert un port, connaître les ports les plus courants et savoir ce qu'est un port ouvert.",
+  "pourquoi": "Tu utilises déjà les ports dans Bandit, avec `-p 2220`. Au Master, tu configureras des serveurs qui offrent plusieurs services, chacun sur son port.\n\nEn cybersécurité, les ports sont la première chose qu'on regarde : chaque port ouvert est une porte d'entrée possible. Savoir lesquels sont ouverts, et pourquoi, c'est la base de l'audit comme de la défense.",
+  "analogie": "Une adresse IP, c'est l'adresse d'un grand immeuble de bureaux. Un port, c'est le numéro du bureau à l'intérieur. Le facteur (le réseau) apporte le courrier à l'immeuble, puis le numéro de bureau dit à quel service le remettre : la comptabilité, l'accueil, le service informatique.\n\nUn bureau vide dont la porte est fermée ne répond pas. Un bureau occupé, avec la porte ouverte, attend les visiteurs : c'est un port ouvert.",
+  "vocabulaire": [
+   {
+    "mot": "Port",
+    "def": "Un numéro de 0 à 65535 qui désigne un service sur une machine."
+   },
+   {
+    "mot": "Service",
+    "def": "Un programme qui attend des connexions sur un port, comme un serveur web."
+   },
+   {
+    "mot": "Port ouvert",
+    "def": "Un port sur lequel un programme écoute et accepte des connexions."
+   },
+   {
+    "mot": "Ports bien connus",
+    "def": "Les ports de 0 à 1023, réservés aux services classiques."
+   },
+   {
+    "mot": "Socket",
+    "def": "L'association d'une adresse IP et d'un port : le point de rencontre d'une connexion."
+   }
+  ],
+  "sections": [
+   {
+    "titre": "Pourquoi des ports ?",
+    "texte": "Une machine peut faire tourner en même temps un site web, un serveur SSH et un serveur de messagerie. Quand un paquet arrive, l'adresse IP dit pour quelle machine il est, mais pas pour quel programme.\n\nLe port règle ce problème : chaque service écoute sur son propre numéro, entre 0 et 65535. Un paquet destiné au port 443 va au serveur web sécurisé, un paquet destiné au port 22 va au serveur SSH.\n\nUne connexion complète se décrit donc par quatre valeurs : IP et port de départ, IP et port d'arrivée."
+   },
+   {
+    "titre": "Les ports à connaître par cœur",
+    "texte": "- 22 : SSH (accès à distance chiffré)\n- 80 : HTTP (web non chiffré)\n- 443 : HTTPS (web chiffré)\n- 53 : DNS (noms de domaine)\n- 25 : SMTP (envoi d'e-mails)\n- 21 : FTP (transfert de fichiers, non chiffré)\n- 23 : Telnet (accès à distance non chiffré, à éviter)\n- 3306 : MySQL (base de données)\n\nCe sont des conventions, pas des obligations : un service peut écouter sur un autre port, comme le serveur SSH de Bandit sur 2220."
+   },
+   {
+    "titre": "Côté client : le port de départ",
+    "texte": "Quand ton navigateur se connecte à un site sur le port 443, il utilise lui aussi un port de son côté, choisi au hasard parmi les grands numéros (souvent au-delà de 49152). On l'appelle port éphémère.\n\nC'est grâce à lui que tu peux ouvrir dix onglets sur le même site : chaque connexion a son propre port de départ, et les réponses ne se mélangent pas.\n\nSur Linux, `ss -tun` affiche tes connexions en cours avec leurs ports des deux côtés."
+   },
+   {
+    "titre": "Ports ouverts, fermés, filtrés",
+    "texte": "Un port peut être :\n\n- ouvert : un programme écoute et accepte la connexion ;\n- fermé : aucun programme n'écoute, la machine répond qu'il n'y a personne ;\n- filtré : un pare-feu bloque, et on ne reçoit souvent aucune réponse.\n\nSur ta machine Linux, `ss -tuln` liste les ports sur lesquels tes propres programmes écoutent. C'est une bonne habitude de vérifier : un port ouvert sans raison est un risque inutile."
+   },
+   {
+    "titre": "Les ports et la sécurité",
+    "texte": "Chaque port ouvert expose un programme au réseau. Si ce programme a une faille, c'est une porte d'entrée.\n\nD'où deux règles de base en défense : fermer tout ce qui ne sert pas, et ne laisser accessibles depuis Internet que les services indispensables, derrière un pare-feu.\n\nCôté attaque, la première étape d'un test d'intrusion est souvent de lister les ports ouverts d'une machine. Cette recherche se fait uniquement sur des machines pour lesquelles on a une autorisation écrite, ou sur des plateformes d'entraînement : scanner les machines des autres est illégal."
+   }
+  ],
+  "exemple": {
+   "titre": "Voir les ports ouverts de ta machine",
+   "code": "$ ss -tuln\nNetid State  Local Address:Port\ntcp   LISTEN 0.0.0.0:22\ntcp   LISTEN 127.0.0.1:631\nudp   UNCONN 0.0.0.0:5353",
+   "explication": "`ss -tuln` liste les ports en écoute sur ta propre machine : `t` pour TCP, `u` pour UDP, `l` pour « en écoute », `n` pour afficher les numéros au lieu des noms.\n\nIci, SSH écoute sur le port 22 sur toutes les adresses (`0.0.0.0`), donc il est joignable depuis le réseau. Le service d'impression écoute sur 631, mais seulement sur `127.0.0.1` : il n'est accessible que depuis la machine elle-même. Faire cette différence, c'est déjà un réflexe de sécurité."
+  },
+  "pieges": [
+   "Croire qu'un service utilise forcément son port habituel : SSH peut être sur 2220.",
+   "Oublier qu'écouter sur 0.0.0.0 rend un service accessible depuis le réseau.",
+   "Lister les ports d'une machine sans autorisation : c'est illégal."
+  ],
+  "retenir": [
+   "IP = la machine, port = le service.",
+   "22 SSH, 80 HTTP, 443 HTTPS, 53 DNS.",
+   "Ports de 0 à 65535, les bien connus de 0 à 1023.",
+   "ss -tuln montre les ports en écoute sur ta machine.",
+   "Fermer ce qui ne sert pas : chaque port ouvert est une porte."
+  ],
+  "quiz": [
+   {
+    "q": "Sur quel port écoute habituellement HTTPS ?",
+    "choix": [
+     "80",
+     "22",
+     "443"
+    ],
+    "bonne": 2,
+    "explication": "443 pour HTTPS, 80 pour HTTP non chiffré."
+   },
+   {
+    "q": "Un service écoute sur 127.0.0.1:8080. Qui peut s'y connecter ?",
+    "choix": [
+     "Seulement la machine elle-même",
+     "Tout Internet",
+     "Tout le réseau local"
+    ],
+    "bonne": 0,
+    "explication": "127.0.0.1 désigne la machine locale : rien ne vient de l'extérieur."
+   },
+   {
+    "q": "Pourquoi utilise-t-on des ports ?",
+    "choix": [
+     "Pour chiffrer les connexions",
+     "Pour distinguer les services d'une même machine",
+     "Pour accélérer le réseau"
+    ],
+    "bonne": 1,
+    "explication": "Le port dit à quel programme est destiné le paquet."
+   }
+  ],
+  "question": "Si tu installais un serveur web chez toi, quels ports laisserais-tu ouverts, et lesquels fermerais-tu ? Pourquoi ?"
+ },
+ "dns": {
+  "titre": "Le DNS",
+  "objectif": "Expliquer comment un nom de domaine est traduit en adresse IP, et pourquoi le DNS est une cible pour les attaquants.",
+  "pourquoi": "Chaque fois que tu ouvres un site, envoies un e-mail ou lances une appli, ton appareil fait une requête DNS. Sans DNS, il faudrait retenir des adresses IP pour tout.\n\nEn cybersécurité, le DNS est partout : il sert à diriger les victimes vers de faux sites, à cacher des communications de logiciels malveillants, et aussi à les détecter.",
+  "analogie": "Le DNS, c'est l'annuaire téléphonique d'Internet. Tu connais le nom de ton ami, mais pour l'appeler, il te faut son numéro. Tu cherches dans l'annuaire, tu trouves le numéro, et tu appelles.\n\nEt comme personne n'a tout l'annuaire du monde, il est découpé : un annuaire pour les « .fr », qui renvoie vers l'annuaire de chaque domaine, qui donne enfin le bon numéro.",
+  "vocabulaire": [
+   {
+    "mot": "Nom de domaine",
+    "def": "Un nom lisible comme exemple.fr."
+   },
+   {
+    "mot": "Résolution",
+    "def": "Le fait de trouver l'adresse IP qui correspond à un nom."
+   },
+   {
+    "mot": "Résolveur",
+    "def": "Le serveur DNS qui fait les recherches pour toi, souvent celui de ta box ou de ton opérateur."
+   },
+   {
+    "mot": "Enregistrement A",
+    "def": "L'entrée DNS qui associe un nom à une adresse IPv4."
+   },
+   {
+    "mot": "Cache",
+    "def": "La mémoire où sont gardées les réponses récentes pour aller plus vite."
+   },
+   {
+    "mot": "TTL",
+    "def": "La durée pendant laquelle une réponse peut être gardée en cache."
+   }
+  ],
+  "sections": [
+   {
+    "titre": "Pourquoi le DNS existe",
+    "texte": "Les machines communiquent avec des adresses IP, comme `203.0.113.7`. Les humains retiennent des noms, comme `exemple.fr`. Le DNS (Domain Name System) fait la traduction.\n\nIl apporte aussi de la souplesse : un site peut changer de serveur, donc d'adresse IP, sans que personne n'ait à changer le nom qu'il tape.\n\nLe DNS utilise surtout le port 53, en UDP pour les petites questions, parce que c'est plus rapide."
+   },
+   {
+    "titre": "Le voyage d'une requête",
+    "texte": "Quand tu tapes `www.exemple.fr` :\n\n1. Ton appareil regarde d'abord dans son cache : a-t-il la réponse depuis peu ?\n2. Sinon, il demande au résolveur, en général celui de ta box ou de ton opérateur.\n3. Le résolveur interroge un serveur racine, qui lui indique les serveurs chargés des `.fr`.\n4. Les serveurs des `.fr` lui indiquent ceux du domaine `exemple.fr`.\n5. Ceux-ci donnent enfin l'adresse IP de `www.exemple.fr`.\n\nLe résolveur garde la réponse en cache pendant la durée indiquée par le TTL, et te la renvoie. Tout ça prend souvent quelques millisecondes."
+   },
+   {
+    "titre": "Les principaux enregistrements",
+    "texte": "Un domaine contient plusieurs types d'enregistrements :\n\n- A : le nom vers une adresse IPv4.\n- AAAA : le nom vers une adresse IPv6.\n- CNAME : un alias, « ce nom est un autre nom ».\n- MX : les serveurs qui reçoivent les e-mails du domaine.\n- TXT : du texte libre, souvent utilisé pour prouver qu'on possède un domaine ou pour des règles anti-spam.\n\nLa commande `dig exemple.fr` ou `nslookup exemple.fr` interroge le DNS depuis le terminal et affiche la réponse."
+   },
+   {
+    "titre": "Le DNS, cible des attaquants",
+    "texte": "Si un attaquant arrive à faire répondre une fausse adresse au DNS, la victime tape le bon nom et arrive sur un faux site, sans rien voir. Ça peut passer par :\n\n- l'empoisonnement de cache : glisser une fausse réponse dans le cache d'un résolveur ;\n- le piratage du compte qui gère le domaine, pour changer ses enregistrements ;\n- un faux résolveur, par exemple sur un Wi-Fi public piégé.\n\nHTTPS limite les dégâts : le faux site n'aura pas le bon certificat, et le navigateur avertira. Encore faut-il ne pas ignorer l'avertissement."
+   },
+   {
+    "titre": "Le DNS, allié des défenseurs",
+    "texte": "Presque toute activité réseau commence par une requête DNS, y compris celle des logiciels malveillants qui contactent leur serveur de commande.\n\nLes équipes SOC surveillent donc les journaux DNS : un poste qui demande soudain des centaines de noms bizarres, ou un domaine créé la veille, sont des signaux d'alerte.\n\nLe DNS garde aussi des traces : des services enregistrent l'historique des noms demandés sur Internet. C'est ainsi que des chercheurs ont retrouvé en octobre 2026 des milliers de liens de partage de l'agent IA Muse, de Meta, dont le titre était écrit dans le nom de domaine."
+   }
+  ],
+  "exemple": {
+   "titre": "Interroger le DNS depuis le terminal",
+   "code": "$ dig +short exemple.fr\n203.0.113.7\n$ dig +short MX exemple.fr\n10 mail.exemple.fr.",
+   "explication": "`dig +short` affiche seulement la réponse, sans les détails. La première commande demande l'enregistrement A : l'adresse IPv4 du domaine.\n\nLa seconde demande les enregistrements MX : le serveur qui reçoit les e-mails du domaine, avec sa priorité (10). Les adresses ici sont des exemples réservés à la documentation : essaie avec un vrai site sur ta machine pour voir les vraies réponses."
+  },
+  "pieges": [
+   "Croire que le DNS fait partie du site : c'est un service séparé, qui peut tomber ou être piraté à part.",
+   "Oublier le cache : un changement DNS peut mettre du temps à se voir partout, selon le TTL.",
+   "Ignorer un avertissement de certificat : c'est souvent le seul signe d'une redirection malveillante."
+  ],
+  "retenir": [
+   "Le DNS traduit les noms en adresses IP.",
+   "Résolveur, racine, .fr, puis le domaine : la recherche descend étape par étape.",
+   "A = IPv4, AAAA = IPv6, MX = e-mails, CNAME = alias.",
+   "Port 53, surtout en UDP.",
+   "Le DNS est une cible pour les attaquants et une mine d'indices pour les défenseurs."
+  ],
+  "quiz": [
+   {
+    "q": "Quel enregistrement donne l'adresse IPv4 d'un nom ?",
+    "choix": [
+     "MX",
+     "A",
+     "TXT"
+    ],
+    "bonne": 1,
+    "explication": "A pour adresse IPv4, AAAA pour IPv6."
+   },
+   {
+    "q": "Qu'est-ce que l'empoisonnement de cache DNS ?",
+    "choix": [
+     "Glisser une fausse réponse dans le cache d'un résolveur",
+     "Supprimer un nom de domaine",
+     "Ralentir les requêtes DNS"
+    ],
+    "bonne": 0,
+    "explication": "Les victimes reçoivent alors une fausse adresse pour un vrai nom."
+   },
+   {
+    "q": "Pourquoi un SOC surveille-t-il les requêtes DNS ?",
+    "choix": [
+     "Pour accélérer Internet",
+     "Pour bloquer tous les sites",
+     "Parce que les logiciels malveillants en font aussi pour contacter leurs serveurs"
+    ],
+    "bonne": 2,
+    "explication": "Des noms bizarres ou très récents sont des signaux d'alerte."
+   }
+  ],
+  "question": "Si tu tapes le bon nom d'un site mais que tu arrives sur une copie, à quelles étapes du voyage DNS l'attaque a-t-elle pu se produire ?"
+ },
+ "tcp": {
+  "titre": "TCP et UDP",
+  "objectif": "Expliquer la différence entre TCP et UDP, décrire la poignée de main en trois temps et savoir quand on utilise l'un ou l'autre.",
+  "pourquoi": "TCP et UDP transportent presque tout le trafic d'Internet. Au Master, tu analyseras des échanges réseau paquet par paquet : comprendre ce qu'ils font est indispensable.\n\nEn sécurité, plusieurs attaques célèbres jouent avec leur fonctionnement, comme l'inondation de demandes de connexion qui sature un serveur.",
+  "analogie": "TCP, c'est un envoi en recommandé avec accusé de réception : on vérifie que le destinataire est là avant d'envoyer, chaque lettre est numérotée, et on renvoie celles qui se perdent.\n\nUDP, c'est lancer des cartes postales dans la boîte : rapide, sans formalités, mais sans garantie qu'elles arrivent, ni dans le bon ordre.",
+  "vocabulaire": [
+   {
+    "mot": "TCP",
+    "def": "Transmission Control Protocol : un transport fiable, avec connexion."
+   },
+   {
+    "mot": "UDP",
+    "def": "User Datagram Protocol : un transport rapide, sans connexion ni garantie."
+   },
+   {
+    "mot": "Poignée de main",
+    "def": "L'échange en trois temps qui ouvre une connexion TCP : SYN, SYN-ACK, ACK."
+   },
+   {
+    "mot": "Accusé de réception (ACK)",
+    "def": "Un message qui confirme que des données sont bien arrivées."
+   },
+   {
+    "mot": "Numéro de séquence",
+    "def": "Le numéro qui permet de remettre les données dans l'ordre."
+   },
+   {
+    "mot": "Datagramme",
+    "def": "Un message UDP, envoyé seul, sans suivi."
+   }
+  ],
+  "sections": [
+   {
+    "titre": "Deux façons de transporter",
+    "texte": "À la couche transport, deux protocoles dominent.\n\nTCP privilégie la fiabilité : il ouvre une connexion, numérote les données, vérifie qu'elles arrivent, les remet dans l'ordre et renvoie ce qui s'est perdu. C'est le choix pour le web, les e-mails, SSH, les transferts de fichiers : partout où une donnée manquante serait un problème.\n\nUDP privilégie la vitesse : il envoie chaque message sans connexion ni vérification. C'est le choix pour la vidéo en direct, les appels, les jeux en ligne et le DNS : une image perdue vaut mieux qu'une image en retard."
+   },
+   {
+    "titre": "La poignée de main en trois temps",
+    "texte": "Avant d'envoyer des données, TCP ouvre une connexion en trois messages :\n\n1. SYN : le client demande « On peut parler ? » et donne son numéro de départ.\n2. SYN-ACK : le serveur répond « Oui, je t'entends » et donne le sien.\n3. ACK : le client confirme « C'est parti ».\n\nEnsuite seulement, les données circulent. À la fin, la connexion se ferme proprement avec d'autres messages (FIN). Dans Wireshark, ces trois premiers paquets sont faciles à repérer : c'est un excellent premier exercice."
+   },
+   {
+    "titre": "Comment TCP garantit l'arrivée",
+    "texte": "Chaque octet envoyé porte un numéro de séquence. Le destinataire renvoie des accusés de réception (ACK) qui disent « j'ai tout reçu jusqu'à tel numéro ».\n\nSi un accusé n'arrive pas à temps, l'expéditeur renvoie les données. Si les paquets arrivent dans le désordre, les numéros permettent de les remettre dans l'ordre.\n\nTCP ajuste aussi sa vitesse : il ralentit quand le réseau est encombré. Toute cette mécanique a un coût, un peu plus de lenteur, mais elle garantit que ton fichier arrive entier."
+   },
+   {
+    "titre": "UDP : simple et rapide",
+    "texte": "UDP n'a ni poignée de main, ni numéros, ni accusés. L'en-tête d'un message UDP ne contient presque rien : les ports de départ et d'arrivée, la longueur et un contrôle d'erreur.\n\nC'est à l'application de gérer les pertes si elle en a besoin. Le DNS, par exemple, renvoie simplement sa question s'il n'a pas de réponse au bout d'un moment.\n\nNouveauté importante : le protocole QUIC, utilisé par HTTP/3, est construit au-dessus d'UDP et réimplémente la fiabilité lui-même, pour aller plus vite que TCP."
+   },
+   {
+    "titre": "TCP, UDP et les attaques",
+    "texte": "L'inondation SYN (SYN flood) : un attaquant envoie des milliers de SYN sans jamais terminer la poignée de main. Le serveur garde une place réservée pour chaque connexion à moitié ouverte et finit par saturer. Les serveurs modernes ont des parades, comme les SYN cookies.\n\nUDP, sans connexion, permet de falsifier facilement l'adresse de départ. Certaines attaques par amplification envoient de petites questions à des serveurs UDP avec l'adresse de la victime : les grosses réponses partent toutes vers elle.\n\nCes attaques visent la disponibilité : rendre un service inaccessible. On parle de déni de service."
+   }
+  ],
+  "exemple": {
+   "titre": "La poignée de main vue dans Wireshark",
+   "code": "1  192.168.1.23:51544 → 203.0.113.7:443  [SYN]\n2  203.0.113.7:443 → 192.168.1.23:51544  [SYN, ACK]\n3  192.168.1.23:51544 → 203.0.113.7:443  [ACK]\n4  192.168.1.23:51544 → 203.0.113.7:443  [données chiffrées]",
+   "explication": "Les trois premières lignes sont la poignée de main : le client (port éphémère 51544) demande, le serveur (port 443, HTTPS) accepte, le client confirme.\n\nÀ la ligne 4, les données commencent enfin à circuler. Les adresses sont des exemples : capture ta propre ouverture d'un site dans Wireshark, avec le filtre `tcp.flags.syn == 1`, pour voir les tiennes."
+  },
+  "pieges": [
+   "Croire qu'UDP est « moins bien » que TCP : il est fait pour d'autres usages.",
+   "Oublier que le DNS utilise surtout UDP.",
+   "Confondre l'ordre de la poignée de main : SYN, puis SYN-ACK, puis ACK."
+  ],
+  "retenir": [
+   "TCP : fiable, avec connexion, plus lent.",
+   "UDP : rapide, sans connexion ni garantie.",
+   "Poignée de main : SYN, SYN-ACK, ACK.",
+   "TCP pour le web, SSH, les e-mails ; UDP pour la vidéo, les jeux, le DNS.",
+   "Le SYN flood et l'amplification UDP visent la disponibilité."
+  ],
+  "quiz": [
+   {
+    "q": "Quel est le deuxième message de la poignée de main TCP ?",
+    "choix": [
+     "ACK",
+     "SYN",
+     "SYN-ACK"
+    ],
+    "bonne": 2,
+    "explication": "Le serveur répond SYN-ACK à la demande SYN du client."
+   },
+   {
+    "q": "Pour un appel vidéo en direct, quel protocole convient le mieux ?",
+    "choix": [
+     "UDP",
+     "TCP",
+     "Aucun des deux"
+    ],
+    "bonne": 0,
+    "explication": "Mieux vaut perdre une image que la recevoir en retard."
+   },
+   {
+    "q": "Que fait une attaque SYN flood ?",
+    "choix": [
+     "Elle vole les mots de passe",
+     "Elle sature le serveur de connexions à moitié ouvertes",
+     "Elle modifie les réponses DNS"
+    ],
+    "bonne": 1,
+    "explication": "Le serveur réserve une place pour chaque SYN reçu et finit par saturer."
+   }
+  ],
+  "question": "Pourquoi, à ton avis, le DNS utilise-t-il UDP plutôt que TCP pour ses petites questions ?"
+ },
+ "http": {
+  "titre": "HTTP et HTTPS",
+  "objectif": "Lire une requête et une réponse HTTP, connaître les codes de réponse principaux et comprendre ce que protège HTTPS.",
+  "pourquoi": "Le web repose sur HTTP. À 42, un des projets du tronc commun consiste à écrire ton propre serveur web, et le projet final est une application web complète.\n\nEn cybersécurité, le web est la première surface d'attaque des entreprises : injection, vol de session, faux formulaires… Pour comprendre ces failles, il faut d'abord comprendre ce qui circule entre le navigateur et le serveur.",
+  "analogie": "HTTP, c'est un guichet. Tu tends un formulaire de demande (la requête) : « Je voudrais la page d'accueil, s'il vous plaît. » L'employé te tend une réponse avec un tampon : « 200, voici votre page », ou « 404, ce document n'existe pas ».\n\nHTTPS, c'est le même guichet, mais derrière une vitre blindée avec un hygiaphone chiffré : personne dans la file ne peut lire ce que vous échangez.",
+  "vocabulaire": [
+   {
+    "mot": "Requête",
+    "def": "Le message envoyé par le navigateur au serveur."
+   },
+   {
+    "mot": "Réponse",
+    "def": "Le message renvoyé par le serveur, avec un code et le contenu."
+   },
+   {
+    "mot": "Méthode",
+    "def": "Ce que veut faire la requête : GET pour lire, POST pour envoyer des données."
+   },
+   {
+    "mot": "Code de statut",
+    "def": "Le nombre qui résume la réponse : 200, 404, 500…"
+   },
+   {
+    "mot": "En-tête",
+    "def": "Une ligne d'information supplémentaire dans une requête ou une réponse."
+   },
+   {
+    "mot": "Cookie",
+    "def": "Une petite donnée que le site range dans ton navigateur, souvent pour te garder connecté."
+   }
+  ],
+  "sections": [
+   {
+    "titre": "Une requête, une réponse",
+    "texte": "HTTP fonctionne toujours de la même façon : le navigateur envoie une requête, le serveur répond. Chaque échange est indépendant : le serveur ne se souvient pas de toi d'une requête à l'autre.\n\nUne requête ressemble à ça :\n\n`GET /index.html HTTP/1.1`\n`Host: www.exemple.fr`\n\nLa première ligne dit quoi faire (`GET`, lire), sur quelle ressource (`/index.html`) et en quelle version. Les lignes suivantes sont des en-têtes : ici, le nom du site demandé."
+   },
+   {
+    "titre": "Les méthodes",
+    "texte": "Les méthodes principales :\n\n- `GET` : lire une ressource. Les paramètres sont dans l'adresse, comme `/recherche?q=chat`.\n- `POST` : envoyer des données, par exemple un formulaire. Les données sont dans le corps de la requête.\n- `PUT` et `DELETE` : modifier ou supprimer une ressource, souvent dans les API.\n\nAttention : un paramètre dans l'adresse apparaît dans l'historique du navigateur et dans les journaux des serveurs. Un mot de passe ne doit jamais passer par un GET."
+   },
+   {
+    "titre": "Les codes de réponse",
+    "texte": "Le code de statut résume la réponse. Le premier chiffre donne la famille :\n\n- 2xx, succès : `200 OK`.\n- 3xx, redirection : `301` (la page a déménagé définitivement), `302` (temporairement).\n- 4xx, erreur du client : `400` (requête mal formée), `401` (il faut s'authentifier), `403` (interdit), `404` (introuvable).\n- 5xx, erreur du serveur : `500` (erreur interne), `503` (service indisponible).\n\nEn sécurité, une rafale de 401 ou de 404 dans les journaux d'un serveur trahit souvent quelqu'un qui teste des mots de passe ou cherche des pages cachées."
+   },
+   {
+    "titre": "Se souvenir de toi : les cookies",
+    "texte": "HTTP ne se souvient de rien. Pour que tu restes connecté, le site te donne, après la connexion, un cookie avec un identifiant de session. Ton navigateur le renvoie automatiquement avec chaque requête suivante.\n\nCe cookie vaut donc autant que ton mot de passe : celui qui le vole peut se faire passer pour toi sans connaître ton mot de passe. C'est le vol de session.\n\nLes sites sérieux protègent leurs cookies : ils ne les envoient qu'en HTTPS, et empêchent les scripts de la page de les lire."
+   },
+   {
+    "titre": "Ce que change HTTPS",
+    "texte": "HTTPS, c'est HTTP transporté dans un tunnel chiffré par le protocole TLS, en général sur le port 443. Il apporte trois garanties :\n\n- confidentialité : personne sur le réseau ne peut lire l'échange ;\n- intégrité : personne ne peut le modifier en route ;\n- authentification : un certificat prouve que tu parles bien au vrai site.\n\nMais HTTPS ne dit rien de l'honnêteté du site : un faux site de phishing peut tout à fait avoir un cadenas. Le cadenas veut dire « la connexion est chiffrée », pas « ce site est fiable »."
+   }
+  ],
+  "exemple": {
+   "titre": "Une requête et sa réponse",
+   "code": "$ curl -i https://www.exemple.fr/\nHTTP/2 200\ncontent-type: text/html; charset=UTF-8\nset-cookie: session=a8f3...; Secure; HttpOnly\n\n<!DOCTYPE html>\n<html>...",
+   "explication": "`curl` fait une requête GET depuis le terminal, et `-i` affiche aussi les en-têtes de la réponse.\n\nOn lit le code `200` (succès), le type du contenu (une page HTML), puis un cookie de session protégé par deux options : `Secure` (envoyé seulement en HTTPS) et `HttpOnly` (illisible pour les scripts de la page). Après une ligne vide vient le contenu de la page. Le domaine et le cookie sont des exemples."
+  },
+  "pieges": [
+   "Croire que le cadenas HTTPS veut dire que le site est honnête.",
+   "Envoyer des données sensibles dans l'adresse avec GET.",
+   "Oublier qu'un cookie de session volé suffit pour se faire passer pour quelqu'un."
+  ],
+  "retenir": [
+   "Le navigateur envoie une requête, le serveur répond.",
+   "GET pour lire, POST pour envoyer.",
+   "2xx succès, 3xx redirection, 4xx erreur du client, 5xx erreur du serveur.",
+   "Les cookies gardent ta session : ils valent un mot de passe.",
+   "HTTPS chiffre et authentifie, mais ne garantit pas l'honnêteté du site."
+  ],
+  "quiz": [
+   {
+    "q": "Que veut dire le code 403 ?",
+    "choix": [
+     "La page n'existe pas",
+     "Le serveur a planté",
+     "L'accès est interdit"
+    ],
+    "bonne": 2,
+    "explication": "403 : la ressource existe, mais tu n'as pas le droit d'y accéder."
+   },
+   {
+    "q": "Quelle méthode convient pour envoyer un formulaire de connexion ?",
+    "choix": [
+     "POST",
+     "GET",
+     "DELETE"
+    ],
+    "bonne": 0,
+    "explication": "POST met les données dans le corps de la requête, pas dans l'adresse."
+   },
+   {
+    "q": "Un site de phishing peut-il avoir un cadenas HTTPS ?",
+    "choix": [
+     "Non, jamais",
+     "Oui, le cadenas dit seulement que la connexion est chiffrée",
+     "Seulement s'il est hébergé en France"
+    ],
+    "bonne": 1,
+    "explication": "N'importe qui peut obtenir un certificat pour son propre domaine."
+   }
+  ],
+  "question": "Pourquoi, à ton avis, voler le cookie de session de quelqu'un est-il parfois plus intéressant pour un attaquant que de voler son mot de passe ?"
+ }
+}
