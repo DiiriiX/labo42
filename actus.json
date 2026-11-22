@@ -4,129 +4,605 @@
     "date": "2026-11-22",
     "ts": "2026-11-22T22:46:46+01:00",
     "cat": "Cyber",
+    "theme": "faille",
     "importance": 2,
     "titre": "Upload2Shell : une faille dans Ghostscript touche WordPress, mails et imprimantes",
     "resume": "Des chercheurs ont trouvé une faille dans Ghostscript, un logiciel qui lit les fichiers PDF et PostScript sur beaucoup de serveurs (CVE-2026-125396). C'est un « use-after-free » dans le chargeur de polices : le programme réutilise une zone mémoire déjà libérée, ce qui permet de contourner sa protection -dSAFER.\n\nAvec un simple fichier envoyé, ils ont fait exécuter des commandes sur un site WordPress, un webmail Roundcube et un serveur d'impression CUPS. Aucune attaque réelle n'est signalée pour l'instant, et la version 10.08.0 de Ghostscript corrige le problème.",
     "pourquoi": "Un use-after-free, c'est une erreur de C : utiliser un pointeur après avoir fait free() dessus. Quand tu apprendras malloc et free, tu sauras pourquoi il faut mettre le pointeur à NULL et ne plus s'en servir.",
     "cours": "malloc",
     "source": "Cyber Security News",
-    "url": "https://cybersecuritynews.com/upload2shell-flaw/"
+    "url": "https://cybersecuritynews.com/upload2shell-flaw/",
+    "schemas": [
+      {
+        "type": "chaine",
+        "titre": "Comment marche l'attaque",
+        "etapes": [
+          {
+            "t": "Un fichier piégé",
+            "d": "un PDF ou une image envoyé au site",
+            "ton": "attaque"
+          },
+          {
+            "t": "Ghostscript l'ouvre",
+            "d": "pour lire ou convertir le fichier",
+            "ton": "neutre"
+          },
+          {
+            "t": "Bug use-after-free",
+            "d": "une mémoire réutilisée après free()",
+            "ton": "attaque"
+          },
+          {
+            "t": "Commandes exécutées",
+            "d": "le serveur obéit à l'attaquant",
+            "ton": "attaque"
+          },
+          {
+            "t": "Parade : version 10.08.0",
+            "d": "la mise à jour corrige le bug",
+            "ton": "defense"
+          }
+        ]
+      },
+      {
+        "type": "cibles",
+        "titre": "Qui utilise Ghostscript sans le savoir",
+        "centre": {
+          "t": "Ghostscript",
+          "d": "lit les PDF et le PostScript",
+          "ton": "attaque"
+        },
+        "autour": [
+          {
+            "t": "WordPress",
+            "d": "sites web"
+          },
+          {
+            "t": "Roundcube",
+            "d": "webmail"
+          },
+          {
+            "t": "CUPS",
+            "d": "impression"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "2026-11-22-openrouter",
     "date": "2026-11-22",
     "ts": "2026-11-22T22:46:46+01:00",
     "cat": "Tech",
+    "theme": "ia",
     "importance": 2,
     "titre": "OpenRouter : des conversations avec des IA ont pu fuiter chez des hébergeurs",
     "resume": "OpenRouter est un service qui envoie tes questions à des modèles d'IA hébergés par d'autres entreprises. L'entreprise de sécurité Dragos a envoyé environ deux millions de messages pièges (liens et faux mots de passe) et a vu que trois hébergeurs avaient été compromis.\n\nCertains messages censés n'être jamais gardés ont été conservés ou transférés ; un lien de test a même réapparu 24 jours plus tard ailleurs. OpenRouter a retiré trois hébergeurs et prévenu les clients concernés.",
     "pourquoi": "Ça montre la confidentialité, le premier pilier de la triade : ce que tu envoies à une IA passe par des machines que tu ne contrôles pas. Règle simple à garder pour le cloud et l'IA : jamais de mot de passe ni de clé dans un message.",
     "cours": "triade",
     "source": "Cyber Security News",
-    "url": "https://cybersecuritynews.com/openrouter-ai-chat-leaks/"
+    "url": "https://cybersecuritynews.com/openrouter-ai-chat-leaks/",
+    "schemas": [
+      {
+        "type": "chaine",
+        "titre": "Le trajet de ton message",
+        "etapes": [
+          {
+            "t": "Ta question",
+            "d": "envoyée à OpenRouter",
+            "ton": "neutre"
+          },
+          {
+            "t": "OpenRouter la transmet",
+            "d": "à un hébergeur de modèles d'IA",
+            "ton": "neutre"
+          },
+          {
+            "t": "Hébergeur compromis",
+            "d": "3 hébergeurs pris en faute",
+            "ton": "attaque"
+          },
+          {
+            "t": "Message gardé ou copié",
+            "d": "alors qu'il devait être effacé",
+            "ton": "attaque"
+          }
+        ]
+      },
+      {
+        "type": "chiffres",
+        "titre": "Le test de Dragos",
+        "items": [
+          {
+            "n": "2 M",
+            "t": "messages pièges envoyés",
+            "ton": "neutre"
+          },
+          {
+            "n": "3",
+            "t": "hébergeurs compromis",
+            "ton": "attaque"
+          },
+          {
+            "n": "24 j",
+            "t": "avant qu'un lien piège réapparaisse",
+            "ton": "attaque"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "2026-11-22-entra-connect-health",
     "date": "2026-11-22",
     "ts": "2026-11-22T19:47:06+01:00",
     "cat": "Cyber",
+    "theme": "cloud",
     "importance": 2,
     "titre": "Microsoft Entra : une faille exploitée pour lire des données d'entreprises",
     "resume": "Microsoft a annoncé qu'un pirate a exploité une faille dans l'API d'Entra Connect Health, un service cloud qui surveille les annuaires d'identité des entreprises. La faille existait depuis le 23 juillet et a été découverte le 9 novembre.\n\nLe pirate a pu lire des informations sur les clients : e-mails des administrateurs, noms de domaine, identifiants de tenant. Selon Microsoft, aucun mot de passe ni jeton n'a fuité, et le correctif a été appliqué côté serveur le 19 novembre.",
     "pourquoi": "Les e-mails d'administrateurs volés servent souvent à préparer du phishing ciblé, un sujet de ton cours sur le phishing. Cela montre aussi qu'un service cloud mal protégé peut exposer des milliers d'entreprises d'un coup.",
     "cours": "phishing",
     "source": "BleepingComputer",
-    "url": "https://www.bleepingcomputer.com/news/security/microsoft-entra-connect-health-flaw-exploited-to-steal-tenant-data/"
+    "url": "https://www.bleepingcomputer.com/news/security/microsoft-entra-connect-health-flaw-exploited-to-steal-tenant-data/",
+    "schemas": [
+      {
+        "type": "dates",
+        "titre": "Presque 4 mois sans être vue",
+        "items": [
+          {
+            "date": "23 juillet",
+            "t": "La faille existe dans l'API",
+            "ton": "attaque"
+          },
+          {
+            "date": "9 novembre",
+            "t": "Microsoft la découvre",
+            "ton": "neutre"
+          },
+          {
+            "date": "19 novembre",
+            "t": "Correctif appliqué côté serveur",
+            "ton": "defense"
+          }
+        ]
+      },
+      {
+        "type": "cibles",
+        "titre": "Ce que le pirate a pu lire",
+        "centre": {
+          "t": "Entra Connect Health",
+          "d": "surveille les annuaires d'identité",
+          "ton": "attaque"
+        },
+        "autour": [
+          {
+            "t": "E-mails d'admins",
+            "ton": "attaque"
+          },
+          {
+            "t": "Noms de domaine",
+            "ton": "attaque"
+          },
+          {
+            "t": "Identifiants de tenant",
+            "ton": "attaque"
+          },
+          {
+            "t": "Pas de mot de passe",
+            "d": "selon Microsoft",
+            "ton": "defense"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "2026-11-22-n-able",
     "date": "2026-11-22",
     "ts": "2026-11-22T14:42:34+01:00",
     "cat": "Cyber",
+    "theme": "intrusion",
     "importance": 2,
     "titre": "N-able : une intrusion provoque une grosse panne mondiale",
     "resume": "N-able, une entreprise qui vend des outils pour gérer les ordinateurs et les e-mails de milliers de sociétés, a été piratée. Les attaquants sont entrés sur un serveur de ses services anti-spam Mail Assure et SpamExperts.\n\nPour se protéger, N-able a coupé le portail de gestion, la quarantaine et les journaux, ce qui a provoqué une panne en Amérique, en Asie et en Europe. Les e-mails continuent d'être filtrés, et l'entreprise dit ne pas avoir de preuve que des données de clients ont été volées. Une autre de ses plateformes, N-central, est aussi visée par des failles exploitées.",
     "pourquoi": "C'est un exemple concret de la triade sécurité : pour protéger la confidentialité, l'entreprise a sacrifié la disponibilité de ses services. Quand un fournisseur d'outils est piraté, tous ses clients sont touchés : c'est pour ça que les équipes de défense surveillent aussi leurs prestataires.",
     "cours": "triade",
     "source": "BleepingComputer",
-    "url": "https://www.bleepingcomputer.com/news/microsoft/n-able-says-recent-security-breach-led-to-major-service-outage/"
+    "url": "https://www.bleepingcomputer.com/news/microsoft/n-able-says-recent-security-breach-led-to-major-service-outage/",
+    "schemas": [
+      {
+        "type": "chaine",
+        "titre": "De l'intrusion à la panne",
+        "etapes": [
+          {
+            "t": "Intrusion",
+            "d": "sur un serveur des services anti-spam",
+            "ton": "attaque"
+          },
+          {
+            "t": "N-able coupe ses outils",
+            "d": "portail, quarantaine et journaux",
+            "ton": "defense"
+          },
+          {
+            "t": "Panne mondiale",
+            "d": "en Amérique, en Asie et en Europe",
+            "ton": "attaque"
+          },
+          {
+            "t": "Les e-mails restent filtrés",
+            "d": "pas de vol de données prouvé",
+            "ton": "neutre"
+          }
+        ]
+      },
+      {
+        "type": "cibles",
+        "titre": "Un fournisseur touché, tous ses clients touchés",
+        "centre": {
+          "t": "N-able",
+          "d": "outils de gestion et d'e-mail",
+          "ton": "attaque"
+        },
+        "autour": [
+          {
+            "t": "Entreprise",
+            "d": "ses e-mails"
+          },
+          {
+            "t": "Entreprise",
+            "d": "ses PC"
+          },
+          {
+            "t": "Entreprise",
+            "d": "ses serveurs"
+          },
+          {
+            "t": "Des milliers",
+            "d": "dans le monde"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "2026-11-22-rackspace-kubernetes",
     "date": "2026-11-22",
     "ts": "2026-11-22T11:48:34+01:00",
     "cat": "Cyber",
+    "theme": "cloud",
     "importance": 2,
     "titre": "Rackspace Spot : des pirates ont lu des secrets Kubernetes",
     "resume": "Le 17 novembre, des pirates sont entrés dans Rackspace Spot, un service cloud qui fait tourner des applications avec Kubernetes. Ils ont utilisé des identifiants volés, puis ont agi comme de vrais utilisateurs : création de « pods » (petits conteneurs) et lecture des « Secrets », là où sont rangés les mots de passe et les clés.\n\nRackspace l'a appris le lendemain grâce à un client. L'entreprise a coupé les accès, changé ses clés et demande à ses clients de renouveler leurs jetons, de changer leurs secrets et de relire leurs journaux depuis le 17 novembre.",
     "pourquoi": "Pas besoin de faille : un simple identifiant volé suffit à ouvrir un service cloud, d'où l'importance de protéger et de changer régulièrement ses accès. C'est aussi un exemple concret du travail de défense : repérer les actions suspectes dans les journaux (logs), puis couper et nettoyer.",
     "cours": "logs",
     "source": "BleepingComputer",
-    "url": "https://www.bleepingcomputer.com/news/security/rackspace-spot-breach-let-hackers-access-customer-kubernetes-secrets/"
+    "url": "https://www.bleepingcomputer.com/news/security/rackspace-spot-breach-let-hackers-access-customer-kubernetes-secrets/",
+    "schemas": [
+      {
+        "type": "chaine",
+        "titre": "Comment ils sont entrés, sans aucune faille",
+        "etapes": [
+          {
+            "t": "Identifiants volés",
+            "d": "un simple mot de passe ou jeton",
+            "ton": "attaque"
+          },
+          {
+            "t": "Connexion à Rackspace Spot",
+            "d": "comme un vrai client",
+            "ton": "attaque"
+          },
+          {
+            "t": "Création de pods",
+            "d": "des petits conteneurs Kubernetes",
+            "ton": "attaque"
+          },
+          {
+            "t": "Lecture des Secrets",
+            "d": "là où sont rangés mots de passe et clés",
+            "ton": "attaque"
+          },
+          {
+            "t": "Alerte d'un client",
+            "d": "accès coupés, clés changées",
+            "ton": "defense"
+          }
+        ]
+      },
+      {
+        "type": "parade",
+        "titre": "Ce que les clients doivent faire",
+        "items": [
+          "Renouveler leurs jetons d'accès",
+          "Changer tous leurs secrets",
+          "Relire leurs journaux depuis le 17 novembre"
+        ]
+      }
+    ]
   },
   {
     "id": "2026-11-22-php-sessions",
     "date": "2026-11-22",
     "ts": "2026-11-22T09:01:40+01:00",
     "cat": "Cyber",
+    "theme": "maj",
     "importance": 2,
     "titre": "PHP : failles critiques dans toutes les versions maintenues",
     "resume": "L'équipe de PHP a annoncé des failles de sécurité qui touchent PHP 8.2, 8.3, 8.4 et 8.5, avec des correctifs publiés le 19 novembre. La plus connue, CVE-2026-115560, se trouve dans le suivi de progression des envois de fichiers liés aux sessions.\n\nDans certaines configurations peu courantes, elle permet d'exécuter du code à distance sur le serveur. Aucune attaque réelle n'est confirmée pour l'instant, mais il faut mettre PHP à jour, et on peut couper ce suivi (session.upload_progress.enabled = 0) en attendant.",
     "pourquoi": "PHP fait tourner une grande partie des sites web, donc une faille dans PHP concerne énormément de serveurs. C'est un bon exemple de ce qu'un défenseur doit faire : repérer ses installations, appliquer une mesure temporaire, puis mettre à jour.",
     "cours": "http",
     "source": "Cyberattaque.org",
-    "url": "https://www.cyberattaque.org/php-lance-une-nouvelle-alerte-critique-toutes-les-versions-maintenues-concernees-par-des-failles-de-securite/"
+    "url": "https://www.cyberattaque.org/php-lance-une-nouvelle-alerte-critique-toutes-les-versions-maintenues-concernees-par-des-failles-de-securite/",
+    "schemas": [
+      {
+        "type": "cibles",
+        "titre": "Toutes les versions maintenues sont touchées",
+        "centre": {
+          "t": "PHP",
+          "d": "fait tourner une grande partie du web",
+          "ton": "attaque"
+        },
+        "autour": [
+          {
+            "t": "PHP 8.2"
+          },
+          {
+            "t": "PHP 8.3"
+          },
+          {
+            "t": "PHP 8.4"
+          },
+          {
+            "t": "PHP 8.5"
+          }
+        ]
+      },
+      {
+        "type": "parade",
+        "titre": "Le réflexe du défenseur",
+        "items": [
+          "Repérer ses serveurs qui utilisent PHP",
+          "En attendant : session.upload_progress.enabled = 0",
+          "Mettre PHP à jour (correctifs du 19 novembre)"
+        ]
+      }
+    ]
   },
   {
     "id": "2026-11-21-vcenter",
     "date": "2026-11-21",
     "ts": "2026-11-21T22:33:24+01:00",
     "cat": "Cyber",
+    "theme": "faille",
     "importance": 3,
     "titre": "VMware vCenter : une faille critique exploitée depuis septembre",
     "resume": "Une faille dans VMware vCenter, l'outil qui pilote les machines virtuelles de nombreuses entreprises, permet de contourner l'authentification. Broadcom lui donne une gravité de 9,8 sur 10.\n\nGoogle et Mandiant ont vu des attaquants l'exploiter dès début septembre, bien avant sa publication le 19 novembre. Le CERT-FR a publié un avis le 20 novembre : la seule vraie protection est d'installer le correctif.",
     "pourquoi": "C'est un « zero-day » : une faille utilisée par des attaquants avant que l'éditeur ne la connaisse. La virtualisation est au cœur des infrastructures que tu étudieras dans ton Master, et ce genre d'alerte est exactement ce que surveille une Blue Team.",
     "cours": "metiers",
     "source": "armees.com",
-    "url": "https://armees.com/vmware-vcenter-faille-critique-exploitee-cert-fr-novembre-2026/"
+    "url": "https://armees.com/vmware-vcenter-faille-critique-exploitee-cert-fr-novembre-2026/",
+    "schemas": [
+      {
+        "type": "dates",
+        "titre": "Un zero-day : exploité avant d'être connu",
+        "items": [
+          {
+            "date": "Septembre",
+            "t": "Des attaquants l'exploitent déjà",
+            "ton": "attaque"
+          },
+          {
+            "date": "19 novembre",
+            "t": "La faille est rendue publique",
+            "ton": "neutre"
+          },
+          {
+            "date": "20 novembre",
+            "t": "Avis du CERT-FR",
+            "ton": "neutre"
+          },
+          {
+            "date": "Parade",
+            "t": "Installer le correctif",
+            "ton": "defense"
+          }
+        ]
+      },
+      {
+        "type": "chiffres",
+        "titre": "La faille en chiffres",
+        "items": [
+          {
+            "n": "9,8/10",
+            "t": "de gravité selon Broadcom",
+            "ton": "attaque"
+          },
+          {
+            "n": "2 mois +",
+            "t": "d'attaques avant la publication",
+            "ton": "attaque"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "2026-11-21-java4shell",
     "date": "2026-11-21",
     "ts": "2026-11-21T22:33:24+01:00",
     "cat": "Dev",
+    "theme": "faille",
     "importance": 3,
     "titre": "Java4Shell : une faille critique dans Java, trouvée avec une IA",
     "resume": "Java4Shell est une corruption de mémoire dans le décodeur Base64 de la machine virtuelle Java. Elle touche OpenJDK à partir de la version 17.0.6, et donc des outils très utilisés comme Jira ou Jenkins.\n\nLe chercheur l'a trouvée en environ une heure avec Codex, l'assistant de code d'OpenAI. Le 17 novembre, l'agence américaine CISA a demandé de la corriger immédiatement.",
     "pourquoi": "Une corruption de mémoire, c'est écrire au mauvais endroit en mémoire : le genre d'erreur qu'on peut faire en C. Et l'IA devient un outil de recherche de failles, côté attaque comme côté défense.",
     "cours": "malloc",
     "source": "BleepingComputer",
-    "url": "https://bleepingcomputer.com/news/security/critical-java4shell-flaw-allows-rce-attacks-on-major-java-applications"
+    "url": "https://bleepingcomputer.com/news/security/critical-java4shell-flaw-allows-rce-attacks-on-major-java-applications",
+    "schemas": [
+      {
+        "type": "chaine",
+        "titre": "Une corruption de mémoire",
+        "etapes": [
+          {
+            "t": "Du texte en Base64",
+            "d": "donné à Java pour être décodé",
+            "ton": "neutre"
+          },
+          {
+            "t": "Bug dans le décodeur",
+            "d": "il écrit au mauvais endroit en mémoire",
+            "ton": "attaque"
+          },
+          {
+            "t": "Programme détourné",
+            "d": "la mémoire corrompue change son comportement",
+            "ton": "attaque"
+          },
+          {
+            "t": "Correctif urgent",
+            "d": "la CISA demande de l'installer tout de suite",
+            "ton": "defense"
+          }
+        ]
+      },
+      {
+        "type": "cibles",
+        "titre": "Tout ce qui tourne sur Java est concerné",
+        "centre": {
+          "t": "OpenJDK 17.0.6 et +",
+          "d": "la machine virtuelle Java",
+          "ton": "attaque"
+        },
+        "autour": [
+          {
+            "t": "Jira",
+            "d": "gestion de projets"
+          },
+          {
+            "t": "Jenkins",
+            "d": "compilation auto"
+          },
+          {
+            "t": "Et d'autres",
+            "d": "outils Java"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "2026-11-21-nginx",
     "date": "2026-11-21",
     "ts": "2026-11-21T22:33:24+01:00",
     "cat": "Cyber",
+    "theme": "faille",
     "importance": 2,
     "titre": "NGINX corrige une faille « use-after-free »",
     "resume": "NGINX, l'un des serveurs web les plus utilisés au monde, a corrigé le 18 novembre une faille critique dans sa gestion de HTTP/2. C'est un « use-after-free » : le programme continue d'utiliser une zone mémoire déjà libérée.\n\nElle peut faire planter le serveur et, selon les chercheurs de Wiz, permettre d'exécuter du code à distance. Il faut passer en version 1.30.7 ou 1.31.9, puis redémarrer complètement.",
     "pourquoi": "NGINX est écrit en C. Un use-after-free, c'est utiliser un pointeur après un free : l'erreur que tu apprendras à éviter dans le cours sur malloc et free.",
     "cours": "malloc",
     "source": "SOC Prime",
-    "url": "https://socprime.com/fr/blog/cve-2026-123633-faille-critique-nginx-http-2-utilisation-apres-liberation-permettant-execution-code-distance/"
+    "url": "https://socprime.com/fr/blog/cve-2026-123633-faille-critique-nginx-http-2-utilisation-apres-liberation-permettant-execution-code-distance/",
+    "schemas": [
+      {
+        "type": "chaine",
+        "titre": "Le use-after-free, une erreur de C",
+        "etapes": [
+          {
+            "t": "malloc",
+            "d": "NGINX réserve une zone mémoire",
+            "ton": "neutre"
+          },
+          {
+            "t": "free",
+            "d": "la zone est rendue au système",
+            "ton": "neutre"
+          },
+          {
+            "t": "Réutilisation",
+            "d": "le pointeur sert encore : danger",
+            "ton": "attaque"
+          },
+          {
+            "t": "Plantage ou code exécuté",
+            "d": "déclenché par une requête HTTP/2",
+            "ton": "attaque"
+          }
+        ]
+      },
+      {
+        "type": "parade",
+        "titre": "Pour se protéger",
+        "items": [
+          "Passer en version 1.30.7 ou 1.31.9",
+          "Redémarrer complètement NGINX",
+          "Dans ton code C : pointeur à NULL après free"
+        ]
+      }
+    ]
   },
   {
     "id": "2026-11-21-plan-cyber",
     "date": "2026-11-21",
     "ts": "2026-11-21T22:33:24+01:00",
     "cat": "Cyber",
+    "theme": "loi",
     "importance": 2,
     "titre": "La France muscle sa cybersécurité",
     "resume": "Le 19 novembre, Sébastien Lecornu a présenté un plan cyber, après plusieurs attaques en 2026, dont un vol de données au fisc. Chaque ministère devra consacrer au moins 5 % de son budget numérique à la cybersécurité dès 2027, puis 10 % en 2030.\n\nLe projet de loi lié à la directive européenne NIS2, adopté par l'Assemblée le 17 novembre, va renforcer les obligations d'environ 20 000 organisations.",
     "pourquoi": "20 000 organisations vont devoir mieux se protéger : il y aura beaucoup de besoins en cybersécurité dans les années qui viennent, pile au moment où tu sortiras de 42.",
     "cours": "triade",
     "source": "Clubic",
-    "url": "https://www.clubic.com/actualite-640228-apres-le-piratage-du-fisc-et-des-frigos-sebastien-lecornu-devoile-son-plan-de-cybersecurite-pour-la-france.html"
+    "url": "https://www.clubic.com/actualite-640228-apres-le-piratage-du-fisc-et-des-frigos-sebastien-lecornu-devoile-son-plan-de-cybersecurite-pour-la-france.html",
+    "schemas": [
+      {
+        "type": "chiffres",
+        "titre": "Le plan en chiffres",
+        "items": [
+          {
+            "n": "5 %",
+            "t": "du budget numérique des ministères en 2027",
+            "ton": "defense"
+          },
+          {
+            "n": "10 %",
+            "t": "du budget numérique en 2030",
+            "ton": "defense"
+          },
+          {
+            "n": "20 000",
+            "t": "organisations concernées par NIS2",
+            "ton": "neutre"
+          }
+        ]
+      },
+      {
+        "type": "dates",
+        "titre": "Les étapes",
+        "items": [
+          {
+            "date": "17 novembre",
+            "t": "Loi NIS2 adoptée par l'Assemblée"
+          },
+          {
+            "date": "19 novembre",
+            "t": "Plan cyber présenté"
+          },
+          {
+            "date": "2027",
+            "t": "5 % du budget numérique pour la cyber",
+            "ton": "defense"
+          },
+          {
+            "date": "2030",
+            "t": "10 % du budget numérique",
+            "ton": "defense"
+          }
+        ]
+      }
+    ]
   }
 ]

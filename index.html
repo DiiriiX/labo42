@@ -239,6 +239,15 @@ h2.sec{display:flex;gap:12px;align-items:flex-start;margin-top:40px;scroll-margi
 .ntitle{display:block;font-size:16.5px;line-height:1.35;margin-top:2px}
 .news.unread .ntitle::before{content:"";display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--acc);margin:0 7px 2px 0;vertical-align:middle}
 .impt{color:var(--red)}
+.nban{position:relative;margin:2px 0 14px;border-radius:14px;overflow:hidden}
+.nban svg{display:block;width:100%;height:auto}
+.nban span{position:absolute;left:10px;bottom:10px;background:var(--bg);color:var(--ink);font:600 12.5px Inter,sans-serif;padding:4px 10px;border-radius:99px;border:1px solid var(--line)}
+.nimg{display:flex;align-items:center;gap:8px;font-size:17px;margin:18px 0 8px}
+.nfig{margin:10px 0 14px}
+.sv .s{font-weight:700}
+.sv .big{font-weight:800}
+.sv .tr{fill:var(--red)}.sv .tg{fill:var(--acc-ink)}.sv .tb{fill:var(--blue)}
+.sv .ck{fill:none;stroke:var(--acc);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
 .nbody{display:none;padding:2px 16px 14px}
 .news.open .nbody{display:block}
 .chev{transition:transform .2s}
@@ -1455,9 +1464,103 @@ function ago(t){
 }
 const agoTag = a => { const t = tsOf(a); return t ? ` · <time class="ago${Date.now() - t < 36e5 ? " new" : ""}" data-ts="${t}">${ago(t)}</time>` : ""; };
 function tickAgo(){ document.querySelectorAll(".ago[data-ts]").forEach(el => { const t = +el.dataset.ts, txt = ago(t); if (el.textContent !== txt) el.textContent = txt; el.classList.toggle("new", Date.now() - t < 36e5); }); }
-const actuCard = a => `<article class="news${store.read[a.id] ? "" : " unread"}" data-nid="${esc(a.id)}"><button class="nhead" type="button" data-act="nopen" data-id="${esc(a.id)}" aria-expanded="false"><span class="ntile">${ART["cat_" + catKey(a.cat)]}</span><span class="ntxt"><span class="nmeta">${esc(a.cat || "Actu")}${a.source ? " · " + esc(a.source) : ""}${agoTag(a)}${+a.importance >= 3 ? ' · <b class="impt">Important</b>' : ""}</span><b class="ntitle">${esc(a.titre)}</b></span><span class="chev">›</span></button><div class="nbody">${fmt(a.resume)}${a.pourquoi ? `<div class="box acc"><h3>${ic("target")}Pourquoi ça te concerne</h3>${fmt(a.pourquoi)}</div>` : ""}<div class="cfoot">${TOPIC[a.cours] ? `<a class="link" href="#cours-${a.cours}">Cours lié : ${esc(TOPIC[a.cours].t)}</a>` : ""}${/^https:\/\//.test(a.url || "") ? `<a class="link" href="${esc(a.url)}" target="_blank" rel="noopener" data-news="1">Lire sur ${esc(a.source || "la source")}</a>` : ""}<button class="link" type="button" data-act="later" data-id="${esc(a.id)}">${store.later[a.id] ? "Retirer de « plus tard »" : "Lire plus tard"}</button></div></div></article>`;
+const NTH = {
+  faille: {bg: "rs", l: "Faille logicielle", d: `<rect x="24" y="30" width="70" height="80" rx="8" class="w o"/><rect x="34" y="44" width="30" height="6" rx="3" class="b"/><rect x="34" y="58" width="44" height="6" rx="3" class="m"/><rect x="42" y="72" width="26" height="6" rx="3" class="r"/><rect x="34" y="86" width="38" height="6" rx="3" class="m"/><path d="M296 40l26 46h-52z" class="y o"/><path d="M296 56v14" class="n o" style="stroke-width:3"/><circle cx="296" cy="78" r="2.2" class="ink"/><circle cx="258" cy="110" r="4" class="r"/><circle cx="112" cy="24" r="3" class="y"/>`, m: `<path d="M180 28l34 12v26c0 25-15 38-34 46-19-8-34-21-34-46V40z" class="w o"/><path d="M184 36l-9 20 11 9-10 19 5 12" class="n" style="stroke:var(--red);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round"/><path d="M199 92l-6-3M199 99h-7M199 106l-6 3M215 92l6-3M215 99h7M215 106l6 3" class="n o" style="stroke-width:1.8"/><ellipse cx="207" cy="99" rx="8" ry="10" class="r o" style="stroke-width:1.8"/><circle cx="207" cy="86" r="4.5" class="ink"/>`},
+  fuite: {bg: "bs", l: "Fuite de données", d: `<g transform="rotate(-10 70 62)"><rect x="46" y="34" width="48" height="58" rx="6" class="w o"/><text x="70" y="64" class="t" style="font-size:18px">@</text><path d="M56 76h28M56 84h18" class="n o" style="stroke-width:1.8"/></g><g transform="rotate(9 292 74)"><rect x="268" y="46" width="48" height="56" rx="6" class="w o"/><text x="292" y="78" class="t">***</text><path d="M278 88h28" class="n o" style="stroke-width:1.8"/></g><circle cx="118" cy="110" r="4" class="b"/><circle cx="246" cy="30" r="3" class="b"/>`, m: `<path d="M150 40v46c0 6 13 10 30 10s30-4 30-10V40" class="w o"/><ellipse cx="180" cy="40" rx="30" ry="10" class="b o"/><path d="M150 56c0 6 13 10 30 10s30-4 30-10M150 71c0 6 13 10 30 10s30-4 30-10" class="n o"/><path d="M211 58l-6 5 5 5-5 5" class="n" style="stroke:var(--red);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round"/><path d="M216 78c-4 5-6 8-6 11a6 6 0 0 0 12 0c0-3-2-6-6-11z" class="b o" style="stroke-width:1.8"/><path d="M204 100c-3 4-5 6-5 9a5 5 0 0 0 10 0c0-3-2-5-5-9z" class="b o" style="stroke-width:1.8"/>`},
+  rancon: {bg: "rs", l: "Rançongiciel", d: `<circle cx="62" cy="78" r="22" class="y o"/><text x="62" y="85" class="t" style="font-size:20px">€</text><circle cx="98" cy="42" r="14" class="y o"/><text x="98" y="47" class="t">€</text><rect x="264" y="38" width="44" height="56" rx="6" class="w o"/><path d="M272 52h28M272 60h20" class="n o" style="stroke-width:1.8"/><path d="M281 76v-4a6 6 0 0 1 12 0v4" class="n o"/><rect x="277" y="75" width="20" height="15" rx="3" class="r o" style="stroke-width:1.8"/>`, m: `<rect x="146" y="30" width="54" height="70" rx="7" class="w o"/><path d="M156 46h34M156 56h34M156 66h22" class="n o" style="stroke-width:1.8"/><path d="M190 82v-8a11 11 0 0 1 22 0v8" class="n o" style="stroke-width:3.2"/><rect x="184" y="80" width="34" height="30" rx="6" class="r o"/><circle cx="201" cy="92" r="3.5" class="w"/><path d="M201 95v7" class="wk" style="stroke-width:2.4"/>`},
+  phishing: {bg: "ys", l: "Hameçonnage", d: `<path d="M30 12C100 4 170 2 200 14" class="n o"/><rect x="40" y="56" width="50" height="34" rx="5" class="w o"/><path d="M40 60l25 17 25-17" class="n o"/><path d="M266 78c10-12 34-12 44 0-10 12-34 12-44 0z" class="b o"/><path d="M310 78l12-9v18z" class="b o"/><circle cx="278" cy="75" r="2.5" class="ink"/><path d="M0 132c20-8 40-8 60 0s40 8 60 0 40-8 60 0 40 8 60 0 40-8 60 0 40 8 60 0" class="n" style="stroke:var(--blue);stroke-width:2.4"/>`, m: `<rect x="144" y="56" width="70" height="48" rx="6" class="w o"/><path d="M144 60l35 24 35-24" class="n o"/><path d="M200 14v42" class="n o"/><path d="M200 56v12a8 8 0 0 1-16 0v-4l-4 5" class="n o" style="stroke-width:2.8"/><circle cx="150" cy="58" r="9" class="r o"/><text x="150" y="62.5" class="tw">!</text>`},
+  intrusion: {bg: "rs", l: "Intrusion", d: `<rect x="34" y="50" width="60" height="40" rx="5" class="w o"/><path d="M26 94h76l-6 8H32z" class="w o"/><rect x="42" y="58" width="44" height="24" rx="2" class="dk"/><text x="52" y="74" class="tm">$_</text><path d="M102 70H146" class="n" style="stroke:var(--red);stroke-width:2.6;stroke-dasharray:6 5"/><circle cx="282" cy="66" r="13" class="y o"/><circle cx="282" cy="66" r="4" class="w"/><path d="M295 66h32v10M315 66v8" class="n o" style="stroke-width:3"/>`, m: `<path d="M140 63l8 7-8 7" class="n" style="stroke:var(--red);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round"/><rect x="154" y="28" width="52" height="84" rx="7" class="dk o"/><rect x="162" y="40" width="36" height="12" rx="3" class="m"/><rect x="162" y="58" width="36" height="12" rx="3" class="m"/><rect x="162" y="76" width="36" height="12" rx="3" class="m"/><circle cx="190" cy="46" r="2.5" class="g"/><circle cx="190" cy="64" r="2.5" class="r"/><circle cx="190" cy="82" r="2.5" class="g"/><circle cx="206" cy="30" r="11" class="r o"/><text x="206" y="34.5" class="tw">!</text>`},
+  ia: {bg: "gs", l: "Intelligence artificielle", d: `<path d="M30 40h64a8 8 0 0 1 8 8v22a8 8 0 0 1-8 8H52l-12 10v-10h-10a8 8 0 0 1-8-8V48a8 8 0 0 1 8-8z" class="w o"/><path d="M34 54h56M34 64h36" class="n o" style="stroke-width:1.8"/><path d="M266 58h64a8 8 0 0 1 8 8v22a8 8 0 0 1-8 8h-10v10l-12-10h-42a8 8 0 0 1-8-8V66a8 8 0 0 1 8-8z" class="g o"/><path d="M272 72h56M272 82h32" class="wk" style="stroke-width:2"/><path d="M250 22l3 7 7 3-7 3-3 7-3-7-7-3 7-3z" class="y o" style="stroke-width:1.4"/>`, m: `<path d="M164 34v-8M180 34v-8M196 34v-8M164 102v8M180 102v8M196 102v8M146 52h-8M146 68h-8M146 84h-8M214 52h8M214 68h8M214 84h8" class="n o"/><rect x="146" y="34" width="68" height="68" rx="10" class="w o"/><rect x="160" y="48" width="40" height="40" rx="6" class="b"/><text x="180" y="73.5" class="tw" style="font-size:15px">IA</text>`},
+  cloud: {bg: "bs", l: "Cloud", d: `<path d="M80 62C110 62 122 72 146 72" class="n o" style="stroke-dasharray:4 5"/><path d="M268 46C246 48 236 56 216 60" class="n o" style="stroke-dasharray:4 5"/><path d="M48 72a10 10 0 0 1 0-20 14 14 0 0 1 26-4 11 11 0 0 1 4 24z" class="w o"/><path d="M272 54a10 10 0 0 1 0-20 14 14 0 0 1 26-4 11 11 0 0 1 4 24z" class="w o"/><path d="M291 86v-6a9 9 0 0 1 18 0v6" class="n o" style="stroke-width:2.6"/><rect x="286" y="84" width="28" height="22" rx="5" class="g o"/>`, m: `<path d="M160 82a16 16 0 0 1-1-32 22 22 0 0 1 42-6 17 17 0 0 1 4 38z" class="w o"/><path d="M180 82v8" class="n o"/><rect x="156" y="90" width="48" height="10" rx="3" class="dk o"/><rect x="156" y="102" width="48" height="10" rx="3" class="dk o"/><circle cx="196" cy="95" r="1.8" class="g"/><circle cx="196" cy="107" r="1.8" class="g"/>`},
+  reseau: {bg: "gs", l: "Réseau", d: `<path d="M60 40L100 84H146M60 110L100 84M300 40L260 84H214M300 110L260 84" class="n o" style="stroke-width:1.8"/><circle cx="100" cy="84" r="8" class="w o"/><circle cx="260" cy="84" r="8" class="w o"/><rect x="44" y="28" width="32" height="24" rx="4" class="w o"/><rect x="44" y="98" width="32" height="24" rx="4" class="w o"/><rect x="284" y="28" width="32" height="24" rx="4" class="w o"/><rect x="284" y="98" width="32" height="24" rx="4" class="w o"/>`, m: `<path d="M164 70V46M196 70V46" class="n o"/><circle cx="164" cy="44" r="4" class="ink"/><circle cx="196" cy="44" r="4" class="ink"/><path d="M170 34a14 14 0 0 1 20 0M163 26a23 23 0 0 1 34 0" class="n o"/><rect x="146" y="70" width="68" height="28" rx="7" class="dk o"/><circle cx="160" cy="84" r="3" class="g"/><circle cx="172" cy="84" r="3" class="g"/><circle cx="184" cy="84" r="3" class="y"/><path d="M194 84h12" class="wk" style="stroke-width:2"/>`},
+  maj: {bg: "gs", l: "Mise à jour", d: `<path d="M90.0 70.0L99.0 70.0M84.1 84.1L90.5 90.5M70.0 90.0L70.0 99.0M55.9 84.1L49.5 90.5M50.0 70.0L41.0 70.0M55.9 55.9L49.5 49.5M70.0 50.0L70.0 41.0M84.1 55.9L90.5 49.5" class="n o" style="stroke-width:5"/><circle cx="70" cy="70" r="22" class="w o"/><circle cx="70" cy="70" r="8" class="b o"/><circle cx="290" cy="58" r="18" class="g o"/><path d="M281 58l6 6 12-12" class="wk"/><rect x="262" y="88" width="56" height="20" rx="10" class="w o"/><text x="290" y="102.5" class="t" style="font-size:11px">à jour</text>`, m: `<rect x="152" y="26" width="56" height="88" rx="9" class="w o"/><path d="M172 33h16" class="n o"/><circle cx="180" cy="62" r="18" class="g o"/><path d="M180 52v18M172 62l8 8 8-8" class="wk"/><rect x="162" y="92" width="36" height="7" rx="3.5" class="m"/><rect x="162" y="92" width="24" height="7" rx="3.5" class="g"/>`},
+  loi: {bg: "bs", l: "Loi et société", d: `<circle cx="70" cy="70" r="34" class="b"/><circle cx="96.0" cy="70.0" r="3" class="y"/><circle cx="92.5" cy="83.0" r="3" class="y"/><circle cx="83.0" cy="92.5" r="3" class="y"/><circle cx="70.0" cy="96.0" r="3" class="y"/><circle cx="57.0" cy="92.5" r="3" class="y"/><circle cx="47.5" cy="83.0" r="3" class="y"/><circle cx="44.0" cy="70.0" r="3" class="y"/><circle cx="47.5" cy="57.0" r="3" class="y"/><circle cx="57.0" cy="47.5" r="3" class="y"/><circle cx="70.0" cy="44.0" r="3" class="y"/><circle cx="83.0" cy="47.5" r="3" class="y"/><circle cx="92.5" cy="57.0" r="3" class="y"/><rect x="258" y="28" width="58" height="80" rx="6" class="w o"/><text x="287" y="46" class="t">NIS2</text><path d="M268 58h38M268 68h38M268 78h26" class="n o" style="stroke-width:1.8"/><circle cx="302" cy="94" r="9" class="r o"/>`, m: `<path d="M144 54l36-22 36 22z" class="w o"/><circle cx="180" cy="46" r="4" class="y"/><rect x="152" y="58" width="9" height="34" class="w o"/><rect x="167" y="58" width="9" height="34" class="w o"/><rect x="184" y="58" width="9" height="34" class="w o"/><rect x="199" y="58" width="9" height="34" class="w o"/><rect x="142" y="94" width="76" height="10" rx="2" class="w o"/>`},
+  dev: {bg: "bs", l: "Développement", d: `<text x="66" y="86" class="t" style="font-size:46px;fill:var(--blue)">{ }</text><path d="M308.0 66.0L317.0 66.0M303.3 77.3L309.7 83.7M292.0 82.0L292.0 91.0M280.7 77.3L274.3 83.7M276.0 66.0L267.0 66.0M280.7 54.7L274.3 48.3M292.0 50.0L292.0 41.0M303.3 54.7L309.7 48.3" class="n o" style="stroke-width:5"/><circle cx="292" cy="66" r="18" class="w o"/><circle cx="292" cy="66" r="6" class="b o"/>`, m: `<rect x="142" y="32" width="76" height="66" rx="8" class="dk o"/><circle cx="152" cy="42" r="2.5" class="r"/><circle cx="160" cy="42" r="2.5" class="y"/><circle cx="168" cy="42" r="2.5" class="g"/><path d="M164 60l-10 9 10 9M196 60l10 9-10 9M186 56l-12 26" class="wk"/>`},
+  materiel: {bg: "ys", l: "Matériel", d: `<path d="M20 40h60v30h40M20 100h50V80h66M340 40h-60v30h-56M340 100h-50V80h-66" class="n o" style="stroke-width:1.8"/><circle cx="20" cy="40" r="4" class="g"/><circle cx="20" cy="100" r="4" class="g"/><circle cx="340" cy="40" r="4" class="g"/><circle cx="340" cy="100" r="4" class="g"/>`, m: `<path d="M164 34v-8M180 34v-8M196 34v-8M164 106v8M180 106v8M196 106v8M146 52h-8M146 70h-8M146 88h-8M214 52h8M214 70h8M214 88h8" class="n o"/><rect x="146" y="34" width="68" height="72" rx="8" class="w o"/><rect x="162" y="52" width="36" height="36" rx="5" class="y o"/><rect x="172" y="62" width="16" height="16" rx="2" class="ink"/>`}
+};
+const nBanner = th => NTH[th] ? `<div class="nban">${il(`<rect width="360" height="140" class="${NTH[th].bg}"/>` + NTH[th].d + NTH[th].m, "0 0 360 140")}<span>${esc(NTH[th].l)}</span></div>` : "";
+const nTile = a => NTH[a.theme] ? il(`<rect x="130" y="20" width="100" height="100" rx="26" class="${NTH[a.theme].bg}"/>` + NTH[a.theme].m, "130 20 100 100") : ART["cat_" + catKey(a.cat)];
+/* Schémas des actus : 5 modèles remplis par la tâche des actus */
+const NTON = {attaque: "rd", cible: "bl", defense: "a", neutre: "b"}, NTXT = {attaque: " tr", cible: " tb", defense: " tg", neutre: ""};
+const tone = (x, d) => NTON[x] ? x : d;
+function wrapTxt(v, max, lines){
+  const w = String(v == null ? "" : v).trim().split(/\s+/).filter(Boolean), out = []; let cur = "";
+  for (const x0 of w) { const x = x0.length > max ? x0.slice(0, max - 1) + "…" : x0; if (!cur) cur = x; else if (cur.length + 1 + x.length <= max) cur += " " + x; else { out.push(cur); cur = x; } }
+  if (cur) out.push(cur);
+  if (out.length > lines) { out.length = lines; const l = out[lines - 1]; out[lines - 1] = (l.length >= max ? l.slice(0, max - 1) : l) + "…"; }
+  return out;
+}
+const NFIG = {
+  chaine(s){
+    const st = arr(s.etapes).filter(e => e && e.t).slice(0, 6); if (!st.length) return null;
+    let y = 6, out = "";
+    st.forEach((e, i) => {
+      const d = wrapTxt(e.d, 38, 2), h = 40 + d.length * 17, c = NTON[tone(e.ton, "neutre")];
+      out += R(40, y, 314, h, c, 12) + `<circle cx="18" cy="${y + h / 2}" r="13" class="${c}"/>` + T(18, y + h / 2 + 5, i + 1, "t") + T(54, y + 25, esc(wrapTxt(e.t, 30, 1)[0]), "t", "start") + d.map((l, k) => T(54, y + 43 + k * 17, esc(l), "m", "start")).join("");
+      y += h; if (i < st.length - 1) { out += P(`M197 ${y + 1}V${y + 15}`); y += 18; }
+    });
+    return {h: y + 6, svg: out};
+  },
+  cibles(s){
+    const c = s.centre || {}, it = arr(s.autour).filter(x => x && x.t).slice(0, 6); if (!c.t || !it.length) return null;
+    const cd = wrapTxt(c.d, 40, 1), ch = cd.length ? 56 : 42;
+    let out = R(30, 6, 300, ch, NTON[tone(c.ton, "attaque")], 12) + T(180, 31, esc(wrapTxt(c.t, 32, 1)[0]), "t") + (cd.length ? T(180, 49, esc(cd[0]), "m") : "");
+    const n = it.length, cols = n === 1 ? 1 : (n === 2 || n === 4) ? 2 : 3, gap = 8, w = (344 - gap * (cols - 1)) / cols, bus = 6 + ch + 14, top = bus + 22;
+    const first = it.slice(0, cols), x0 = 8 + (cols - first.length) * (w + gap) / 2, xs = first.map((_, k) => x0 + k * (w + gap) + w / 2);
+    out += `<path d="M180 ${6 + ch}V${bus}${xs.length > 1 ? `M${xs[0]} ${bus}H${xs[xs.length - 1]}` : ""}" class="l"/>` + xs.map(x => P(`M${x} ${bus}V${top - 3}`)).join("");
+    let y = top;
+    for (let r = 0; r * cols < n; r++) {
+      const row = it.slice(r * cols, r * cols + cols), ox = 8 + (cols - row.length) * (w + gap) / 2;
+      const L = row.map(x => ({t: wrapTxt(x.t, Math.floor(w / 7.8), 2), d: wrapTxt(x.d, Math.floor(w / 6.9), 2), c: NTON[tone(x.ton, "cible")]}));
+      const h = Math.max(...L.map(l => 22 + (l.t.length + l.d.length - 1) * 17 + 12));
+      L.forEach((l, k) => { const x = ox + k * (w + gap), cx = x + w / 2; out += R(x, y, w, h, l.c, 10) + l.t.map((t, j) => T(cx, y + 22 + j * 17, esc(t), "s")).join("") + l.d.map((d, j) => T(cx, y + 22 + (l.t.length + j) * 17, esc(d), "m")).join(""); });
+      y += h + gap;
+    }
+    return {h: y - 2, svg: out};
+  },
+  chiffres(s){
+    const it = arr(s.items).filter(x => x && x.n != null && String(x.n).trim()).slice(0, 4); if (!it.length) return null;
+    const n = it.length, cols = n === 1 ? 1 : n === 3 ? 3 : 2, w = (344 - 8 * (cols - 1)) / cols;
+    let out = "", y = 6;
+    for (let r = 0; r * cols < n; r++) {
+      const row = it.slice(r * cols, r * cols + cols), L = row.map(x => wrapTxt(x.t, Math.floor(w / 6.9), 4)), h = 54 + Math.max(...L.map(l => l.length)) * 17 + 4;
+      row.forEach((x, k) => { const bx = 8 + k * (w + 8), cx = bx + w / 2, tn = tone(x.ton, "neutre"), num = String(x.n).trim().slice(0, 12), fs = Math.min(28, Math.floor((w - 14) / (num.length * 0.6)));
+        out += R(bx, y, w, h, NTON[tn], 12) + `<text x="${cx}" y="${y + 40}" text-anchor="middle" class="big${NTXT[tn]}" style="font-size:${fs}px">${esc(num)}</text>` + L[k].map((l, j) => T(cx, y + 62 + j * 17, esc(l), "m")).join(""); });
+      y += h + 8;
+    }
+    return {h: y - 2, svg: out};
+  },
+  parade(s){
+    const it = arr(s.items).filter(x => typeof x === "string" && x.trim()).slice(0, 5); if (!it.length) return null;
+    let y = 6, out = "";
+    it.forEach(x => { const L = wrapTxt(x, 40, 2), h = 22 + L.length * 18, cy = y + h / 2;
+      out += R(6, y, 348, h, "a", 12) + `<circle cx="28" cy="${cy}" r="11" class="b"/><path d="M23 ${cy}l4 4 7-8" class="ck"/>` + L.map((l, j) => T(48, cy + 5 - (L.length - 1) * 9 + j * 18, esc(l), "", "start")).join(""); y += h + 8; });
+    return {h: y - 2, svg: out};
+  },
+  dates(s){
+    const it = arr(s.items).filter(x => x && x.t).slice(0, 6); if (!it.length) return null;
+    let y = 8, out = "";
+    const ys = [];
+    it.forEach(x => { const L = wrapTxt(x.t, 30, 2), cy = y + 14, c = NTON[tone(x.ton, "neutre")];
+      out += T(96, cy + 5, esc(wrapTxt(x.date, 12, 1)[0] || ""), "s", "end") + `<circle cx="112" cy="${cy}" r="7" class="${c}"/>` + L.map((l, j) => T(128, cy + 5 + j * 18, esc(l), "", "start")).join("");
+      ys.push(cy); y += 22 + L.length * 18; });
+    return {h: y, svg: (ys.length > 1 ? `<path d="M112 ${ys[0]}V${ys[ys.length - 1]}" class="l"/>` : "") + out};
+  }
+};
+function newsFig(sc){
+  const g = sc && NFIG[sc.type]; if (!g) return "";
+  let r = null; try { r = g(sc); } catch (e) { r = null; }
+  return r ? `<figure class="schema nfig"><svg class="sv" viewBox="0 0 360 ${Math.ceil(r.h)}" role="img" aria-label="${esc(sc.titre || "Schéma")}">${r.svg}</svg>${sc.titre ? `<figcaption><b>${esc(sc.titre)}</b></figcaption>` : ""}</figure>` : "";
+}
+const newsBody = a => { const figs = arr(a.schemas).slice(0, 3).map(newsFig).filter(Boolean);
+  return nBanner(a.theme) + fmt(a.resume) + (figs.length ? `<h3 class="nimg">${ic("eye")}En image</h3>` + figs.join("") : "")
+    + (a.pourquoi ? `<div class="box acc"><h3>${ic("target")}Pourquoi ça te concerne</h3>${fmt(a.pourquoi)}</div>` : "")
+    + `<div class="cfoot">${TOPIC[a.cours] ? `<a class="link" href="#cours-${a.cours}">Cours lié : ${esc(TOPIC[a.cours].t)}</a>` : ""}${/^https:\/\//.test(a.url || "") ? `<a class="link" href="${esc(a.url)}" target="_blank" rel="noopener" data-news="1">Lire sur ${esc(a.source || "la source")}</a>` : ""}<button class="link" type="button" data-act="later" data-id="${esc(a.id)}">${store.later[a.id] ? "Retirer de « plus tard »" : "Lire plus tard"}</button></div>`; };
+const actuCard = a => `<article class="news${store.read[a.id] ? "" : " unread"}" data-nid="${esc(a.id)}"><button class="nhead" type="button" data-act="nopen" data-id="${esc(a.id)}" aria-expanded="false"><span class="ntile${NTH[a.theme] ? " th" : ""}">${nTile(a)}</span><span class="ntxt"><span class="nmeta">${esc(a.cat || "Actu")}${a.source ? " · " + esc(a.source) : ""}${agoTag(a)}${+a.importance >= 3 ? ' · <b class="impt">Important</b>' : ""}</span><b class="ntitle">${esc(a.titre)}</b></span><span class="chev">›</span></button><div class="nbody"></div></article>`;
 function toggleNews(b){
   const art = b.closest(".news"), id = b.dataset.id, open = !art.classList.contains("open");
+  const body = art.querySelector(".nbody");
+  if (open && body && !body.dataset.f) { const a = actus.find(x => x.id === id); if (a) { body.innerHTML = newsBody(a); body.dataset.f = "1"; } }
   art.classList.toggle("open", open); b.setAttribute("aria-expanded", open);
   if (open && !store.read[id]) { store.read[id] = today; document.querySelectorAll(`.news[data-nid="${CSS.escape(id)}"]`).forEach(x => x.classList.remove("unread")); if (!store.day.news) { store.day.news = true; active(); } else { save(); refresh(); } newsCounts(); }
 }
