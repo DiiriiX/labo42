@@ -1,5 +1,17 @@
 [
   {
+    "id": "2026-11-22-rackspace-kubernetes",
+    "date": "2026-11-22",
+    "cat": "Cyber",
+    "importance": 2,
+    "titre": "Rackspace Spot : des pirates ont lu des secrets Kubernetes",
+    "resume": "Le 17 novembre, des pirates sont entrés dans Rackspace Spot, un service cloud qui fait tourner des applications avec Kubernetes. Ils ont utilisé des identifiants volés, puis ont agi comme de vrais utilisateurs : création de « pods » (petits conteneurs) et lecture des « Secrets », là où sont rangés les mots de passe et les clés.\n\nRackspace l'a appris le lendemain grâce à un client. L'entreprise a coupé les accès, changé ses clés et demande à ses clients de renouveler leurs jetons, de changer leurs secrets et de relire leurs journaux depuis le 17 novembre.",
+    "pourquoi": "Pas besoin de faille : un simple identifiant volé suffit à ouvrir un service cloud, d'où l'importance de protéger et de changer régulièrement ses accès. C'est aussi un exemple concret du travail de défense : repérer les actions suspectes dans les journaux (logs), puis couper et nettoyer.",
+    "cours": "logs",
+    "source": "BleepingComputer",
+    "url": "https://www.bleepingcomputer.com/news/security/rackspace-spot-breach-let-hackers-access-customer-kubernetes-secrets/"
+  },
+  {
     "id": "2026-11-22-php-sessions",
     "date": "2026-11-22",
     "cat": "Cyber",
