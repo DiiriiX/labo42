@@ -15,6 +15,12 @@ const RAPPELS = [
   "Un cours de ton parcours ce soir ? Le suivant t'attend.",
   "Fin de semaine : révise tes fiches avant de souffler."
 ];
+if (process.env.RAPPEL === "1") {
+  const jour = new Date().toLocaleDateString("sv-SE", {timeZone: "Europe/Paris"});
+  let derniers = [];
+  try { derniers = JSON.parse(fs.readFileSync("resume.json", "utf8")); } catch (e) {}
+  if (Array.isArray(derniers) && derniers.some(r => r && r.date === jour)) { console.log("Le résumé du jour est déjà envoyé : pas de rappel."); process.exit(0); }
+}
 const msg = process.env.RAPPEL === "1"
   ? {id: "rappel", title: "Labo 42", body: RAPPELS[new Date().getDay()], url: "./#reviser"}
   : JSON.parse(fs.readFileSync("push/outbox.json", "utf8"));

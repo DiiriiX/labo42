@@ -1,7 +1,7 @@
 name: Rappel quotidien
 on:
   schedule:
-    - cron: "34 17 * * *"
+    - cron: "34 18 * * *"
   workflow_dispatch:
 jobs:
   rappeler:

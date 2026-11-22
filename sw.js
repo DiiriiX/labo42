@@ -1,5 +1,5 @@
-const CACHE = "labo42-v3";
-const SHELL = ["./", "./index.html", "./terminal.js", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png", "./actus.json", "./lessons/terminal.json", "./lessons/c.json", "./lessons/reseau.json", "./lessons/cyber.json"];
+const CACHE = "labo42-v4";
+const SHELL = ["./", "./index.html", "./terminal.js", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png", "./actus.json", "./resume.json", "./lessons/terminal.json", "./lessons/c.json", "./lessons/reseau.json", "./lessons/cyber.json"];
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting()));
 });
@@ -14,6 +14,7 @@ self.addEventListener("fetch", e => {
   const url = new URL(e.request.url);
   if (e.request.method !== "GET" || url.origin !== location.origin) return;
   if (url.pathname.endsWith("actus.json")) { e.respondWith(fresh(e.request, "./actus.json")); return; }
+  if (url.pathname.endsWith("resume.json")) { e.respondWith(fresh(e.request, "./resume.json")); return; }
   if (e.request.mode === "navigate") { e.respondWith(fresh(e.request, "./index.html")); return; }
   if (url.pathname.endsWith(".js") || url.pathname.includes("/lessons/")) { e.respondWith(fresh(e.request, e.request)); return; }
   e.respondWith(caches.match(e.request).then(r => r || fetch(e.request)));

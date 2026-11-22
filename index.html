@@ -118,6 +118,11 @@ pre code{background:none;padding:0}
 .card .box{margin:12px 0}.card .box h3{font-size:16px;margin:0 0 6px}
 .cfoot{display:flex;flex-wrap:wrap;gap:2px 18px}
 .dateh{font-size:15px;font-weight:600;color:var(--mute);margin:24px 0 0}
+.resume{border:2px solid var(--acc)}
+.resume .lead{margin:10px 0 4px}
+.resume ul{padding-left:20px;margin:6px 0}.resume li{margin:4px 0}
+.mini{border-top:1px solid var(--line);padding:10px 0}.mini:first-of-type{border-top:0}
+.mini p{margin:4px 0}
 .sum{display:flex;gap:12px;align-items:flex-start}
 .sum .pthumb{width:72px}
 .sum h3{margin:0 0 6px;font-size:17px}
@@ -196,6 +201,10 @@ button.pitem{width:100%;background:var(--bg);font:inherit;color:var(--ink);text-
       </ul>
       <p class="small">Le prof et l'explication d'articles fonctionnent dans Claude : l'appli t'y emmène d'un bouton quand tu en as besoin.</p>
     </details>
+  </div>
+  <div id="resume" class="off">
+    <h2>Ton résumé du jour</h2>
+    <div id="resumeBox"></div>
   </div>
   <h2>Ta séance du jour</h2>
   <div class="steps" id="plan"></div>
@@ -783,10 +792,10 @@ $("actuFilters").addEventListener("click", e => { const b = e.target.closest("[d
 const dayLabel = d => { const diff = Math.round((new Date(today) - new Date(d)) / 864e5); if (diff === 0) return "Aujourd'hui"; if (diff === 1) return "Hier"; try { return new Date(d + "T12:00:00").toLocaleDateString("fr-FR", {weekday:"long", day:"numeric", month:"long"}); } catch (e) { return d; } };
 const actuCard = a => `<article class="card"><div class="ftop"><span class="tag">${esc(a.cat || "Actu")}</span>${+a.importance >= 3 ? '<span class="imp">Important</span>' : ""}</div><h3>${esc(a.titre)}</h3>${fmt(a.resume)}${a.pourquoi ? `<div class="box"><h3>Pourquoi ça te concerne</h3>${fmt(a.pourquoi)}</div>` : ""}<div class="cfoot">${TOPIC[a.cours] ? `<a class="link" href="#cours-${a.cours}">Cours lié : ${esc(TOPIC[a.cours].t)}</a>` : ""}${/^https:\/\//.test(a.url || "") ? `<a class="link" href="${esc(a.url)}" target="_blank" rel="noopener" data-news="1">Lire sur ${esc(a.source || "la source")}</a>` : ""}</div></article>`;
 function renderActus(){
-  const none = actusState === "off" ? `<p class="note">Les actus ne peuvent pas s'afficher pour l'instant. Vérifie ta connexion. Tu les reçois aussi par notification chaque soir.</p>`
+  const none = actusState === "off" ? `<p class="note">Les actus ne peuvent pas s'afficher pour l'instant. Vérifie ta connexion. Les plus importantes t'arrivent aussi par notification.</p>`
     : actusState === "loading" ? `<div class="loading"><span class="spin"></span><p>Chargement des actus…</p></div>`
     : actusState === "slow" ? `<p class="note">Les actus ne répondent pas pour l'instant. Réessaie un peu plus tard.</p>`
-    : `<p class="note">Pas encore d'actus. Elles arrivent avec ton résumé du soir.</p>`;
+    : `<p class="note">Pas encore d'actus. Elles arrivent plusieurs fois par jour.</p>`;
   $("actuFilters").innerHTML = actus.length ? CATS.map(c => { const n = c === "Tout" ? actus.length : actus.filter(a => a.cat === c).length; return `<button class="chip${c === actuCat ? " on" : ""}" type="button" data-cat="${c}">${c} (${n})</button>`; }).join("") : "";
   if (!actus.length) { $("actus").innerHTML = none; $("homeActus").innerHTML = none; return; }
   const shown = actus.filter(a => actuCat === "Tout" || a.cat === actuCat);
@@ -881,17 +890,46 @@ $("copyLink").addEventListener("click", async () => {
   catch (e) { b.textContent = "Copie impossible : recopie le lien ci-dessous"; }
 });
 
+/* ---------- Résumé du jour ---------- */
+let resumes = [], wantResume = false;
+const LIENS = ["#terminal","#reviser","#parcours","#veille","#acquis"];
+const okLien = l => typeof l === "string" && (LIENS.includes(l) || (l.startsWith("#cours-") && !!TOPIC[l.slice(7)]));
+const goLabel = l => l.startsWith("#cours-") ? "Ouvrir le cours : " + TOPIC[l.slice(7)].t : l === "#terminal" ? "Ouvrir le terminal" : l === "#reviser" ? "Réviser mes fiches" : l === "#veille" ? "Lire les actus" : l === "#acquis" ? "Voir mes acquis" : "Voir mon parcours";
+const coursLink = id => TOPIC[id] ? `<a class="link" href="#cours-${id}">Revoir le cours : ${esc(TOPIC[id].t)}</a>` : "";
+function resumeCard(r){
+  const e = r.etape || {}, q = r.question || {}, ac = arr(r.actus).filter(x => typeof x === "string" && x.trim());
+  return `<article class="card resume"><div class="ftop"><span class="tag">Résumé</span><span>${esc(dayLabel(r.date))}</span></div>` +
+    (r.bilan ? `<p class="lead">${inline(r.bilan)}</p>` : "") +
+    (e.titre || e.detail ? `<div class="box acc"><h3>Ton étape du jour</h3>${e.titre ? `<p><b>${inline(e.titre)}</b></p>` : ""}${e.detail ? fmt(e.detail) : ""}${okLien(e.lien) ? `<a class="btn acc full" href="${e.lien}">${esc(goLabel(e.lien))}</a>` : ""}</div>` : "") +
+    (ac.length ? `<h3>Les actus à retenir</h3><ul>${ac.map(x => `<li>${inline(x)}</li>`).join("")}</ul><a class="link" href="#veille">Lire les actus en entier</a>` : "") +
+    (q.texte ? `<div class="box qz"><h3>Question de révision</h3><p>${inline(q.texte)}</p><p class="small">Réponds de tête ou sur papier, puis vérifie toi-même dans le cours.</p>${coursLink(q.cours)}</div>` : "") +
+    (r.mot ? `<p class="small">${inline(r.mot)}</p>` : "") + `</article>`;
+}
+const miniCard = r => `<div class="mini"><p class="small"><b>${esc(dayLabel(r.date))}</b></p>${r.etape && r.etape.titre ? `<p>Étape : ${inline(r.etape.titre)}</p>` : ""}${r.question && r.question.texte ? `<p class="small">Question : ${inline(r.question.texte)}</p>` : ""}</div>`;
+function renderResume(){
+  if (!resumes.length) { $("resume").classList.add("off"); return; }
+  const old = resumes.slice(1, 7);
+  $("resumeBox").innerHTML = resumeCard(resumes[0]) + (old.length ? `<details class="help" style="margin-top:12px"><summary>Résumés précédents (${old.length})</summary>${old.map(miniCard).join("")}</details>` : "");
+  $("resume").classList.remove("off");
+  if (wantResume && $("v-accueil").classList.contains("on")) { wantResume = false; $("resume").scrollIntoView({block: "start"}); }
+}
+fetch((inClaude ? APP_URL : "") + "resume.json?v=" + Date.now(), {cache: "no-store"}).then(r => r.ok ? r.json() : Promise.reject()).then(list => {
+  resumes = arr(list).filter(r => r && /^\d{4}-\d{2}-\d{2}$/.test(r.date || "")).sort((a, b) => a.date < b.date ? 1 : a.date > b.date ? -1 : 0);
+  renderResume();
+}).catch(() => {});
+
 /* ---------- Navigation ---------- */
 function route(){
   let h = location.hash.slice(1);
   if (h === "apprendre") h = "parcours";
+  if (h === "resume") { h = "accueil"; wantResume = true; }
   let v = ["accueil","parcours","reviser","terminal","acquis","veille"].includes(h) ? h : "accueil";
   if (h.startsWith("cours-") && (TOPIC[h.slice(6)] || h === "cours-libre")) { v = "cours"; openLesson(h.slice(6)); }
   else { if (ctl) ctl.abort(); cur = null; }
   if (v === "veille" && !store.day.news) { store.day.news = true; active(); }
   document.querySelectorAll(".view").forEach(s => s.classList.toggle("on", s.id === "v-" + v));
   document.querySelectorAll(".tabbar a").forEach(a => a.classList.toggle("on", a.dataset.v === (v === "cours" ? "parcours" : v)));
-  scrollTo(0, 0);
+  if (wantResume && resumes.length && v === "accueil") { wantResume = false; $("resume").scrollIntoView({block: "start"}); } else scrollTo(0, 0);
 }
 window.addEventListener("hashchange", route);
 const onApp = location.hostname.endsWith("github.io");
