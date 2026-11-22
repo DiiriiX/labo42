@@ -235,6 +235,7 @@ h2.sec{display:flex;gap:12px;align-items:flex-start;margin-top:40px;scroll-margi
 .ntile svg{width:100%;height:100%;display:block}
 .ntxt{flex:1}
 .nmeta{display:block;font-size:13px;color:var(--mute);line-height:1.4}
+.ago.new{color:var(--acc-ink);font-weight:600}
 .ntitle{display:block;font-size:16.5px;line-height:1.35;margin-top:2px}
 .news.unread .ntitle::before{content:"";display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--acc);margin:0 7px 2px 0;vertical-align:middle}
 .impt{color:var(--red)}
@@ -1442,8 +1443,19 @@ const inCat = (a, c) => c === "Tout" || (c === "Non lues" ? !store.read[a.id] : 
 $("actuFilters").addEventListener("click", e => { const b = e.target.closest("[data-cat]"); if (!b) return; actuCat = b.dataset.cat; renderActus(); });
 const dayLabel = d => { const diff = Math.round((new Date(today) - new Date(d)) / 864e5); if (diff === 0) return "Aujourd'hui"; if (diff === 1) return "Hier"; try { return new Date(d + "T12:00:00").toLocaleDateString("fr-FR", {weekday:"long", day:"numeric", month:"long"}); } catch (e) { return d; } };
 const catKey = c => ({Cyber:"cyber", Dev:"dev", Tech:"tech"})[c] || "tech";
-const readMin = a => Math.max(1, Math.round(((a.resume || "") + " " + (a.pourquoi || "")).split(/\s+/).length / 180));
-const actuCard = a => `<article class="news${store.read[a.id] ? "" : " unread"}" data-nid="${esc(a.id)}"><button class="nhead" type="button" data-act="nopen" data-id="${esc(a.id)}" aria-expanded="false"><span class="ntile">${ART["cat_" + catKey(a.cat)]}</span><span class="ntxt"><span class="nmeta">${esc(a.cat || "Actu")}${a.source ? " · " + esc(a.source) : ""} · ${readMin(a)} min${+a.importance >= 3 ? ' · <b class="impt">Important</b>' : ""}</span><b class="ntitle">${esc(a.titre)}</b></span><span class="chev">›</span></button><div class="nbody">${fmt(a.resume)}${a.pourquoi ? `<div class="box acc"><h3>${ic("target")}Pourquoi ça te concerne</h3>${fmt(a.pourquoi)}</div>` : ""}<div class="cfoot">${TOPIC[a.cours] ? `<a class="link" href="#cours-${a.cours}">Cours lié : ${esc(TOPIC[a.cours].t)}</a>` : ""}${/^https:\/\//.test(a.url || "") ? `<a class="link" href="${esc(a.url)}" target="_blank" rel="noopener" data-news="1">Lire sur ${esc(a.source || "la source")}</a>` : ""}<button class="link" type="button" data-act="later" data-id="${esc(a.id)}">${store.later[a.id] ? "Retirer de « plus tard »" : "Lire plus tard"}</button></div></div></article>`;
+const tsOf = a => { const t = Date.parse((a && a.ts) || ""); return isNaN(t) ? 0 : t; };
+const hm = d => d.getHours() + " h " + String(d.getMinutes()).padStart(2, "0");
+function ago(t){
+  const s = (Date.now() - t) / 1000, d = new Date(t), y = new Date(); y.setDate(y.getDate() - 1);
+  if (s < 60) return "à l'instant";
+  if (s < 3600) return "il y a " + Math.floor(s / 60) + " min";
+  if (s < 86400) return "il y a " + Math.floor(s / 3600) + " h";
+  if (d.toDateString() === y.toDateString()) return "hier à " + hm(d);
+  try { return d.toLocaleDateString("fr-FR", {day: "numeric", month: "short"}) + " à " + hm(d); } catch (e) { return hm(d); }
+}
+const agoTag = a => { const t = tsOf(a); return t ? ` · <time class="ago${Date.now() - t < 36e5 ? " new" : ""}" data-ts="${t}">${ago(t)}</time>` : ""; };
+function tickAgo(){ document.querySelectorAll(".ago[data-ts]").forEach(el => { const t = +el.dataset.ts, txt = ago(t); if (el.textContent !== txt) el.textContent = txt; el.classList.toggle("new", Date.now() - t < 36e5); }); }
+const actuCard = a => `<article class="news${store.read[a.id] ? "" : " unread"}" data-nid="${esc(a.id)}"><button class="nhead" type="button" data-act="nopen" data-id="${esc(a.id)}" aria-expanded="false"><span class="ntile">${ART["cat_" + catKey(a.cat)]}</span><span class="ntxt"><span class="nmeta">${esc(a.cat || "Actu")}${a.source ? " · " + esc(a.source) : ""}${agoTag(a)}${+a.importance >= 3 ? ' · <b class="impt">Important</b>' : ""}</span><b class="ntitle">${esc(a.titre)}</b></span><span class="chev">›</span></button><div class="nbody">${fmt(a.resume)}${a.pourquoi ? `<div class="box acc"><h3>${ic("target")}Pourquoi ça te concerne</h3>${fmt(a.pourquoi)}</div>` : ""}<div class="cfoot">${TOPIC[a.cours] ? `<a class="link" href="#cours-${a.cours}">Cours lié : ${esc(TOPIC[a.cours].t)}</a>` : ""}${/^https:\/\//.test(a.url || "") ? `<a class="link" href="${esc(a.url)}" target="_blank" rel="noopener" data-news="1">Lire sur ${esc(a.source || "la source")}</a>` : ""}<button class="link" type="button" data-act="later" data-id="${esc(a.id)}">${store.later[a.id] ? "Retirer de « plus tard »" : "Lire plus tard"}</button></div></div></article>`;
 function toggleNews(b){
   const art = b.closest(".news"), id = b.dataset.id, open = !art.classList.contains("open");
   art.classList.toggle("open", open); b.setAttribute("aria-expanded", open);
@@ -1462,28 +1474,38 @@ function renderActus(){
   if (!actus.length) { $("actus").innerHTML = none; $("homeActus").innerHTML = none; return; }
   const shown = actus.filter(a => inCat(a, actuCat));
   const days = [...new Set(shown.map(a => a.date))].slice(0, 10);
-  $("actus").innerHTML = shown.length ? days.map(d => `<p class="dateh">${esc(dayLabel(d))}</p>` + shown.filter(a => a.date === d).sort((x,y) => (+y.importance||0) - (+x.importance||0)).map(actuCard).join("")).join("") : `<p class="note">Rien dans « ${esc(actuCat)} » pour le moment.</p>`;
+  $("actus").innerHTML = shown.length ? days.map(d => `<p class="dateh">${esc(dayLabel(d))}</p>` + shown.filter(a => a.date === d).sort((x,y) => tsOf(y) - tsOf(x) || (+y.importance||0) - (+x.importance||0)).map(actuCard).join("")).join("") : `<p class="note">Rien dans « ${esc(actuCat)} » pour le moment.</p>`;
   const lastDay = actus[0].date;
   const last = actus.filter(a => a.date === lastDay).sort((x,y) => (+y.importance||0) - (+x.importance||0)).slice(0, 3);
   $("homeActus").innerHTML = `<p class="dateh" style="margin-top:0">${esc(dayLabel(lastDay))}</p>` + last.map(actuCard).join("");
   if (actusState === "ok") { const ids = new Set(actus.map(a => a.id)); let ch = false; ["read","later"].forEach(k => Object.keys(store[k]).forEach(i => { if (!ids.has(i)) { delete store[k][i]; ch = true; } })); if (ch) save(); }
   refresh();
 }
-if (inClaude) dbp.then(db => {
-  if (!db) { actusState = "off"; renderActus(); return; }
-  const timer = setTimeout(() => { if (actusState === "loading") { actusState = "slow"; renderActus(); } }, 10000);
-  try {
-    db.collection("actus").orderBy("date", "desc").limit(30).onSnapshot(snap => {
-      actus = snap.docs.map(d => Object.assign({id:d.id}, d.data())).filter(a => a && a.titre && a.date);
-      if (!snap.metadata.fromCache) clearTimeout(timer);
-      actusState = "ok"; renderActus();
-    }, () => { clearTimeout(timer); actusState = "off"; renderActus(); });
-  } catch (e) { clearTimeout(timer); actusState = "off"; renderActus(); }
-});
-if (!inClaude) fetch("actus.json?v=" + Date.now(), {cache:"no-store"}).then(r => r.ok ? r.json() : Promise.reject()).then(list => {
-  actus = arr(list).filter(a => a && a.titre && a.date).sort((a,b) => a.date < b.date ? 1 : a.date > b.date ? -1 : 0);
-  actusState = "ok"; renderActus();
-}).catch(() => { actusState = "off"; renderActus(); });
+let actusSig = "", actusAt = 0, actusBusy = false, dbOn = false, actusFile = false;
+function setActus(list){
+  const l = arr(list).filter(a => a && a.titre && a.date).sort((a, b) => a.date < b.date ? 1 : a.date > b.date ? -1 : tsOf(b) - tsOf(a));
+  const sig = l.map(a => a.id + "@" + (a.ts || "")).join("|");
+  if (sig === actusSig && actusState === "ok") { tickAgo(); return; }
+  const known = new Set(actus.map(a => a.id)), fresh = actusSig ? l.filter(a => !known.has(a.id)) : [];
+  actusSig = sig; actus = l; actusState = "ok"; renderActus();
+  if (fresh.length) toast(`${ic("news")}<span>${fresh.length > 1 ? fresh.length + " nouvelles actus" : "Nouvelle actu : " + esc(fresh[0].titre)}</span>`, 4500);
+}
+function actusFromDb(){
+  if (dbOn) return; dbOn = true;
+  dbp.then(db => {
+    if (!db) { if (!actus.length) { actusState = "off"; renderActus(); } return; }
+    try { db.collection("actus").orderBy("date", "desc").limit(30).onSnapshot(snap => { if (actusFile) return; setActus(snap.docs.map(d => Object.assign({id: d.id}, d.data()))); }, () => { if (!actus.length) { actusState = "off"; renderActus(); } }); }
+    catch (e) { if (!actus.length) { actusState = "off"; renderActus(); } }
+  });
+}
+function loadActus(){
+  if (actusBusy) return; actusBusy = true; actusAt = Date.now();
+  const slow = setTimeout(() => { if (actusState === "loading") { actusState = "slow"; renderActus(); } }, 10000);
+  fetch((inClaude ? APP_URL : "") + "actus.json?v=" + Date.now(), {cache: "no-store"}).then(r => r.ok ? r.json() : Promise.reject()).then(list => { actusFile = true; setActus(list); })
+    .catch(() => { if (inClaude) actusFromDb(); else if (!actus.length) { actusState = "off"; renderActus(); } })
+    .finally(() => { clearTimeout(slow); actusBusy = false; });
+}
+loadActus();
 $("srcs").innerHTML = SOURCES.map(x => `<li><a href="${x[1]}" target="_blank" rel="noopener" data-news="1"><span class="av">${esc(x[0][0])}</span><span><b>${esc(x[0])}</b><span>${esc(x[2])}</span></span><span class="chev">›</span></a></li>`).join("");
 document.addEventListener("click", e => { if (e.target.closest("[data-news]")) { store.day.news = true; active(); } });
 const NEWS = PROF + `
@@ -1578,10 +1600,29 @@ function renderResume(){
   $("resume").classList.remove("off");
   if (wantResume && $("v-accueil").classList.contains("on")) { wantResume = false; $("resume").scrollIntoView({block: "start"}); }
 }
-fetch((inClaude ? APP_URL : "") + "resume.json?v=" + Date.now(), {cache: "no-store"}).then(r => r.ok ? r.json() : Promise.reject()).then(list => {
-  resumes = arr(list).filter(r => r && /^\d{4}-\d{2}-\d{2}$/.test(r.date || "")).sort((a, b) => a.date < b.date ? 1 : a.date > b.date ? -1 : 0);
-  renderResume();
-}).catch(() => {});
+let resumeSig = "";
+function loadResume(){
+  fetch((inClaude ? APP_URL : "") + "resume.json?v=" + Date.now(), {cache: "no-store"}).then(r => r.ok ? r.json() : Promise.reject()).then(list => {
+    const l = arr(list).filter(r => r && /^\d{4}-\d{2}-\d{2}$/.test(r.date || "")).sort((a, b) => a.date < b.date ? 1 : a.date > b.date ? -1 : 0);
+    const sig = JSON.stringify(l[0] || null) + l.length;
+    if (sig === resumeSig) return;
+    resumeSig = sig; resumes = l; renderResume();
+  }).catch(() => {});
+}
+loadResume();
+/* Mise à jour : l'heure des actus avance toute seule, et les actus se rechargent au retour dans l'appli, à chaque notification et toutes les 2 minutes. */
+const NO_RELOAD = ["examen", "atelier", "terminal", "cours"];
+function wake(force){
+  if (new Date().toISOString().slice(0, 10) !== today && !NO_RELOAD.includes(curView.v)) { location.reload(); return; }
+  tickAgo();
+  if (force || Date.now() - actusAt > 20000) { loadActus(); loadResume(); }
+}
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") wake(); });
+window.addEventListener("pageshow", e => { if (e.persisted) wake(true); });
+window.addEventListener("focus", () => wake());
+setInterval(() => { if (document.visibilityState !== "visible") return; tickAgo(); if (Date.now() - actusAt > 120000) { loadActus(); loadResume(); } }, 30000);
+document.addEventListener("labo:view", ev => { const v = ev.detail.v; if ((v === "veille" || v === "accueil") && Date.now() - actusAt > 20000) loadActus(); });
+if (!inClaude && "serviceWorker" in navigator) navigator.serviceWorker.addEventListener("message", e => { if (e.data && e.data.type === "refresh") { wake(true); setTimeout(() => wake(true), 45000); setTimeout(() => wake(true), 100000); } });
 
 /* ---------- Navigation ---------- */
 const VIEWS = ["accueil","parcours","reviser","pratique","terminal","atelier","examen","bandit","jeux","memos","lexique","oc","cursus","veille","moi"];

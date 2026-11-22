@@ -1,4 +1,4 @@
-const CACHE = "labo42-v7";
+const CACHE = "labo42-v8";
 const SHELL = ["./", "./index.html", "./terminal.js", "./atelier.js", "./lexique.js", "./extras.js", "./jeux.js", "./memos.js", "./cursus.js", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png", "./actus.json", "./resume.json", "./lessons/terminal.json", "./lessons/c.json", "./lessons/cavance.json", "./lessons/linux.json", "./lessons/reseau.json", "./lessons/cyber.json", "./lessons/vers42.json", "./lessons/apres.json"];
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting()));
@@ -23,10 +23,11 @@ self.addEventListener("fetch", e => {
 self.addEventListener("push", e => {
   let d = {};
   try { d = e.data ? e.data.json() : {}; } catch (err) { d = {body: e.data ? e.data.text() : ""}; }
-  e.waitUntil(self.registration.showNotification(d.title || "Labo 42", {
+  const tell = clients.matchAll({type: "window", includeUncontrolled: true}).then(list => list.forEach(c => c.postMessage({type: "refresh"})));
+  e.waitUntil(Promise.all([tell, self.registration.showNotification(d.title || "Labo 42", {
     body: d.body || "", icon: "icon-192.png", badge: "icon-192.png", tag: d.id || undefined,
     data: {url: d.url || "./#veille"}
-  }));
+  })]));
 });
 self.addEventListener("notificationclick", e => {
   e.notification.close();
