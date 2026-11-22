@@ -1,5 +1,29 @@
 [
   {
+    "id": "2026-11-22-upload2shell",
+    "date": "2026-11-22",
+    "cat": "Cyber",
+    "importance": 2,
+    "titre": "Upload2Shell : une faille dans Ghostscript touche WordPress, mails et imprimantes",
+    "resume": "Des chercheurs ont trouvé une faille dans Ghostscript, un logiciel qui lit les fichiers PDF et PostScript sur beaucoup de serveurs (CVE-2026-125396). C'est un « use-after-free » dans le chargeur de polices : le programme réutilise une zone mémoire déjà libérée, ce qui permet de contourner sa protection -dSAFER.\n\nAvec un simple fichier envoyé, ils ont fait exécuter des commandes sur un site WordPress, un webmail Roundcube et un serveur d'impression CUPS. Aucune attaque réelle n'est signalée pour l'instant, et la version 10.08.0 de Ghostscript corrige le problème.",
+    "pourquoi": "Un use-after-free, c'est une erreur de C : utiliser un pointeur après avoir fait free() dessus. Quand tu apprendras malloc et free, tu sauras pourquoi il faut mettre le pointeur à NULL et ne plus s'en servir.",
+    "cours": "malloc",
+    "source": "Cyber Security News",
+    "url": "https://cybersecuritynews.com/upload2shell-flaw/"
+  },
+  {
+    "id": "2026-11-22-openrouter",
+    "date": "2026-11-22",
+    "cat": "Tech",
+    "importance": 2,
+    "titre": "OpenRouter : des conversations avec des IA ont pu fuiter chez des hébergeurs",
+    "resume": "OpenRouter est un service qui envoie tes questions à des modèles d'IA hébergés par d'autres entreprises. L'entreprise de sécurité Dragos a envoyé environ deux millions de messages pièges (liens et faux mots de passe) et a vu que trois hébergeurs avaient été compromis.\n\nCertains messages censés n'être jamais gardés ont été conservés ou transférés ; un lien de test a même réapparu 24 jours plus tard ailleurs. OpenRouter a retiré trois hébergeurs et prévenu les clients concernés.",
+    "pourquoi": "Ça montre la confidentialité, le premier pilier de la triade : ce que tu envoies à une IA passe par des machines que tu ne contrôles pas. Règle simple à garder pour le cloud et l'IA : jamais de mot de passe ni de clé dans un message.",
+    "cours": "triade",
+    "source": "Cyber Security News",
+    "url": "https://cybersecuritynews.com/openrouter-ai-chat-leaks/"
+  },
+  {
     "id": "2026-11-22-entra-connect-health",
     "date": "2026-11-22",
     "cat": "Cyber",
