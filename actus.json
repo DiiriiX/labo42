@@ -1,5 +1,17 @@
 [
   {
+    "id": "2026-11-22-entra-connect-health",
+    "date": "2026-11-22",
+    "cat": "Cyber",
+    "importance": 2,
+    "titre": "Microsoft Entra : une faille exploitée pour lire des données d'entreprises",
+    "resume": "Microsoft a annoncé qu'un pirate a exploité une faille dans l'API d'Entra Connect Health, un service cloud qui surveille les annuaires d'identité des entreprises. La faille existait depuis le 23 juillet et a été découverte le 9 novembre.\n\nLe pirate a pu lire des informations sur les clients : e-mails des administrateurs, noms de domaine, identifiants de tenant. Selon Microsoft, aucun mot de passe ni jeton n'a fuité, et le correctif a été appliqué côté serveur le 19 novembre.",
+    "pourquoi": "Les e-mails d'administrateurs volés servent souvent à préparer du phishing ciblé, un sujet de ton cours sur le phishing. Cela montre aussi qu'un service cloud mal protégé peut exposer des milliers d'entreprises d'un coup.",
+    "cours": "phishing",
+    "source": "BleepingComputer",
+    "url": "https://www.bleepingcomputer.com/news/security/microsoft-entra-connect-health-flaw-exploited-to-steal-tenant-data/"
+  },
+  {
     "id": "2026-11-22-n-able",
     "date": "2026-11-22",
     "cat": "Cyber",
