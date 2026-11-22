@@ -1,6 +1,62 @@
 [
-  {"id":"2026-11-21-vcenter","date":"2026-11-21","cat":"Cyber","importance":3,"titre":"VMware vCenter : une faille critique exploitée depuis septembre","resume":"Une faille dans VMware vCenter, l'outil qui pilote les machines virtuelles de nombreuses entreprises, permet de contourner l'authentification. Broadcom lui donne une gravité de 9,8 sur 10.\n\nGoogle et Mandiant ont vu des attaquants l'exploiter dès début septembre, bien avant sa publication le 19 novembre. Le CERT-FR a publié un avis le 20 novembre : la seule vraie protection est d'installer le correctif.","pourquoi":"C'est un « zero-day » : une faille utilisée par des attaquants avant que l'éditeur ne la connaisse. La virtualisation est au cœur des infrastructures que tu étudieras dans ton Master, et ce genre d'alerte est exactement ce que surveille une Blue Team.","cours":"metiers","source":"armees.com","url":"https://armees.com/vmware-vcenter-faille-critique-exploitee-cert-fr-novembre-2026/"},
-  {"id":"2026-11-21-java4shell","date":"2026-11-21","cat":"Dev","importance":3,"titre":"Java4Shell : une faille critique dans Java, trouvée avec une IA","resume":"Java4Shell est une corruption de mémoire dans le décodeur Base64 de la machine virtuelle Java. Elle touche OpenJDK à partir de la version 17.0.6, et donc des outils très utilisés comme Jira ou Jenkins.\n\nLe chercheur l'a trouvée en environ une heure avec Codex, l'assistant de code d'OpenAI. Le 17 novembre, l'agence américaine CISA a demandé de la corriger immédiatement.","pourquoi":"Une corruption de mémoire, c'est écrire au mauvais endroit en mémoire : le genre d'erreur qu'on peut faire en C. Et l'IA devient un outil de recherche de failles, côté attaque comme côté défense.","cours":"malloc","source":"BleepingComputer","url":"https://bleepingcomputer.com/news/security/critical-java4shell-flaw-allows-rce-attacks-on-major-java-applications"},
-  {"id":"2026-11-21-nginx","date":"2026-11-21","cat":"Cyber","importance":2,"titre":"NGINX corrige une faille « use-after-free »","resume":"NGINX, l'un des serveurs web les plus utilisés au monde, a corrigé le 18 novembre une faille critique dans sa gestion de HTTP/2. C'est un « use-after-free » : le programme continue d'utiliser une zone mémoire déjà libérée.\n\nElle peut faire planter le serveur et, selon les chercheurs de Wiz, permettre d'exécuter du code à distance. Il faut passer en version 1.30.7 ou 1.31.9, puis redémarrer complètement.","pourquoi":"NGINX est écrit en C. Un use-after-free, c'est utiliser un pointeur après un free : l'erreur que tu apprendras à éviter dans le cours sur malloc et free.","cours":"malloc","source":"SOC Prime","url":"https://socprime.com/fr/blog/cve-2026-123633-faille-critique-nginx-http-2-utilisation-apres-liberation-permettant-execution-code-distance/"},
-  {"id":"2026-11-21-plan-cyber","date":"2026-11-21","cat":"Cyber","importance":2,"titre":"La France muscle sa cybersécurité","resume":"Le 19 novembre, Sébastien Lecornu a présenté un plan cyber, après plusieurs attaques en 2026, dont un vol de données au fisc. Chaque ministère devra consacrer au moins 5 % de son budget numérique à la cybersécurité dès 2027, puis 10 % en 2030.\n\nLe projet de loi lié à la directive européenne NIS2, adopté par l'Assemblée le 17 novembre, va renforcer les obligations d'environ 20 000 organisations.","pourquoi":"20 000 organisations vont devoir mieux se protéger : il y aura beaucoup de besoins en cybersécurité dans les années qui viennent, pile au moment où tu sortiras de 42.","cours":"triade","source":"Clubic","url":"https://www.clubic.com/actualite-640228-apres-le-piratage-du-fisc-et-des-frigos-sebastien-lecornu-devoile-son-plan-de-cybersecurite-pour-la-france.html"}
+  {
+    "id": "2026-11-22-php-sessions",
+    "date": "2026-11-22",
+    "cat": "Cyber",
+    "importance": 2,
+    "titre": "PHP : failles critiques dans toutes les versions maintenues",
+    "resume": "L'équipe de PHP a annoncé des failles de sécurité qui touchent PHP 8.2, 8.3, 8.4 et 8.5, avec des correctifs publiés le 19 novembre. La plus connue, CVE-2026-115560, se trouve dans le suivi de progression des envois de fichiers liés aux sessions.\n\nDans certaines configurations peu courantes, elle permet d'exécuter du code à distance sur le serveur. Aucune attaque réelle n'est confirmée pour l'instant, mais il faut mettre PHP à jour, et on peut couper ce suivi (session.upload_progress.enabled = 0) en attendant.",
+    "pourquoi": "PHP fait tourner une grande partie des sites web, donc une faille dans PHP concerne énormément de serveurs. C'est un bon exemple de ce qu'un défenseur doit faire : repérer ses installations, appliquer une mesure temporaire, puis mettre à jour.",
+    "cours": "http",
+    "source": "Cyberattaque.org",
+    "url": "https://www.cyberattaque.org/php-lance-une-nouvelle-alerte-critique-toutes-les-versions-maintenues-concernees-par-des-failles-de-securite/"
+  },
+  {
+    "id": "2026-11-21-vcenter",
+    "date": "2026-11-21",
+    "cat": "Cyber",
+    "importance": 3,
+    "titre": "VMware vCenter : une faille critique exploitée depuis septembre",
+    "resume": "Une faille dans VMware vCenter, l'outil qui pilote les machines virtuelles de nombreuses entreprises, permet de contourner l'authentification. Broadcom lui donne une gravité de 9,8 sur 10.\n\nGoogle et Mandiant ont vu des attaquants l'exploiter dès début septembre, bien avant sa publication le 19 novembre. Le CERT-FR a publié un avis le 20 novembre : la seule vraie protection est d'installer le correctif.",
+    "pourquoi": "C'est un « zero-day » : une faille utilisée par des attaquants avant que l'éditeur ne la connaisse. La virtualisation est au cœur des infrastructures que tu étudieras dans ton Master, et ce genre d'alerte est exactement ce que surveille une Blue Team.",
+    "cours": "metiers",
+    "source": "armees.com",
+    "url": "https://armees.com/vmware-vcenter-faille-critique-exploitee-cert-fr-novembre-2026/"
+  },
+  {
+    "id": "2026-11-21-java4shell",
+    "date": "2026-11-21",
+    "cat": "Dev",
+    "importance": 3,
+    "titre": "Java4Shell : une faille critique dans Java, trouvée avec une IA",
+    "resume": "Java4Shell est une corruption de mémoire dans le décodeur Base64 de la machine virtuelle Java. Elle touche OpenJDK à partir de la version 17.0.6, et donc des outils très utilisés comme Jira ou Jenkins.\n\nLe chercheur l'a trouvée en environ une heure avec Codex, l'assistant de code d'OpenAI. Le 17 novembre, l'agence américaine CISA a demandé de la corriger immédiatement.",
+    "pourquoi": "Une corruption de mémoire, c'est écrire au mauvais endroit en mémoire : le genre d'erreur qu'on peut faire en C. Et l'IA devient un outil de recherche de failles, côté attaque comme côté défense.",
+    "cours": "malloc",
+    "source": "BleepingComputer",
+    "url": "https://bleepingcomputer.com/news/security/critical-java4shell-flaw-allows-rce-attacks-on-major-java-applications"
+  },
+  {
+    "id": "2026-11-21-nginx",
+    "date": "2026-11-21",
+    "cat": "Cyber",
+    "importance": 2,
+    "titre": "NGINX corrige une faille « use-after-free »",
+    "resume": "NGINX, l'un des serveurs web les plus utilisés au monde, a corrigé le 18 novembre une faille critique dans sa gestion de HTTP/2. C'est un « use-after-free » : le programme continue d'utiliser une zone mémoire déjà libérée.\n\nElle peut faire planter le serveur et, selon les chercheurs de Wiz, permettre d'exécuter du code à distance. Il faut passer en version 1.30.7 ou 1.31.9, puis redémarrer complètement.",
+    "pourquoi": "NGINX est écrit en C. Un use-after-free, c'est utiliser un pointeur après un free : l'erreur que tu apprendras à éviter dans le cours sur malloc et free.",
+    "cours": "malloc",
+    "source": "SOC Prime",
+    "url": "https://socprime.com/fr/blog/cve-2026-123633-faille-critique-nginx-http-2-utilisation-apres-liberation-permettant-execution-code-distance/"
+  },
+  {
+    "id": "2026-11-21-plan-cyber",
+    "date": "2026-11-21",
+    "cat": "Cyber",
+    "importance": 2,
+    "titre": "La France muscle sa cybersécurité",
+    "resume": "Le 19 novembre, Sébastien Lecornu a présenté un plan cyber, après plusieurs attaques en 2026, dont un vol de données au fisc. Chaque ministère devra consacrer au moins 5 % de son budget numérique à la cybersécurité dès 2027, puis 10 % en 2030.\n\nLe projet de loi lié à la directive européenne NIS2, adopté par l'Assemblée le 17 novembre, va renforcer les obligations d'environ 20 000 organisations.",
+    "pourquoi": "20 000 organisations vont devoir mieux se protéger : il y aura beaucoup de besoins en cybersécurité dans les années qui viennent, pile au moment où tu sortiras de 42.",
+    "cours": "triade",
+    "source": "Clubic",
+    "url": "https://www.clubic.com/actualite-640228-apres-le-piratage-du-fisc-et-des-frigos-sebastien-lecornu-devoile-son-plan-de-cybersecurite-pour-la-france.html"
+  }
 ]
