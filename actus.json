@@ -1,5 +1,17 @@
 [
   {
+    "id": "2026-11-22-n-able",
+    "date": "2026-11-22",
+    "cat": "Cyber",
+    "importance": 2,
+    "titre": "N-able : une intrusion provoque une grosse panne mondiale",
+    "resume": "N-able, une entreprise qui vend des outils pour gérer les ordinateurs et les e-mails de milliers de sociétés, a été piratée. Les attaquants sont entrés sur un serveur de ses services anti-spam Mail Assure et SpamExperts.\n\nPour se protéger, N-able a coupé le portail de gestion, la quarantaine et les journaux, ce qui a provoqué une panne en Amérique, en Asie et en Europe. Les e-mails continuent d'être filtrés, et l'entreprise dit ne pas avoir de preuve que des données de clients ont été volées. Une autre de ses plateformes, N-central, est aussi visée par des failles exploitées.",
+    "pourquoi": "C'est un exemple concret de la triade sécurité : pour protéger la confidentialité, l'entreprise a sacrifié la disponibilité de ses services. Quand un fournisseur d'outils est piraté, tous ses clients sont touchés : c'est pour ça que les équipes de défense surveillent aussi leurs prestataires.",
+    "cours": "triade",
+    "source": "BleepingComputer",
+    "url": "https://www.bleepingcomputer.com/news/microsoft/n-able-says-recent-security-breach-led-to-major-service-outage/"
+  },
+  {
     "id": "2026-11-22-rackspace-kubernetes",
     "date": "2026-11-22",
     "cat": "Cyber",
