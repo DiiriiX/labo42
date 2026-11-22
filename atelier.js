@@ -11,11 +11,15 @@
   /* ---------- Les exercices ---------- */
   const NIVEAUX = [
     {n: 1, t: "Afficher avec write", w: "Tes premières fonctions : un caractère, des boucles, une condition."},
-    {n: 2, t: "Pointeurs et chaînes", w: "Modifier une variable par son adresse, parcourir une chaîne."},
-    {n: 3, t: "Tableaux et chaînes", w: "Copier, comparer, transformer des chaînes."},
-    {n: 4, t: "Nombres", w: "Afficher et calculer avec des int, cas limites compris."},
-    {n: 5, t: "Ton projet", w: "La suite de ton chiffrement de César."}
+    {n: 2, t: "Pointeurs et premières chaînes", w: "Modifier une variable par son adresse, parcourir une chaîne."},
+    {n: 3, t: "Chaînes et tableaux", w: "Copier, comparer, chercher, trier, transformer."},
+    {n: 4, t: "Nombres", w: "Afficher et convertir des int, cas limites compris."},
+    {n: 5, t: "Récursivité et maths", w: "Des fonctions qui s'appellent elles-mêmes, des puissances, des nombres premiers."},
+    {n: 6, t: "Programmes : argc et argv", w: "Des programmes complets qui lisent leurs arguments."},
+    {n: 7, t: "Mémoire : malloc", w: "Réserver de la mémoire, la remplir, la rendre."},
+    {n: 8, t: "Tes projets", w: "La suite de ton César, et un mini cat."}
   ];
+  const EXAM_LVL = {1: 1, 2: 2, 3: 3, 4: 4, 5: 4, 6: 3, 7: 4};
   const EXOS = [
     {id: "ft_putchar", niv: 1, titre: "Afficher un caractère", proto: "void\tft_putchar(char c);", auto: ["write"],
       consigne: "Écris une fonction qui affiche à l'écran le caractère reçu en paramètre.",
@@ -131,13 +135,218 @@
       indices: ["Un nombre premier n'a que deux diviseurs : 1 et lui-même.", "Essaie les diviseurs à partir de 2 : si `nb % i` vaut 0, il n'est pas premier.", "Pour aller plus vite, tu peux t'arrêter quand i × i dépasse nb."],
       pieges: ["Oublier 0, 1 et les nombres négatifs.", "Avec de très grands nombres, `i * i` peut dépasser la taille d'un int."],
       cours: ["boucles", "conditions"]},
-    {id: "cesar_v4", niv: 5, titre: "César, version 4 : un mot entier", fichier: "cesar.c", proto: "int\tmain(void)", auto: ["scanf", "printf"], main: true,
+    {id: "cesar_v4", niv: 8, titre: "César, version 4 : un mot entier", fichier: "cesar.c", proto: "int\tmain(void)", auto: ["scanf", "printf"], main: true,
       consigne: "Écris un programme qui demande un mot en MAJUSCULES, puis l'affiche chiffré avec le code de César, clé 3 : A devient D, Z devient C. C'est la suite de tes versions 1 et 3, qui chiffrent une seule lettre.",
       exemples: [["BONJOUR", "ERQMRXU"], ["ZOO", "CRR"]],
       indices: ["Un mot, c'est un tableau de char qui se termine par `'\\0'`.", "Ta version 3 sait chiffrer UNE lettre : que faut-il pour l'appliquer à chaque case du tableau ?", "Pense à la boucle de ft_strlen : elle parcourt une chaîne jusqu'à `'\\0'`."],
       pieges: ["Mettre `&` devant le nom du tableau dans scanf : un tableau est déjà une adresse.", "Oublier le retour au début de l'alphabet après Z."],
-      cours: ["cesar", "chaines", "boucles"]}
+      cours: ["cesar", "chaines", "boucles"]},
+    {id: "ft_print_comb", niv: 1, ex: 2, titre: "Combinaisons de 3 chiffres", proto: "void\tft_print_comb(void);", auto: ["write"],
+      consigne: "Écris une fonction qui affiche, dans l'ordre croissant, toutes les combinaisons de trois chiffres différents, chacune écrite en ordre croissant, séparées par une virgule et un espace.\n\n987 n'y est pas : c'est 789 dans un autre ordre.",
+      exemples: [["ft_print_comb();", "012, 013, 014, 015, 016, 017, 018, 019, 023, … , 689, 789"]],
+      indices: ["Trois chiffres a < b < c : trois boucles imbriquées.", "b commence juste après a, et c juste après b.", "Le séparateur « , » s'écrit partout… sauf après la dernière combinaison, 789."],
+      pieges: ["Écrire « , » après 789.", "Oublier 012 : le premier chiffre commence à '0'."],
+      cours: ["boucles", "ascii"]},
+    {id: "ft_print_comb2", niv: 1, ex: 2, titre: "Paires de nombres", proto: "void\tft_print_comb2(void);", auto: ["write"],
+      consigne: "Écris une fonction qui affiche toutes les paires de deux nombres différents entre 00 et 99, le premier plus petit que le second, en ordre croissant. Chaque nombre s'écrit sur deux chiffres, les paires sont séparées par une virgule et un espace.",
+      exemples: [["ft_print_comb2();", "00 01, 00 02, … , 00 99, 01 02, … , 97 99, 98 99"]],
+      indices: ["Deux nombres a et b, de 0 à 99, avec a < b : deux boucles imbriquées.", "Pour écrire un nombre sur deux chiffres : a / 10 donne les dizaines, a % 10 les unités.", "Comme pour ft_print_comb, pas de séparateur après la dernière paire."],
+      pieges: ["Afficher 0 au lieu de 00 : chaque nombre doit avoir ses deux chiffres."],
+      cours: ["boucles", "ascii"]},
+    {id: "ft_ultimate_ft", niv: 2, titre: "Neuf pointeurs", proto: "void\tft_ultimate_ft(int *********nbr);", auto: [],
+      consigne: "Écris une fonction qui met la valeur 42 dans l'entier qui se trouve au bout de cette chaîne de 9 pointeurs.",
+      exemples: [["un int x, et 9 pointeurs en chaîne jusqu'à x", "x vaut 42"]],
+      indices: ["Chaque étoile devant un pointeur fait « suivre » une adresse.", "nbr est un pointeur de pointeur de … de int : il faut suivre l'adresse 9 fois.", "Compte les étoiles du prototype : il en faut autant pour atteindre l'int."],
+      pieges: ["S'arrêter une étoile trop tôt : tu écris 42 dans une adresse, pas dans l'int."],
+      cours: ["pointeurs"]},
+    {id: "ft_ultimate_div_mod", niv: 2, titre: "Division sur place", proto: "void\tft_ultimate_div_mod(int *a, int *b);", auto: [],
+      consigne: "Écris une fonction qui divise l'entier pointé par a par l'entier pointé par b. Le résultat de la division entière va dans *a, le reste dans *b. *b ne vaut jamais 0.",
+      exemples: [["*a vaut 17, *b vaut 5", "*a vaut 3, *b vaut 2"]],
+      indices: ["Tu as besoin des deux valeurs de départ pour faire les deux calculs.", "Si tu écris d'abord dans *a, tu perds la valeur de départ.", "Garde les valeurs de départ dans des variables avant de modifier quoi que ce soit."],
+      pieges: ["Écraser *a avant de calculer le reste : le reste devient faux."],
+      cours: ["pointeurs"]},
+    {id: "ft_sort_int_tab", niv: 3, titre: "Trier un tableau", proto: "void\tft_sort_int_tab(int *tab, int size);", auto: [],
+      consigne: "Écris une fonction qui trie les size entiers du tableau tab, du plus petit au plus grand.",
+      exemples: [["tab = {5, 2, 9, 1}, size = 4", "tab = {1, 2, 5, 9}"], ["tab = {3, 3, -1}, size = 3", "tab = {-1, 3, 3}"]],
+      indices: ["Le tri à bulles : compare chaque case avec sa voisine, et échange-les si elles sont dans le mauvais ordre.", "Un seul passage ne suffit pas : recommence tant qu'il y a eu au moins un échange.", "Pour échanger deux cases, reprends l'idée de ft_swap : une variable temporaire."],
+      pieges: ["Comparer tab[i] avec tab[i + 1] jusqu'à i = size - 1 : tu sors du tableau."],
+      cours: ["boucles", "pointeurs"]},
+    {id: "ft_strncpy", niv: 3, titre: "Copier n caractères", proto: "char\t*ft_strncpy(char *dest, char *src, unsigned int n);", auto: [],
+      consigne: "Écris une fonction qui copie au plus n caractères de src dans dest, puis renvoie dest. Si src est plus courte que n, complète dest avec des `'\\0'` jusqu'à n caractères.\n\nComme le vrai strncpy : si src fait n caractères ou plus, aucun `'\\0'` n'est ajouté.",
+      exemples: [["src = \"abc\", n = 5", "dest = 'a' 'b' 'c' '\\0' '\\0'"], ["src = \"bonjour\", n = 3", "dest commence par 'b' 'o' 'n', sans '\\0' ajouté"]],
+      indices: ["Une première boucle copie tant qu'on n'a pas atteint n ni la fin de src.", "Une deuxième boucle remplit avec des '\\0' jusqu'à n.", "unsigned int : ton compteur doit être du même type pour être comparé à n."],
+      pieges: ["Écrire au-delà de n cases.", "Comparer un int et un unsigned int : -Wextra le signale."],
+      cours: ["chaines"]},
+    {id: "ft_str_is_numeric", niv: 3, titre: "Que des chiffres ?", proto: "int\tft_str_is_numeric(char *str);", auto: [],
+      consigne: "Écris une fonction qui renvoie 1 si la chaîne ne contient que des chiffres, et 0 sinon. Une chaîne vide renvoie 1.",
+      exemples: [["\"42\"", "1"], ["\"4a2\"", "0"], ["\"\"", "1"]],
+      indices: ["Un chiffre est entre '0' et '9'.", "Dès qu'un caractère n'en est pas un, renvoie 0.", "Au bout de la chaîne, renvoie 1."],
+      pieges: ["Comparer avec 0 et 9 au lieu de '0' et '9'."],
+      cours: ["ascii", "chaines"]},
+    {id: "ft_str_is_printable", niv: 3, titre: "Que des caractères imprimables ?", proto: "int\tft_str_is_printable(char *str);", auto: [],
+      consigne: "Écris une fonction qui renvoie 1 si tous les caractères de la chaîne sont imprimables (codes ASCII de 32 à 126), et 0 sinon. Une chaîne vide renvoie 1.",
+      exemples: [["\"Salut !\"", "1"], ["\"a\\tb\"", "0 (la tabulation n'est pas imprimable)"], ["\"\"", "1"]],
+      indices: ["L'espace (32) est imprimable ; le caractère 127 ne l'est pas.", "Compare chaque caractère à 32 et à 126.", "Même structure que ft_str_is_alpha."],
+      pieges: ["Oublier que l'espace est imprimable."],
+      cours: ["ascii"]},
+    {id: "ft_strlowcase", niv: 3, titre: "Tout en minuscules", proto: "char\t*ft_strlowcase(char *str);", auto: [],
+      consigne: "Écris une fonction qui transforme chaque lettre majuscule de str en minuscule, puis renvoie str.",
+      exemples: [["\"SaLuT 42\"", "\"salut 42\""]],
+      indices: ["C'est l'inverse de ft_strupcase.", "Ne touche qu'aux caractères entre 'A' et 'Z'.", "L'écart entre 'A' et 'a' est toujours le même."],
+      pieges: ["Modifier aussi les chiffres ou la ponctuation."],
+      cours: ["ascii", "chaines"]},
+    {id: "ft_strcapitalize", niv: 3, titre: "Une majuscule à chaque mot", proto: "char\t*ft_strcapitalize(char *str);", auto: [],
+      consigne: "Écris une fonction qui met en majuscule la première lettre de chaque mot, et le reste du mot en minuscules, puis renvoie str. Un mot est une suite de lettres et de chiffres : tout autre caractère sépare les mots.",
+      exemples: [["\"bonjour LA piscine 42lyon, c'est-parti\"", "\"Bonjour La Piscine 42lyon, C'Est-Parti\""]],
+      indices: ["Un caractère commence un mot s'il est au début de la chaîne, ou si le caractère d'avant n'est ni une lettre ni un chiffre.", "En début de mot : majuscule si c'est une lettre. Ailleurs : minuscule.", "Un chiffre en début de mot reste un chiffre, et la lettre qui le suit est dans le mot : minuscule."],
+      pieges: ["Oublier de passer le reste du mot en minuscules.", "Traiter le chiffre comme un séparateur : « 42lyon » doit rester « 42lyon »."],
+      cours: ["ascii", "conditions"]},
+    {id: "ft_strncmp", niv: 3, titre: "Comparer n caractères", proto: "int\tft_strncmp(char *s1, char *s2, unsigned int n);", auto: [],
+      consigne: "Écris une fonction qui compare au plus les n premiers caractères de s1 et s2, comme strncmp : 0 s'ils sont identiques, sinon la différence entre les deux premiers caractères différents.",
+      exemples: [["\"abcdef\", \"abcxyz\", 3", "0"], ["\"abcdef\", \"abcxyz\", 4", "un nombre négatif"], ["n = 0", "0"]],
+      indices: ["C'est ft_strcmp avec une condition de plus.", "Arrête-toi aussi quand tu as comparé n caractères.", "Attention au cas n = 0 : aucun caractère n'est comparé."],
+      pieges: ["Lire s1[n] quand on a déjà comparé n caractères."],
+      cours: ["chaines"]},
+    {id: "ft_strcat", niv: 3, titre: "Coller deux chaînes", proto: "char\t*ft_strcat(char *dest, char *src);", auto: [],
+      consigne: "Écris une fonction qui ajoute la chaîne src à la fin de dest, `'\\0'` final compris, puis renvoie dest. dest est assez grand.",
+      exemples: [["dest = \"Bon\", src = \"jour\"", "dest = \"Bonjour\""]],
+      indices: ["Trouve d'abord la fin de dest : là où se trouve son '\\0'.", "Copie src à partir de cet endroit.", "N'oublie pas le '\\0' à la toute fin."],
+      pieges: ["Commencer la copie au début de dest : tu écrases son contenu."],
+      cours: ["chaines"]},
+    {id: "ft_strncat", niv: 3, titre: "Coller au plus n caractères", proto: "char\t*ft_strncat(char *dest, char *src, unsigned int nb);", auto: [],
+      consigne: "Écris une fonction qui ajoute au plus nb caractères de src à la fin de dest, puis renvoie dest. dest se termine toujours par `'\\0'`.",
+      exemples: [["dest = \"Bon\", src = \"jour\", nb = 2", "dest = \"Bonjo\""], ["dest = \"Bon\", src = \"jour\", nb = 10", "dest = \"Bonjour\""]],
+      indices: ["Comme ft_strcat, avec un compteur de caractères copiés.", "Arrête-toi à nb caractères ou à la fin de src.", "Contrairement à strncpy, ici le '\\0' final est toujours ajouté."],
+      pieges: ["Oublier le '\\0' quand on s'arrête à cause de nb."],
+      cours: ["chaines"]},
+    {id: "ft_strstr", niv: 3, titre: "Trouver un mot dans une chaîne", proto: "char\t*ft_strstr(char *str, char *to_find);", auto: [],
+      consigne: "Écris une fonction qui cherche la première apparition de to_find dans str. Elle renvoie l'adresse du début de cette apparition, ou NULL (0) si to_find n'y est pas. Si to_find est vide, elle renvoie str.",
+      exemples: [["\"Piscine 42 Lyon\", \"42\"", "l'adresse de \"42 Lyon\""], ["\"abc\", \"z\"", "NULL"], ["\"abc\", \"\"", "str"]],
+      indices: ["Pour chaque position de str, regarde si to_find commence là.", "Deux compteurs : i pour la position dans str, j pour avancer dans to_find.", "Si j atteint la fin de to_find, tu as trouvé : renvoie &str[i]."],
+      pieges: ["Sortir de str en comparant : vérifie que str[i + j] n'est pas '\\0'."],
+      cours: ["chaines", "pointeurs"]},
+    {id: "ft_print_combn", niv: 4, titre: "Combinaisons de n chiffres", proto: "void\tft_print_combn(int n);", auto: ["write"],
+      consigne: "Écris une fonction qui affiche toutes les combinaisons de n chiffres différents, en ordre croissant, comme ft_print_comb mais pour n chiffres. n est compris entre 1 et 9.",
+      exemples: [["ft_print_combn(2);", "01, 02, 03, … , 78, 79, 89"], ["ft_print_combn(1);", "0, 1, 2, 3, 4, 5, 6, 7, 8, 9"]],
+      indices: ["Le nombre de boucles dépend de n : il faut une autre idée que des boucles imbriquées.", "Garde la combinaison dans un tableau de n chiffres, et passe à la suivante comme un compteur kilométrique.", "La dernière combinaison est celle qui finit par 9, avec tous les chiffres collés : pour n = 3, c'est 789."],
+      pieges: ["Oublier le cas n = 1."],
+      cours: ["boucles", "chaines"]},
+    {id: "ft_putnbr_base", niv: 4, titre: "Afficher dans n'importe quelle base", proto: "void\tft_putnbr_base(int nbr, char *base);", auto: ["write"],
+      consigne: "Écris une fonction qui affiche nbr dans la base donnée par la chaîne base : \"01\" pour le binaire, \"0123456789ABCDEF\" pour l'hexadécimal, \"poneyvif\" pour une base 8 inventée.\n\nSi la base est invalide (moins de 2 caractères, un caractère en double, ou un + ou un -), la fonction n'affiche rien.",
+      exemples: [["ft_putnbr_base(42, \"01\");", "101010"], ["ft_putnbr_base(255, \"0123456789ABCDEF\");", "FF"], ["ft_putnbr_base(-10, \"0123456789\");", "-10"]],
+      indices: ["La taille de la base, c'est sa longueur : ft_strlen.", "C'est ft_putnbr, avec la taille de la base à la place de 10, et base[chiffre] à la place de chiffre + '0'.", "Vérifie la base avant tout : deux boucles pour repérer les doublons."],
+      pieges: ["Oublier -2147483648.", "Ne pas tester les doublons dans la base."],
+      cours: ["fonctions", "chaines"]},
+    {id: "ft_recursive_factorial", niv: 5, titre: "Factorielle récursive", proto: "int\tft_recursive_factorial(int nb);", auto: [],
+      consigne: "Même sujet que ft_iterative_factorial, mais sans boucle : la fonction s'appelle elle-même. 0 si nb est négatif, 1 pour 0.",
+      exemples: [["5", "120"], ["0", "1"], ["-3", "0"]],
+      indices: ["5! = 5 × 4!, et 4! = 4 × 3!…", "Il faut un cas d'arrêt : pour 0, on renvoie 1 sans s'appeler.", "Traite le cas négatif avant tout."],
+      pieges: ["Oublier le cas d'arrêt : la fonction s'appelle à l'infini et plante."],
+      cours: ["fonctions"]},
+    {id: "ft_iterative_power", niv: 5, titre: "Puissance avec une boucle", proto: "int\tft_iterative_power(int nb, int power);", auto: [],
+      consigne: "Écris une fonction qui renvoie nb à la puissance power. Une puissance négative renvoie 0. 0 à la puissance 0 vaut 1. Pas de dépassement à gérer.",
+      exemples: [["2, 10", "1024"], ["3, 0", "1"], ["5, -1", "0"]],
+      indices: ["2 puissance 10, c'est 2 multiplié par lui-même 10 fois.", "Un résultat qui part de 1, et une boucle qui fait power tours.", "Commence par le cas power < 0."],
+      pieges: ["Partir d'un résultat à 0 ou à nb."],
+      cours: ["boucles"]},
+    {id: "ft_recursive_power", niv: 5, titre: "Puissance récursive", proto: "int\tft_recursive_power(int nb, int power);", auto: [],
+      consigne: "Même sujet que ft_iterative_power, sans boucle : la fonction s'appelle elle-même.",
+      exemples: [["2, 10", "1024"], ["7, 1", "7"], ["4, -2", "0"]],
+      indices: ["nb puissance power = nb × (nb puissance power − 1).", "Le cas d'arrêt : puissance 0, qui vaut 1.", "Le cas négatif ne s'appelle pas : il renvoie 0 tout de suite."],
+      pieges: ["Oublier le cas d'arrêt."],
+      cours: ["fonctions"]},
+    {id: "ft_fibonacci", niv: 5, titre: "La suite de Fibonacci", proto: "int\tft_fibonacci(int index);", auto: [],
+      consigne: "Écris une fonction récursive qui renvoie l'élément numéro index de la suite de Fibonacci : 0, 1, 1, 2, 3, 5, 8, 13… Chaque nombre est la somme des deux précédents. L'index 0 donne 0, l'index 1 donne 1. Un index négatif renvoie -1.",
+      exemples: [["0", "0"], ["1", "1"], ["7", "13"], ["-2", "-1"]],
+      indices: ["fibonacci(n) = fibonacci(n − 1) + fibonacci(n − 2).", "Deux cas d'arrêt : 0 et 1.", "Le cas négatif d'abord."],
+      pieges: ["Un seul cas d'arrêt : fibonacci(1) appellerait fibonacci(-1)."],
+      cours: ["fonctions"]},
+    {id: "ft_sqrt", niv: 5, titre: "Racine carrée", proto: "int\tft_sqrt(int nb);", auto: [],
+      consigne: "Écris une fonction qui renvoie la racine carrée de nb si elle est entière, et 0 sinon.",
+      exemples: [["16", "4"], ["15", "0"], ["1", "1"]],
+      indices: ["Cherche un nombre i tel que i × i = nb.", "Essaie i = 1, 2, 3… et arrête-toi quand i × i dépasse nb.", "Pour les grands nombres, i × i peut dépasser un int : compare plutôt i avec nb / i."],
+      pieges: ["Une boucle trop longue sur les grands nombres : à l'examen, la moulinette mesure aussi le temps."],
+      cours: ["boucles"]},
+    {id: "ft_find_next_prime", niv: 5, titre: "Le prochain nombre premier", proto: "int\tft_find_next_prime(int nb);", auto: [],
+      consigne: "Écris une fonction qui renvoie le plus petit nombre premier supérieur ou égal à nb.",
+      exemples: [["10", "11"], ["13", "13"], ["0", "2"]],
+      indices: ["Tu sais déjà tester si un nombre est premier (ft_is_prime).", "Essaie nb, puis nb + 1, puis nb + 2… jusqu'à tomber sur un premier.", "Une fonction d'aide dans le même fichier est permise."],
+      pieges: ["Oublier que nb lui-même peut être premier."],
+      cours: ["fonctions", "boucles"]},
+    {id: "ft_print_program_name", niv: 6, titre: "Le nom du programme", fichier: "ft_print_program_name.c", proto: "int\tmain(int argc, char **argv)", auto: ["write"], main: true,
+      consigne: "Écris un programme qui affiche son propre nom, suivi d'un retour à la ligne.",
+      exemples: [["./a.out", "./a.out"]],
+      indices: ["Le main peut recevoir deux paramètres : argc et argv.", "argv est un tableau de chaînes. argv[0] contient le nom du programme, tel qu'il a été lancé.", "Affiche la chaîne caractère par caractère, puis '\\n'."],
+      pieges: ["Unused parameter : avec -Werror, argc non utilisé est une erreur. Tu peux t'en servir, ou écrire (void)argc;."],
+      cours: ["chaines", "write"]},
+    {id: "ft_print_params", niv: 6, titre: "Afficher les arguments", fichier: "ft_print_params.c", proto: "int\tmain(int argc, char **argv)", auto: ["write"], main: true,
+      consigne: "Écris un programme qui affiche chaque argument reçu, un par ligne, dans l'ordre, sans le nom du programme.",
+      exemples: [["./a.out Salut 42 Lyon", "Salut, puis 42, puis Lyon, un par ligne"], ["./a.out", "(rien)"]],
+      indices: ["argc compte les arguments, nom du programme compris.", "Les arguments utiles vont de argv[1] à argv[argc − 1].", "Pour chacun : affiche la chaîne, puis '\\n'."],
+      pieges: ["Afficher argv[0]."],
+      cours: ["chaines", "boucles"]},
+    {id: "ft_rev_params", niv: 6, titre: "Les arguments à l'envers", fichier: "ft_rev_params.c", proto: "int\tmain(int argc, char **argv)", auto: ["write"], main: true,
+      consigne: "Écris un programme qui affiche ses arguments un par ligne, du dernier au premier, sans le nom du programme.",
+      exemples: [["./a.out un deux trois", "trois, puis deux, puis un, un par ligne"]],
+      indices: ["Même programme que ft_print_params, dans l'autre sens.", "Pars de argc − 1.", "Arrête-toi avant argv[0]."],
+      pieges: ["Commencer à argc : argv[argc] vaut NULL."],
+      cours: ["chaines", "boucles"]},
+    {id: "ft_sort_params", niv: 6, titre: "Trier les arguments", fichier: "ft_sort_params.c", proto: "int\tmain(int argc, char **argv)", auto: ["write"], main: true,
+      consigne: "Écris un programme qui affiche ses arguments triés dans l'ordre ASCII, un par ligne, sans le nom du programme.",
+      exemples: [["./a.out b A a 2", "2, puis A, puis a, puis b, un par ligne"]],
+      indices: ["Il te faut deux outils : comparer deux chaînes (ft_strcmp) et trier (ft_sort_int_tab).", "Trie les adresses des chaînes : échange argv[i] et argv[i + 1] quand elles sont dans le mauvais ordre.", "Trie à partir de argv[1], puis affiche."],
+      pieges: ["Trier aussi argv[0]."],
+      cours: ["chaines", "pointeurs"]},
+    {id: "ft_strdup", niv: 7, titre: "Dupliquer une chaîne", proto: "char\t*ft_strdup(char *src);", auto: ["malloc"],
+      consigne: "Écris une fonction qui crée une copie de src dans une mémoire réservée avec malloc, et renvoie l'adresse de la copie. Si malloc échoue, elle renvoie NULL.",
+      exemples: [["\"Piscine\"", "une nouvelle chaîne \"Piscine\", à une autre adresse"]],
+      indices: ["Il faut d'abord connaître la longueur de src.", "Réserve longueur + 1 octets : +1 pour le '\\0'.", "Vérifie le retour de malloc, puis copie case par case."],
+      pieges: ["Oublier le +1 du '\\0'.", "Ne pas vérifier que malloc n'a pas renvoyé NULL."],
+      cours: ["malloc", "chaines"]},
+    {id: "ft_range", niv: 7, titre: "Un tableau de min à max", proto: "int\t*ft_range(int min, int max);", auto: ["malloc"],
+      consigne: "Écris une fonction qui renvoie un tableau d'int réservé avec malloc, contenant tous les nombres de min (compris) à max (non compris). Si min est supérieur ou égal à max, elle renvoie NULL.",
+      exemples: [["2, 6", "{2, 3, 4, 5}"], ["5, 5", "NULL"]],
+      indices: ["Le tableau a max − min cases.", "malloc(sizeof(int) * taille).", "Remplis la case i avec min + i."],
+      pieges: ["Réserver max − min octets au lieu de max − min int."],
+      cours: ["malloc"]},
+    {id: "ft_ultimate_range", niv: 7, titre: "Le tableau et sa taille", proto: "int\tft_ultimate_range(int **range, int min, int max);", auto: ["malloc"],
+      consigne: "Écris une fonction qui réserve et remplit le même tableau que ft_range, range son adresse dans *range, et renvoie sa taille. Si min est supérieur ou égal à max, *range vaut NULL et la fonction renvoie 0. Si malloc échoue, elle renvoie -1.",
+      exemples: [["min = 2, max = 6", "*range = {2, 3, 4, 5}, renvoie 4"], ["min = 5, max = 5", "*range = NULL, renvoie 0"]],
+      indices: ["range est l'adresse d'un pointeur : *range est le pointeur à remplir.", "Écris (*range)[i] pour la case i, avec les parenthèses.", "Trois cas de retour : 0, -1, ou la taille."],
+      pieges: ["Écrire *range[i] : sans parenthèses, ça ne veut pas dire la même chose."],
+      cours: ["malloc", "pointeurs"]},
+    {id: "ft_strjoin", niv: 7, titre: "Coller des chaînes avec un séparateur", proto: "char\t*ft_strjoin(int size, char **strs, char *sep);", auto: ["malloc"],
+      consigne: "Écris une fonction qui colle les size chaînes du tableau strs, séparées par sep, dans une nouvelle chaîne réservée avec malloc. Si size vaut 0, elle renvoie une chaîne vide qu'on peut libérer avec free.",
+      exemples: [["3, {\"a\", \"b\", \"c\"}, \", \"", "\"a, b, c\""], ["0, …, \", \"", "\"\""]],
+      indices: ["Calcule d'abord la taille totale : toutes les chaînes, plus size − 1 séparateurs, plus 1 pour le '\\0'.", "Réserve cette taille, puis mets un '\\0' au début pour partir d'une chaîne vide.", "Ajoute chaque chaîne, et sep entre deux chaînes seulement."],
+      pieges: ["Ajouter sep après la dernière chaîne.", "Pour size = 0, renvoyer NULL au lieu d'une chaîne vide."],
+      cours: ["malloc", "chaines"]},
+    {id: "cesar_v2", niv: 8, titre: "César, version 2 : choisir la clé", fichier: "cesar.c", proto: "int\tmain(void)", auto: ["scanf", "printf"], main: true,
+      consigne: "Le programme demande d'abord une clé, un nombre de 1 à 25, puis un mot en MAJUSCULES, et affiche le mot chiffré avec cette clé.",
+      exemples: [["clé 1, puis HAL", "IBM"], ["clé 13, puis BONJOUR", "OBAWBHE"]],
+      indices: ["scanf avec %d lit un nombre.", "Dans ta version 4, la clé valait 3 : que faut-il changer ?", "Le retour au début de l'alphabet doit marcher avec n'importe quelle clé de 1 à 25."],
+      pieges: ["Une clé de 25 : Z + 25 dépasse largement 'Z', vérifie ton retour au début."],
+      cours: ["cesar"]},
+    {id: "cesar_v5", niv: 8, titre: "César, version 5 : minuscules et ponctuation", fichier: "cesar.c", proto: "int\tmain(void)", auto: ["scanf", "printf", "fgets"], main: true,
+      consigne: "Le message peut maintenant contenir des minuscules, des majuscules, des espaces et de la ponctuation. Chiffre les lettres en gardant leur casse, et laisse tout le reste tel quel.\n\nPour lire une phrase entière avec ses espaces : `fgets(phrase, 100, stdin)`.",
+      exemples: [["clé 3, puis Salut, 42 !", "Vdoxw, 42 !"]],
+      indices: ["Trois cas pour chaque caractère : majuscule, minuscule, ou autre chose.", "Pour une minuscule, le calcul est le même, avec 'a' et 'z' au lieu de 'A' et 'Z'.", "Après scanf, un retour à la ligne reste en attente : fgets risque de le lire tout de suite. Teste et observe !"],
+      pieges: ["Chiffrer les espaces et les chiffres."],
+      cours: ["cesar", "ascii"]},
+    {id: "cesar_v6", niv: 8, titre: "César, version 6 : déchiffrer", fichier: "decesar.c", proto: "int\tmain(void)", auto: ["scanf", "printf", "fgets"], main: true,
+      consigne: "Écris le programme inverse : il demande la clé et un message chiffré, et affiche le message d'origine.",
+      exemples: [["clé 3, puis Vdoxw, 42 !", "Salut, 42 !"]],
+      indices: ["Déchiffrer avec la clé k, c'est chiffrer avec la clé 26 − k.", "Ou bien : reculer de k, et ajouter 26 si on passe avant 'A' (ou 'a').", "Pour tester : chiffre un message, déchiffre-le, tu dois retrouver l'original."],
+      pieges: ["Passer avant 'A' sans revenir à la fin de l'alphabet."],
+      cours: ["cesar"]},
+    {id: "mini_cat", niv: 8, titre: "Un mini cat", fichier: "mini_cat.c", proto: "int\tmain(int argc, char **argv)", auto: ["open", "read", "write", "close"], main: true,
+      consigne: "Écris un programme qui affiche le contenu du fichier dont le nom est passé en argument.\n\nSans argument, il affiche « Il manque le nom du fichier. » sur la sortie d'erreur. Si le fichier ne s'ouvre pas, il affiche « Impossible de lire le fichier. » sur la sortie d'erreur.",
+      exemples: [["./mini_cat notes.txt", "le contenu de notes.txt"], ["./mini_cat", "Il manque le nom du fichier. (sur la sortie 2)"]],
+      indices: ["open(nom, O_RDONLY) ouvre le fichier et renvoie un numéro, ou -1 en cas d'échec (#include <fcntl.h>).", "read(fd, tampon, taille) lit des octets et renvoie combien il en a lu : 0 à la fin du fichier.", "La sortie d'erreur, c'est le numéro 2 pour write. Pense à fermer le fichier avec close."],
+      pieges: ["Écrire tout le tampon au lieu du nombre d'octets vraiment lus.", "Envoyer les messages d'erreur sur la sortie 1."],
+      cours: ["write", "redirections"]}
   ];
+  EXOS.sort((x, y) => x.niv - y.niv);
   EXOS.forEach((e, i) => { e.i = i; if (!e.fichier) e.fichier = e.id + ".c"; e.nom = e.main ? "main" : e.id; });
   const EX = Object.fromEntries(EXOS.map(e => [e.id, e]));
   L.EXO_IDS = EXOS.map(e => e.id);
@@ -259,8 +468,8 @@
       }
       if (decls && lastDecl + 1 < f.close && sl[lastDecl + 1].trim()) add(lastDecl + 2, "Laisse une ligne vide après les déclarations.");
       com.forEach(c => { if (c[0] > f.open + 1 && c[0] < f.close + 1) add(c[0], "Les commentaires sont interdits à l'intérieur d'une fonction."); });
-      if (f.name !== "main" && exo) {
-        const allowed = new Set(exo.auto || []);
+      if (exo && (f.name !== "main" || exo.main)) {
+        const allowed = new Set((exo.auto || []).concat((exo.auto || []).includes("malloc") ? ["free"] : []));
         const re = /\b([A-Za-z_]\w*)\s*\(/g;
         for (let k = f.open + 1; k < f.close; k++) {
           let m; re.lastIndex = 0;
@@ -289,6 +498,9 @@
     const uses = name => new RegExp("\\b" + name + "\\s*\\(").test(out);
     if (uses("write") && !/#include\s*<unistd\.h>/.test(code)) add(0, "Ajoute #include <unistd.h> : sans lui, write n'est pas déclarée et cc -Werror refuse de compiler.");
     if ((uses("printf") || uses("scanf")) && !/#include\s*<stdio\.h>/.test(code)) add(0, "Ajoute #include <stdio.h> pour printf et scanf.");
+    if ((uses("malloc") || uses("free")) && !/#include\s*<stdlib\.h>/.test(code)) add(0, "Ajoute #include <stdlib.h> pour malloc et free.");
+    if (uses("open") && !/#include\s*<fcntl\.h>/.test(code)) add(0, "Ajoute #include <fcntl.h> pour open et O_RDONLY.");
+    if ((uses("read") || uses("close")) && !/#include\s*<unistd\.h>/.test(code)) add(0, "Ajoute #include <unistd.h> pour read et close.");
     const order = {err: 0, warn: 1, info: 2};
     return R.sort((a, b) => (order[a.k] - order[b.k]) || (a.l - b.l));
   }
@@ -296,9 +508,11 @@
 
   /* ---------- Éditeur ---------- */
   const KEYS = [["⇥", "\t"], ["{", "{"], ["}", "}"], ["(", "("], [")", ")"], [";", ";"], ["'", "'"], ["\"", "\""], ["\\", "\\"], ["[", "["], ["]", "]"], ["*", "*"], ["&", "&"], ["<", "<"], [">", ">"], ["=", "="], ["!", "!"], ["+", "+"], ["-", "-"], ["%", "%"], ["#", "#"], ["|", "|"]];
-  const skeleton = e => e.main
-    ? "#include <stdio.h>\n\nint\tmain(void)\n{\n\t\n\treturn (0);\n}\n"
-    : ((e.auto || []).includes("write") ? "#include <unistd.h>\n\n" : "") + e.proto.replace(/;$/, "") + "\n{\n\t\n}\n";
+  const INCL = {write: "unistd.h", read: "unistd.h", close: "unistd.h", open: "fcntl.h", printf: "stdio.h", scanf: "stdio.h", fgets: "stdio.h", malloc: "stdlib.h", free: "stdlib.h"};
+  const skeleton = e => {
+    const inc = [...new Set((e.auto || []).map(f => INCL[f]).filter(Boolean))].sort().map(h => "#include <" + h + ">\n").join("");
+    return (inc ? inc + "\n" : "") + e.proto.replace(/;$/, "") + "\n{\n\t\n" + (e.main ? "\treturn (0);\n" : "") + "}\n";
+  };
   const editor = (id, code) => `<div class="ed"><div class="ed-h"><span>${esc(id)}</span><span id="edPos">ligne 1</span></div><textarea id="edCode" rows="14" autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false" wrap="off" aria-label="Ton code">${esc(code)}</textarea></div><div class="keys" id="edKeys">${KEYS.map(k => `<button type="button" class="key" data-ek="${esc(k[1])}">${esc(k[0])}</button>`).join("")}</div>`;
   let saveT = null;
   function bindEditor(onSave) {
@@ -427,7 +641,7 @@ Réponds en français, 150 à 250 mots, en 4 parties, chacune avec un titre en g
   }
 
   /* ---------- Examen blanc ---------- */
-  const POOL = n => EXOS.filter(e => e.niv === n && !e.main);
+  const POOL = n => EXOS.filter(e => (e.ex || EXAM_LVL[e.niv]) === n);
   const pick = (n, tried) => { const list = POOL(n).filter(e => !tried.includes(e.id)); const from = list.length ? list : POOL(n); return from[Math.floor(Math.random() * from.length)].id; };
   let examTimer = null, examDur = 60, confirmAt = 0;
   const fmtT = ms => { const t = Math.max(0, Math.round(ms / 1000)), h = Math.floor(t / 3600), m = Math.floor(t % 3600 / 60), s = t % 60; return (h ? h + ":" + String(m).padStart(2, "0") : m) + ":" + String(s).padStart(2, "0"); };

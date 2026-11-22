@@ -24,6 +24,9 @@
 
   /* ---------- Les défis ---------- */
   const tok = s => "CODE-" + s;
+  const JOURNAL = lines(40, i => String(8 + Math.floor(i / 4)).padStart(2, "0") + ":" + String((i % 4) * 15).padStart(2, "0") + " événement " + (i + 1) + (i === 39 ? " : fin de journée, code " + tok("TAIL") : ""));
+  const DISCOURS = "Bienvenue à la Piscine de 42.\nIci, personne ne te donnera la réponse.\nTu chercheras, tu te tromperas, tu demanderas à tes voisins.\nEt chaque jour, tu iras un peu plus loin.\n";
+  const AUTH = (() => { const out = []; const ip = k => "198.51.100." + (10 + (k * 7) % 80); for (let k = 0; k < 30; k++) { const u = k % 3 === 0 ? "admin" : k % 3 === 1 ? "root" : "invalid user test"; out.push("Nov 21 03:" + String(10 + k).padStart(2, "0") + ":0" + (k % 10) + " serveur sshd: Failed password for " + u + " from " + ip(k)); } out.splice(12, 0, "Nov 21 03:21:30 serveur sshd: Accepted password for admin from 192.0.2.10"); out.splice(4, 0, "Nov 21 03:13:40 serveur sshd: Accepted password for alex from 192.0.2.11"); return out.join("\n") + "\n"; })();
   const DEFIS = [
     {id: "d1", titre: "Premiers pas", cours: "fichiers",
       but: "Un fichier t'attend dans ton dossier personnel. Affiche son contenu pour trouver le code.",
@@ -101,7 +104,76 @@
       but: "Le fichier logs/echecs.txt contient l'adresse IP de chaque tentative de connexion ratée sur un serveur. Trouve l'adresse qui a fait le plus de tentatives, et affiche-la, seule ou avec son nombre.",
       indices: ["Pour compter les répétitions, il faut d'abord mettre les lignes identiques côte à côte.", "uniq -c compte les lignes identiques qui se suivent.", "Trie ensuite ces comptes du plus grand au plus petit, et garde la première ligne."],
       home: () => { const ips = []; const add = (ip, n) => { for (let i = 0; i < n; i++) ips.push(ip); }; add("198.51.100.23", 41); add("203.0.113.9", 17); add("192.0.2.44", 23); add("198.51.100.7", 5); for (let i = ips.length - 1; i > 0; i--) { const j = (i * 7919 + 13) % (i + 1); [ips[i], ips[j]] = [ips[j], ips[i]]; } return {logs: D({"echecs.txt": F(ips.join("\n") + "\n")})}; },
-      check: c => { const o = c.lastOut.trim(); return o.split("\n").length === 1 && o.includes("198.51.100.23"); }}
+      check: c => { const o = c.lastOut.trim(); return o.split("\n").length === 1 && o.includes("198.51.100.23"); }},
+    {id: "d17", titre: "La fin de la journée", cours: "redirections",
+      but: "Le fichier journal.txt raconte une longue journée, minute par minute. Affiche seulement ses 5 dernières lignes.",
+      indices: ["Il existe une commande pour le début d'un fichier, et une autre pour la fin.", "tail affiche la fin d'un fichier : 10 lignes par défaut.", "L'option -n choisit le nombre de lignes."],
+      home: () => ({"journal.txt": F(JOURNAL)}),
+      check: c => c.lastOut.trim() === JOURNAL.trim().split("\n").slice(-5).join("\n")},
+    {id: "d18", titre: "La ligne 42", cours: "redirections",
+      but: "Le fichier annuaire.txt a 100 lignes. Affiche uniquement la ligne numéro 42 : elle contient un code.",
+      indices: ["head garde le début d'un fichier, tail garde la fin. Et si tu combinais les deux ?", "head -n 42 garde les 42 premières lignes…", "…et tail -n 1 garde la dernière de celles-là. Branche-les avec |."],
+      home: () => ({"annuaire.txt": F(lines(100, i => i === 41 ? "ligne 42 : " + tok("LIGNE42") : "ligne " + (i + 1) + " : rien à signaler"))}),
+      check: c => c.lastOut.trim() === "ligne 42 : " + tok("LIGNE42")},
+    {id: "d19", titre: "Sans les commentaires", cours: "redirections",
+      but: "Le fichier serveur.conf est rempli de commentaires : les lignes qui commencent par #. Affiche seulement les lignes de réglages.",
+      indices: ["grep garde les lignes qui contiennent un motif. Il a une option pour faire l'inverse.", "grep -v garde les lignes qui NE correspondent PAS au motif.", "Le symbole ^ veut dire « au début de la ligne » : ^# vise les lignes qui commencent par #."],
+      home: () => ({"serveur.conf": F("# Configuration du serveur\n# Ne pas modifier sans l'équipe\nport=8080\n# Le nom affiché\nnom=labo42\n# Sécurité\nssh_root=non\nmot_de_passe_min=12\n# Fin du fichier\n")}),
+      check: c => c.lastOut.trim() === "port=8080\nnom=labo42\nssh_root=non\nmot_de_passe_min=12"},
+    {id: "d20", titre: "Peu importe la casse", cours: "redirections",
+      but: "Le fichier app.log mélange Erreur, ERREUR et erreur. Compte toutes les lignes qui contiennent ce mot, majuscules ou minuscules, et affiche juste le nombre.",
+      indices: ["grep sait ignorer la différence entre majuscules et minuscules.", "L'option -i rend la recherche insensible à la casse.", "grep a aussi une option pour compter les lignes trouvées. Sinon, branche wc -l."],
+      home: () => ({"app.log": F("08:00 démarrage\n08:01 Erreur : disque presque plein\n08:05 connexion de alex\n08:07 ERREUR : base de données injoignable\n08:09 nouvel essai\n08:10 erreur réseau\n08:15 tout va bien\n08:20 Erreur de mot de passe pour root\n08:22 sauvegarde lancée\n08:30 ERREUR fatale dans le module paiement\n08:31 redémarrage\n08:35 terreur du lundi matin : café vide\n")}),
+      check: c => c.lastOut.trim() === "6"},
+    {id: "d21", titre: "La liste sans doublons", cours: "redirections",
+      but: "Le fichier inscrits.txt contient des prénoms en double. Affiche la liste triée par ordre alphabétique, sans doublons.",
+      indices: ["Pour repérer des doublons, il faut d'abord trier : les lignes identiques se retrouvent côte à côte.", "uniq supprime les lignes identiques qui se suivent.", "sort a aussi une option -u qui fait les deux d'un coup."],
+      home: () => ({"inscrits.txt": F("Lina\nYanis\nAdam\nLina\nSofia\nAdam\nNoah\nYanis\nLina\n")}),
+      check: c => c.lastOut.trim() === "Adam\nLina\nNoah\nSofia\nYanis"},
+    {id: "d22", titre: "Copie de sauvegarde", cours: "fichiers",
+      but: "Crée un dossier sauvegarde dans ton dossier personnel, puis copies-y le fichier rapport.txt. L'original doit rester à sa place.",
+      indices: ["Deux commandes : une pour créer le dossier, une pour copier.", "cp source destination : la destination peut être un dossier.", "Vérifie avec ls que le fichier est aux deux endroits."],
+      home: () => ({"rapport.txt": F("Rapport de la semaine : tout est vert.\n")}),
+      check: c => { const a = c.get(HOME + "/sauvegarde/rapport.txt"), b = c.get(HOME + "/rapport.txt"); return !!(a && b && a.t === "f" && a.c === b.c); }},
+    {id: "d23", titre: "Ranger les photos", cours: "fichiers",
+      but: "Trois photos .jpg traînent dans ton dossier. Range-les toutes dans le dossier photos, en une seule commande, sans toucher à notes.txt.",
+      indices: ["mv déplace un fichier. Il peut aussi en déplacer plusieurs d'un coup vers un dossier.", "Le joker * remplace n'importe quels caractères : *.jpg veut dire « tout ce qui finit par .jpg ».", "La destination se met en dernier."],
+      home: () => ({"vacances1.jpg": F("photo\n"), "vacances2.jpg": F("photo\n"), "chat.jpg": F("photo\n"), "notes.txt": F("à garder ici\n"), photos: D({})}),
+      check: c => { const p = c.get(HOME + "/photos"), h = c.get(HOME); return !!(p && h && ["vacances1.jpg", "vacances2.jpg", "chat.jpg"].every(n => p.c[n]) && !Object.keys(h.c).some(n => n.endsWith(".jpg")) && h.c["notes.txt"]); }},
+    {id: "d24", titre: "Le grand ménage", cours: "fichiers",
+      but: "Le dossier vieux_projet et tout ce qu'il contient ne servent plus. Supprime-le, sans toucher au dossier projet.",
+      indices: ["rm supprime des fichiers, mais refuse de supprimer un dossier sans option.", "L'option -r supprime un dossier et tout ce qu'il contient.", "Attention : rm ne passe pas par une corbeille. Vérifie bien le nom avant d'appuyer sur Entrée."],
+      home: () => ({vieux_projet: D({src: D({"main.c": F("int main(void) { return (0); }\n")}), "notes.txt": F("vieilles notes\n")}), projet: D({"main.c": F("// à garder\n")})}),
+      check: c => !c.get(HOME + "/vieux_projet") && !!c.get(HOME + "/projet/main.c")},
+    {id: "d25", titre: "Renommer", cours: "fichiers",
+      but: "Le fichier brouillon.c doit s'appeler ft_strlen.c, comme l'exige le sujet. Renomme-le.",
+      indices: ["Sous Linux, il n'y a pas de commande « renommer » à part.", "Renommer, c'est déplacer un fichier vers un nouveau nom.", "La commande de déplacement tient en 2 lettres."],
+      home: () => ({"brouillon.c": F("int\tft_strlen(char *str)\n{\n}\n")}),
+      check: c => !!c.get(HOME + "/ft_strlen.c") && !c.get(HOME + "/brouillon.c")},
+    {id: "d26", titre: "Les erreurs à part", cours: "redirections",
+      but: "La commande cat a.txt b.txt absent.txt affiche deux fichiers et une erreur. Relance-la en envoyant uniquement les erreurs dans le fichier erreurs.txt.",
+      indices: ["Une commande a deux sorties : 1 pour les résultats, 2 pour les erreurs.", "> redirige la sortie 1. Pour rediriger la sortie 2, on écrit son numéro devant.", "Le contenu des fichiers doit toujours s'afficher à l'écran."],
+      home: () => ({"a.txt": F("Premier fichier\n"), "b.txt": F("Deuxième fichier\n")}),
+      check: c => { const e = c.get(HOME + "/erreurs.txt"); return !!(e && e.c.includes("absent.txt") && c.lastOut.includes("Premier fichier")); }},
+    {id: "d27", titre: "Seulement si ça marche", cours: "redirections",
+      but: "En une seule ligne, crée le dossier build, puis, seulement si la création a réussi, crée dedans un fichier vide ok.txt.",
+      indices: ["Deux symboles enchaînent deux commandes : la seconde ne se lance que si la première a réussi.", "Ces symboles sont &&.", "touch crée un fichier vide."],
+      check: c => c.lastCmd.includes("&&") && !!c.get(HOME + "/build/ok.txt")},
+    {id: "d28", titre: "Compter les mots", cours: "redirections",
+      but: "Combien de mots contient le fichier discours.txt ? Affiche ce nombre.",
+      indices: ["wc compte : les lignes, les mots et les octets.", "Chaque option choisit quoi compter : -l pour les lignes, -w pour les mots.", "w comme words, les mots en anglais."],
+      home: () => ({"discours.txt": F(DISCOURS)}),
+      check: c => c.lastOut.trim().split(/\s+/)[0] === String(DISCOURS.split(/\s+/).filter(Boolean).length)},
+    {id: "d29", titre: "Que des fichiers", cours: "fichiers",
+      but: "Combien y a-t-il de fichiers, sans compter les dossiers, dans projet et tous ses sous-dossiers ? Affiche le nombre.",
+      indices: ["find parcourt tous les sous-dossiers.", "find a une option pour ne garder qu'un type : -type f pour les fichiers, -type d pour les dossiers.", "Branche le résultat sur wc -l pour compter les lignes."],
+      home: () => ({projet: D({src: D({"main.c": F(""), "utils.c": F(""), include: D({"utils.h": F("")})}), "Makefile": F(""), "README.md": F(""), tests: D({"test1.c": F("")})})}),
+      check: c => c.lastOut.trim() === "6"},
+    {id: "d30", titre: "Le compte visé", cours: "logs",
+      but: "Dans logs/auth.log, combien de tentatives de connexion ratées visent le compte admin ? Affiche le nombre.",
+      indices: ["Cherche les lignes qui contiennent à la fois l'échec et le nom du compte.", "Le motif peut être une phrase entière entre guillemets : \"Failed password for admin\".", "Attention, une connexion réussie d'admin ne doit pas compter."],
+      home: () => ({logs: D({"auth.log": F(AUTH)})}),
+      check: c => c.lastOut.trim() === "10"}
   ];
   L.DEFI_TOTAL = DEFIS.length;
 
@@ -292,16 +364,28 @@
     },
     cp: a => {
       if (a.length < 2) return R("", "cp: opérande de fichier manquant\n", 1);
-      const f = readFile("cp", a[0]); if (f.err) return f.err;
-      let dest = a[1]; const dn = get(dest); if (dn && dn.t === "d") dest = norm(dest) + "/" + split(norm(a[0])).pop();
-      const e = writeFile(dest, f.txt, false); return e ? R("", e.replace("bash", "cp"), 1) : R();
+      const last = a[a.length - 1], ln = get(last), srcs = a.slice(0, -1);
+      if (srcs.length > 1 && !(ln && ln.t === "d")) return R("", `cp: la cible '${last}' n'est pas un répertoire\n`, 1);
+      let err = "";
+      for (const sp of srcs) {
+        const f = readFile("cp", sp); if (f.err) { err += f.err.err; continue; }
+        let dest = last; if (ln && ln.t === "d") dest = norm(last) + "/" + split(norm(sp)).pop();
+        const e = writeFile(dest, f.txt, false); if (e) err += e.replace("bash", "cp");
+      }
+      return R("", err, err ? 1 : 0);
     },
     mv: a => {
       if (a.length < 2) return R("", "mv: opérande de fichier manquant\n", 1);
-      const src = get(a[0]); if (!src) return NOENT("mv", a[0]);
-      let dest = a[1]; const dn = get(dest); if (dn && dn.t === "d") dest = norm(dest) + "/" + split(norm(a[0])).pop();
-      const t = parentOf(dest); if (!t.dir || t.dir.t !== "d") return NOENT("mv", a[1]);
-      const s = parentOf(a[0]); delete s.dir.c[s.name]; t.dir.c[t.name] = src; return R();
+      const last = a[a.length - 1], ln = get(last), srcs = a.slice(0, -1);
+      if (srcs.length > 1 && !(ln && ln.t === "d")) return R("", `mv: la cible '${last}' n'est pas un répertoire\n`, 1);
+      let err = "";
+      for (const sp of srcs) {
+        const src = get(sp); if (!src) { err += `mv: impossible d'évaluer '${sp}': Aucun fichier ou dossier de ce type\n`; continue; }
+        let dest = last; if (ln && ln.t === "d") dest = norm(last) + "/" + split(norm(sp)).pop();
+        const t = parentOf(dest); if (!t.dir || t.dir.t !== "d") { err += `mv: impossible de déplacer '${sp}' vers '${last}': Aucun fichier ou dossier de ce type\n`; continue; }
+        const o = parentOf(sp); delete o.dir.c[o.name]; t.dir.c[t.name] = src;
+      }
+      return R("", err, err ? 1 : 0);
     },
     find: a => {
       let start = ".", i = 0; if (a[0] && !a[0].startsWith("-")) { start = a[0]; i = 1; }

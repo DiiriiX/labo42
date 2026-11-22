@@ -1,5 +1,5 @@
-const CACHE = "labo42-v5";
-const SHELL = ["./", "./index.html", "./terminal.js", "./atelier.js", "./lexique.js", "./extras.js", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png", "./actus.json", "./resume.json", "./lessons/terminal.json", "./lessons/c.json", "./lessons/reseau.json", "./lessons/cyber.json"];
+const CACHE = "labo42-v6";
+const SHELL = ["./", "./index.html", "./terminal.js", "./atelier.js", "./lexique.js", "./extras.js", "./jeux.js", "./memos.js", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png", "./actus.json", "./resume.json", "./lessons/terminal.json", "./lessons/c.json", "./lessons/reseau.json", "./lessons/cyber.json", "./lessons/apres.json"];
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting()));
 });

@@ -38,12 +38,19 @@
     ["norme", "Code propre", "Écris un code sans faute de Norme", "check", "gs", x => x.norm >= 1],
     ["examen", "Examen blanc", "Fais 50 points ou plus à un examen blanc", "clock", "rs", x => x.exam >= 50],
     ["veilleur", "Veilleur", "Lis 10 actus", "news", "rs", x => x.lues >= 10],
-    ["bandit", "Bandit", "Coche 5 niveaux dans le carnet Bandit", "key", "gs", x => x.bandit >= 5]
+    ["bandit", "Bandit", "Coche 5 niveaux dans le carnet Bandit", "key", "gs", x => x.bandit >= 5],
+    ["c-30", "Piscineux", "Réussis 30 exercices de C", "code", "rs", x => x.c >= 30],
+    ["jeux-10", "Joueur", "Joue 10 parties d'entraînement", "spark", "ys", x => x.parties >= 10],
+    ["sans-faute", "Sans faute", "Fais 10 / 10 à un entraînement", "check", "gs", x => x.sansFaute],
+    ["touche-a-tout", "Touche-à-tout", "Essaie tous les entraînements", "sliders", "bs", x => x.essayes >= x.nbJeux],
+    ["parcours", "Parcours terminé", "Termine tous les cours du parcours", "flag", "rs", x => x.cours >= x.coursTotal]
   ];
   const medal = (icon, tone) => `<svg class="il" viewBox="0 0 64 64" aria-hidden="true"><path d="M23 42l-6 18 9-4 6 6 3-18z" class="r o" style="stroke-width:1.8"/><path d="M41 42l6 18-9-4-6 6-3-18z" class="b o" style="stroke-width:1.8"/><circle cx="32" cy="28" r="22" class="y o"/><circle cx="32" cy="28" r="15.5" class="${tone} o" style="stroke-width:1.6"/><g transform="translate(20 16)" class="bi${tone === "dk" ? " bk" : ""}">${ICONS[icon] || ""}</g></svg>`;
   const allStats = () => {
     const s = S(), x = L.stats(), a = s.atelier || {};
-    return Object.assign(x, {serie: serie(), c: Object.keys(a.done || {}).length, norm: a.norm || 0, exam: (s.exams || []).reduce((m, e) => Math.max(m, e.score), 0), bandit: Object.values(s.bandit || {}).filter(b => b && b.ok).length});
+    const j = Object.values(s.jeux || {});
+    return Object.assign(x, {serie: serie(), c: Object.keys(a.done || {}).length, norm: a.norm || 0, exam: (s.exams || []).reduce((m, e) => Math.max(m, e.score), 0), bandit: Object.values(s.bandit || {}).filter(b => b && b.ok).length,
+      parties: j.reduce((n, g) => n + (g.plays || 0), 0), sansFaute: j.some(g => g.best >= 10), essayes: j.filter(g => g.plays).length, nbJeux: (L.GAMES || []).length || 11, examens: (s.exams || []).length, notes: Object.keys(s.notes || {}).length});
   };
   function checkBadges() {
     const s = S(), x = allStats(), first = !s.badges;
@@ -69,8 +76,10 @@
     const card = (href, art, t, sub, n, max) => `<a class="hubc" href="${href}"><span class="hart">${ART[art]}</span><span class="hubt"><b>${t}</b><small>${sub}</small>${max ? `<span class="bar"><i style="width:${Math.round(n / max * 100)}%"></i></span>` : ""}</span><span class="chev">›</span></a>`;
     $("hub").innerHTML = card("#terminal", "terminal", "Terminal", `${x.defis} / ${x.defisTotal} défis, du premier ls à l'enquête SOC`, x.defis, x.defisTotal)
       + card("#atelier", "atelier", "Atelier C", `${x.c} / ${total} exercices façon Piscine, avec mini norminette`, x.c, total)
+      + card("#jeux", "jeux", "Entraînements", `${x.parties} partie${x.parties > 1 ? "s" : ""} · 11 mini-jeux, questions tirées au hasard`, x.essayes, x.nbJeux)
       + card("#examen", "examen", "Examen blanc", best >= 0 ? `Meilleur score : ${best} / 100` : "Chronométré, comme les exams de 42", 0, 0)
-      + card("#bandit", "bandit", "Carnet Bandit", `${x.bandit} / 34 niveaux cochés · tes notes et mots de passe`, x.bandit, 34);
+      + card("#bandit", "bandit", "Carnet Bandit", `${x.bandit} / 34 niveaux cochés · tes notes et mots de passe`, x.bandit, 34)
+      + card("#memos", "memos", "Mémos", "Vim, Git, terminal, C, Norme, erreurs, réseau, cyber", 0, 0);
   }
 
   /* ---------- Moi ---------- */
@@ -81,7 +90,15 @@
       const dateTxt = new Date(c + "T12:00:00").toLocaleDateString("fr-FR", {weekday: "long", day: "numeric", month: "long", year: "numeric"});
       cd = `<div class="cdown"><span class="cdn">${j > 0 ? "J-" + j : j === 0 ? "Jour J" : "Fait"}</span><div><b>${j > 0 ? "avant ton Check-in" : j === 0 ? "C'est aujourd'hui, bonne chance !" : "Ton Check-in est passé"}</b><small>${esc(dateTxt)}</small><button class="link" type="button" data-mo="editci">Modifier la date</button></div></div>`;
     } else cd = `<div class="cdown"><span class="cdn">${ic("cal")}</span><div><b>Ton Check-in à 42 Lyon</b><small>Ajoute la date dès que tu la reçois : l'appli fera le compte à rebours.</small><div class="row" style="margin-top:8px"><input type="date" id="ciDate" value="${esc(c || "")}" aria-label="Date du Check-in"><button class="btn acc" type="button" data-mo="saveci">OK</button></div>${c ? `<button class="link" type="button" data-mo="delci">Effacer la date</button>` : ""}</div></div>`;
-    $("moiTop").innerHTML = `<div class="mgrid"><div class="mstat fire">${ic("flame")}<b>${n}</b><span>jour${n > 1 ? "s" : ""} de suite</span><small>record : ${r}</small></div><div class="mstat">${ic("medal")}<b>${Object.keys(s.badges || {}).length}</b><span>badges sur ${BADGES.length}</span><small>${x.c} exercice${x.c > 1 ? "s" : ""} de C</small></div></div>${cd}`;
+    const dow = (new Date(L.today + "T12:00:00").getDay() + 6) % 7, start = L.addDays(L.today, -dow - 12 * 7), act = new Set(s.days || []);
+    let heat = "";
+    for (let r = 0; r < 7; r++) for (let c = 0; c < 13; c++) { const d = L.addDays(start, c * 7 + r); heat += d > L.today ? `<i style="visibility:hidden"></i>` : `<i class="${act.has(d) ? "on" : ""}${d === L.today ? " today" : ""}" title="${d}"></i>`; }
+    const nb = (n, t) => `<div><b>${n}</b><span>${t}</span></div>`;
+    const notes = Object.entries(s.notes || {}).filter(([id]) => L.TOPIC[id]);
+    const extra = `<div class="card"><h3 style="margin-top:0">${ic("cal")}Ton activité, 13 dernières semaines</h3><div class="heat">${heat}</div><div class="heatl"><span>il y a 3 mois</span><span>${act.size} jour${act.size > 1 ? "s" : ""} actif${act.size > 1 ? "s" : ""}</span><span>aujourd'hui</span></div>
+      <div class="nums">${nb(x.cours + " / " + x.coursTotal, "cours terminés")}${nb(x.fiches + " / " + x.fichesTotal, "fiches sues")}${nb(x.defis + " / " + x.defisTotal, "défis du terminal")}${nb(x.c + " / " + ((L.EXOS || []).length || 54), "exercices de C")}${nb(x.parties, "parties d'entraînement")}${nb(x.examens, "examens blancs")}${nb(x.lues, "actus lues")}${nb(x.bandit + " / 34", "niveaux de Bandit")}</div></div>`
+      + (notes.length ? `<h2>Tes notes</h2>${notes.map(([id, t]) => `<div class="notec"><a class="link" href="#cours-${id}">${esc(L.TOPIC[id].t)}</a><p>${esc(t)}</p></div>`).join("")}` : "");
+    $("moiTop").innerHTML = `<div class="mgrid"><div class="mstat fire">${ic("flame")}<b>${n}</b><span>jour${n > 1 ? "s" : ""} de suite</span><small>record : ${r}</small></div><div class="mstat">${ic("medal")}<b>${Object.keys(s.badges || {}).length}</b><span>badges sur ${BADGES.length}</span><small>${x.c} exercice${x.c > 1 ? "s" : ""} de C</small></div></div>${cd}${extra}`;
     const got = s.badges || {};
     $("badges").innerHTML = `<div class="badges">${BADGES.map(b => `<div class="badge${got[b[0]] ? "" : " lock"}">${medal(b[3], b[4])}<b>${esc(b[1])}</b><span>${got[b[0]] ? "Obtenu" : esc(b[2])}</span></div>`).join("")}</div>`;
     const seg = (key, opts, val) => `<div class="seg" data-pref="${key}">${opts.map(o => `<button type="button" data-v="${o[0]}" class="${String(val) === String(o[0]) ? "on" : ""}">${o[1]}</button>`).join("")}</div>`;
