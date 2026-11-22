@@ -1,0 +1,850 @@
+{
+ "calculs": {
+  "titre": "Faire des calculs",
+  "objectif": "Calculer avec des variables sans te faire piéger : division entière, raccourcis, priorités et dépassements.",
+  "pourquoi": "Un programme passe son temps à calculer : une moyenne, un prix, une position à l'écran, l'index d'une case de tableau. Le C calcule très vite, mais il suit ses propres règles, et certaines surprennent au début.\n\nÀ la Piscine, ces règles reviennent partout : afficher un nombre chiffre par chiffre avec / et %, recoder une puissance ou une racine carrée sans la bibliothèque mathématique, éviter qu'un int déborde.",
+  "analogie": "Imagine une calculatrice de poche qui n'aurait pas de touche virgule quand on lui donne des nombres entiers : 7 divisé par 2, elle répond 3, et elle garde le reste de côté.\n\nC'est exactement le C avec des int. Si tu veux des virgules, il faut lui donner des nombres à virgule.",
+  "vocabulaire": [
+   {
+    "mot": "Opérateur",
+    "def": "Le symbole d'une opération : + - * / %."
+   },
+   {
+    "mot": "Division entière",
+    "def": "Entre deux int, / garde seulement la partie entière : 7 / 2 vaut 3."
+   },
+   {
+    "mot": "Modulo",
+    "def": "L'opérateur % donne le reste de la division entière : 7 % 2 vaut 1."
+   },
+   {
+    "mot": "Conversion (cast)",
+    "def": "Changer le type d'une valeur pour un calcul : (double)7 / 2 vaut 3.5."
+   },
+   {
+    "mot": "Dépassement",
+    "def": "Quand un résultat est trop grand pour son type : un int ne dépasse pas 2147483647."
+   }
+  ],
+  "sections": [
+   {
+    "titre": "Les cinq opérations",
+    "texte": "`+`, `-`, `*` font ce que tu attends. `/` dépend des types : entre deux int, c'est une division entière (`7 / 2` vaut 3) ; si l'un des deux est un nombre à virgule, le résultat garde ses décimales (`7.0 / 2` vaut 3.5).\n\n`%` donne le reste : `17 % 5` vaut 2. Il ne marche qu'avec des entiers. C'est l'outil pour savoir si un nombre est pair (`n % 2 == 0`), ou pour récupérer le dernier chiffre d'un nombre (`n % 10`)."
+   },
+   {
+    "titre": "Les raccourcis",
+    "texte": "`x = x + 3` s'écrit aussi `x += 3`. Il existe `-=`, `*=`, `/=` et `%=` sur le même modèle.\n\n`i++` ajoute 1, `i--` retire 1. Seul sur sa ligne, `i++` et `++i` font la même chose. La différence apparaît dans une expression : `j = i++` copie d'abord i dans j, puis augmente i ; `j = ++i` augmente d'abord i. À la Piscine, garde-les seuls sur leur ligne : c'est plus lisible."
+   },
+   {
+    "titre": "Les priorités",
+    "texte": "Comme en maths, `*`, `/` et `%` passent avant `+` et `-` : `2 + 3 * 4` vaut 14, pas 20. Les parenthèses imposent l'ordre que tu veux : `(2 + 3) * 4` vaut 20.\n\nEn cas de doute, mets des parenthèses : elles ne coûtent rien et rendent le calcul évident pour celui qui relit, y compris toi dans une semaine."
+   },
+   {
+    "titre": "La bibliothèque mathématique",
+    "texte": "`#include <math.h>` donne `sqrt` (racine carrée), `pow` (puissance), `fabs` (valeur absolue d'un nombre à virgule). Sur beaucoup de systèmes, il faut ajouter `-lm` à la compilation.\n\nÀ la Piscine, ces fonctions sont presque toujours interdites : on te demande de les recoder (ft_sqrt, ft_iterative_power). C'est le meilleur moyen de comprendre ce qu'elles font."
+   },
+   {
+    "titre": "Quand le nombre est trop grand",
+    "texte": "Un int tient en général sur 4 octets : de -2147483648 à 2147483647. Au-delà, le C ne garantit plus rien : pour un int, c'est un comportement indéfini. En pratique, le résultat repart souvent dans les négatifs, ce qui donne des bugs très étranges.\n\nPour des nombres plus grands, il existe `long` et `long long`. Et pour certains calculs, on vérifie avant de calculer, plutôt que de constater les dégâts après."
+   }
+  ],
+  "exemple": {
+   "titre": "Une moyenne qui tombe juste… ou pas",
+   "code": "int\tsomme;\nint\tnb;\n\nsomme = 29;\nnb = 2;\nprintf(\"%d\\n\", somme / nb);\nprintf(\"%f\\n\", (double)somme / nb);",
+   "explication": "La première ligne affiche 14 : division entière, le 0,5 est perdu. La seconde convertit somme en double avant de diviser, et affiche 14.500000.\n\nRetiens le réflexe : dès qu'un calcul doit garder des décimales, au moins un des deux nombres doit être à virgule."
+  },
+  "pieges": [
+   "Croire que `7 / 2` vaut 3.5 entre deux int.",
+   "Utiliser `%` avec des nombres à virgule : il ne marche qu'avec des entiers.",
+   "Oublier les priorités : `a + b / 2` n'est pas la moyenne de a et b.",
+   "Laisser un int dépasser 2147483647 sans s'en rendre compte."
+  ],
+  "retenir": [
+   "Entre deux int, / fait une division entière et % donne le reste.",
+   "Pour garder des décimales, convertis au moins un des nombres : (double)a / b.",
+   "x += 3 et i++ sont des raccourcis : garde i++ seul sur sa ligne.",
+   "* / % passent avant + et - ; en cas de doute, des parenthèses.",
+   "Un int a des limites : au-delà, le résultat n'est plus garanti."
+  ],
+  "quiz": [
+   {
+    "q": "Que vaut 17 % 5 ?",
+    "choix": [
+     "3",
+     "2",
+     "3.4"
+    ],
+    "bonne": 1,
+    "explication": "17 = 5 × 3 + 2 : le reste est 2."
+   },
+   {
+    "q": "Que vaut 2 + 3 * 4 en C ?",
+    "choix": [
+     "20",
+     "14",
+     "24"
+    ],
+    "bonne": 1,
+    "explication": "La multiplication passe avant l'addition : 2 + 12 = 14."
+   },
+   {
+    "q": "Comment obtenir 3.5 à partir des int 7 et 2 ?",
+    "choix": [
+     "7 / 2",
+     "(double)7 / 2",
+     "7 % 2"
+    ],
+    "bonne": 1,
+    "explication": "Avec un des deux nombres converti en double, la division garde ses décimales."
+   }
+  ],
+  "question": "Sans calculatrice : que valent 100 / 7 et 100 % 7 ? Vérifie ensuite avec un petit programme."
+ },
+ "modulaire": {
+  "titre": "La programmation modulaire",
+  "objectif": "Découper un programme en plusieurs fichiers .c et .h, et savoir les compiler ensemble.",
+  "pourquoi": "Un vrai programme fait des milliers de lignes : tout mettre dans un seul fichier serait illisible. On le découpe en modules, un fichier par thème : l'affichage, les calculs, la lecture des fichiers.\n\nÀ 42, c'est obligatoire très vite : la Norme limite un fichier à 5 fonctions. Libft, ft_printf, minishell : tous tes projets seront répartis sur des dizaines de fichiers, reliés par des fichiers .h.",
+  "analogie": "Un programme modulaire, c'est comme une cuisine bien rangée : un placard pour les épices, un pour les casseroles, un pour la vaisselle. Le fichier .h, c'est l'étiquette sur la porte : il dit ce qu'il y a dedans, sans tout sortir.",
+  "vocabulaire": [
+   {
+    "mot": "Prototype",
+    "def": "La déclaration d'une fonction, sans son code : int ft_strlen(char *str);"
+   },
+   {
+    "mot": "Fichier .h (header)",
+    "def": "Un fichier qui rassemble des prototypes, des types et des constantes, à inclure avec #include."
+   },
+   {
+    "mot": "Fichier objet (.o)",
+    "def": "Un fichier .c compilé, pas encore assemblé avec les autres."
+   },
+   {
+    "mot": "Édition de liens",
+    "def": "L'étape qui assemble les .o en un seul programme exécutable."
+   }
+  ],
+  "sections": [
+   {
+    "titre": "Pourquoi un prototype",
+    "texte": "Le compilateur lit ton fichier de haut en bas. Si `main` appelle `ft_putchar` avant que `ft_putchar` soit écrite, il ne la connaît pas encore : avec -Werror, c'est une erreur.\n\nLa solution : annoncer la fonction en haut du fichier avec son prototype, `void ft_putchar(char c);`. Le point-virgule à la fin dit « le code viendra plus tard, ou ailleurs »."
+   },
+   {
+    "titre": "Plusieurs fichiers .c",
+    "texte": "On range chaque fonction, ou chaque petit groupe de fonctions, dans son propre fichier : `ft_putchar.c`, `ft_putstr.c`, `main.c`. Chaque fichier inclut ce dont il a besoin.\n\nPour compiler, on donne tous les fichiers à cc : `cc -Wall -Wextra -Werror main.c ft_putchar.c ft_putstr.c`. Il compile chacun, puis les assemble en un seul programme."
+   },
+   {
+    "titre": "Le fichier .h",
+    "texte": "Plutôt que de recopier les prototypes en haut de chaque fichier, on les met dans un header, par exemple `ft.h`, et chaque .c écrit `#include \"ft.h\"`.\n\nLes guillemets veulent dire « cherche ce fichier dans mon dossier », les chevrons `<stdio.h>` « cherche dans le système ». Un .h ne contient pas de code de fonction : seulement des prototypes, des types et des constantes."
+   },
+   {
+    "titre": "Compilation séparée",
+    "texte": "`cc -c ft_putchar.c` crée `ft_putchar.o` sans chercher de main. Ensuite, `cc main.o ft_putchar.o` fait l'édition de liens.\n\nIntérêt : quand tu modifies un seul fichier, seul son .o est à refaire. C'est exactement ce qu'automatise un Makefile, que tu verras dans l'étape « Vers le tronc commun »."
+   }
+  ],
+  "exemple": {
+   "titre": "Un petit projet en trois fichiers",
+   "code": "/* ft.h */\n#ifndef FT_H\n# define FT_H\n\nvoid\tft_putchar(char c);\nvoid\tft_putstr(char *str);\n\n#endif\n\n/* ft_putstr.c */\n#include \"ft.h\"\n\nvoid\tft_putstr(char *str)\n{\n\twhile (*str)\n\t{\n\t\tft_putchar(*str);\n\t\tstr++;\n\t}\n}\n\n/* main.c */\n#include \"ft.h\"\n\nint\tmain(void)\n{\n\tft_putstr(\"Salut 42\\n\");\n\treturn (0);\n}",
+   "explication": "ft.h annonce les deux fonctions. ft_putstr.c et main.c l'incluent : ils peuvent appeler ft_putchar sans savoir où elle est écrite. Il reste un fichier ft_putchar.c à écrire, puis : `cc -Wall -Wextra -Werror main.c ft_putstr.c ft_putchar.c`.\n\nLes lignes #ifndef, #define et #endif protègent le header contre une double inclusion : tu les verras dans le cours sur le préprocesseur."
+  },
+  "pieges": [
+   "Mettre le code d'une fonction dans un .h.",
+   "Oublier un fichier .c dans la commande de compilation : erreur « undefined reference ».",
+   "Confondre `#include \"ft.h\"` (ton fichier) et `#include <stdio.h>` (le système)."
+  ],
+  "retenir": [
+   "Un prototype annonce une fonction avant son code.",
+   "Chaque fichier .c regroupe quelques fonctions ; la Norme en autorise 5 au plus.",
+   "Le .h rassemble les prototypes et s'inclut avec des guillemets.",
+   "cc -c crée des .o ; l'édition de liens les assemble en programme."
+  ],
+  "quiz": [
+   {
+    "q": "Que contient un fichier .h ?",
+    "choix": [
+     "Le code des fonctions",
+     "Des prototypes, des types et des constantes",
+     "Le main"
+    ],
+    "bonne": 1,
+    "explication": "Le header annonce ; le code vit dans les .c."
+   },
+   {
+    "q": "Quelle erreur obtient-on si on oublie un .c à la compilation ?",
+    "choix": [
+     "expected ';'",
+     "undefined reference à la fonction",
+     "Segmentation fault"
+    ],
+    "bonne": 1,
+    "explication": "L'édition de liens ne trouve pas le code de la fonction."
+   },
+   {
+    "q": "Que fait cc -c fichier.c ?",
+    "choix": [
+     "Il crée fichier.o sans faire l'édition de liens",
+     "Il supprime fichier.c",
+     "Il lance le programme"
+    ],
+    "bonne": 0,
+    "explication": "-c s'arrête après la compilation, avant l'assemblage final."
+   }
+  ],
+  "question": "Découpe ton programme César en trois fichiers : main.c, cesar.c et cesar.h. Quelles lignes vont dans le .h ?"
+ },
+ "preprocesseur": {
+  "titre": "Le préprocesseur",
+  "objectif": "Comprendre ce qui se passe avant la compilation : #include, #define, macros et protection des headers.",
+  "pourquoi": "Les lignes qui commencent par # ne sont pas du C : ce sont des ordres donnés au préprocesseur, qui passe sur ton code juste avant le compilateur.\n\nTu t'en sers dès la Piscine (`#include`), et ensuite partout : chaque .h de 42 doit être protégé contre la double inclusion, et get_next_line se compile avec une constante BUFFER_SIZE définie depuis la ligne de commande.",
+  "analogie": "Le préprocesseur, c'est un assistant qui prépare ton texte avant de le donner au traducteur. Il colle le contenu des fichiers demandés, remplace les mots convenus par leur valeur, et retire les passages qui ne te concernent pas. Le traducteur, lui, ne voit que le résultat.",
+  "vocabulaire": [
+   {
+    "mot": "Préprocesseur",
+    "def": "Le programme qui traite les lignes commençant par #, avant la compilation."
+   },
+   {
+    "mot": "#include",
+    "def": "Copie le contenu d'un fichier à cet endroit."
+   },
+   {
+    "mot": "#define",
+    "def": "Définit un nom remplacé par une valeur partout dans le code."
+   },
+   {
+    "mot": "Macro",
+    "def": "Un #define avec des paramètres, comme une petite fonction recopiée telle quelle."
+   },
+   {
+    "mot": "Header guard",
+    "def": "Les lignes #ifndef / #define / #endif qui empêchent d'inclure deux fois un .h."
+   }
+  ],
+  "sections": [
+   {
+    "titre": "#include : copier-coller",
+    "texte": "`#include <unistd.h>` est remplacé par tout le contenu du fichier unistd.h. Tu peux le voir toi-même : `cc -E main.c` affiche ton code après le passage du préprocesseur. Ton petit fichier devient des centaines de lignes.\n\nC'est pour ça qu'un .h ne doit contenir que des déclarations : il est recopié dans chaque fichier qui l'inclut."
+   },
+   {
+    "titre": "#define : des constantes",
+    "texte": "`#define TAILLE 100` remplace le mot TAILLE par 100 partout dans le fichier. Par convention, ces noms s'écrivent en MAJUSCULES.\n\nOn peut aussi définir une constante depuis la ligne de commande : `cc -D BUFFER_SIZE=42 get_next_line.c`. C'est exactement comme ça que la moulinette teste get_next_line avec plusieurs tailles de lecture."
+   },
+   {
+    "titre": "Les macros et leurs pièges",
+    "texte": "`#define CARRE(x) ((x) * (x))` ressemble à une fonction, mais c'est un remplacement de texte. Sans parenthèses, `#define CARRE(x) x * x` donnerait pour `CARRE(1 + 2)` le texte `1 + 2 * 1 + 2`, soit 5 au lieu de 9.\n\nAutre piège : `CARRE(i++)` augmente i deux fois. Une macro ne vérifie aucun type. La Norme de 42 limite fortement les macros : préfère les vraies fonctions."
+   },
+   {
+    "titre": "Protéger un header",
+    "texte": "Si deux fichiers incluent le même .h, ses déclarations seraient recopiées deux fois, et certaines provoquent des erreurs. La protection :\n\n`#ifndef FT_H` (si FT_H n'est pas encore défini), `# define FT_H` (on le définit), le contenu, puis `#endif`. Au deuxième passage, FT_H existe déjà : tout est sauté. La Norme exige cette protection dans chaque .h."
+   }
+  ],
+  "exemple": {
+   "titre": "Un header protégé avec une constante",
+   "code": "#ifndef GET_NEXT_LINE_H\n# define GET_NEXT_LINE_H\n\n# ifndef BUFFER_SIZE\n#  define BUFFER_SIZE 42\n# endif\n\nchar\t*get_next_line(int fd);\n\n#endif",
+   "explication": "Le header est protégé par GET_NEXT_LINE_H. À l'intérieur, BUFFER_SIZE vaut 42 seulement si personne ne l'a défini avant, par exemple avec `-D BUFFER_SIZE=1` à la compilation.\n\nLes espaces après le # indiquent l'imbrication : c'est la façon d'indenter les directives demandée par la Norme."
+  },
+  "pieges": [
+   "Oublier les parenthèses autour des paramètres d'une macro.",
+   "Mettre un point-virgule à la fin d'un #define : il serait recopié partout.",
+   "Oublier la protection #ifndef dans un .h.",
+   "Croire qu'une macro vérifie les types comme une fonction."
+  ],
+  "retenir": [
+   "Le préprocesseur traite les lignes en # avant la compilation.",
+   "#include recopie un fichier ; cc -E montre le résultat.",
+   "#define crée une constante ; -D la définit depuis la compilation.",
+   "Une macro est un remplacement de texte : des parenthèses partout.",
+   "Chaque .h se protège avec #ifndef, #define et #endif."
+  ],
+  "quiz": [
+   {
+    "q": "Que fait #include <stdio.h> ?",
+    "choix": [
+     "Il recopie le contenu de stdio.h à cet endroit",
+     "Il télécharge printf",
+     "Il compile stdio.c"
+    ],
+    "bonne": 0,
+    "explication": "C'est un copier-coller fait par le préprocesseur."
+   },
+   {
+    "q": "Avec #define CARRE(x) x * x, que vaut CARRE(1 + 2) ?",
+    "choix": [
+     "9",
+     "5",
+     "6"
+    ],
+    "bonne": 1,
+    "explication": "Le texte devient 1 + 2 * 1 + 2 = 5 : il manque des parenthèses."
+   },
+   {
+    "q": "À quoi servent #ifndef, #define et #endif dans un .h ?",
+    "choix": [
+     "À accélérer le programme",
+     "À empêcher que le header soit inclus deux fois",
+     "À définir le main"
+    ],
+    "bonne": 1,
+    "explication": "C'est la protection contre la double inclusion, exigée par la Norme."
+   }
+  ],
+  "question": "Lance cc -E sur un de tes fichiers : combien de lignes produit-il ? Que sont devenus tes #define ?"
+ },
+ "structures": {
+  "titre": "Structures, typedef et enum",
+  "objectif": "Créer tes propres types pour regrouper des données qui vont ensemble.",
+  "pourquoi": "Un point a un x et un y. Un élève a un nom, un âge et une note. Plutôt que de gérer des variables séparées, le C permet de les regrouper dans un seul type, une structure.\n\nÀ 42, les structures sont partout dès la fin de la Piscine (C08) : les listes chaînées, les données de minishell, les philosophes, les objets d'une scène 3D. Le préfixe `s_` pour les structures et `t_` pour les typedef vient de la Norme.",
+  "analogie": "Une structure, c'est une fiche d'inscription : une seule feuille, mais plusieurs cases, chacune avec son nom et son type de contenu. Le typedef, c'est donner un nom court au modèle de fiche.",
+  "vocabulaire": [
+   {
+    "mot": "Structure",
+    "def": "Un type qui regroupe plusieurs champs, chacun avec son nom et son type."
+   },
+   {
+    "mot": "Champ",
+    "def": "Une des variables d'une structure, par exemple x dans un point."
+   },
+   {
+    "mot": "typedef",
+    "def": "Donne un nouveau nom à un type : t_point au lieu de struct s_point."
+   },
+   {
+    "mot": "enum",
+    "def": "Un type dont les valeurs possibles ont des noms : ROUGE, VERT, BLEU."
+   },
+   {
+    "mot": "Opérateur ->",
+    "def": "Accède à un champ à travers un pointeur : p->x équivaut à (*p).x."
+   }
+  ],
+  "sections": [
+   {
+    "titre": "Déclarer une structure",
+    "texte": "`struct s_point { int x; int y; };` crée un nouveau type. On déclare ensuite une variable `struct s_point a;`, puis on accède aux champs avec un point : `a.x = 3;`.\n\nUne structure peut contenir des types différents : des int, des char *, des tableaux, et même d'autres structures."
+   },
+   {
+    "titre": "typedef : un nom plus court",
+    "texte": "`typedef struct s_point t_point;` permet d'écrire `t_point a;`. À 42, la Norme impose les préfixes : `s_` pour le nom de la structure, `t_` pour le typedef.\n\nOn combine souvent les deux en une fois : `typedef struct s_point { int x; int y; } t_point;`."
+   },
+   {
+    "titre": "Structures et pointeurs",
+    "texte": "Pour qu'une fonction modifie une structure, on lui passe son adresse : `void deplacer(t_point *p)`. Dans la fonction, `p->x += 1;` modifie le vrai point. La flèche `->` remplace `(*p).x`.\n\nPasser l'adresse évite aussi de copier toute la structure à chaque appel, ce qui compte quand elle est grosse."
+   },
+   {
+    "titre": "enum : des valeurs nommées",
+    "texte": "`typedef enum e_etat { ATTENTE, EN_COURS, FINI } t_etat;` crée un type dont les valeurs sont des noms. En réalité, ce sont des entiers (0, 1, 2), mais le code devient lisible : `if (etat == FINI)`.\n\nIl existe aussi les union, où tous les champs partagent la même mémoire : beaucoup plus rares, à connaître de nom."
+   }
+  ],
+  "exemple": {
+   "titre": "Un point qui se déplace",
+   "code": "typedef struct s_point\n{\n\tint\tx;\n\tint\ty;\n}\tt_point;\n\nvoid\tdeplacer(t_point *p, int dx, int dy)\n{\n\tp->x += dx;\n\tp->y += dy;\n}\n\n/* dans le main : */\nt_point\ta;\n\na.x = 0;\na.y = 0;\ndeplacer(&a, 3, -2);\nprintf(\"(%d, %d)\\n\", a.x, a.y);",
+   "explication": "deplacer reçoit l'adresse de a : elle modifie le vrai point. Le programme affiche (3, -2).\n\nAvec `deplacer(t_point p, …)` sans étoile, la fonction recevrait une copie, et a resterait en (0, 0) : c'est la même règle que pour les int."
+  },
+  "pieges": [
+   "Utiliser `.` sur un pointeur au lieu de `->`.",
+   "Passer une structure par copie et s'étonner qu'elle ne change pas.",
+   "Oublier le point-virgule après l'accolade fermante d'une structure.",
+   "Oublier les préfixes s_ et t_ exigés par la Norme."
+  ],
+  "retenir": [
+   "Une structure regroupe des champs de types différents.",
+   "a.x pour une variable, p->x pour un pointeur.",
+   "typedef donne un nom court : s_ pour la structure, t_ pour le type.",
+   "Pour modifier une structure dans une fonction, passe son adresse.",
+   "enum donne des noms lisibles à des valeurs entières."
+  ],
+  "quiz": [
+   {
+    "q": "Comment accéder au champ x à travers un pointeur p ?",
+    "choix": [
+     "p.x",
+     "p->x",
+     "*p->x"
+    ],
+    "bonne": 1,
+    "explication": "La flèche suit l'adresse puis accède au champ."
+   },
+   {
+    "q": "Quel préfixe la Norme impose-t-elle pour un typedef ?",
+    "choix": [
+     "s_",
+     "t_",
+     "e_"
+    ],
+    "bonne": 1,
+    "explication": "s_ pour les structures, t_ pour les typedef, e_ pour les enum."
+   },
+   {
+    "q": "Une fonction reçoit t_point p (sans étoile) et modifie p.x. Le point de l'appelant change-t-il ?",
+    "choix": [
+     "Oui",
+     "Non, elle a modifié une copie",
+     "Seulement si x est positif"
+    ],
+    "bonne": 1,
+    "explication": "Comme un int, la structure est copiée."
+   }
+  ],
+  "question": "Crée un type t_eleve (nom, âge, note) et une fonction qui affiche un élève. Faut-il lui passer l'élève ou son adresse ?"
+ },
+ "fichiers_c": {
+  "titre": "Lire et écrire des fichiers",
+  "objectif": "Ouvrir, lire, écrire et fermer un fichier en C, avec les deux familles de fonctions.",
+  "pourquoi": "Un programme qui oublie tout en s'arrêtant est limité. Lire et écrire des fichiers permet de garder des scores, de lire une configuration, d'analyser des logs.\n\nLe C offre deux familles : celle de stdio (fopen, fgets, fprintf), pratique, et les appels système (open, read, write, close), plus bas niveau. À 42, c'est surtout la seconde : get_next_line, pipex et minishell sont construits avec open, read et close.",
+  "analogie": "Lire un fichier, c'est comme emprunter un livre : on le demande (ouvrir), on le lit page par page (lire), et on le rend (fermer). Si la bibliothèque n'a pas le livre, on doit le savoir tout de suite, pas en essayant de lire des pages qui n'existent pas.",
+  "vocabulaire": [
+   {
+    "mot": "Descripteur de fichier",
+    "def": "Le numéro que renvoie open pour désigner un fichier ouvert : 0, 1 et 2 sont déjà pris par l'entrée, la sortie et les erreurs."
+   },
+   {
+    "mot": "FILE *",
+    "def": "Le pointeur que renvoie fopen, utilisé par les fonctions de stdio."
+   },
+   {
+    "mot": "Mode d'ouverture",
+    "def": "Lecture, écriture ou ajout : \"r\", \"w\", \"a\" avec fopen ; O_RDONLY, O_WRONLY… avec open."
+   },
+   {
+    "mot": "Fin de fichier",
+    "def": "Quand il n'y a plus rien à lire : read renvoie 0, fgets renvoie NULL."
+   }
+  ],
+  "sections": [
+   {
+    "titre": "Ouvrir et vérifier",
+    "texte": "`int fd = open(\"notes.txt\", O_RDONLY);` ouvre en lecture (avec `#include <fcntl.h>`). En cas d'échec (fichier absent, droits refusés), open renvoie -1 : il faut toujours le vérifier avant de lire.\n\nCôté stdio : `FILE *f = fopen(\"notes.txt\", \"r\");`, qui renvoie NULL en cas d'échec. Le mode \"w\" crée ou vide le fichier, \"a\" ajoute à la fin."
+   },
+   {
+    "titre": "Lire",
+    "texte": "`read(fd, buf, 100)` lit jusqu'à 100 octets dans le tableau buf, et renvoie le nombre d'octets vraiment lus : moins à la fin du fichier, 0 quand tout est lu, -1 en cas d'erreur. read ne s'arrête pas aux fins de ligne : il lit des blocs.\n\nCôté stdio, `fgets(ligne, 100, f)` lit une ligne entière, au plus 99 caractères plus le '\\0'."
+   },
+   {
+    "titre": "Écrire",
+    "texte": "`write(fd, \"Bonjour\\n\", 8)` écrit dans un fichier ouvert en écriture, exactement comme tu écris à l'écran avec le descripteur 1. Pour ouvrir en écriture : `open(\"sortie.txt\", O_WRONLY | O_CREAT | O_TRUNC, 0644)` crée le fichier avec les droits rw-r--r--.\n\nCôté stdio : `fprintf(f, \"score : %d\\n\", score)` ou `fputs(\"texte\", f)`."
+   },
+   {
+    "titre": "Fermer, toujours",
+    "texte": "`close(fd)` ou `fclose(f)` rend le fichier au système. Un programme a un nombre limité de descripteurs ouverts : un programme qui ouvre sans fermer finit par ne plus pouvoir ouvrir quoi que ce soit.\n\nLe bon réflexe : chaque open a son close, sur tous les chemins du programme, y compris ceux des erreurs."
+   }
+  ],
+  "exemple": {
+   "titre": "Compter les lignes d'un fichier",
+   "code": "#include <fcntl.h>\n#include <unistd.h>\n\nint\tcompter_lignes(char *nom)\n{\n\tint\t\tfd;\n\tint\t\tn;\n\tint\t\tlus;\n\tchar\tbuf[64];\n\tint\t\ti;\n\n\tfd = open(nom, O_RDONLY);\n\tif (fd == -1)\n\t\treturn (-1);\n\tn = 0;\n\tlus = read(fd, buf, 64);\n\twhile (lus > 0)\n\t{\n\t\ti = -1;\n\t\twhile (++i < lus)\n\t\t\tn += (buf[i] == '\\n');\n\t\tlus = read(fd, buf, 64);\n\t}\n\tclose(fd);\n\treturn (n);\n}",
+   "explication": "La fonction ouvre le fichier et renvoie -1 si c'est impossible. Elle lit des blocs de 64 octets, compte les '\\n' dans chaque bloc, et s'arrête quand read renvoie 0. Elle ferme le fichier avant de répondre.\n\nC'est ce que fait `wc -l` : tu viens de recoder un bout du terminal."
+  },
+  "pieges": [
+   "Ne pas vérifier le retour de open ou fopen.",
+   "Traiter tout le tableau au lieu des seuls octets lus par read.",
+   "Oublier close : les descripteurs finissent par manquer.",
+   "Ouvrir en mode \"w\" un fichier qu'on voulait compléter : il est vidé."
+  ],
+  "retenir": [
+   "open renvoie un descripteur, ou -1 en cas d'échec : vérifie toujours.",
+   "read lit des blocs et renvoie le nombre d'octets lus ; 0 à la fin.",
+   "write écrit dans un fichier comme à l'écran.",
+   "Chaque ouverture a sa fermeture.",
+   "À 42, ce sont surtout open, read, write et close."
+  ],
+  "quiz": [
+   {
+    "q": "Que renvoie read à la fin du fichier ?",
+    "choix": [
+     "-1",
+     "0",
+     "Le nombre de lignes"
+    ],
+    "bonne": 1,
+    "explication": "0 veut dire qu'il n'y a plus rien à lire ; -1 signale une erreur."
+   },
+   {
+    "q": "Que renvoie open si le fichier n'existe pas (en lecture) ?",
+    "choix": [
+     "0",
+     "-1",
+     "NULL"
+    ],
+    "bonne": 1,
+    "explication": "open renvoie -1 en cas d'échec ; c'est fopen qui renvoie NULL."
+   },
+   {
+    "q": "Quel descripteur correspond à la sortie d'erreur ?",
+    "choix": [
+     "0",
+     "1",
+     "2"
+    ],
+    "bonne": 2,
+    "explication": "0 l'entrée, 1 la sortie, 2 les erreurs."
+   }
+  ],
+  "question": "Que se passe-t-il si ton programme ouvre un fichier dans une boucle de 10 000 tours sans jamais le fermer ?"
+ },
+ "saisie": {
+  "titre": "Sécuriser la saisie",
+  "objectif": "Lire ce que tape l'utilisateur sans jamais déborder, et comprendre le débordement de tampon.",
+  "pourquoi": "Tout ce qui vient de l'extérieur peut être faux, trop long ou malveillant. Un programme qui lit sans limite peut écrire au-delà de son tableau et écraser sa propre mémoire.\n\nCe bug, le débordement de tampon, est l'une des failles les plus célèbres de l'histoire de la sécurité. Des wargames entiers lui sont consacrés, et 42 propose plus tard des projets de sécurité comme RainFall, construits autour de ces failles.",
+  "analogie": "Imagine un formulaire papier avec une case de 10 lettres pour ton nom. Quelqu'un écrit un nom de 30 lettres : il déborde sur la case « montant à payer » juste à côté. Si l'employé recopie le formulaire sans regarder, il lit un montant inventé par le client. Un débordement de tampon, c'est exactement ça, dans la mémoire.",
+  "vocabulaire": [
+   {
+    "mot": "Tampon (buffer)",
+    "def": "Un tableau qui reçoit des données, par exemple char nom[20]."
+   },
+   {
+    "mot": "Débordement de tampon",
+    "def": "Écrire au-delà de la fin d'un tableau, sur la mémoire voisine. En anglais : buffer overflow."
+   },
+   {
+    "mot": "fgets",
+    "def": "Lit une ligne en respectant une taille maximale."
+   },
+   {
+    "mot": "Validation",
+    "def": "Vérifier qu'une saisie a la forme attendue avant de s'en servir."
+   }
+  ],
+  "sections": [
+   {
+    "titre": "Le problème de scanf(\"%s\")",
+    "texte": "`char nom[10]; scanf(\"%s\", nom);` lit un mot… sans aucune limite. Si l'utilisateur tape 50 caractères, scanf les écrit tous, bien au-delà des 10 cases réservées.\n\nCe qui se trouve juste après en mémoire est écrasé : d'autres variables, ou des informations qui disent au programme où continuer. Dans le meilleur des cas, il plante. Dans le pire, un attaquant choisit ce qui est écrit."
+   },
+   {
+    "titre": "Limiter la lecture",
+    "texte": "Première protection : une largeur dans le format, `scanf(\"%9s\", nom)` pour un tableau de 10 (9 caractères plus le '\\0'). C'est ce que tu fais dans ton César avec %99s.\n\nMieux pour une ligne entière : `fgets(ligne, sizeof(ligne), stdin)`. fgets ne dépasse jamais la taille donnée, et garde le '\\n' final s'il y a de la place : on le remplace souvent par '\\0'."
+   },
+   {
+    "titre": "Valider ce qu'on reçoit",
+    "texte": "Une saisie peut être trop longue, vide, ou pas du tout du bon type : des lettres là où on attend un nombre. `atoi(\"abc\")` renvoie 0 sans prévenir : impossible de savoir si l'utilisateur a tapé 0 ou n'importe quoi.\n\n`strtol` permet de savoir où la conversion s'est arrêtée, donc de détecter une saisie invalide. Et un scanf renvoie le nombre de valeurs lues : 0 veut dire que la saisie ne correspondait pas."
+   },
+   {
+    "titre": "Le réflexe sécurité",
+    "texte": "Règle d'or : ne jamais faire confiance à une entrée. Taille maximale, type attendu, valeurs possibles : tout se vérifie.\n\nLe même principe protège les sites web contre l'injection SQL, que tu as vue dans l'étape cybersécurité. Côté C, les compilateurs ajoutent aussi des protections, mais elles ne remplacent pas un code correct."
+   }
+  ],
+  "exemple": {
+   "titre": "Lire un prénom sans déborder",
+   "code": "#include <stdio.h>\n\nint\tmain(void)\n{\n\tchar\tprenom[20];\n\tint\t\ti;\n\n\tif (fgets(prenom, sizeof(prenom), stdin) == NULL)\n\t\treturn (1);\n\ti = 0;\n\twhile (prenom[i] != '\\0' && prenom[i] != '\\n')\n\t\ti++;\n\tprenom[i] = '\\0';\n\tprintf(\"Bonjour %s !\\n\", prenom);\n\treturn (0);\n}",
+   "explication": "fgets lit au plus 19 caractères plus le '\\0', quoi que tape l'utilisateur. La boucle cherche le '\\n' gardé par fgets et le remplace par '\\0'.\n\nSi l'utilisateur tape un prénom de 50 lettres, le programme n'en garde que 19, sans jamais déborder."
+  },
+  "pieges": [
+   "Utiliser scanf(\"%s\") sans largeur maximale.",
+   "Oublier la place du '\\0' dans la taille du tableau.",
+   "Utiliser atoi sur une saisie sans pouvoir détecter une erreur.",
+   "Croire qu'un plantage est le pire qui puisse arriver : un débordement peut être exploité."
+  ],
+  "retenir": [
+   "Toute entrée extérieure est suspecte.",
+   "scanf(\"%9s\") pour un tableau de 10 ; fgets(buf, sizeof(buf), stdin) pour une ligne.",
+   "Le débordement de tampon écrase la mémoire voisine : c'est une faille classique.",
+   "Vérifie le retour de scanf et préfère strtol à atoi pour valider un nombre."
+  ],
+  "quiz": [
+   {
+    "q": "Pour char nom[10], quelle lecture est sûre ?",
+    "choix": [
+     "scanf(\"%s\", nom)",
+     "scanf(\"%9s\", nom)",
+     "scanf(\"%10s\", nom)"
+    ],
+    "bonne": 1,
+    "explication": "9 caractères plus le '\\0' tiennent dans 10 cases ; %10s en écrirait 11."
+   },
+   {
+    "q": "Qu'est-ce qu'un débordement de tampon ?",
+    "choix": [
+     "Un fichier trop gros",
+     "Écrire au-delà de la fin d'un tableau",
+     "Une boucle infinie"
+    ],
+    "bonne": 1,
+    "explication": "La mémoire voisine est écrasée, ce qui peut être exploité."
+   },
+   {
+    "q": "Pourquoi atoi est-il risqué pour valider une saisie ?",
+    "choix": [
+     "Il est trop lent",
+     "Il renvoie 0 sans signaler que la saisie était invalide",
+     "Il est interdit en C"
+    ],
+    "bonne": 1,
+    "explication": "Impossible de distinguer un vrai 0 d'une saisie incorrecte."
+   }
+  ],
+  "question": "Dans ton César, que se passe-t-il si l'utilisateur tape un mot de 200 lettres avec scanf(\"%99s\") ? Et sans le 99 ?"
+ },
+ "listes": {
+  "titre": "Les listes chaînées",
+  "objectif": "Construire, parcourir et libérer une liste chaînée, la structure de données reine de 42.",
+  "pourquoi": "Un tableau a une taille fixée à l'avance. Quand on ne sait pas combien d'éléments on aura, ou qu'on veut en insérer au milieu sans tout décaler, on utilise une liste chaînée.\n\nÀ 42, c'est incontournable : les bonus de Libft (t_list, ft_lstnew, ft_lstadd_front…), le module C12 de la Piscine, et des projets comme push_swap ou minishell en utilisent partout.",
+  "analogie": "Une liste chaînée, c'est une chasse au trésor : chaque indice contient une information et l'endroit où trouver l'indice suivant. Pour lire le cinquième, il faut suivre les quatre premiers. Le dernier indique « fin ».",
+  "vocabulaire": [
+   {
+    "mot": "Maillon",
+    "def": "Un élément de la liste : une donnée et l'adresse du maillon suivant."
+   },
+   {
+    "mot": "Tête",
+    "def": "Le premier maillon : c'est par lui qu'on accède à toute la liste."
+   },
+   {
+    "mot": "NULL",
+    "def": "L'adresse « nulle part », qui marque la fin de la liste."
+   },
+   {
+    "mot": "Parcours",
+    "def": "Suivre les maillons un par un, de la tête jusqu'à NULL."
+   }
+  ],
+  "sections": [
+   {
+    "titre": "Le maillon",
+    "texte": "`typedef struct s_list { void *data; struct s_list *next; } t_list;`\n\nChaque maillon contient une donnée (ici un `void *`, qui peut pointer sur n'importe quoi) et `next`, l'adresse du maillon suivant. Le dernier a `next` à NULL. La liste entière se résume à un pointeur sur la tête."
+   },
+   {
+    "titre": "Créer un maillon",
+    "texte": "Chaque maillon est réservé avec malloc : `t_list *m = malloc(sizeof(t_list));`. On vérifie qu'il n'est pas NULL, on remplit `m->data`, et on met `m->next` à NULL.\n\nC'est exactement la fonction ft_create_elem de la Piscine, ou ft_lstnew de Libft."
+   },
+   {
+    "titre": "Ajouter et parcourir",
+    "texte": "Ajouter en tête est instantané : le nouveau maillon pointe sur l'ancienne tête (`nouveau->next = tete;`), puis il devient la tête (`tete = nouveau;`). Pour modifier la tête depuis une fonction, on lui passe donc l'adresse du pointeur : `t_list **lst`.\n\nParcourir : `while (lst != NULL) { …; lst = lst->next; }`. Compter, chercher, afficher : tout part de cette boucle."
+   },
+   {
+    "titre": "Libérer sans tout perdre",
+    "texte": "Chaque maillon a été réservé avec malloc : il faut le rendre avec free. Le piège : après `free(lst)`, on ne peut plus lire `lst->next`. Il faut donc garder l'adresse du suivant AVANT de libérer.\n\n`suivant = lst->next; free(lst); lst = suivant;` : dans cet ordre, et rien n'est perdu."
+   }
+  ],
+  "exemple": {
+   "titre": "Afficher une liste de mots",
+   "code": "void\tafficher_mots(t_list *lst)\n{\n\twhile (lst != NULL)\n\t{\n\t\tprintf(\"%s\\n\", (char *)lst->data);\n\t\tlst = lst->next;\n\t}\n}",
+   "explication": "La fonction suit les maillons jusqu'à NULL. Chaque donnée est un `void *` : on indique avec `(char *)` qu'ici, ce sont des chaînes, pour pouvoir les afficher.\n\nElle avance avec sa copie du pointeur, pas celui de l'appelant : la tête de la liste reste intacte. Compter les maillons, trouver le dernier ou chercher une valeur se font avec la même boucle : ce sont des exercices du niveau 9 de l'atelier."
+  },
+  "pieges": [
+   "Lire `lst->next` après `free(lst)`.",
+   "Oublier de mettre `next` à NULL dans un nouveau maillon.",
+   "Perdre la tête de la liste en la parcourant avec le seul pointeur qu'on a.",
+   "Oublier de libérer les maillons : fuite de mémoire."
+  ],
+  "retenir": [
+   "Un maillon contient une donnée et l'adresse du suivant ; le dernier pointe sur NULL.",
+   "On crée chaque maillon avec malloc et on vérifie le retour.",
+   "Ajouter en tête : le nouveau pointe sur l'ancienne tête, puis devient la tête.",
+   "Parcourir : while (lst) lst = lst->next.",
+   "Libérer : garder le suivant, free, avancer."
+  ],
+  "quiz": [
+   {
+    "q": "Comment sait-on qu'on est au dernier maillon ?",
+    "choix": [
+     "Son next vaut NULL",
+     "Sa donnée vaut 0",
+     "Il est en position 10"
+    ],
+    "bonne": 0,
+    "explication": "NULL marque la fin de la liste."
+   },
+   {
+    "q": "Pourquoi passer t_list **lst pour ajouter en tête ?",
+    "choix": [
+     "Pour aller plus vite",
+     "Pour pouvoir modifier le pointeur de tête de l'appelant",
+     "La Norme l'exige"
+    ],
+    "bonne": 1,
+    "explication": "C'est la même règle que pour modifier un int : on passe son adresse."
+   },
+   {
+    "q": "Que faut-il faire avant free(lst) dans une boucle de libération ?",
+    "choix": [
+     "Rien",
+     "Garder l'adresse de lst->next",
+     "Mettre data à 0"
+    ],
+    "bonne": 1,
+    "explication": "Après free, lst->next n'est plus lisible."
+   }
+  ],
+  "question": "Dessine sur papier une liste de 3 maillons, puis ce qui change quand tu ajoutes un maillon en tête. Combien de flèches bougent ?"
+ },
+ "piles": {
+  "titre": "Piles et files",
+  "objectif": "Comprendre deux façons d'organiser des données selon l'ordre d'arrivée, et les construire avec une liste.",
+  "pourquoi": "Certaines données doivent ressortir dans un ordre précis. Le dernier arrivé, ou le premier arrivé ? Les piles et les files répondent à ces deux besoins, et on les retrouve partout : l'annulation dans un éditeur, la file d'impression, les paquets réseau en attente.\n\nÀ 42, le projet push_swap est entièrement construit sur deux piles, a et b, qu'il faut trier avec un nombre limité d'opérations.",
+  "analogie": "Une pile, c'est une pile d'assiettes : on pose sur le dessus et on reprend sur le dessus. La dernière posée est la première reprise.\n\nUne file, c'est la file d'attente à la boulangerie : on arrive au bout, on est servi au début. Le premier arrivé est le premier servi.",
+  "vocabulaire": [
+   {
+    "mot": "Pile (LIFO)",
+    "def": "Last In, First Out : le dernier entré est le premier sorti."
+   },
+   {
+    "mot": "File (FIFO)",
+    "def": "First In, First Out : le premier entré est le premier sorti."
+   },
+   {
+    "mot": "Empiler / dépiler",
+    "def": "Ajouter sur le dessus d'une pile / retirer le dessus. En anglais : push / pop."
+   },
+   {
+    "mot": "Enfiler / défiler",
+    "def": "Ajouter au bout d'une file / retirer le premier."
+   }
+  ],
+  "sections": [
+   {
+    "titre": "La pile",
+    "texte": "On n'agit que sur le sommet : empiler pose un élément dessus, dépiler retire celui du dessus. On ne fouille jamais au milieu.\n\nExemples : Ctrl+Z annule la dernière action, puis l'avant-dernière ; le bouton « retour » d'un navigateur ; et la pile d'appels de ton programme, où chaque fonction appelée s'empile et se dépile en se terminant."
+   },
+   {
+    "titre": "La file",
+    "texte": "On ajoute à la fin et on retire au début. Rien ne double personne.\n\nExemples : la file d'impression, les messages en attente d'un serveur, les paquets réseau dans un routeur. Quand une file se remplit plus vite qu'elle ne se vide, le service ralentit : c'est le principe de certaines attaques par déni de service."
+   },
+   {
+    "titre": "Une pile avec une liste chaînée",
+    "texte": "La tête de la liste est le sommet de la pile. Empiler, c'est ajouter en tête ; dépiler, c'est retirer la tête. Les deux opérations sont instantanées, quelle que soit la taille.\n\nDans push_swap, les opérations sa (échanger les deux du sommet), pb (dépiler de a pour empiler sur b) ou ra (le sommet passe tout en bas) se codent ainsi."
+   },
+   {
+    "titre": "Une file avec une liste chaînée",
+    "texte": "On retire en tête, mais on ajoute en queue. Pour ne pas parcourir toute la liste à chaque ajout, on garde deux pointeurs : un sur le premier maillon, un sur le dernier.\n\nEnfiler : l'ancien dernier pointe sur le nouveau, qui devient le dernier. Défiler : on retire la tête, comme pour une pile."
+   }
+  ],
+  "exemple": {
+   "titre": "Empiler et dépiler",
+   "code": "void\tempiler(t_list **pile, t_list *nouveau)\n{\n\tnouveau->next = *pile;\n\t*pile = nouveau;\n}\n\nt_list\t*depiler(t_list **pile)\n{\n\tt_list\t*sommet;\n\n\tsommet = *pile;\n\tif (sommet != NULL)\n\t{\n\t\t*pile = sommet->next;\n\t\tsommet->next = NULL;\n\t}\n\treturn (sommet);\n}",
+   "explication": "empiler fait du nouveau maillon la tête. depiler détache la tête et la renvoie, ou renvoie NULL si la pile est vide.\n\nPour l'opération pb de push_swap : `empiler(&b, depiler(&a));`, en vérifiant d'abord que a n'est pas vide."
+  },
+  "pieges": [
+   "Dépiler une pile vide sans vérifier.",
+   "Ajouter en queue d'une file en parcourant toute la liste à chaque fois.",
+   "Confondre LIFO et FIFO."
+  ],
+  "retenir": [
+   "Pile : dernier entré, premier sorti (LIFO).",
+   "File : premier entré, premier sorti (FIFO).",
+   "Une pile se code avec une liste : on travaille toujours en tête.",
+   "Une file garde un pointeur sur le premier et un sur le dernier.",
+   "push_swap trie des nombres avec deux piles."
+  ],
+  "quiz": [
+   {
+    "q": "Ctrl+Z annule d'abord la dernière action. Quelle structure ?",
+    "choix": [
+     "Une file",
+     "Une pile",
+     "Une table de hachage"
+    ],
+    "bonne": 1,
+    "explication": "La dernière action entrée est la première ressortie : LIFO."
+   },
+   {
+    "q": "Une file d'impression sert d'abord…",
+    "choix": [
+     "Le dernier document envoyé",
+     "Le premier document envoyé",
+     "Le plus court"
+    ],
+    "bonne": 1,
+    "explication": "Premier arrivé, premier servi : FIFO."
+   },
+   {
+    "q": "Avec une liste chaînée, où empile-t-on ?",
+    "choix": [
+     "En tête",
+     "En queue",
+     "Au milieu"
+    ],
+    "bonne": 0,
+    "explication": "La tête est le sommet : empiler et dépiler y sont instantanés."
+   }
+  ],
+  "question": "Avec deux piles a = {3, 1, 2} (3 au sommet) et b vide, quelles opérations sa, pb, pa, ra… permettent d'obtenir 1, 2, 3 dans a ?"
+ },
+ "tables": {
+  "titre": "Les tables de hachage",
+  "objectif": "Retrouver une donnée presque instantanément grâce à une fonction de hachage, et gérer les collisions.",
+  "pourquoi": "Chercher un mot dans une liste de un million d'éléments, c'est parcourir jusqu'à un million de maillons. Une table de hachage le retrouve en une poignée d'opérations.\n\nC'est la structure derrière les dictionnaires de Python, les caches DNS ou les annuaires. À 42, certains rushs, comme Hotrace, demandent justement de retrouver des clés le plus vite possible.",
+  "analogie": "Pense à un vestiaire avec 100 casiers. Pour savoir dans quel casier ranger un manteau, on applique une règle au nom de son propriétaire, par exemple la première lettre. Pour le retrouver, on applique la même règle : on va directement au bon casier, sans ouvrir les 99 autres.",
+  "vocabulaire": [
+   {
+    "mot": "Clé",
+    "def": "Ce qui sert à retrouver une donnée : un nom, un mot, une adresse IP."
+   },
+   {
+    "mot": "Fonction de hachage",
+    "def": "Transforme une clé en numéro de case du tableau."
+   },
+   {
+    "mot": "Collision",
+    "def": "Quand deux clés différentes tombent dans la même case."
+   },
+   {
+    "mot": "Chaînage",
+    "def": "Ranger les éléments d'une même case dans une petite liste chaînée."
+   }
+  ],
+  "sections": [
+   {
+    "titre": "Le principe",
+    "texte": "On réserve un tableau de N cases. Pour ranger un couple clé-valeur, on calcule `index = hachage(cle) % N` et on le range à cette case. Pour le retrouver, on refait le même calcul et on va directement à la bonne case.\n\nTant que la fonction de hachage répartit bien les clés, chaque recherche ne regarde qu'une case, quelle que soit la quantité de données."
+   },
+   {
+    "titre": "Une fonction de hachage simple",
+    "texte": "Exemple très simple : additionner les codes ASCII des lettres. « chat » donne 99 + 104 + 97 + 116 = 416 ; avec 100 cases, la case 16.\n\nElle a un défaut : « chat » et « tach » tombent au même endroit. Les vraies fonctions mélangent mieux les lettres, par exemple en multipliant le total par un nombre à chaque lettre."
+   },
+   {
+    "titre": "Les collisions",
+    "texte": "Deux clés différentes finissent toujours par tomber dans la même case. La solution la plus courante : chaque case contient une liste chaînée. On ajoute dans la liste, et on la parcourt pour chercher.\n\nSi le tableau est assez grand et la fonction bonne, ces listes restent très courtes. Si elles s'allongent, on agrandit le tableau et on redistribue tout."
+   },
+   {
+    "titre": "Hachage de table et hachage de mot de passe",
+    "texte": "Le mot « hachage » sert aussi en cybersécurité, mais le but n'est pas le même. Une table cherche la vitesse et une bonne répartition. Un hachage de mot de passe doit être impossible à inverser, et volontairement lent pour freiner la force brute.\n\nNe confonds pas les deux : une fonction de table simple ne doit jamais servir à protéger un mot de passe."
+   }
+  ],
+  "exemple": {
+   "titre": "Calculer la case d'une clé",
+   "code": "unsigned int\thachage(char *cle, unsigned int taille)\n{\n\tunsigned int\th;\n\n\th = 5381;\n\twhile (*cle)\n\t{\n\t\th = h * 33 + (unsigned char)*cle;\n\t\tcle++;\n\t}\n\treturn (h % taille);\n}",
+   "explication": "C'est une fonction très connue, appelée djb2 : elle part de 5381 et, pour chaque caractère, multiplie par 33 puis ajoute le code du caractère. L'ordre des lettres compte : « chat » et « tach » ne donnent plus la même case.\n\nLe `% taille` ramène le résultat dans les cases du tableau. Le type unsigned permet au calcul de dépasser sans problème : il repart simplement de 0."
+  },
+  "pieges": [
+   "Utiliser une fonction de hachage qui met presque tout dans la même case.",
+   "Oublier de gérer les collisions.",
+   "Confondre table de hachage et hachage de mot de passe."
+  ],
+  "retenir": [
+   "Une table de hachage retrouve une donnée en allant directement à sa case.",
+   "La case se calcule avec hachage(clé) % taille.",
+   "Les collisions sont inévitables : on chaîne les éléments d'une même case.",
+   "Une bonne fonction de hachage répartit bien les clés.",
+   "Le hachage d'un mot de passe a un autre but : être impossible à inverser."
+  ],
+  "quiz": [
+   {
+    "q": "À quoi sert la fonction de hachage dans une table ?",
+    "choix": [
+     "À chiffrer les données",
+     "À calculer la case où ranger la clé",
+     "À trier les clés"
+    ],
+    "bonne": 1,
+    "explication": "Elle transforme la clé en numéro de case."
+   },
+   {
+    "q": "Qu'est-ce qu'une collision ?",
+    "choix": [
+     "Deux clés différentes qui tombent dans la même case",
+     "Un programme qui plante",
+     "Une clé trop longue"
+    ],
+    "bonne": 0,
+    "explication": "On la gère par exemple avec une liste par case."
+   },
+   {
+    "q": "Pourquoi une table de hachage est-elle rapide ?",
+    "choix": [
+     "Elle garde les données triées",
+     "Elle va directement à la bonne case au lieu de tout parcourir",
+     "Elle utilise moins de mémoire"
+    ],
+    "bonne": 1,
+    "explication": "Une recherche ne regarde qu'une case et sa petite liste."
+   }
+  ],
+  "question": "Avec la fonction « somme des lettres » et 10 cases, dans quelles cases tombent « ab », « ba » et « bc » ? Que remarques-tu ?"
+ }
+}

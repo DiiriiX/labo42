@@ -369,6 +369,14 @@ a.chip{text-decoration:none;display:inline-flex;align-items:center;gap:6px}
 .exsteps i.ko{background:var(--red)}
 .gch{margin-top:6px}
 .gch .opt{font-size:16px}
+.occ,.proj{border:1px solid var(--line);border-radius:16px;padding:10px 14px 4px;margin:10px 0}
+.occ.done{border-color:var(--acc);background:var(--acc-soft)}
+.occ .chk{padding:4px 0}.occ .chips,.proj .chips{margin:6px 0 8px}
+.proj-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px}.proj-h .small{flex:none}
+.chip.seen{border-color:var(--acc);background:var(--acc-soft)}
+.occ .chip,.proj .chip{min-height:36px;padding:6px 12px;font-size:14px}
+.chip.ex{font-family:ui-monospace,Menlo,monospace;font-size:13.5px}
+.chip .ico{flex:none;width:18px;height:18px}
 .mlist{display:grid;gap:10px;margin-top:14px}.mlist .linkcard{margin:0}
 .mhead{display:flex;gap:14px;align-items:center;margin-top:6px}
 .mhead .stile{width:52px;height:52px;border-radius:16px}.mhead .stile .ico{width:26px;height:26px}
@@ -438,8 +446,8 @@ a.chip{text-decoration:none;display:inline-flex;align-items:center;gap:6px}
 </section>
 
 <section class="view" id="v-parcours">
-  <div class="hero"><div><h1>Ton parcours</h1><p class="sub">32 cours dans l'ordre : chacun s'appuie sur les précédents. Le conseillé est en vert.</p></div><span class="hart" data-art="parcours"></span></div>
-  <div class="duo"><a class="linkcard" href="#lexique"><span class="ltile" data-art="lexique_s"></span><span><b>Lexique</b><small>Les mots techniques</small></span></a><a class="linkcard" href="#memos"><span class="ltile mt" data-art="memos"></span><span><b>Mémos</b><small>Les antisèches</small></span></a></div>
+  <div class="hero"><div><h1>Ton parcours</h1><p class="sub">57 cours en 8 étapes : chacun s'appuie sur les précédents. Le conseillé est en vert.</p></div><span class="hart" data-art="parcours"></span></div>
+  <div class="duo"><a class="linkcard" href="#lexique"><span class="ltile" data-art="lexique_s"></span><span><b>Lexique</b><small>Les mots techniques</small></span></a><a class="linkcard" href="#memos"><span class="ltile mt" data-art="memos"></span><span><b>Mémos</b><small>Les antisèches</small></span></a><a class="linkcard" href="#oc"><span class="ltile" data-art="oc_s"></span><span><b>Cours de C</b><small>Le programme OpenClassrooms</small></span></a><a class="linkcard" href="#cursus"><span class="ltile" data-art="cursus_s"></span><span><b>Cursus 42</b><small>De la Piscine au RNCP 7</small></span></a></div>
   <form id="askForm">
     <textarea id="ask" rows="2" placeholder="Une question précise ? Le prof te fait un cours dessus."></textarea>
     <button class="btn ghost full" type="submit">Demander un cours au prof</button>
@@ -509,6 +517,10 @@ a.chip{text-decoration:none;display:inline-flex;align-items:center;gap:6px}
 <section class="view" id="v-jeux"><div id="jeuxBox"></div></section>
 
 <section class="view" id="v-memos"><div id="memosBox"></div></section>
+
+<section class="view" id="v-oc"><div id="ocBox"></div></section>
+
+<section class="view" id="v-cursus"><div id="cursusBox"></div></section>
 
 <section class="view" id="v-examen"><div id="examBox"></div></section>
 
@@ -690,6 +702,18 @@ const ART = {
 <rect x="44" y="68" width="22" height="6" rx="3" class="r"/><rect x="70" y="68" width="22" height="6" rx="3" class="m"/>
 <rect x="44" y="82" width="16" height="6" rx="3" class="b"/><rect x="64" y="82" width="28" height="6" rx="3" class="m"/>
 <g transform="rotate(8 118 80)"><rect x="96" y="58" width="44" height="44" rx="4" class="y o"/><path d="M104 72h28M104 81h28M104 90h18" class="n o" style="stroke-width:1.8"/></g>`),
+  oc: il(`<circle cx="80" cy="60" r="52" class="bs"/>
+<path d="M80 34c-14-8-32-9-50-5v62c18-4 36-3 50 5z" class="w o"/><path d="M80 34c14-8 32-9 50-5v62c-18-4-36-3-50 5z" class="w o"/><path d="M80 34v62" class="n o"/>
+<path d="M40 46h28M40 56h28M40 66h20M40 76h26" class="n o" style="stroke-width:1.8"/>
+<rect x="92" y="42" width="28" height="28" rx="6" class="b o"/><text x="106" y="62" class="tw" style="font-size:17px">C</text><path d="M92 80h26" class="n o" style="stroke-width:1.8"/>
+<circle cx="130" cy="94" r="13" class="g o"/><path d="M124 94l4 4 7-8" class="wk"/>`),
+  cursus: il(`<circle cx="80" cy="62" r="52" class="ys"/>
+<rect x="18" y="88" width="30" height="18" rx="3" class="g o"/><rect x="48" y="74" width="30" height="32" rx="3" class="b o"/><rect x="78" y="60" width="30" height="46" rx="3" class="r o"/><rect x="108" y="46" width="30" height="60" rx="3" class="w o"/>
+<text x="33" y="102" class="tw">0</text><text x="63" y="94" class="tw">2</text><text x="93" y="87" class="tw">4</text><text x="123" y="80" class="t">6</text>
+<path d="M103 26l20-9 20 9-20 9z" class="ink o"/><path d="M111 30v7c0 3 5 5 12 5s12-2 12-5v-7" class="ink o"/><path d="M143 26v11" class="n o"/><circle cx="143" cy="39" r="2.5" class="y o" style="stroke-width:1.4"/>
+<path d="M12 106h136" class="n o"/>`),
+  oc_s: il(`<rect width="52" height="52" rx="14" class="bs"/><path d="M26 15c-4-3-10-3-15-1.5v22c5-1.5 11-1.5 15 1.5zM26 15c4-3 10-3 15-1.5v22c-5-1.5-11-1.5-15 1.5z" class="w o" style="stroke-width:1.8"/><text x="18.5" y="30" class="t" style="font-size:11px">C</text><path d="M30 20h7M30 24h7M30 28h5" class="n o" style="stroke-width:1.6"/>`, "0 0 52 52"),
+  cursus_s: il(`<rect width="52" height="52" rx="14" class="ys"/><rect x="10" y="30" width="10" height="12" rx="2" class="g o" style="stroke-width:1.6"/><rect x="20" y="22" width="10" height="20" rx="2" class="b o" style="stroke-width:1.6"/><rect x="30" y="14" width="10" height="28" rx="2" class="r o" style="stroke-width:1.6"/><path d="M8 42h36" class="n o" style="stroke-width:1.6"/>`, "0 0 52 52"),
   lexique_s: il(`<rect width="52" height="52" rx="14" class="bs"/><path d="M26 15c-4-3-10-3-15-1.5v22c5-1.5 11-1.5 15 1.5zM26 15c4-3 10-3 15-1.5v22c-5-1.5-11-1.5-15 1.5z" class="w o" style="stroke-width:1.8"/><path d="M14 20h8M14 24h8M14 28h6M30 20h8M30 24h8M30 28h5" class="n o" style="stroke-width:1.6"/>`, "0 0 52 52"),
   cat_cyber: il(`<rect width="48" height="48" rx="13" class="rs"/><path d="M24 9l12 5v9c0 8-5 13-12 16-7-3-12-8-12-16v-9z" class="w o" style="stroke-width:2"/><rect x="18.5" y="22" width="11" height="9" rx="2" class="ink"/><path d="M20.5 22v-3a3.5 3.5 0 0 1 7 0v3" class="n o" style="stroke-width:2"/>`, "0 0 48 48"),
   cat_dev: il(`<rect width="48" height="48" rx="13" class="bs"/><rect x="9" y="12" width="30" height="24" rx="4" class="w o" style="stroke-width:2"/><path d="M19 19l-5 5 5 5M29 19l5 5-5 5M26 17l-4 14" class="n o" style="stroke-width:2;stroke:var(--blue)"/>`, "0 0 48 48"),
@@ -737,6 +761,31 @@ const P = (d,arrow=true,c="l") => `<path d="${d}" class="${c}" ${arrow ? A : ""}
 const badge = (x,y,n) => `<circle cx="${x}" cy="${y}" r="11" class="a"/>` + T(x, y+5, n, "t");
 const cells = (y,list,c) => list.map((p,i) => R(10+i*70,y,62,52,c) + T(41+i*70,y+(p[1]?24:33),p[0],"t") + (p[1] ? T(41+i*70,y+43,p[1],"m") : "")).join("");
 const SCHEMAS = {
+  calculs:{t:"Division entière, reste et virgule",h:168,g:()=>[["7 / 2","3","division entière","b"],["7 % 2","1","le reste","b"],["7.0 / 2","3.5","avec la virgule","a"]].map((r,i)=>{const y=10+i*52;return R(10,y,110,40)+T(65,y+26,r[0],"t mono")+P(`M120 ${y+20}H158`)+R(162,y,64,40,r[3])+T(194,y+26,r[1],"t mono")+T(240,y+26,r[2],"m","start");}).join("")},
+  modulaire:{t:"Plusieurs fichiers, un programme",h:204,g:()=>R(130,10,100,36,"a")+T(180,33,"ft.h","t mono")+[["main.c",58],["ft_putstr.c",180],["ft_putchar.c",302]].map(f=>R(f[1]-54,80,108,36)+T(f[1],103,f[0],"mono")+P(`M180 46L${f[1]} 78`,true,"h")+P(`M${f[1]} 116L180 150`)).join("")+T(240,32,"#include","m mono","start")+R(130,152,100,36,"bl")+T(180,175,"a.out","t mono")},
+  preprocesseur:{t:"Avant la compilation : le préprocesseur",h:176,g:()=>R(6,20,80,48)+T(46,49,"main.c","mono")+P("M86 44H104")+R(108,20,144,48,"a")+T(180,41,"préprocesseur","t")+T(180,58,"#include, #define","m mono")+P("M252 44H270")+R(274,20,80,48)+T(314,41,"code","t")+T(314,58,"complet","m")+P("M314 68V96")+R(274,98,80,44,"bl")+T(314,125,"cc","t mono")+P("M274 120H256")+R(108,98,144,44)+T(180,125,"a.out","t mono")+T(180,166,"cc -E montre le code après le préprocesseur","m")},
+  structures:{t:"Une structure, ses champs, un pointeur",h:146,g:()=>T(120,22,"t_point a","t mono")+R(40,32,160,64,"a")+R(52,44,64,42)+T(84,61,"x","m mono")+T(84,78,"3","t mono")+R(124,44,64,42)+T(156,61,"y","m mono")+T(156,78,"-2","t mono")+R(250,40,94,48)+T(297,60,"p","t mono")+T(297,78,"&amp;a","m mono")+P("M250 64H204")+T(120,126,"a.x vaut 3","mono")+T(297,126,"p-&gt;x vaut 3","mono")},
+  fichiers_c:{t:"Ouvrir, lire, fermer",h:138,g:()=>R(6,30,108,84)+T(60,68,"Ton","t")+T(60,86,"programme","t")+R(246,30,108,84,"bl")+T(300,77,"notes.txt","mono")+P("M114 50H242")+T(180,44,"open : fd 3","mono m")+P("M242 78H118")+T(180,72,"read(3, buf, 64)","mono m")+P("M114 104H242")+T(180,98,"close(3)","mono m")},
+  saisie:{t:"Le débordement de tampon",h:146,g:()=>T(180,20,"saisie de 12 caractères dans nom[10]","m")+Array.from({length:12},(_,i)=>R(10+i*28,32,26,34,i<10?"a":"rd",5)+T(23+i*28,55,"A","mono")).join("")+P("M10 76H288",false)+T(149,96,"nom[10] : 10 cases","mono m")+P("M290 76H344",false,"lr")+T(317,96,"écrasé !","t")+T(180,132,"fgets ou %9s empêchent le débordement","m")},
+  listes:{t:"Une liste chaînée de 3 maillons",h:118,g:()=>T(50,26,"tête","m")+[[10,"42"],[120,"7"],[230,"13"]].map((n,i)=>R(n[0],38,54,40)+T(n[0]+27,63,n[1],"t mono")+R(n[0]+54,38,30,40,"a")+P(`M${n[0]+69} 58H${i<2?n[0]+108:n[0]+82}`)).join("")+T(316,63,"NULL","mono m","start")+T(180,106,"chaque maillon : une donnée et l'adresse du suivant","m")},
+  piles:{t:"Pile et file",h:180,g:()=>T(85,22,"empiler, dépiler","m")+P("M70 30V44")+P("M100 44V30")+[["3","a"],["2","b"],["1","b"]].map((c,i)=>R(40,48+i*32,90,28,c[1],6)+T(85,67+i*32,c[0],"t mono")).join("")+T(85,158,"Pile","t")+T(85,175,"dernier entré, premier sorti","m")+T(355,70,"entrée","m","end")+P("M352 78H340")+[["3"],["2"],["1"]].map((c,i)=>R(298-i*54,82,48,28,i===2?"a":"b",6)+T(322-i*54,101,c[0],"t mono")).join("")+P("M190 96H172")+T(172,128,"sortie","m","start")+T(270,158,"File","t")+T(270,175,"premier entré, premier sorti","m")},
+  tables:{t:"Une table de hachage",h:232,g:()=>R(6,14,84,36)+T(48,37,"\"chat\"","mono")+P("M90 32H112")+R(116,14,100,36,"a")+T(166,37,"hachage","t")+P("M216 32H238")+R(242,14,112,36)+T(298,37,"case 2","t mono")+P("M298 50L190 84")+[0,1,2,3,4].map(i=>R(10+i*70,88,60,34,i===2?"a":"b",6)+T(40+i*70,110,i,"mono m")).join("")+P("M180 122V138")+R(150,140,60,30)+T(180,160,"chat","mono")+P("M180 170V186")+R(150,188,60,30,"rd")+T(180,208,"tach","mono")+T(220,208,"collision","m","start")},
+  arborescence:{t:"L'arbre de Linux",h:204,g:()=>R(150,10,60,34,"a")+T(180,32,"/","t mono")+["home","etc","var","usr","tmp","dev"].map((d,i)=>P(`M180 44L${34+i*58} 76`,false)+R(8+i*58,78,52,32)+T(34+i*58,99,d,"mono")).join("")+[["eleve",34],["log",150],["bin",208]].map(c=>P(`M${c[1]} 110V136`,false)+R(c[1]-28,138,56,32,"bl")+T(c[1],159,c[0],"mono")).join("")+T(180,196,"/etc : la configuration · /var/log : les journaux","m")},
+  utilisateurs:{t:"Utilisateurs, groupes et root",h:196,g:()=>R(130,10,100,44,"rd")+T(180,30,"root","t mono")+T(180,47,"UID 0","m mono")+R(10,90,150,64)+T(85,112,"groupe sudo","t")+T(85,134,"alex","mono")+R(200,90,150,64)+T(275,112,"groupe user42","t")+T(275,134,"alex, lina","mono")+P("M110 88L156 56")+T(112,70,"sudo","mono m","end")+T(180,184,"sudo : root le temps d'une commande, avec une trace","m")},
+  processus:{t:"L'arbre des processus",h:236,g:()=>[["systemd","PID 1","bl"],["sshd","PID 812","b"],["bash","PID 3001","b"],["./a.out","PID 4242","a"]].map((p,i)=>R(10+i*60,10+i*52,116,40,p[2])+T(68+i*60,28+i*52,p[0],"t mono")+T(68+i*60,44+i*52,p[1],"m mono")+(i<3?P(`M${40+i*60} ${50+i*52}V${70+i*52}H${68+(i+1)*60-58}`):"")).join("")+P("M330 150V172H304",true,"lr")+T(354,142,"kill 4242","mono","end")+T(180,228,"chaque processus a un parent","m")},
+  paquets:{t:"Installer avec un gestionnaire de paquets",h:120,g:()=>R(6,20,92,48)+T(52,49,"apt install","mono")+P("M98 44H114")+R(118,20,110,48,"bl")+T(173,41,"dépôt","t")+T(173,58,"paquets signés","m")+P("M228 44H244")+R(248,20,106,48,"a")+T(301,41,"ufw","t mono")+T(301,58,"+ dépendances","m")+T(180,100,"apt update : la liste · apt upgrade : les mises à jour","m")},
+  environnement:{t:"Le PATH : où le shell cherche les commandes",h:164,g:()=>R(6,48,70,40)+T(41,73,"ls","t mono")+[["/usr/local/bin","b","absent"],["/usr/bin","a","trouvé !"],["/bin","b",""]].map((d,i)=>R(110,10+i*44,170,34,d[1],6)+T(195,32+i*44,d[0],"mono")+(d[2]?T(290,32+i*44,d[2],i===1?"t":"m","start"):"")+P(`M76 68L106 ${27+i*44}`,i===1)).join("")+T(180,156,"le dossier courant n'est pas dans le PATH : ./a.out","m")},
+  scripts:{t:"Anatomie d'un script",h:172,g:()=>R(6,10,232,150)+["#!/bin/bash","nom=\"$1\"","if [ -f \"$nom\" ]; then","    echo \"existe\"","fi"].map((l,i)=>T(16,36+i*26,l.replace(/"/g,"&quot;"),"mono","start")).join("")+[[1,"l'interpréteur",32],[2,"l'argument 1",58],[3,"un test",84]].map(b=>badge(252,b[2]-4,b[0])+T(268,b[2]+1,b[1],"m","start")).join("")},
+  services:{t:"systemd pilote les services",h:170,g:()=>R(130,10,100,40,"bl")+T(180,35,"systemd","t mono")+[["ssh",55],["cron",180],["ufw",305]].map(s=>P(`M180 50L${s[1]} 86`,false)+R(s[1]-45,88,90,40,"a")+T(s[1],108,s[0],"t mono")+T(s[1],124,"active","m")).join("")+T(180,158,"systemctl status ssh · journalctl -u ssh","mono m")},
+  serveur:{t:"Les couches de protection d'un serveur",h:224,g:()=>[["Internet : des robots testent les mots de passe","rd"],["Pare-feu : seul le port 4242 est ouvert","bl"],["SSH : port 4242, root interdit","a"],["sudo : essais limités, journal","b"],["Disque chiffré","a"]].map((c,i)=>R(6+i*30,10+i*42,348-i*60,34,c[1],8)+T(180,32+i*42,c[0],i===0?"m":"")).join("")},
+  makefile:{t:"Ce que fait make",h:214,g:()=>R(130,12,100,36,"a")+T(180,35,"libft.a","t mono")+R(40,80,90,34)+T(85,102,"a.o","mono")+R(230,80,90,34)+T(275,102,"b.o","mono")+R(40,146,90,34)+T(85,168,"a.c","mono")+R(230,146,90,34)+T(275,168,"b.c","mono")+P("M85 146V118")+P("M275 146V118")+P("M85 80L162 50")+P("M275 80L198 50")+T(180,72,"ar rcs","m mono")+T(180,138,"cc -c","m mono")+T(180,206,"make ne refait que ce qui a changé","m")},
+  bibliotheque:{t:"Une bibliothèque statique",h:132,g:()=>["strlen.o","split.o","itoa.o"].map((o,i)=>R(6,12+i*36,86,30,"b",6)+T(49,32+i*36,o,"mono")+P(`M92 ${27+i*36}L126 62`)).join("")+R(130,40,96,44,"a")+T(178,67,"libft.a","t mono")+P("M226 62H252")+R(256,40,98,44,"bl")+T(305,67,"a.out","t mono")+T(354,108,"cc main.c -L. -lft","mono m","end")+T(178,104,"ar rcs","m mono")},
+  variadiques:{t:"Le format dit quoi lire",h:150,g:()=>T(180,24,"ft_printf(\"%s a %d ans\", nom, age)","t mono")+R(8,62,168,52,"a")+T(92,83,"%s","t mono")+T(92,102,"va_arg(args, char *)","m mono")+R(184,62,168,52,"a")+T(268,83,"%d","t mono")+T(268,102,"va_arg(args, int)","m mono")+P("M128 32L92 60")+P("M178 32L268 60")+T(180,140,"le format dit combien d'arguments lire, et leur type","m")},
+  lecture:{t:"Lire par blocs, rendre des lignes",h:118,g:()=>T(10,20,"read par blocs de 4 :","m","start")+["a","b","c","\\n","d","e","f","g","h","\\n","i","j"].map((c,i)=>R(10+i*28,30,26,34,i<4?"a":"b",5)+T(23+i*28,52,c,"mono")+(i%4===0&&i?P(`M${8+i*28} 26V70`,false,"lr"):"")).join("")+T(65,90,"ligne renvoyée","m")+T(240,90,"le reste, gardé par static","m")+T(180,112,"BUFFER_SIZE = 4","mono m")},
+  bits:{t:"Un caractère, 8 bits",h:140,g:()=>T(180,20,"'A' = 65 = 64 + 1","t mono")+"01000001".split("").map((b,i)=>T(46+i*38,42,7-i,"m mono")+R(28+i*38,50,36,36,b==="1"?"a":"b",6)+T(46+i*38,74,b,"t mono")).join("")+T(180,108,"(c &gt;&gt; i) &amp; 1 donne le bit i","mono")+T(180,130,"minitalk : un signal pour 0, un autre pour 1","m")},
+  fork_pipe:{t:"fork, pipe et dup2",h:164,g:()=>R(130,8,100,34,"bl")+T(180,30,"parent","t")+P("M160 42L75 78")+P("M200 42L285 78")+T(180,62,"fork","m mono")+R(20,80,110,44)+T(75,99,"enfant 1","t")+T(75,116,"cmd1","m mono")+R(230,80,110,44)+T(285,99,"enfant 2","t")+T(285,116,"cmd2","m mono")+R(150,88,60,28,"a",6)+T(180,107,"pipe","mono")+P("M130 102H148")+P("M210 102H228")+T(75,146,"dup2(fd[1], 1)","mono m")+T(285,146,"dup2(fd[0], 0)","mono m")},
+  threads:{t:"Le dîner des philosophes",h:206,g:()=>{let s=`<circle cx="180" cy="100" r="54" class="b"/>`;for(let k=0;k<5;k++){const a=-Math.PI/2+k*2*Math.PI/5,b=a+Math.PI/5,x=180+80*Math.cos(a),y=100+80*Math.sin(a),fx=180+40*Math.cos(b),fy=100+40*Math.sin(b);s+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="16" class="a"/>`+T(x.toFixed(1),(y+5).toFixed(1),k+1,"t")+`<rect x="${(fx-3).toFixed(1)}" y="${(fy-10).toFixed(1)}" width="6" height="20" rx="2" class="rd" transform="rotate(${(b*180/Math.PI+90).toFixed(0)} ${fx.toFixed(1)} ${fy.toFixed(1)})"/>`;}return s+T(180,200,"5 philosophes, 5 fourchettes, 1 mutex par fourchette","m");}},
+  ptrfonctions:{t:"Un tableau de fonctions",h:140,g:()=>R(6,48,60,36)+T(36,71,"'*'","t mono")+P("M66 66H96")+R(100,12,130,104)+[["ops[0]","add"],["ops[1]","sub"],["ops[2]","mul"]].map((r,i)=>R(108,20+i*32,114,28,i===2?"a":"b",6)+T(116,39+i*32,r[0],"mono","start")+T(214,39+i*32,r[1],"mono","end")).join("")+P("M230 98H252")+R(256,80,98,36,"a")+T(305,103,"mul(6, 7)","mono")+T(305,132,"42","t")},
   python:{t:"Compilé ou interprété ?",h:172,g:()=>T(10,20,"En C","t","start")+R(6,30,92,40)+T(52,55,"code.c","mono")+P("M98 50H120")+R(124,30,64,40,"a")+T(156,55,"cc","t mono")+P("M188 50H210")+R(214,30,78,40)+T(253,55,"a.out","mono")+P("M292 50H314")+T(334,55,"lancé","m")+T(10,104,"En Python","t","start")+R(6,114,92,40)+T(52,139,"script.py","mono")+P("M98 134H120")+R(124,114,230,40,"bl")+T(239,133,"python3 lit et exécute","t")+T(239,149,"ligne par ligne, sans compiler","m")},
   cloud:{t:"Qui gère quoi ?",h:236,g:()=>{const cols=["Sur place","IaaS","PaaS","SaaS"],rows=["Appli","Système","Virtuel","Matériel"],cli=[4,2,1,0];return cols.map((c,i)=>T(48+i*88,20,c,"t")+rows.map((r,j)=>R(8+i*88,32+j*36,80,30,j<cli[i]?"a":"bl",6)+T(48+i*88,52+j*36,r,"")).join("")).join("")+R(8,186,16,16,"a",4)+T(30,199,"toi, le client","","start")+R(186,186,16,16,"bl",4)+T(208,199,"le fournisseur","","start")+T(180,228,"tes comptes et tes données : toujours à toi","m")}},
   ia:{t:"Apprendre, puis prédire",h:188,g:()=>T(8,16,"1. L'entraînement","m","start")+R(6,24,96,52)+T(54,46,"Exemples","t")+T(54,64,"déjà classés","m")+P("M102 50H120")+R(124,24,116,52,"a")+T(182,46,"Entraînement","t")+T(182,64,"il apprend","m")+P("M240 50H258")+R(262,24,92,52,"bl")+T(308,55,"Modèle","t")+T(8,108,"2. La prédiction","m","start")+R(6,116,120,52)+T(66,138,"Nouvel e-mail","t")+T(66,156,"jamais vu","m")+P("M126 142H144")+R(148,116,88,52,"bl")+T(192,147,"Modèle","t")+P("M236 142H258")+R(262,116,92,52,"rd")+T(308,138,"Spam","t")+T(308,156,"sûr à 97 %","m")},
@@ -791,9 +840,12 @@ const fig = id => { const s = SCHEMAS[id]; if (!s) return ""; return `<figure cl
 const ETAPES = [
   {n:1,t:"Le terminal",w:"Pour finir Bandit et être à l'aise dès le premier jour de la Piscine.",ids:["fichiers","permissions","redirections","ssh","git"]},
   {n:2,t:"Le C de la Piscine",w:"Le cœur de la Piscine. Dans cet ordre, chaque notion sert à la suivante.",ids:["compilation","variables","conditions","boucles","fonctions","write","chaines","ascii","pointeurs","malloc"]},
-  {n:3,t:"Le réseau",w:"La base de ton futur Master en architecture réseau.",ids:["osi","reseaulocal","ports","dns","tcp","http"]},
-  {n:4,t:"La cybersécurité",w:"Maintenant que tu sais comment tout marche, tu peux comprendre comment on l'attaque et le défend.",ids:["metiers","triade","cesar","hachage","phishing","parefeu","logs","injection"]},
-  {n:5,t:"Et après : Python, cloud, IA",w:"Pour voir plus loin que la Piscine : les outils de ton futur métier.",ids:["python","cloud","ia"]}
+  {n:3,t:"Le C avancé (programme OpenClassrooms)",w:"La suite du cours de C d'OpenClassrooms : calculs, fichiers, structures, listes. Les outils de tous les projets de 42 après la Piscine.",ids:["calculs","modulaire","preprocesseur","structures","fichiers_c","saisie","listes","piles","tables"]},
+  {n:4,t:"Linux",w:"Administrer une machine : utilisateurs, processus, services, sécurité. Indispensable pour Born2beroot et pour tous les métiers de la cyber.",ids:["arborescence","utilisateurs","processus","paquets","environnement","scripts","services","serveur"]},
+  {n:5,t:"Le réseau",w:"La base de ton futur Master en architecture réseau.",ids:["osi","reseaulocal","ports","dns","tcp","http"]},
+  {n:6,t:"La cybersécurité",w:"Maintenant que tu sais comment tout marche, tu peux comprendre comment on l'attaque et le défend.",ids:["metiers","triade","cesar","hachage","phishing","parefeu","logs","injection"]},
+  {n:7,t:"Vers le tronc commun de 42",w:"Les notions des premiers projets après la Piscine : Libft, ft_printf, get_next_line, minitalk, pipex et philosophers.",ids:["makefile","bibliotheque","variadiques","lecture","bits","fork_pipe","threads","ptrfonctions"]},
+  {n:8,t:"Et après : Python, cloud, IA",w:"Pour voir plus loin que la Piscine : les outils de ton futur métier.",ids:["python","cloud","ia"]}
 ];
 const TOPICS = [
   {id:"fichiers",t:"Fichiers et dossiers Linux",s:"fichiers",e:"Linux range tout dans des dossiers. Ton dossier personnel s'écrit ~. Un fichier dont le nom commence par un point est caché : ls ne le montre pas, ls -a si. cd change de dossier, cd .. remonte d'un niveau."},
@@ -827,7 +879,32 @@ const TOPICS = [
   {id:"injection",t:"Les failles web : l'injection",s:"injection",e:"Une injection arrive quand un site colle ce que tape l'utilisateur directement dans une commande, par exemple une requête SQL vers sa base de données. Un texte bien choisi change alors le sens de la requête. La parade : les requêtes préparées."},
   {id:"python",t:"Python, le couteau suisse",s:"python",e:"Python est interprété : on lance un script avec python3, sans compiler. L'indentation remplace les accolades, les listes et les dictionnaires évitent malloc. C'est le langage des scripts de cybersécurité et de l'IA."},
   {id:"cloud",t:"Le cloud",s:"cloud",e:"Le cloud, c'est louer des serveurs à la demande. IaaS : des machines ; PaaS : une plateforme pour ton code ; SaaS : un logiciel prêt. Quel que soit le modèle, tes comptes, tes accès et tes données restent ta responsabilité."},
-  {id:"ia",t:"L'IA et la cybersécurité",s:"ia",e:"Une IA apprend à partir d'exemples, puis prédit. En défense, elle trie et repère l'anormal ; en attaque, elle rend le phishing plus crédible. Les IA sont elles-mêmes des cibles : injection de prompt, empoisonnement des données."}
+  {id:"ia",t:"L'IA et la cybersécurité",s:"ia",e:"Une IA apprend à partir d'exemples, puis prédit. En défense, elle trie et repère l'anormal ; en attaque, elle rend le phishing plus crédible. Les IA sont elles-mêmes des cibles : injection de prompt, empoisonnement des données."},
+  {id:"calculs",t:"Faire des calculs",s:"calculs",e:"Entre deux int, / fait une division entière et % donne le reste : 7 / 2 vaut 3. Pour garder les décimales, convertis : (double)a / b. * / % passent avant + et -, et un int a des limites : au-delà, le résultat n'est plus garanti."},
+  {id:"modulaire",t:"La programmation modulaire",s:"modulaire",e:"Un vrai programme se découpe en plusieurs fichiers .c, avec 5 fonctions au plus chacun à 42. Un fichier .h rassemble les prototypes et s'inclut avec des guillemets. cc -c fabrique des .o, que l'édition de liens assemble."},
+  {id:"preprocesseur",t:"Le préprocesseur",s:"preprocesseur",e:"Avant la compilation, le préprocesseur traite les lignes en # : #include recopie un fichier, #define remplace un nom par du texte. Une macro, c'est du texte : mets des parenthèses partout. Chaque .h se protège avec #ifndef, #define et #endif."},
+  {id:"structures",t:"Structures, typedef et enum",s:"structures",e:"Une structure regroupe des champs qui vont ensemble, comme x et y pour un point. On écrit a.x pour une variable, p->x pour un pointeur. typedef donne un nom court : s_ pour la structure, t_ pour le type."},
+  {id:"fichiers_c",t:"Lire et écrire des fichiers",s:"fichiers_c",e:"open ouvre un fichier et renvoie un descripteur, ou -1 en cas d'échec. read lit des blocs et renvoie 0 à la fin, write écrit, close referme. Chaque ouverture a sa fermeture."},
+  {id:"saisie",t:"Sécuriser la saisie",s:"saisie",e:"Toute saisie extérieure est suspecte. Lis toujours avec une limite : scanf(\"%9s\") pour un tableau de 10, ou fgets. Écrire au-delà d'un tableau, c'est un débordement de tampon, l'une des failles les plus célèbres."},
+  {id:"listes",t:"Les listes chaînées",s:"listes",e:"Une liste chaînée est une suite de maillons créés avec malloc : chacun contient une donnée et l'adresse du suivant, le dernier pointe sur NULL. On la parcourt avec while (lst) et on la libère maillon par maillon."},
+  {id:"piles",t:"Piles et files",s:"piles",e:"Une pile rend en premier le dernier élément ajouté (LIFO), une file le premier (FIFO). Avec une liste, la pile travaille toujours en tête. push_swap, à 42, trie des nombres avec deux piles."},
+  {id:"tables",t:"Les tables de hachage",s:"tables",e:"Une table de hachage range chaque clé dans la case hachage(clé) % taille : on la retrouve sans parcourir tout le tableau. Deux clés dans la même case, c'est une collision : on les chaîne."},
+  {id:"arborescence",t:"L'arborescence Linux",s:"arborescence",e:"Sur Linux, tout part de la racine /. La configuration est dans /etc, les journaux dans /var/log, les utilisateurs dans /home. . est le dossier courant, .. le parent, ~ ton dossier personnel."},
+  {id:"utilisateurs",t:"Utilisateurs, groupes et sudo",s:"utilisateurs",e:"whoami et id disent qui tu es et dans quels groupes. /etc/passwd décrit les comptes, /etc/shadow garde les mots de passe hachés. sudo donne les droits de root le temps d'une commande, en laissant une trace."},
+  {id:"processus",t:"Les processus",s:"processus",e:"Un processus, c'est un programme qui tourne, avec son PID. ps aux et top montrent ce qui tourne, kill demande l'arrêt et kill -9 le force. $? donne le code de retour de la dernière commande : 0 veut dire succès."},
+  {id:"paquets",t:"Installer des logiciels",s:"paquets",e:"Sur Debian et Ubuntu, apt installe les logiciels depuis des dépôts signés. apt update rafraîchit la liste, apt upgrade installe les mises à jour. Les mises à jour corrigent les failles : c'est la première défense."},
+  {id:"environnement",t:"Variables d'environnement",s:"environnement",e:"Chaque programme reçoit des variables d'environnement, comme HOME ou USER. Le PATH liste les dossiers où chercher les commandes. export transmet une variable, et ~/.bashrc garde tes réglages."},
+  {id:"scripts",t:"Écrire des scripts Bash",s:"scripts",e:"Un script Bash commence par #!/bin/bash et se lance avec ./script.sh après chmod +x. Pas d'espace autour du = ; $1 et $@ donnent les arguments, if et for font les conditions et les boucles."},
+  {id:"services",t:"Services, journaux et tâches planifiées",s:"services",e:"Un service tourne en arrière-plan : systemctl le démarre, l'arrête et le lance au démarrage. journalctl lit ses journaux. cron lance des tâches à heures fixes."},
+  {id:"serveur",t:"Sécuriser un serveur Linux",s:"serveur",e:"Sécuriser un serveur, c'est fermer tout ce qui ne sert pas : SSH sans root sur un autre port, un pare-feu qui refuse tout sauf le nécessaire, des mots de passe solides, sudo journalisé. Born2beroot fait tout ça dans une machine virtuelle."},
+  {id:"makefile",t:"Le Makefile",s:"makefile",e:"Un Makefile décrit comment compiler un projet : une cible, ses dépendances, puis une recette indentée par une tabulation. make ne refait que ce qui a changé. À 42 : $(NAME), all, clean, fclean, re, et pas de relink."},
+  {id:"bibliotheque",t:"Bibliothèque statique : Libft",s:"bibliotheque",e:"Une bibliothèque statique (.a) est une archive de fichiers .o, créée avec ar rcs. On l'utilise avec cc main.c -L. -lft. Libft, le premier projet du tronc commun, recode des fonctions de la libc."},
+  {id:"variadiques",t:"Les fonctions variadiques : ft_printf",s:"variadiques",e:"Une fonction variadique accepte un nombre variable d'arguments, comme printf. On les lit avec va_start, va_arg et va_end. C'est le format qui dit combien en lire, et de quel type."},
+  {id:"lecture",t:"Lire ligne par ligne : get_next_line",s:"lecture",e:"get_next_line renvoie un fichier ligne par ligne. read lit des blocs ; une variable static garde ce qui reste après le retour à la ligne jusqu'à l'appel suivant. Elle doit marcher avec n'importe quel BUFFER_SIZE, sans fuite."},
+  {id:"bits",t:"Bits et signaux : minitalk",s:"bits",e:"Un octet, c'est 8 bits que les opérateurs & | ^ ~ << >> manipulent un par un. (c >> i) & 1 lit le bit i. minitalk envoie chaque caractère bit par bit avec des signaux Unix."},
+  {id:"fork_pipe",t:"Processus en C : fork, exec et pipe",s:"fork_pipe",e:"fork crée un processus enfant : il renvoie 0 dans l'enfant et le PID de l'enfant dans le parent. execve remplace le programme, waitpid attend la fin. pipe relie deux processus, dup2 redirige l'entrée ou la sortie."},
+  {id:"threads",t:"Threads et mutex : philosophers",s:"threads",e:"Les threads d'un processus travaillent en même temps et partagent la mémoire. Si deux threads modifient la même donnée sans protection, le résultat devient imprévisible : un mutex garantit qu'un seul y touche à la fois."},
+  {id:"ptrfonctions",t:"Les pointeurs sur fonctions",s:"ptrfonctions",e:"Une fonction a une adresse, qu'on peut ranger dans une variable : int (*f)(int). On passe ainsi une fonction à une autre, qui l'appelle : c'est un callback. Un tableau de fonctions remplace une longue suite de if."}
 ];
 const TOPIC = Object.fromEntries(TOPICS.map(t => [t.id, t]));
 const ORDER = ETAPES.flatMap(e => e.ids);
@@ -943,7 +1020,82 @@ const CARDS = [
  ["Et après","Machine virtuelle ou conteneur : lequel partage le noyau de l'hôte ?","Le conteneur. La machine virtuelle a son propre système complet.","cloud"],
  ["Et après","Comment apprend un modèle d'apprentissage automatique ?","À partir de nombreux exemples, au lieu de règles écrites à la main.","ia"],
  ["Et après","Qu'est-ce qu'une injection de prompt ?","Des instructions cachées dans un contenu lu par une IA, pour la détourner.","ia"],
- ["Et après","Que ne faut-il jamais coller dans un outil d'IA ?","Un mot de passe, une clé d'accès ou des données personnelles.","ia"]
+ ["Et après","Que ne faut-il jamais coller dans un outil d'IA ?","Un mot de passe, une clé d'accès ou des données personnelles.","ia"],
+ ["C avancé", "Que vaut 7 / 2 en C, avec deux int ?", "3 : entre deux int, la division est entière. Le reste, 1, s'obtient avec <code>7 % 2</code>.", "calculs"],
+ ["C avancé", "Comment obtenir 3.5 à partir de a = 7 et b = 2, deux int ?", "Convertis au moins l'un des deux : <code>(double)a / b</code>.", "calculs"],
+ ["C avancé", "Que vaut 2 + 3 * 4 ?", "14 : la multiplication passe avant l'addition. <code>(2 + 3) * 4</code> vaut 20.", "calculs"],
+ ["C avancé", "À quoi sert un fichier .h ?", "À rassembler les prototypes et les types partagés entre plusieurs fichiers .c. On l'inclut avec des guillemets : <code>#include \"ft.h\"</code>.", "modulaire"],
+ ["C avancé", "Que fait <code>cc -c ft_putchar.c</code> ?", "Il compile sans faire l'édition de liens et crée <code>ft_putchar.o</code>. On assemble ensuite les .o en un programme.", "modulaire"],
+ ["C avancé", "Combien de fonctions au plus dans un fichier .c, selon la Norme ?", "5.", "modulaire"],
+ ["C avancé", "Quand le préprocesseur agit-il ?", "Avant la compilation : il traite les lignes qui commencent par #, comme #include et #define. <code>cc -E</code> montre son résultat.", "preprocesseur"],
+ ["C avancé", "Pourquoi tant de parenthèses dans <code>#define CARRE(x) ((x) * (x))</code> ?", "Une macro remplace du texte. Sans parenthèses, <code>CARRE(1 + 2)</code> deviendrait 1 + 2 * 1 + 2, soit 5 au lieu de 9.", "preprocesseur"],
+ ["C avancé", "À quoi servent #ifndef, #define et #endif en haut d'un .h ?", "À protéger le header : s'il est inclus deux fois, son contenu n'est lu qu'une fois. La Norme l'exige.", "preprocesseur"],
+ ["C avancé", "a.x ou p-&gt;x : lequel pour un pointeur sur structure ?", "<code>p-&gt;x</code>, un raccourci de <code>(*p).x</code>. Pour une variable, c'est <code>a.x</code>.", "structures"],
+ ["C avancé", "À 42, comment nomme-t-on une structure et son typedef ?", "La structure commence par s_, le type par t_ : <code>typedef struct s_point { … } t_point;</code>", "structures"],
+ ["C avancé", "Pour qu'une fonction modifie une structure, que faut-il lui passer ?", "Son adresse, comme pour n'importe quelle variable : <code>deplacer(&amp;p)</code>.", "structures"],
+ ["C avancé", "Que renvoie open en cas d'échec ?", "-1. Vérifie-le toujours avant de lire ou d'écrire.", "fichiers_c"],
+ ["C avancé", "Que veut dire un read qui renvoie 0 ?", "La fin du fichier est atteinte. Un nombre positif, c'est le nombre d'octets lus ; -1, une erreur.", "fichiers_c"],
+ ["C avancé", "Quelles fonctions de fichiers utilise-t-on surtout à 42 ?", "open, read, write et close. Chaque open a son close.", "fichiers_c"],
+ ["C avancé", "Comment lire un mot dans <code>char buf[10]</code> avec scanf sans déborder ?", "<code>scanf(\"%9s\", buf)</code> : 9 caractères au plus, plus le <code>'\\0'</code> final.", "saisie"],
+ ["C avancé", "Qu'est-ce qu'un débordement de tampon ?", "Écrire au-delà de la fin d'un tableau, sur la mémoire voisine. Une faille classique : un attaquant peut s'en servir pour détourner un programme.", "saisie"],
+ ["C avancé", "Pourquoi préférer strtol à atoi pour lire un nombre ?", "atoi ne signale aucune erreur : « abc » donne 0. strtol indique où la lecture s'est arrêtée, ce qui permet de valider la saisie.", "saisie"],
+ ["C avancé", "Que contient un maillon de liste chaînée ?", "Une donnée et l'adresse du maillon suivant. Le dernier pointe sur NULL.", "listes"],
+ ["C avancé", "Comment parcourir une liste chaînée ?", "<code>while (lst != NULL)</code>, et à chaque tour <code>lst = lst-&gt;next;</code>", "listes"],
+ ["C avancé", "Pour libérer une liste, pourquoi garder le suivant avant free ?", "Après free, le maillon n'existe plus : lire son champ next serait une erreur. On garde l'adresse du suivant, on libère, puis on avance.", "listes"],
+ ["C avancé", "Laquelle suit la règle « dernier entré, premier sorti » : la pile ou la file ?", "La pile (LIFO), comme une pile d'assiettes. La file, c'est « premier entré, premier sorti » (FIFO).", "piles"],
+ ["C avancé", "Avec une liste chaînée, où empile-t-on et où dépile-t-on ?", "Toujours en tête : c'est rapide, sans parcourir la liste.", "piles"],
+ ["C avancé", "Quel projet de 42 trie des nombres avec deux piles ?", "push_swap, avec un nombre limité d'opérations comme sa, pb ou ra.", "piles"],
+ ["C avancé", "Comment calcule-t-on la case d'une clé dans une table de hachage ?", "<code>hachage(cle) % taille</code> : le reste donne une case entre 0 et taille - 1.", "tables"],
+ ["C avancé", "Qu'est-ce qu'une collision dans une table de hachage ?", "Deux clés différentes qui tombent dans la même case. On les range dans une petite liste chaînée accrochée à la case.", "tables"],
+ ["C avancé", "Hachage d'une table et hachage d'un mot de passe : même but ?", "Non. Dans une table, on veut aller vite. Pour un mot de passe, on veut qu'on ne puisse pas retrouver le mot de passe à partir de l'empreinte.", "tables"],
+ ["Linux", "Où se trouve la configuration du système ?", "Dans <code>/etc</code>. Les journaux sont dans <code>/var/log</code>, les dossiers personnels dans <code>/home</code>.", "arborescence"],
+ ["Linux", "Que veulent dire . , .. et ~ ?", "Le dossier courant, le dossier parent et ton dossier personnel.", "arborescence"],
+ ["Linux", "Quelle commande montre la place libre sur les disques ?", "<code>df -h</code>. Pour la taille d'un dossier : <code>du -sh dossier</code>.", "arborescence"],
+ ["Linux", "Que contient /etc/shadow ?", "Les mots de passe hachés des comptes, lisibles seulement par root. <code>/etc/passwd</code> décrit les comptes eux-mêmes.", "utilisateurs"],
+ ["Linux", "Pourquoi le -a est-il vital dans <code>usermod -aG sudo alex</code> ?", "Sans -a, -G remplace la liste des groupes : alex perdrait tous ses autres groupes secondaires.", "utilisateurs"],
+ ["Linux", "Avec quoi modifie-t-on les règles de sudo ?", "<code>sudo visudo</code>, qui vérifie la syntaxe avant d'enregistrer. Une erreur pourrait sinon te bloquer sudo.", "utilisateurs"],
+ ["Linux", "Qu'est-ce qu'un PID ?", "Le numéro unique d'un processus. <code>ps aux</code> et <code>top</code> les affichent.", "processus"],
+ ["Linux", "kill PID ou kill -9 PID ?", "D'abord <code>kill PID</code>, qui envoie SIGTERM et laisse le programme s'arrêter proprement. <code>kill -9</code> force l'arrêt, en dernier recours.", "processus"],
+ ["Linux", "Que donne <code>echo $?</code> ?", "Le code de retour de la dernière commande : 0 si elle a réussi, autre chose sinon.", "processus"],
+ ["Linux", "apt update ou apt upgrade : lequel installe les mises à jour ?", "<code>apt upgrade</code>. <code>apt update</code> rafraîchit seulement la liste des paquets disponibles.", "paquets"],
+ ["Linux", "Pourquoi installer avec apt plutôt que depuis un site au hasard ?", "apt installe depuis des dépôts signés, et gère les dépendances et les mises à jour.", "paquets"],
+ ["Linux", "Pourquoi faire les mises à jour d'un serveur au plus vite ?", "Elles corrigent les failles connues. Un serveur pas à jour est la cible la plus facile.", "paquets"],
+ ["Linux", "À quoi sert la variable PATH ?", "Elle liste les dossiers où le shell cherche les commandes. Le dossier courant n'y est pas : d'où le ./ de ./a.out.", "environnement"],
+ ["Linux", "Que fait export ?", "Il transmet une variable aux programmes lancés ensuite depuis ce shell.", "environnement"],
+ ["Linux", "Où ranger ses alias pour qu'ils restent après la fermeture du terminal ?", "Dans <code>~/.bashrc</code>, ou <code>~/.zshrc</code> avec zsh.", "environnement"],
+ ["Linux", "Quelle est la première ligne d'un script Bash ?", "<code>#!/bin/bash</code>, le shebang. Ensuite <code>chmod +x script.sh</code>, puis <code>./script.sh</code>.", "scripts"],
+ ["Linux", "Pourquoi <code>nom = Alex</code> ne marche pas en Bash ?", "Pas d'espace autour du = : <code>nom=Alex</code>. Avec des espaces, Bash croit que nom est une commande.", "scripts"],
+ ["Linux", "Que contiennent $1, $# et $@ dans un script ?", "Le premier argument, le nombre d'arguments, et tous les arguments.", "scripts"],
+ ["Linux", "Comment voir si le service SSH tourne ?", "<code>systemctl status ssh</code>.", "services"],
+ ["Linux", "systemctl start ou enable : quelle différence ?", "start lance le service maintenant ; enable le fait démarrer tout seul à chaque allumage.", "services"],
+ ["Linux", "Que veut dire la ligne cron <code>*/10 * * * * script.sh</code> ?", "Lancer script.sh toutes les 10 minutes. Les champs : minute, heure, jour, mois, jour de la semaine.", "services"],
+ ["Linux", "Quels réglages SSH demande Born2beroot ?", "Le port 4242, la connexion directe en root interdite (<code>PermitRootLogin no</code>). Puis on redémarre le service et on teste.", "serveur"],
+ ["Linux", "Quelle est la règle de base d'un pare-feu comme UFW ?", "Tout refuser en entrée (<code>ufw default deny incoming</code>), puis n'autoriser que le nécessaire, par exemple <code>ufw allow 4242</code>.", "serveur"],
+ ["Linux", "Pourquoi s'entraîner dans une machine virtuelle ?", "On peut tout casser sans risque, faire des instantanés et recommencer. Born2beroot se fait d'ailleurs dans une VM.", "serveur"],
+ ["Vers 42", "Quelles règles un Makefile doit-il avoir à 42 ?", "$(NAME), all, clean, fclean et re, sans oublier .PHONY.", "makefile"],
+ ["Vers 42", "Par quoi doit commencer chaque ligne de recette d'un Makefile ?", "Par une vraie tabulation. Avec des espaces, make affiche « missing separator ».", "makefile"],
+ ["Vers 42", "Qu'est-ce que le relink ?", "Un Makefile qui refait l'édition de liens alors que rien n'a changé. Un second <code>make</code> ne doit rien refaire.", "makefile"],
+ ["Vers 42", "Comment crée-t-on libft.a ?", "On compile les .c en .o, puis <code>ar rcs libft.a *.o</code>.", "bibliotheque"],
+ ["Vers 42", "Comment compiler un main avec libft.a ?", "<code>cc main.c -L. -lft</code> : -L dit où chercher, -lft veut dire libft.a.", "bibliotheque"],
+ ["Vers 42", "Quelle est la partie bonus de Libft ?", "Les fonctions de listes chaînées : ft_lstnew, ft_lstadd_front, ft_lstsize…", "bibliotheque"],
+ ["Vers 42", "Quels outils pour lire des arguments variables en C ?", "<code>va_list</code>, <code>va_start</code>, <code>va_arg(args, type)</code> et <code>va_end</code>, dans stdarg.h.", "variadiques"],
+ ["Vers 42", "Comment printf sait-il combien d'arguments lire ?", "Grâce au format : chaque % annonce un argument et son type.", "variadiques"],
+ ["Vers 42", "Que renvoie ft_printf ?", "Le nombre de caractères affichés, comme le vrai printf.", "variadiques"],
+ ["Vers 42", "Pourquoi get_next_line a-t-il besoin d'une variable static ?", "Pour garder ce qui a été lu après le <code>'\\n'</code> jusqu'à l'appel suivant. Une variable locale normale serait perdue.", "lecture"],
+ ["Vers 42", "Avec quel BUFFER_SIZE get_next_line doit-il marcher ?", "Avec n'importe lequel : 1, 42 ou 10 000 000. On le choisit à la compilation avec <code>-D BUFFER_SIZE=42</code>.", "lecture"],
+ ["Vers 42", "Comment vérifier qu'un programme n'a pas de fuite de mémoire ?", "Avec <code>valgrind</code> sur Linux, ou <code>leaks</code> sur macOS.", "lecture"],
+ ["Vers 42", "Comment lire le bit i d'un octet c ?", "<code>(c &gt;&gt; i) &amp; 1</code> : on décale le bit voulu tout à droite, puis on ne garde que lui.", "bits"],
+ ["Vers 42", "Comment mettre le bit i d'un octet à 1 ? Et à 0 ?", "À 1 : <code>c |= (1 &lt;&lt; i);</code> À 0 : <code>c &amp;= ~(1 &lt;&lt; i);</code>", "bits"],
+ ["Vers 42", "Dans minitalk, combien de signaux pour envoyer un caractère ?", "8, un par bit, par exemple SIGUSR1 pour 0 et SIGUSR2 pour 1. Le serveur reconstruit l'octet.", "bits"],
+ ["Vers 42", "Que renvoie fork dans l'enfant ? Et dans le parent ?", "0 dans l'enfant, le PID de l'enfant dans le parent, -1 en cas d'échec.", "fork_pipe"],
+ ["Vers 42", "Dans <code>pipe(fd)</code>, quel bout sert à lire ?", "<code>fd[0]</code> pour lire, <code>fd[1]</code> pour écrire.", "fork_pipe"],
+ ["Vers 42", "Que veut dire un execve qui revient ?", "Qu'il a échoué : en cas de succès, le programme est remplacé et la suite du code ne s'exécute jamais.", "fork_pipe"],
+ ["Vers 42", "Qu'ont en commun les threads d'un même processus ?", "La mémoire : ils voient les mêmes variables globales et le même tas.", "threads"],
+ ["Vers 42", "Qu'est-ce qu'une data race ?", "Deux threads qui modifient la même donnée en même temps, sans protection : le résultat devient imprévisible.", "threads"],
+ ["Vers 42", "Comment protéger une donnée partagée entre threads ?", "Avec un mutex : <code>pthread_mutex_lock</code>, l'accès, puis <code>pthread_mutex_unlock</code>.", "threads"],
+ ["Vers 42", "Que déclare <code>int (*f)(int);</code> ?", "Un pointeur sur une fonction qui prend un int et renvoie un int.", "ptrfonctions"],
+ ["Vers 42", "Qu'est-ce qu'un callback ?", "Une fonction passée en paramètre à une autre, qui l'appelle. C'est le principe de ft_foreach et de ft_map.", "ptrfonctions"],
+ ["Vers 42", "Pourquoi faire un tableau de pointeurs sur fonctions ?", "Pour choisir une fonction avec un indice au lieu d'une longue suite de if, par exemple une fonction par conversion dans ft_printf.", "ptrfonctions"]
 ];
 const SOURCES = [
  ["CERT-FR","https://www.cert.ssi.gouv.fr/","Alertes et avis officiels sur les failles en cours"],
@@ -953,7 +1105,7 @@ const SOURCES = [
  ["The Hacker News","https://thehackernews.com/","Les grosses actus cyber, en anglais"],
  ["BleepingComputer","https://www.bleepingcomputer.com/","Ransomware, failles et attaques en détail, en anglais"]
 ];
-const DECKS = ["Tout","Terminal","C","Réseau","Cyber","Et après"];
+const DECKS = ["Tout","Terminal","C","C avancé","Linux","Réseau","Cyber","Vers 42","Et après"];
 const QUICK = ["Je n'ai pas compris, explique autrement","Donne-moi un autre exemple","Va plus loin","Donne-moi un exercice pour m'entraîner, sans la solution"];
 
 /* ---------- Mémoire locale ---------- */
@@ -964,7 +1116,7 @@ if (store.day.date !== today) store.day = {date:today, cards:0, lesson:false, ne
 const save = () => { try { localStorage.setItem("labo42", JSON.stringify(store)); } catch (e) {} };
 const keepLesson = (k, d) => { store.lessons[k] = d; store.order = store.order.filter(x => x !== k).concat(k); while (store.order.length > 40) delete store.lessons[store.order.shift()]; save(); };
 let STATIC = {};
-const lessonsReady = Promise.all(["terminal", "c", "reseau", "cyber", "apres"].map(f => fetch("lessons/" + f + ".json").then(r => r.ok ? r.json() : {}).catch(() => ({})))).then(list => { list.forEach(o => Object.assign(STATIC, o)); });
+const lessonsReady = Promise.all(["terminal", "c", "cavance", "linux", "reseau", "cyber", "vers42", "apres"].map(f => fetch("lessons/" + f + ".json").then(r => r.ok ? r.json() : {}).catch(() => ({})))).then(list => { list.forEach(o => Object.assign(STATIC, o)); });
 const lessonOf = id => STATIC[id] || store.lessons["v3:" + id] || store.lessons[id];
 const nextId = () => ORDER.find(id => !store.seen[id] && !BASE.includes(id)) || ORDER.find(id => !store.seen[id]) || null;
 const active = () => { if (!store.days.includes(today)) store.days.push(today); save(); refresh(); };
@@ -1069,7 +1221,7 @@ let cur = null, ctl = null;
 const SEC_FIG = {"permissions:3":"perm_chiffres","redirections:0":"canaux","boucles:1":"trace","pointeurs:3":"ptr_fonction","reseaulocal:2":"masque","dns:1":"dns_voyage","tcp:2":"tcp_ack","http:2":"http_codes","osi:4":"encapsulation","hachage:1":"hash_verif","parefeu:1":"fw_regles","phishing:1":"phish_signes","logs:1":"log_ligne","compilation:2":"erreur_cc"};
 const codeBlock = (c, id) => {
   const isC = /#include|;\s*$|^\s*(int|char|void)\b/m.test(c) && !/^\s*\$ /m.test(c);
-  const label = id === "python" ? "Python" : isC ? "Code C" : (/^\s*\$ /m.test(c) || (TOPIC[id] && ETAPE_OF[id] && ETAPE_OF[id].n === 1)) ? "Terminal" : "Exemple";
+  const label = id === "python" ? "Python" : /^#!\/bin\/(ba)?sh/.test(c) ? "Script Bash" : id === "makefile" && /\$\(/.test(c) ? "Makefile" : isC ? "Code C" : (/^\s*\$ /m.test(c) || (TOPIC[id] && ETAPE_OF[id] && ETAPE_OF[id].n === 1)) ? "Terminal" : "Exemple";
   return `<div class="code"><div class="code-h"><i></i><i></i><i></i><span>${label}</span></div><pre><code>${esc(c)}</code></pre></div>`;
 };
 function lessonHTML(d){
@@ -1404,10 +1556,10 @@ $("copyLink").addEventListener("click", async () => {
 
 /* ---------- Résumé du jour ---------- */
 let resumes = [], wantResume = false;
-const LIENS = ["#terminal","#reviser","#parcours","#veille","#acquis","#moi","#pratique","#atelier","#examen","#lexique","#bandit","#jeux","#memos"];
+const LIENS = ["#terminal","#reviser","#parcours","#veille","#acquis","#moi","#pratique","#atelier","#examen","#lexique","#bandit","#jeux","#memos","#oc","#cursus"];
 const exoIds = () => (window.Labo && window.Labo.EXO_IDS) || [];
 const okLien = l => typeof l === "string" && (LIENS.includes(l) || (l.startsWith("#cours-") && !!TOPIC[l.slice(7)]) || (l.startsWith("#atelier-") && exoIds().includes(l.slice(9))));
-const goLabel = l => l === "#jeux" ? "Faire un entraînement" : l === "#memos" ? "Ouvrir les mémos" : l.startsWith("#cours-") ? "Ouvrir le cours : " + TOPIC[l.slice(7)].t : l.startsWith("#atelier-") ? "Ouvrir l'exercice : " + l.slice(9) : ({"#terminal":"Ouvrir le terminal","#reviser":"Réviser mes fiches","#veille":"Lire les actus","#acquis":"Voir mes acquis","#moi":"Voir ma progression","#pratique":"Aller à la pratique","#atelier":"Ouvrir l'atelier C","#examen":"Passer un examen blanc","#lexique":"Ouvrir le lexique","#bandit":"Ouvrir le carnet Bandit"})[l] || "Voir mon parcours";
+const goLabel = l => l === "#jeux" ? "Faire un entraînement" : l === "#memos" ? "Ouvrir les mémos" : l.startsWith("#cours-") ? "Ouvrir le cours : " + TOPIC[l.slice(7)].t : l.startsWith("#atelier-") ? "Ouvrir l'exercice : " + l.slice(9) : ({"#terminal":"Ouvrir le terminal","#reviser":"Réviser mes fiches","#veille":"Lire les actus","#acquis":"Voir mes acquis","#moi":"Voir ma progression","#pratique":"Aller à la pratique","#atelier":"Ouvrir l'atelier C","#examen":"Passer un examen blanc","#lexique":"Ouvrir le lexique","#bandit":"Ouvrir le carnet Bandit","#oc":"Ouvrir le programme OpenClassrooms","#cursus":"Voir mon cursus 42"})[l] || "Voir mon parcours";
 const coursLink = id => TOPIC[id] ? `<a class="link" href="#cours-${id}">Revoir le cours : ${esc(TOPIC[id].t)}</a>` : "";
 function resumeCard(r){
   const e = r.etape || {}, q = r.question || {}, ac = arr(r.actus).filter(x => typeof x === "string" && x.trim());
@@ -1432,8 +1584,8 @@ fetch((inClaude ? APP_URL : "") + "resume.json?v=" + Date.now(), {cache: "no-sto
 }).catch(() => {});
 
 /* ---------- Navigation ---------- */
-const VIEWS = ["accueil","parcours","reviser","pratique","terminal","atelier","examen","bandit","jeux","memos","lexique","veille","moi"];
-const TAB_OF = {cours:"parcours", lexique:"parcours", memos:"pratique", terminal:"pratique", atelier:"pratique", examen:"pratique", bandit:"pratique", jeux:"pratique"};
+const VIEWS = ["accueil","parcours","reviser","pratique","terminal","atelier","examen","bandit","jeux","memos","lexique","oc","cursus","veille","moi"];
+const TAB_OF = {cours:"parcours", lexique:"parcours", oc:"parcours", cursus:"parcours", memos:"pratique", terminal:"pratique", atelier:"pratique", examen:"pratique", bandit:"pratique", jeux:"pratique"};
 let curView = {v: "accueil", arg: ""};
 function route(){
   let h = location.hash.slice(1);
@@ -1489,6 +1641,7 @@ refresh(); build(); renderActus(); route();
 <script src="lexique.js"></script>
 <script src="jeux.js"></script>
 <script src="memos.js"></script>
+<script src="cursus.js"></script>
 <script src="extras.js"></script>
 </body>
 </html>

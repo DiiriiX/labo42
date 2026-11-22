@@ -103,7 +103,11 @@
         () => { const a = 2 + rnd(4), b = 2 + rnd(4); return Q("Que va afficher ce programme ?", a * b, [a + b, a * b + 1, a * (b + 1)], `La boucle intérieure fait ${b} tours, et elle est relancée ${a} fois : ${a} × ${b} = ${a * b}.`, `count = 0;\ni = 0;\nwhile (i < ${a})\n{\n\tj = 0;\n\twhile (j < ${b})\n\t{\n\t\tcount++;\n\t\tj++;\n\t}\n\ti++;\n}\nprintf("%d", count);`); },
         () => { const t = Array.from({length: 5}, () => rnd(90) + 10), k = rnd(5); return Q("Que va afficher ce programme ?", t[k], [t[(k + 1) % 5], t[(k + 4) % 5], k], `Les cases sont numérotées à partir de 0 : tab[0] vaut ${t[0]}, donc tab[${k}] vaut ${t[k]}.`, `int\ttab[5] = {${t.join(", ")}};\n\nprintf("%d", tab[${k}]);`); },
         () => { const a = 1 + rnd(50); return Q("Que va afficher ce programme ?", `${a + 1} ${a}`, [`${a + 1} ${a + 1}`, `${a} ${a}`, `${a} ${a + 1}`], `j = i++ copie d'abord la valeur de i (${a}) dans j, PUIS augmente i. Avec ++i, ce serait l'inverse.`, `int\ti;\nint\tj;\n\ni = ${a};\nj = i++;\nprintf("%d %d", i, j);`); },
-        () => { const n = rnd(60) - 20; const r = n < 0 ? "N" : n === 0 ? "Z" : n % 2 === 0 ? "P" : "I"; return Q("Que va afficher ce programme ?", r, ["N", "Z", "P", "I"].filter(x => x !== r), `n vaut ${n} : ${n < 0 ? "il est négatif, le premier test est vrai" : n === 0 ? "il n'est pas négatif, mais il vaut 0" : `il est positif, et ${n} % 2 vaut ${n % 2}`}. Seule la première condition vraie s'exécute.`, `n = ${n};\nif (n < 0)\n\twrite(1, "N", 1);\nelse if (n == 0)\n\twrite(1, "Z", 1);\nelse if (n % 2 == 0)\n\twrite(1, "P", 1);\nelse\n\twrite(1, "I", 1);`); }
+        () => { const n = rnd(60) - 20; const r = n < 0 ? "N" : n === 0 ? "Z" : n % 2 === 0 ? "P" : "I"; return Q("Que va afficher ce programme ?", r, ["N", "Z", "P", "I"].filter(x => x !== r), `n vaut ${n} : ${n < 0 ? "il est négatif, le premier test est vrai" : n === 0 ? "il n'est pas négatif, mais il vaut 0" : `il est positif, et ${n} % 2 vaut ${n % 2}`}. Seule la première condition vraie s'exécute.`, `n = ${n};\nif (n < 0)\n\twrite(1, "N", 1);\nelse if (n == 0)\n\twrite(1, "Z", 1);\nelse if (n % 2 == 0)\n\twrite(1, "P", 1);\nelse\n\twrite(1, "I", 1);`); },
+        () => { const n = 2 + rnd(4); return Q("Que va afficher ce programme ?", n, [1, 0, n + 1], `count est static : il garde sa valeur d'un appel à l'autre. Le dernier appel est le ${n}e, donc count vaut ${n}. Sans static, ce serait 1.`, `int\tcompteur(void)\n{\n\tstatic int\tcount = 0;\n\n\tcount++;\n\treturn (count);\n}\n\n/* dans main */\ni = 0;\nwhile (i < ${n - 1})\n{\n\tcompteur();\n\ti++;\n}\nprintf("%d\\n", compteur());`); },
+        () => { const a = 1 + rnd(5), b = 1 + rnd(5), r = a + b * a + b; return Q("Que va afficher ce programme ?", r, [(a + b) * (a + b), r + 1, 2 * (a + b)], `Une macro remplace du texte : CARRE(${a} + ${b}) devient ${a} + ${b} * ${a} + ${b}. La multiplication passe d'abord : ${a} + ${b * a} + ${b} = ${r}. Avec ((x) * (x)), on aurait ${(a + b) * (a + b)}.`, `#define CARRE(x) x * x\n\nprintf("%d\\n", CARRE(${a} + ${b}));`); },
+        () => { let c, i; do { c = 1 + rnd(63); i = rnd(6); } while (c & (1 << i)); const r = c | (1 << i); return Q("Que va afficher ce programme ?", r, [c, 1 << i, c + i, c << i], `1 << ${i} vaut ${1 << i} : un nombre avec seulement le bit ${i} à 1. c | ${1 << i} allume ce bit dans c, qui était à 0 : ${c} + ${1 << i} = ${r}.`, `unsigned char\tc;\n\nc = ${c};\nc = c | (1 << ${i});\nprintf("%d\\n", c);`); },
+        () => { const a = 1 + rnd(20), b = 1 + rnd(20), d = 1 + rnd(9); return Q("Que va afficher ce programme ?", `${a + d} ${b}`, [`${a} ${b}`, `${a + d} ${b + d}`, `${a} ${b + d}`], `deplacer reçoit l'adresse du point : p->x += ${d} modifie le vrai point. Seul x change : ${a} + ${d} = ${a + d}. y reste à ${b}.`, `void\tdeplacer(t_point *p, int d)\n{\n\tp->x += d;\n}\n\n/* dans main */\npt.x = ${a};\npt.y = ${b};\ndeplacer(&pt, ${d});\nprintf("%d %d\\n", pt.x, pt.y);`); }
       ];
       return pick(T)();
     },
@@ -140,7 +144,12 @@
         ["Voir l'état de ton dépôt Git", "git status"], ["Préparer un fichier pour le prochain commit", "git add fichier"], ["Enregistrer une version avec un message", "git commit -m \"message\""], ["Envoyer tes commits au serveur", "git push"],
         ["Récupérer un dépôt", "git clone adresse"], ["Chercher sans tenir compte des majuscules", "grep -i mot fichier"], ["Garder les lignes qui NE contiennent PAS un mot", "grep -v mot fichier"], ["Voir les ports ouverts de ta machine", "ss -tuln"],
         ["Demander l'adresse IP d'un nom de domaine", "dig exemple.fr"], ["Tester si une machine répond", "ping adresse"], ["Voir tes adresses IP", "ip a"], ["Calculer l'empreinte MD5 d'un fichier", "md5sum fichier"],
-        ["Envoyer les erreurs dans un fichier", "commande 2> erreurs.txt"], ["Lancer B seulement si A a réussi", "A && B"], ["Revoir tes dernières commandes", "history"], ["Afficher le contenu d'un fichier", "cat fichier"]
+        ["Envoyer les erreurs dans un fichier", "commande 2> erreurs.txt"], ["Lancer B seulement si A a réussi", "A && B"], ["Revoir tes dernières commandes", "history"], ["Afficher le contenu d'un fichier", "cat fichier"],
+        ["Voir tous les processus qui tournent", "ps aux"], ["Voir en direct ce qui consomme le plus", "top"], ["Demander à un programme de s'arrêter", "kill PID"], ["Forcer l'arrêt d'un programme bloqué", "kill -9 PID"],
+        ["Voir le code de retour de la dernière commande", "echo $?"], ["Rafraîchir la liste des paquets", "sudo apt update"], ["Installer les mises à jour", "sudo apt upgrade"], ["Installer un logiciel", "sudo apt install nom"],
+        ["Savoir sous quel nom tu es connecté", "whoami"], ["Voir tes groupes", "id"], ["Ajouter alex au groupe sudo", "sudo usermod -aG sudo alex"], ["Modifier les règles de sudo sans risque", "sudo visudo"],
+        ["Voir l'état du service SSH", "systemctl status ssh"], ["Redémarrer le service SSH", "sudo systemctl restart ssh"], ["Lire le journal du service SSH", "journalctl -u ssh"], ["Planifier une tâche régulière", "crontab -e"],
+        ["Voir la place libre sur les disques", "df -h"], ["Voir l'état du pare-feu", "sudo ufw status"], ["Afficher la liste des dossiers de commandes", "echo $PATH"], ["Lancer un programme en arrière-plan", "programme &"]
       ];
       const c = pick(C), wrong = shuffle(C.filter(x => x !== c)).slice(0, 3).map(x => x[1]);
       return Q(`Quelle commande pour : ${c[0].charAt(0).toLowerCase() + c[0].slice(1)} ?`, c[1], wrong, `${c[1]} : ${c[0].charAt(0).toLowerCase() + c[0].slice(1)}.`);
@@ -168,12 +177,12 @@
     {id: "norme", t: "Chasse aux fautes", d: "Repérer ce que la norminette refuserait.", ic: "check", tone: "gs"},
     {id: "ascii", t: "Code ASCII", d: "Les lettres sont des nombres : calcule avec.", ic: "spark", tone: "ys"},
     {id: "binaire", t: "Binaire et hexa", d: "Passer du décimal au binaire et à l'hexadécimal.", ic: "sliders", tone: "bs"},
-    {id: "commandes", t: "La bonne commande", d: "40 situations du terminal, à toi de trouver la commande.", ic: "term", tone: "dk"},
+    {id: "commandes", t: "La bonne commande", d: "60 situations du terminal et de Linux, à toi de trouver la commande.", ic: "term", tone: "dk"},
     {id: "chmod", t: "Droits chmod", d: "rwx et chiffres, dans les deux sens.", ic: "key", tone: "gs"},
     {id: "reseau", t: "Adresses et masques", d: "Réseau, diffusion, /24, adresses privées.", ic: "flag", tone: "bs"},
     {id: "ports", t: "Ports et services", d: "22, 80, 443, 53… les numéros à connaître.", ic: "news", tone: "rs"},
     {id: "cesar", t: "Casse le César", d: "Chiffrer, déchiffrer, retrouver la clé.", ic: "key", tone: "rs"},
-    {id: "quiz", t: "Grand quiz des cours", d: "Les questions des 32 cours, mélangées.", ic: "help", tone: "ys"},
+    {id: "quiz", t: "Grand quiz des cours", d: "Les questions des 57 cours, mélangées.", ic: "help", tone: "ys"},
     {id: "lexique", t: "Le bon mot", d: "Une définition, quatre mots : lequel est le bon ?", ic: "book", tone: "gs"}
   ];
   L.GAMES = GAMES;

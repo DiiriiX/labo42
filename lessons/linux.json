@@ -1,0 +1,749 @@
+{
+ "arborescence": {
+  "titre": "L'arborescence Linux",
+  "objectif": "Savoir où se trouve quoi sur un système Linux, et s'y déplacer sans te perdre.",
+  "pourquoi": "Sur Linux, tout est rangé dans un seul grand arbre de dossiers, avec des emplacements fixés par une convention. Savoir que la configuration est dans /etc et les journaux dans /var/log, c'est gagner un temps fou.\n\nEn cybersécurité, c'est vital : un analyste sait où chercher les traces d'une intrusion, un pentester sait où trouver les fichiers intéressants. Et le projet Born2beroot de 42 te fera configurer un vrai serveur Linux.",
+  "analogie": "Linux, c'est un immeuble de bureaux bien organisé. Au rez-de-chaussée, l'accueil : la racine /. Chaque étage a sa fonction : les logements des employés (/home), les classeurs de règlements (/etc), les archives (/var/log), la salle des machines (/dev). Une fois le plan connu, tu trouves n'importe quoi.",
+  "vocabulaire": [
+   {
+    "mot": "Racine",
+    "def": "Le dossier tout en haut, /, d'où part tout le reste."
+   },
+   {
+    "mot": "Chemin absolu",
+    "def": "Un chemin qui part de la racine : /etc/hostname."
+   },
+   {
+    "mot": "Chemin relatif",
+    "def": "Un chemin qui part de là où tu es : projet/main.c."
+   },
+   {
+    "mot": "Point de montage",
+    "def": "Un dossier où est rattaché un disque ou une partition."
+   }
+  ],
+  "sections": [
+   {
+    "titre": "Les dossiers à connaître",
+    "texte": "- /home : les dossiers personnels des utilisateurs (/home/eleve).\n- /root : le dossier personnel de l'administrateur root.\n- /etc : la configuration du système (utilisateurs, réseau, services).\n- /var/log : les journaux, les logs.\n- /tmp : les fichiers temporaires, souvent vidés au redémarrage.\n- /usr/bin et /bin : les programmes, comme ls ou cat.\n- /dev : les périphériques ; /proc : des informations sur le système en direct."
+   },
+   {
+    "titre": "Tout est fichier",
+    "texte": "Sur Linux, presque tout se présente comme un fichier : un disque (/dev/sda), le générateur de hasard (/dev/urandom), les informations sur le processeur (`cat /proc/cpuinfo`).\n\nC'est pour ça que les mêmes outils, cat, grep ou redirections, marchent partout. Et c'est pour ça que les droits des fichiers sont la base de la sécurité du système."
+   },
+   {
+    "titre": "Se repérer",
+    "texte": "`pwd` te dit où tu es, `cd /etc` t'emmène quelque part, `cd -` te ramène au dossier précédent. `.` désigne le dossier courant, `..` le dossier parent, `~` ton dossier personnel.\n\n`file nom` dit ce qu'est vraiment un fichier, quelle que soit son extension. `ls -l /etc | head` donne un aperçu sans tout afficher."
+   },
+   {
+    "titre": "La place sur le disque",
+    "texte": "`df -h` montre l'espace libre de chaque partition, en tailles lisibles (Go, Mo). `du -sh dossier` donne la taille d'un dossier.\n\nUn disque plein est une panne classique : plus de logs, plus de base de données. Surveiller /var/log, qui grossit sans arrêt, fait partie du métier d'administrateur."
+   }
+  ],
+  "exemple": {
+   "titre": "Une première visite",
+   "code": "$ cd /\n$ ls\nbin  boot  dev  etc  home  lib  proc  root  tmp  usr  var\n$ cat /etc/hostname\nlabo42\n$ ls /var/log | head -n 3\napt\nauth.log\ndpkg.log\n$ df -h /\nSys. de fichiers  Taille Utilisé Dispo Uti% Monté sur\n/dev/sda1            20G    6,1G   13G  33% /",
+   "explication": "On part de la racine, on lit le nom de la machine dans /etc, on jette un œil aux journaux, et on vérifie la place sur le disque.\n\nSelon la distribution, certains fichiers changent : sur des systèmes récents, une partie des journaux n'est lisible qu'avec journalctl. Tu verras ça dans le cours sur les services."
+  },
+  "pieges": [
+   "Confondre /root (le dossier de l'administrateur) et / (la racine).",
+   "Supprimer des fichiers dans /etc ou /usr sans savoir ce qu'ils font.",
+   "Se fier à l'extension d'un fichier : file dit ce qu'il est vraiment."
+  ],
+  "retenir": [
+   "Tout part de la racine / .",
+   "/etc pour la configuration, /var/log pour les journaux, /home pour les utilisateurs.",
+   "Sur Linux, presque tout est un fichier.",
+   ". le dossier courant, .. le parent, ~ ton dossier personnel.",
+   "df -h et du -sh pour surveiller la place."
+  ],
+  "quiz": [
+   {
+    "q": "Où trouve-t-on la configuration du système ?",
+    "choix": [
+     "/home",
+     "/etc",
+     "/tmp"
+    ],
+    "bonne": 1,
+    "explication": "/etc contient les fichiers de configuration."
+   },
+   {
+    "q": "Où sont rangés les journaux (logs) ?",
+    "choix": [
+     "/var/log",
+     "/bin",
+     "/dev"
+    ],
+    "bonne": 0,
+    "explication": "/var/log est l'endroit des journaux, comme auth.log."
+   },
+   {
+    "q": "Quelle commande montre l'espace libre sur les disques ?",
+    "choix": [
+     "du -sh",
+     "df -h",
+     "ls -l"
+    ],
+    "bonne": 1,
+    "explication": "df montre les partitions ; du mesure un dossier."
+   }
+  ],
+  "question": "Dans le terminal d'entraînement de l'appli, quels dossiers de la racine existent ? Lesquels correspondent à ce cours ?"
+ },
+ "utilisateurs": {
+  "titre": "Utilisateurs, groupes et sudo",
+  "objectif": "Comprendre qui a le droit de faire quoi sur Linux, et administrer sans se mettre en danger.",
+  "pourquoi": "Linux est multi-utilisateur : chaque personne et chaque service a son compte, avec ses droits. C'est ce qui empêche un programme piraté de tout casser.\n\nGérer les comptes, les groupes et sudo est une compétence de base d'administrateur, et le cœur du projet Born2beroot : tu devras créer un utilisateur, le mettre dans les bons groupes et durcir la configuration de sudo.",
+  "analogie": "Un système Linux, c'est un hôtel. Chaque client a la clé de sa chambre (son compte). Le personnel d'étage a un passe pour un étage (un groupe). Le directeur a le passe général (root). Et sudo, c'est demander au directeur de t'ouvrir une porte précise, en laissant une trace dans le registre.",
+  "vocabulaire": [
+   {
+    "mot": "Utilisateur",
+    "def": "Un compte, identifié par un nom et un numéro, l'UID."
+   },
+   {
+    "mot": "Groupe",
+    "def": "Un ensemble d'utilisateurs qui partagent des droits."
+   },
+   {
+    "mot": "root",
+    "def": "Le super-utilisateur, d'UID 0, qui a tous les droits."
+   },
+   {
+    "mot": "sudo",
+    "def": "Lance une seule commande avec les droits de root, si tu y es autorisé, et la journalise."
+   }
+  ],
+  "sections": [
+   {
+    "titre": "Qui suis-je ?",
+    "texte": "`whoami` donne ton nom, `id` ton UID et tes groupes, `groups` la liste de tes groupes.\n\nLes comptes sont décrits dans /etc/passwd, lisible par tous. Les mots de passe, eux, sont hachés dans /etc/shadow, que seul root peut lire : c'est le hachage que tu as vu dans l'étape cybersécurité."
+   },
+   {
+    "titre": "Gérer les comptes",
+    "texte": "`sudo adduser alex` crée un utilisateur sur Debian, avec son dossier personnel. `sudo passwd alex` change son mot de passe.\n\n`sudo usermod -aG sudo alex` ajoute alex au groupe sudo. Le `-a` est crucial : sans lui, alex serait retiré de tous ses autres groupes. `sudo addgroup user42` crée un groupe."
+   },
+   {
+    "titre": "root et sudo",
+    "texte": "Travailler en root en permanence est dangereux : une faute de frappe peut détruire le système, et un programme piraté hérite de tous les droits.\n\nsudo permet d'être root juste le temps d'une commande, après avoir tapé ton propre mot de passe. Les règles sont dans /etc/sudoers, qu'on modifie uniquement avec `sudo visudo`, qui vérifie la syntaxe avant d'enregistrer."
+   },
+   {
+    "titre": "Durcir sudo",
+    "texte": "On peut limiter le nombre d'essais de mot de passe, afficher un message personnalisé en cas d'erreur, journaliser chaque commande dans un fichier, et restreindre les dossiers où sudo cherche les programmes.\n\nCe sont exactement les règles demandées dans Born2beroot. Le principe derrière : le moindre privilège, et une trace de chaque action sensible."
+   }
+  ],
+  "exemple": {
+   "titre": "Créer un compte et lui donner sudo",
+   "code": "$ sudo adduser alex\n$ sudo usermod -aG sudo alex\n$ id alex\nuid=1001(alex) gid=1001(alex) groupes=1001(alex),27(sudo)\n$ su - alex\nalex$ sudo whoami\nroot",
+   "explication": "On crée alex, on l'ajoute au groupe sudo, on vérifie ses groupes. Puis on se connecte en tant qu'alex avec su : sa commande `sudo whoami` répond root, la preuve que sudo lui donne les droits d'administrateur pour une commande."
+  },
+  "pieges": [
+   "Oublier le -a de usermod -aG : l'utilisateur perd ses autres groupes.",
+   "Modifier /etc/sudoers sans visudo : une erreur peut bloquer sudo.",
+   "Travailler en root en permanence.",
+   "Donner sudo à tout le monde « pour que ça marche »."
+  ],
+  "retenir": [
+   "whoami, id et groups pour savoir qui tu es.",
+   "/etc/passwd décrit les comptes ; /etc/shadow garde les mots de passe hachés.",
+   "usermod -aG groupe utilisateur, avec le -a.",
+   "sudo : root le temps d'une commande, avec une trace.",
+   "On modifie les règles de sudo avec visudo."
+  ],
+  "quiz": [
+   {
+    "q": "Quel fichier contient les mots de passe hachés ?",
+    "choix": [
+     "/etc/passwd",
+     "/etc/shadow",
+     "/home/root"
+    ],
+    "bonne": 1,
+    "explication": "/etc/shadow n'est lisible que par root."
+   },
+   {
+    "q": "Que se passe-t-il si on oublie -a dans usermod -aG sudo alex ?",
+    "choix": [
+     "Rien",
+     "alex est retiré de ses autres groupes",
+     "alex devient root"
+    ],
+    "bonne": 1,
+    "explication": "Sans -a, la liste des groupes est remplacée au lieu d'être complétée."
+   },
+   {
+    "q": "Pourquoi utiliser sudo plutôt que rester connecté en root ?",
+    "choix": [
+     "C'est plus rapide",
+     "Pour limiter les droits au strict nécessaire et garder une trace",
+     "Parce que root n'existe plus"
+    ],
+    "bonne": 1,
+    "explication": "C'est le principe du moindre privilège."
+   }
+  ],
+  "question": "Sur ton ordinateur ou une machine virtuelle, tape id : dans quels groupes es-tu ? À quoi servent-ils, d'après toi ?"
+ },
+ "processus": {
+  "titre": "Les processus",
+  "objectif": "Voir ce qui tourne sur une machine, et savoir arrêter, suspendre ou relancer un programme.",
+  "pourquoi": "Chaque programme lancé devient un processus. Savoir les lister et les contrôler, c'est savoir ce que fait vraiment une machine.\n\nEn défense, un processus inconnu qui consomme tout le processeur peut être un mineur de cryptomonnaie installé par un pirate. Et à 42, pipex, minishell ou philosophers te feront créer et piloter des processus depuis ton propre code C.",
+  "analogie": "Un processus, c'est un cuisinier en train de suivre une recette. La recette, c'est le programme sur le disque. Plusieurs cuisiniers peuvent suivre la même recette en même temps. Le chef de cuisine, le système, leur distribue le temps et peut leur dire d'arrêter.",
+  "vocabulaire": [
+   {
+    "mot": "Processus",
+    "def": "Un programme en cours d'exécution."
+   },
+   {
+    "mot": "PID",
+    "def": "Le numéro unique d'un processus."
+   },
+   {
+    "mot": "Signal",
+    "def": "Un message envoyé à un processus : arrête-toi, mets-toi en pause, reprends…"
+   },
+   {
+    "mot": "Code de retour",
+    "def": "Le nombre renvoyé par un programme qui se termine : 0 veut dire « tout s'est bien passé »."
+   }
+  ],
+  "sections": [
+   {
+    "titre": "Lister les processus",
+    "texte": "`ps aux` liste tous les processus, avec leur utilisateur, leur PID, leur consommation de processeur et de mémoire. `ps aux | grep ssh` filtre ceux qui t'intéressent.\n\n`top`, ou `htop` s'il est installé, affiche la liste en direct, triée par consommation. q pour quitter."
+   },
+   {
+    "titre": "Parents et enfants",
+    "texte": "Chaque processus est créé par un autre, son parent. Ton shell est le parent des commandes que tu lances. `ps -ef` montre le PPID, le PID du parent, et `pstree` dessine l'arbre.\n\nTout remonte au processus numéro 1, lancé au démarrage, qui sur la plupart des systèmes actuels est systemd."
+   },
+   {
+    "titre": "Les signaux",
+    "texte": "`kill PID` envoie le signal SIGTERM : « termine-toi proprement ». Si le programme ne répond plus, `kill -9 PID` envoie SIGKILL, qui l'arrête sans discussion, sans lui laisser le temps de ranger.\n\nCtrl+C envoie SIGINT au programme au premier plan, Ctrl+Z le met en pause avec SIGTSTP. Dans le projet minitalk, tu utiliseras deux signaux, SIGUSR1 et SIGUSR2, pour faire communiquer deux programmes."
+   },
+   {
+    "titre": "Premier plan et arrière-plan",
+    "texte": "`commande &` lance un programme en arrière-plan : tu récupères la main tout de suite. `jobs` liste ces tâches, `fg` en ramène une au premier plan, `bg` relance en arrière-plan une tâche mise en pause par Ctrl+Z.\n\nAprès chaque commande, `echo $?` affiche son code de retour : 0 si elle a réussi, autre chose sinon. C'est ce que teste `&&`."
+   }
+  ],
+  "exemple": {
+   "titre": "Trouver et arrêter un programme gourmand",
+   "code": "$ ps aux --sort=-%cpu | head -n 3\nUSER   PID %CPU %MEM COMMAND\nalex  4242 98.7  1.2 ./a.out\nroot   812  0.3  0.5 /usr/sbin/sshd\n$ kill 4242\n$ echo $?\n0",
+   "explication": "On trie les processus par consommation de processeur, du plus gourmand au moins gourmand. Ton ./a.out prend 98,7 % : sans doute une boucle infinie. kill lui demande de s'arrêter, et le code de retour 0 confirme que le signal a bien été envoyé."
+  },
+  "pieges": [
+   "Utiliser kill -9 en premier : le programme n'a pas le temps de ranger ses fichiers.",
+   "Confondre Ctrl+Z (pause) et Ctrl+C (arrêt) : un programme en pause continue d'occuper la mémoire.",
+   "Tuer un processus système sans savoir ce qu'il fait."
+  ],
+  "retenir": [
+   "Un processus est un programme qui tourne, identifié par son PID.",
+   "ps aux et top pour voir ce qui tourne.",
+   "kill envoie SIGTERM ; kill -9 force l'arrêt en dernier recours.",
+   "& lance en arrière-plan ; jobs, fg et bg pour piloter.",
+   "$? donne le code de retour de la dernière commande : 0 = succès."
+  ],
+  "quiz": [
+   {
+    "q": "Quel signal kill envoie-t-il par défaut ?",
+    "choix": [
+     "SIGKILL",
+     "SIGTERM",
+     "SIGINT"
+    ],
+    "bonne": 1,
+    "explication": "SIGTERM demande un arrêt propre."
+   },
+   {
+    "q": "Que fait Ctrl+Z ?",
+    "choix": [
+     "Il arrête définitivement le programme",
+     "Il met le programme en pause",
+     "Il annule la dernière commande"
+    ],
+    "bonne": 1,
+    "explication": "Le programme est suspendu ; fg ou bg le relancent."
+   },
+   {
+    "q": "Que veut dire un code de retour de 0 ?",
+    "choix": [
+     "Une erreur",
+     "Tout s'est bien passé",
+     "Le programme tourne encore"
+    ],
+    "bonne": 1,
+    "explication": "Par convention, 0 signifie le succès."
+   }
+  ],
+  "question": "Lance sleep 100 &, puis retrouve son PID avec ps et arrête-le avec kill. Que montre jobs avant et après ?"
+ },
+ "paquets": {
+  "titre": "Installer des logiciels",
+  "objectif": "Installer, mettre à jour et supprimer des logiciels proprement avec un gestionnaire de paquets.",
+  "pourquoi": "Sur Linux, on n'installe pas les logiciels en téléchargeant des fichiers au hasard : on passe par un gestionnaire de paquets, qui va les chercher dans des dépôts officiels, vérifie leur signature et gère les dépendances.\n\nLes mises à jour sont la première ligne de défense contre les failles : la plupart des attaques exploitent des failles déjà corrigées, sur des machines jamais mises à jour.",
+  "analogie": "Le gestionnaire de paquets, c'est un magasin officiel avec un vendeur scrupuleux. Tu demandes un logiciel, il le prend dans son stock vérifié, contrôle le sceau du fabricant, et ajoute automatiquement les pièces nécessaires pour qu'il fonctionne.",
+  "vocabulaire": [
+   {
+    "mot": "Paquet",
+    "def": "Un logiciel emballé, prêt à installer, avec la liste de ce dont il a besoin."
+   },
+   {
+    "mot": "Dépôt",
+    "def": "Un serveur qui distribue des paquets, par exemple ceux de Debian."
+   },
+   {
+    "mot": "Dépendance",
+    "def": "Un autre paquet nécessaire au fonctionnement d'un logiciel."
+   },
+   {
+    "mot": "apt",
+    "def": "Le gestionnaire de paquets de Debian et Ubuntu."
+   }
+  ],
+  "sections": [
+   {
+    "titre": "apt, le quotidien",
+    "texte": "`sudo apt update` met à jour la LISTE des paquets disponibles, sans rien installer. `sudo apt upgrade` installe les nouvelles versions de ce qui est déjà là.\n\n`sudo apt install vim` installe un logiciel et ses dépendances, `sudo apt remove vim` le désinstalle, `apt search mot` cherche un paquet."
+   },
+   {
+    "titre": "Les dépôts et la confiance",
+    "texte": "Les dépôts sont listés dans /etc/apt/sources.list et le dossier /etc/apt/sources.list.d/. Chaque dépôt signe ses paquets avec une clé : apt refuse un paquet dont la signature ne correspond pas.\n\nAjouter un dépôt inconnu, c'est donner à quelqu'un le droit d'installer ce qu'il veut sur ta machine. Même prudence pour les commandes du type `curl … | bash`, qui exécutent un script téléchargé sans que tu l'aies lu."
+   },
+   {
+    "titre": "Les mises à jour de sécurité",
+    "texte": "Quand une faille est publiée, comme celles que tu vois dans l'onglet Veille, les distributions publient un paquet corrigé. Il faut alors l'installer : apt update, puis apt upgrade.\n\nSur un serveur, on peut automatiser les mises à jour de sécurité avec le paquet unattended-upgrades. Un serveur oublié depuis des mois est une cible facile."
+   },
+   {
+    "titre": "Les autres familles",
+    "texte": "Chaque famille de distributions a son outil : apt pour Debian et Ubuntu, dnf pour Fedora et Rocky Linux, pacman pour Arch. Les commandes changent, le principe reste le même.\n\nBorn2beroot te laisse le choix entre Debian et Rocky Linux : avec Debian, tu utiliseras apt."
+   }
+  ],
+  "exemple": {
+   "titre": "Mettre à jour puis installer",
+   "code": "$ sudo apt update\nAtteint : 1 http://deb.debian.org/debian bookworm InRelease\n12 paquets peuvent être mis à jour.\n$ sudo apt upgrade\n$ sudo apt install ufw\nLes NOUVEAUX paquets suivants seront installés :\n  ufw",
+   "explication": "update rafraîchit la liste : 12 paquets ont une version plus récente. upgrade les installe. Puis on installe ufw, le pare-feu simplifié que tu configureras dans le cours sur la sécurisation d'un serveur."
+  },
+  "pieges": [
+   "Croire que apt update installe les mises à jour : il ne fait que rafraîchir la liste.",
+   "Ajouter un dépôt ou lancer un script téléchargé sans savoir d'où il vient.",
+   "Ne jamais mettre à jour un serveur."
+  ],
+  "retenir": [
+   "Un gestionnaire de paquets installe depuis des dépôts signés.",
+   "apt update rafraîchit la liste ; apt upgrade installe les mises à jour.",
+   "apt install, apt remove, apt search.",
+   "Les mises à jour corrigent les failles : c'est la première défense.",
+   "Chaque famille a son outil : apt, dnf, pacman."
+  ],
+  "quiz": [
+   {
+    "q": "Que fait sudo apt update ?",
+    "choix": [
+     "Il installe toutes les mises à jour",
+     "Il rafraîchit la liste des paquets disponibles",
+     "Il met à jour Linux vers une nouvelle version"
+    ],
+    "bonne": 1,
+    "explication": "Pour installer les nouvelles versions, il faut ensuite apt upgrade."
+   },
+   {
+    "q": "Pourquoi les paquets d'un dépôt sont-ils signés ?",
+    "choix": [
+     "Pour aller plus vite",
+     "Pour vérifier qu'ils viennent bien du dépôt et n'ont pas été modifiés",
+     "Pour qu'ils prennent moins de place"
+    ],
+    "bonne": 1,
+    "explication": "C'est une garantie d'intégrité et d'origine."
+   },
+   {
+    "q": "Quel outil remplace apt sur Rocky Linux ?",
+    "choix": [
+     "pacman",
+     "dnf",
+     "brew"
+    ],
+    "bonne": 1,
+    "explication": "Rocky et Fedora utilisent dnf."
+   }
+  ],
+  "question": "Choisis une actu de l'onglet Veille qui parle d'une faille Linux : quelle commande aurait protégé une machine Debian ?"
+ },
+ "environnement": {
+  "titre": "Variables d'environnement",
+  "objectif": "Comprendre l'environnement du shell, le PATH, et personnaliser ton terminal.",
+  "pourquoi": "Chaque programme reçoit en cadeau des variables d'environnement : ton nom, ton dossier personnel, la liste des dossiers où chercher les commandes. Elles changent le comportement des programmes sans toucher à leur code.\n\nÀ 42, minishell te demandera de gérer toi-même ces variables, avec $HOME ou export. Et en sécurité, un PATH mal réglé est une porte d'entrée classique.",
+  "analogie": "L'environnement, c'est le sac à dos que chaque programme reçoit en partant : une carte (le PATH), une adresse de retour (HOME), son nom (USER). Les enfants partent avec une copie du sac des parents.",
+  "vocabulaire": [
+   {
+    "mot": "Variable d'environnement",
+    "def": "Un couple nom = valeur transmis à chaque programme lancé."
+   },
+   {
+    "mot": "PATH",
+    "def": "La liste des dossiers où le shell cherche les commandes que tu tapes."
+   },
+   {
+    "mot": "export",
+    "def": "Rend une variable visible par les programmes lancés ensuite."
+   },
+   {
+    "mot": "Fichier de démarrage",
+    "def": "~/.bashrc ou ~/.zshrc : des commandes lancées à chaque nouveau terminal."
+   }
+  ],
+  "sections": [
+   {
+    "titre": "Lire l'environnement",
+    "texte": "`env` affiche toutes les variables. `echo $HOME` affiche ton dossier personnel, `echo $USER` ton nom, `echo $SHELL` ton shell.\n\nLe $ devant un nom veut dire « remplace par la valeur ». Sans lui, `echo HOME` affiche juste le mot HOME."
+   },
+   {
+    "titre": "Le PATH",
+    "texte": "Quand tu tapes ls, le shell cherche un programme nommé ls dans chaque dossier du PATH, dans l'ordre : `echo $PATH` affiche par exemple /usr/local/bin:/usr/bin:/bin. `which ls` dit lequel il a trouvé.\n\nLe dossier courant n'est pas dans le PATH : c'est pour ça qu'on tape ./a.out. C'est volontaire : sinon, un fichier piégé nommé ls, posé dans un dossier, s'exécuterait à la place du vrai."
+   },
+   {
+    "titre": "Créer et exporter",
+    "texte": "`PRENOM=Lina` crée une variable du shell, sans espace autour du =. `export PRENOM` la transmet aux programmes lancés ensuite. On peut tout faire d'un coup : `export PRENOM=Lina`.\n\nCes réglages disparaissent quand tu fermes le terminal. Pour les garder, on les écrit dans ~/.bashrc ou ~/.zshrc, puis `source ~/.bashrc` pour les appliquer tout de suite."
+   },
+   {
+    "titre": "Alias et bonnes pratiques",
+    "texte": "`alias ll='ls -la'` crée un raccourci. Mis dans ton .bashrc, il te suit dans chaque terminal.\n\nEn sécurité, les variables d'environnement servent aussi à passer des secrets à un programme, comme une clé d'accès, plutôt que de les écrire dans le code. Mais elles restent lisibles par les processus de l'utilisateur : ce n'est pas un coffre-fort."
+   }
+  ],
+  "exemple": {
+   "titre": "Ajouter un dossier au PATH",
+   "code": "$ mkdir -p ~/bin\n$ cp a.out ~/bin/salut\n$ salut\nsalut: commande introuvable\n$ export PATH=\"$HOME/bin:$PATH\"\n$ salut\nSalut 42 !",
+   "explication": "Le programme est dans ~/bin, mais ce dossier n'est pas dans le PATH : le shell ne le trouve pas. Après avoir ajouté ~/bin au début du PATH, la commande salut marche de n'importe où.\n\nPour que ce soit permanent, on ajoute la ligne export dans ~/.bashrc."
+  },
+  "pieges": [
+   "Mettre des espaces autour du = : `PRENOM = Lina` ne marche pas.",
+   "Écraser le PATH au lieu de le compléter : plus aucune commande n'est trouvée.",
+   "Ajouter . au PATH."
+  ],
+  "retenir": [
+   "env liste l'environnement ; $NOM donne la valeur d'une variable.",
+   "Le PATH dit où chercher les commandes ; le dossier courant n'y est pas.",
+   "export transmet une variable aux programmes lancés ensuite.",
+   "~/.bashrc ou ~/.zshrc pour garder tes réglages.",
+   "alias pour créer des raccourcis."
+  ],
+  "quiz": [
+   {
+    "q": "Pourquoi tape-t-on ./a.out et pas a.out ?",
+    "choix": [
+     "Parce que a.out est caché",
+     "Parce que le dossier courant n'est pas dans le PATH",
+     "Parce que le C l'exige"
+    ],
+    "bonne": 1,
+    "explication": "Le shell ne cherche les commandes que dans les dossiers du PATH."
+   },
+   {
+    "q": "Que fait export ?",
+    "choix": [
+     "Il supprime une variable",
+     "Il rend une variable visible pour les programmes lancés ensuite",
+     "Il enregistre la variable sur le disque"
+    ],
+    "bonne": 1,
+    "explication": "Sans export, la variable reste dans le shell courant."
+   },
+   {
+    "q": "Comment rendre un réglage permanent ?",
+    "choix": [
+     "Le taper deux fois",
+     "L'écrire dans ~/.bashrc ou ~/.zshrc",
+     "Redémarrer"
+    ],
+    "bonne": 1,
+    "explication": "Ces fichiers sont lus à chaque nouveau terminal."
+   }
+  ],
+  "question": "Tape echo $PATH : combien de dossiers contient-il ? Dans lequel se trouve la commande ls ?"
+ },
+ "scripts": {
+  "titre": "Écrire des scripts Bash",
+  "objectif": "Automatiser une suite de commandes dans un script, avec variables, arguments, conditions et boucles.",
+  "pourquoi": "Dès que tu tapes trois fois la même suite de commandes, il est temps d'écrire un script. Les administrateurs et les analystes en écrivent tous les jours : sauvegardes, surveillance, analyse de logs.\n\nÀ la Piscine, les modules Shell00 et Shell01 te font écrire tes premiers scripts. Et Born2beroot demande un script de surveillance qui affiche l'état de la machine toutes les 10 minutes.",
+  "analogie": "Un script, c'est une recette écrite une fois pour toutes. Au lieu de refaire chaque geste à la main, tu donnes la fiche au shell, qui suit les étapes dans l'ordre, sans en oublier, autant de fois que tu veux.",
+  "vocabulaire": [
+   {
+    "mot": "Script",
+    "def": "Un fichier texte qui contient des commandes à exécuter dans l'ordre."
+   },
+   {
+    "mot": "Shebang",
+    "def": "La première ligne #!/bin/bash, qui dit quel programme doit lire le script."
+   },
+   {
+    "mot": "Argument",
+    "def": "Une valeur donnée au script au lancement : $1, $2…"
+   },
+   {
+    "mot": "Substitution",
+    "def": "$(commande) est remplacé par ce qu'affiche la commande."
+   }
+  ],
+  "sections": [
+   {
+    "titre": "Le premier script",
+    "texte": "On écrit dans un fichier `bonjour.sh` : `#!/bin/bash` sur la première ligne, puis `echo \"Bonjour $USER\"`. On le rend exécutable avec `chmod +x bonjour.sh` et on le lance avec `./bonjour.sh`.\n\nLe shebang indique quel interpréteur utiliser. Sans les droits d'exécution, il faudrait taper `bash bonjour.sh`."
+   },
+   {
+    "titre": "Variables et arguments",
+    "texte": "`nom=\"Lina\"` crée une variable, sans espace autour du =, et `\"$nom\"` l'utilise. `fichiers=$(ls | wc -l)` range dans une variable ce qu'affiche une commande.\n\nLes arguments arrivent dans `$1`, `$2`… `$#` donne leur nombre, `$@` les donne tous, `$0` le nom du script. Mets toujours les variables entre guillemets : un nom de fichier avec des espaces ne casse plus rien."
+   },
+   {
+    "titre": "Conditions",
+    "texte": "`if [ -f \"$1\" ]; then echo \"fichier\"; else echo \"absent\"; fi`. Les crochets sont une commande de test, et les espaces autour sont obligatoires.\n\nTests utiles : -f (fichier existe), -d (dossier), -z (chaîne vide), = et != pour comparer du texte, -eq, -ne, -lt, -gt pour comparer des nombres."
+   },
+   {
+    "titre": "Boucles et code de retour",
+    "texte": "`for f in *.c; do echo \"$f\"; done` parcourt tous les fichiers .c. `while read ligne; do …; done < fichier.txt` lit un fichier ligne par ligne.\n\n`exit 0` termine le script en signalant un succès, `exit 1` une erreur. Un bon script vérifie ses arguments au début et explique comment l'utiliser s'ils manquent."
+   }
+  ],
+  "exemple": {
+   "titre": "Un rapport de logs automatique",
+   "code": "#!/bin/bash\n# rapport.sh : compte les échecs SSH dans un fichier de logs\n\nif [ $# -ne 1 ]; then\n    echo \"Utilisation : $0 fichier_de_logs\"\n    exit 1\nfi\n\nif [ ! -f \"$1\" ]; then\n    echo \"Fichier introuvable : $1\"\n    exit 1\nfi\n\ntotal=$(grep -c \"Failed password\" \"$1\")\necho \"Échecs de connexion : $total\"\necho \"Top 3 des adresses :\"\ngrep \"Failed password\" \"$1\" | awk '{print $(NF-3)}' | sort | uniq -c | sort -rn | head -n 3\nexit 0",
+   "explication": "Le script vérifie qu'il a bien un argument, et que c'est un fichier. Il compte les échecs, puis affiche les trois adresses les plus actives. awk extrait le mot qui se trouve 3 positions avant la fin de chaque ligne, là où se trouve l'adresse IP dans une ligne de log sshd.\n\nLancement : `./rapport.sh /var/log/auth.log`. Tu viens d'automatiser l'enquête SOC du terminal."
+  },
+  "pieges": [
+   "Mettre des espaces autour du = : `nom = Lina` est une erreur.",
+   "Oublier les espaces dans les crochets : `[\"$a\"=\"b\"]` ne marche pas.",
+   "Oublier les guillemets autour des variables : un nom avec un espace casse le script.",
+   "Oublier chmod +x, puis s'étonner de « Permission non accordée »."
+  ],
+  "retenir": [
+   "#!/bin/bash en première ligne, chmod +x, puis ./script.sh.",
+   "Variables sans espace autour du = ; toujours entre guillemets à l'usage.",
+   "$1, $#, $@ pour les arguments ; $(commande) pour récupérer une sortie.",
+   "if [ test ]; then … fi, avec des espaces dans les crochets.",
+   "for … in …; do … done ; exit 0 ou 1 pour finir."
+  ],
+  "quiz": [
+   {
+    "q": "À quoi sert la ligne #!/bin/bash ?",
+    "choix": [
+     "C'est un commentaire sans effet",
+     "Elle indique quel programme doit exécuter le script",
+     "Elle rend le script exécutable"
+    ],
+    "bonne": 1,
+    "explication": "C'est le shebang ; les droits viennent de chmod +x."
+   },
+   {
+    "q": "Que contient $# ?",
+    "choix": [
+     "Le nom du script",
+     "Le nombre d'arguments",
+     "Le dernier argument"
+    ],
+    "bonne": 1,
+    "explication": "$0 est le nom, $1 le premier argument, $# leur nombre."
+   },
+   {
+    "q": "Quel test vérifie qu'un fichier existe ?",
+    "choix": [
+     "[ -d \"$f\" ]",
+     "[ -f \"$f\" ]",
+     "[ -z \"$f\" ]"
+    ],
+    "bonne": 1,
+    "explication": "-f pour un fichier, -d pour un dossier, -z pour une chaîne vide."
+   }
+  ],
+  "question": "Écris un script qui prend un nom de dossier en argument et affiche combien de fichiers .c il contient. Que doit-il faire si le dossier n'existe pas ?"
+ },
+ "services": {
+  "titre": "Services, journaux et tâches planifiées",
+  "objectif": "Piloter les services d'un serveur, lire leurs journaux et planifier des tâches avec cron.",
+  "pourquoi": "Un serveur fait tourner des programmes en permanence, sans fenêtre ni utilisateur devant : le serveur SSH, le serveur web, la base de données. Les démarrer, les surveiller et lire leurs journaux, c'est le quotidien d'un administrateur.\n\nC'est aussi là que travaille un analyste SOC : les journaux racontent qui s'est connecté, quand, et ce qui a échoué. Et Born2beroot te demandera de lancer un script toutes les 10 minutes avec cron.",
+  "analogie": "Les services, ce sont les employés de nuit d'un immeuble : le gardien, l'agent d'entretien, le technicien du chauffage. systemd est le chef d'équipe qui les fait commencer, arrêter ou redémarrer. Le journal, c'est le cahier de liaison où chacun note ce qui s'est passé. Et cron, c'est le planning affiché au mur.",
+  "vocabulaire": [
+   {
+    "mot": "Service (démon)",
+    "def": "Un programme qui tourne en arrière-plan, comme sshd ou cron."
+   },
+   {
+    "mot": "systemd",
+    "def": "Le gestionnaire de services de la plupart des Linux actuels, le processus numéro 1."
+   },
+   {
+    "mot": "systemctl",
+    "def": "La commande pour piloter les services."
+   },
+   {
+    "mot": "cron",
+    "def": "Le service qui lance des tâches à heures fixes."
+   }
+  ],
+  "sections": [
+   {
+    "titre": "Piloter un service",
+    "texte": "`systemctl status ssh` montre si le service SSH tourne, depuis quand, et ses dernières lignes de journal. `sudo systemctl restart ssh` le redémarre, par exemple après avoir changé sa configuration.\n\n`start` et `stop` le lancent et l'arrêtent maintenant ; `enable` et `disable` choisissent s'il démarre tout seul au démarrage de la machine. Les deux sont indépendants."
+   },
+   {
+    "titre": "Lire les journaux",
+    "texte": "`journalctl -u ssh` affiche le journal du service SSH, `journalctl -f` suit les nouveaux messages en direct, `journalctl -p err` ne garde que les erreurs, `journalctl -b` les messages depuis le dernier démarrage.\n\nSelon les systèmes, on trouve aussi des fichiers texte classiques dans /var/log, comme auth.log pour les connexions. Les commandes grep, sort et uniq de l'étape terminal s'y appliquent directement."
+   },
+   {
+    "titre": "Planifier avec cron",
+    "texte": "`crontab -e` ouvre ta liste de tâches planifiées. Chaque ligne a cinq champs de temps, puis la commande : minute, heure, jour du mois, mois, jour de la semaine.\n\n`0 3 * * * /home/alex/sauvegarde.sh` lance une sauvegarde chaque nuit à 3 h. `*/10 * * * * /root/monitoring.sh` lance un script toutes les 10 minutes. `crontab -l` affiche la liste."
+   },
+   {
+    "titre": "Surveiller",
+    "texte": "Un bon administrateur sait répondre vite : quels services tournent (`systemctl list-units --type=service`), lesquels ont échoué (`systemctl --failed`), qui s'est connecté (`last`).\n\nEn sécurité, une tâche cron inconnue ou un service apparu récemment sont des signes classiques qu'un attaquant s'est installé durablement sur une machine."
+   }
+  ],
+  "exemple": {
+   "titre": "Après avoir modifié la configuration SSH",
+   "code": "$ sudo systemctl restart ssh\n$ systemctl status ssh\n● ssh.service - OpenBSD Secure Shell server\n     Loaded: loaded (/lib/systemd/system/ssh.service; enabled)\n     Active: active (running) since lun. 2026-11-23 09:12:01 CET\n$ journalctl -u ssh -n 3\nnov. 23 09:12:01 labo42 sshd[812]: Server listening on 0.0.0.0 port 4242.",
+   "explication": "Après le redémarrage, status confirme que le service tourne (active) et qu'il démarrera au prochain allumage (enabled). Le journal montre qu'il écoute maintenant sur le port 4242 : exactement ce que demande Born2beroot."
+  },
+  "pieges": [
+   "Modifier la configuration d'un service sans le redémarrer.",
+   "Confondre enable (au démarrage) et start (maintenant).",
+   "Se tromper dans l'ordre des champs de cron : minute d'abord, heure ensuite."
+  ],
+  "retenir": [
+   "Un service est un programme qui tourne en arrière-plan.",
+   "systemctl status, start, stop, restart, enable.",
+   "journalctl -u service, -f pour suivre, -p err pour les erreurs.",
+   "cron : minute heure jour mois jour_semaine commande.",
+   "Les journaux sont la première source d'un analyste SOC."
+  ],
+  "quiz": [
+   {
+    "q": "Quelle commande montre si le service SSH tourne ?",
+    "choix": [
+     "systemctl status ssh",
+     "ps ssh",
+     "cron ssh"
+    ],
+    "bonne": 0,
+    "explication": "status montre l'état, depuis quand, et les derniers messages."
+   },
+   {
+    "q": "Que signifie */10 * * * * dans une crontab ?",
+    "choix": [
+     "Toutes les 10 heures",
+     "Toutes les 10 minutes",
+     "Le 10 de chaque mois"
+    ],
+    "bonne": 1,
+    "explication": "Le premier champ est la minute : */10 veut dire « toutes les 10 minutes »."
+   },
+   {
+    "q": "Quelle est la différence entre enable et start ?",
+    "choix": [
+     "Aucune",
+     "enable concerne le démarrage de la machine, start lance maintenant",
+     "start est réservé à root"
+    ],
+    "bonne": 1,
+    "explication": "Un service peut être lancé sans être activé au démarrage, et inversement."
+   }
+  ],
+  "question": "Écris la ligne crontab qui lance /home/alex/rapport.sh tous les lundis à 8 h 30."
+ },
+ "serveur": {
+  "titre": "Sécuriser un serveur Linux",
+  "objectif": "Mettre en place les protections de base d'un serveur : SSH durci, pare-feu, mots de passe, sudo et disques chiffrés.",
+  "pourquoi": "Un serveur branché sur Internet reçoit des tentatives d'intrusion en quelques minutes : des robots essaient sans arrêt des mots de passe sur le port 22. Les protections de base suffisent à décourager l'immense majorité d'entre eux.\n\nC'est exactement le projet Born2beroot du tronc commun de 42 : installer une machine virtuelle et la sécuriser selon un cahier des charges précis. Ce cours en reprend les grandes idées, que tu retrouveras ensuite dans ton futur métier.",
+  "analogie": "Sécuriser un serveur, c'est fermer une maison avant de partir en vacances : on ferme toutes les portes sauf celle qu'on surveille, on change les serrures par défaut, on ne laisse pas la clé sous le paillasson, et on installe une alarme qui note chaque passage.",
+  "vocabulaire": [
+   {
+    "mot": "Machine virtuelle",
+    "def": "Un ordinateur simulé par un logiciel comme VirtualBox, parfait pour s'entraîner sans risque."
+   },
+   {
+    "mot": "LVM",
+    "def": "Un système qui découpe les disques en volumes logiques, faciles à agrandir."
+   },
+   {
+    "mot": "Chiffrement de disque",
+    "def": "Rendre le contenu d'un disque illisible sans mot de passe, par exemple avec LUKS."
+   },
+   {
+    "mot": "UFW",
+    "def": "Uncomplicated Firewall : un pare-feu simple à configurer."
+   },
+   {
+    "mot": "Durcissement",
+    "def": "Réduire au minimum ce qu'un attaquant peut exploiter."
+   }
+  ],
+  "sections": [
+   {
+    "titre": "La machine et ses disques",
+    "texte": "On s'entraîne dans une machine virtuelle, avec VirtualBox par exemple : si tu casses tout, tu recommences. Dans Born2beroot, on installe une Debian ou une Rocky Linux sans interface graphique, avec des partitions chiffrées gérées par LVM.\n\nLe chiffrement protège les données si le disque est volé : sans la phrase de passe, il est illisible."
+   },
+   {
+    "titre": "Durcir SSH",
+    "texte": "La configuration du serveur SSH est dans /etc/ssh/sshd_config. Trois réglages classiques : changer le port (Born2beroot impose 4242), interdire la connexion directe de root (`PermitRootLogin no`), et à terme, n'accepter que les clés (`PasswordAuthentication no`).\n\nAprès chaque modification : `sudo systemctl restart ssh`, et teste une nouvelle connexion AVANT de fermer l'ancienne, pour ne pas t'enfermer dehors."
+   },
+   {
+    "titre": "Le pare-feu",
+    "texte": "Avec UFW : `sudo ufw default deny incoming` bloque tout ce qui entre, `sudo ufw allow 4242` ouvre seulement le port SSH, `sudo ufw enable` active le tout, `sudo ufw status` vérifie.\n\nC'est le principe « tout bloquer, puis ouvrir le nécessaire », vu dans le cours sur les pare-feu."
+   },
+   {
+    "titre": "Mots de passe et sudo",
+    "texte": "Une politique de mots de passe impose une longueur minimale, des majuscules, des chiffres, et une expiration régulière : par exemple tous les 30 jours dans Born2beroot. Les durées se règlent dans /etc/login.defs et avec `chage`, la complexité avec le module pwquality.\n\nCôté sudo : peu d'essais autorisés, un message en cas d'erreur, et un journal de toutes les commandes. Ainsi, chaque action sensible laisse une trace."
+   },
+   {
+    "titre": "Surveiller sa machine",
+    "texte": "Dernière pièce de Born2beroot : un script de surveillance, lancé par cron toutes les 10 minutes, qui affiche à tous les utilisateurs l'état de la machine : processeur, mémoire, disque, connexions, commandes sudo.\n\nTu as tous les outils : un script Bash (le cours scripts), des commandes système (free, df, who), et cron (le cours services). Le reste, c'est de l'assemblage."
+   }
+  ],
+  "exemple": {
+   "titre": "Vérifier les protections",
+   "code": "$ sudo ufw status\nÉtat : actif\nVers        Action      De\n4242        ALLOW       Anywhere\n$ grep -E \"^(Port|PermitRootLogin)\" /etc/ssh/sshd_config\nPort 4242\nPermitRootLogin no\n$ sudo chage -l alex | head -n 3\nDernier changement de mot de passe : nov. 23, 2026\nExpiration du mot de passe : déc. 23, 2026\nMot de passe inactif : jamais",
+   "explication": "Le pare-feu est actif et n'ouvre que le port 4242. SSH écoute sur 4242 et refuse root. Le mot de passe d'alex expire 30 jours après son dernier changement.\n\nPendant la correction de Born2beroot, on te demandera de montrer et d'expliquer chacun de ces réglages : comprendre pourquoi compte autant que savoir comment."
+  },
+  "pieges": [
+   "Activer le pare-feu sans avoir ouvert le port SSH : tu te coupes l'accès.",
+   "Fermer ta session SSH avant d'avoir testé la nouvelle configuration.",
+   "Laisser la connexion root autorisée en SSH.",
+   "Copier une configuration sans comprendre chaque ligne : la correction te demandera de l'expliquer."
+  ],
+  "retenir": [
+   "On s'entraîne dans une machine virtuelle, avec des disques chiffrés et LVM.",
+   "SSH : port changé, root interdit, clés de préférence ; puis restart et test.",
+   "UFW : default deny incoming, puis allow du seul nécessaire.",
+   "Mots de passe : longueur, complexité, expiration ; sudo : essais limités et journal.",
+   "Un script de surveillance lancé par cron complète le tableau."
+  ],
+  "quiz": [
+   {
+    "q": "Pourquoi interdire la connexion SSH directe de root ?",
+    "choix": [
+     "Parce que root n'a pas de mot de passe",
+     "Pour qu'un attaquant doive deviner un nom d'utilisateur en plus, et pour tracer qui devient root",
+     "Pour accélérer SSH"
+    ],
+    "bonne": 1,
+    "explication": "On se connecte avec son compte, puis on utilise sudo, qui laisse une trace."
+   },
+   {
+    "q": "Quelle commande UFW bloque tout le trafic entrant par défaut ?",
+    "choix": [
+     "ufw allow all",
+     "ufw default deny incoming",
+     "ufw disable"
+    ],
+    "bonne": 1,
+    "explication": "Ensuite, on ouvre uniquement les ports nécessaires."
+   },
+   {
+    "q": "À quoi sert le chiffrement du disque ?",
+    "choix": [
+     "À aller plus vite",
+     "À rendre les données illisibles si le disque est volé",
+     "À économiser de la place"
+    ],
+    "bonne": 1,
+    "explication": "Sans la phrase de passe, le contenu est inutilisable."
+   }
+  ],
+  "question": "Installe VirtualBox et une Debian sans interface graphique : quelles sont les trois premières protections que tu mettrais en place, et dans quel ordre pour ne pas te bloquer ?"
+ }
+}

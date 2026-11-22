@@ -17,7 +17,8 @@
     {n: 5, t: "Récursivité et maths", w: "Des fonctions qui s'appellent elles-mêmes, des puissances, des nombres premiers."},
     {n: 6, t: "Programmes : argc et argv", w: "Des programmes complets qui lisent leurs arguments."},
     {n: 7, t: "Mémoire : malloc", w: "Réserver de la mémoire, la remplir, la rendre."},
-    {n: 8, t: "Tes projets", w: "La suite de ton César, et un mini cat."}
+    {n: 8, t: "Tes projets", w: "La suite de ton César, un mini cat, et deux jeux : plus ou moins, pendu."},
+    {n: 9, t: "Structures, listes et fonctions", w: "Les modules C08, C11 et C12 de la Piscine : structures, listes chaînées, pointeurs sur fonctions."}
   ];
   const EXAM_LVL = {1: 1, 2: 2, 3: 3, 4: 4, 5: 4, 6: 3, 7: 4};
   const EXOS = [
@@ -344,10 +345,70 @@
       exemples: [["./mini_cat notes.txt", "le contenu de notes.txt"], ["./mini_cat", "Il manque le nom du fichier. (sur la sortie 2)"]],
       indices: ["open(nom, O_RDONLY) ouvre le fichier et renvoie un numéro, ou -1 en cas d'échec (#include <fcntl.h>).", "read(fd, tampon, taille) lit des octets et renvoie combien il en a lu : 0 à la fin du fichier.", "La sortie d'erreur, c'est le numéro 2 pour write. Pense à fermer le fichier avec close."],
       pieges: ["Écrire tout le tampon au lieu du nombre d'octets vraiment lus.", "Envoyer les messages d'erreur sur la sortie 1."],
-      cours: ["write", "redirections"]}
+      cours: ["write", "redirections"]},
+    {id: "plus_ou_moins", niv: 8, titre: "Le jeu du plus ou moins", fichier: "plus_ou_moins.c", proto: "int\tmain(void)", auto: ["printf", "scanf", "rand", "srand", "time"], main: true,
+      consigne: "Écris un programme qui tire un nombre secret entre 1 et 100, puis demande des essais au joueur. À chaque essai, il répond « C'est plus ! » ou « C'est moins ! », jusqu'à ce que le joueur trouve. Il affiche alors le nombre de coups.",
+      exemples: [["50, puis 75, puis 62", "C'est plus ! / C'est moins ! / Bravo, trouvé en 3 coups !"]],
+      indices: ["`srand(time(NULL))` une seule fois au début, puis `rand() % 100 + 1` donne un nombre de 1 à 100.", "Une boucle qui continue tant que l'essai est différent du nombre secret.", "Un compteur augmente à chaque essai."],
+      pieges: ["Appeler srand dans la boucle : le nombre change à chaque tour.", "Oublier #include <stdlib.h> et <time.h>."],
+      cours: ["boucles", "conditions", "calculs"]},
+    {id: "pendu", niv: 8, titre: "Le jeu du pendu", fichier: "pendu.c", proto: "int\tmain(void)", auto: ["printf", "scanf"], main: true,
+      consigne: "Le mot secret est écrit dans ton code, en majuscules, par exemple MARRON. Le joueur propose une lettre à chaque tour. Le programme affiche le mot avec une * à la place de chaque lettre pas encore trouvée, et le nombre d'erreurs restantes. Au bout de 10 erreurs, c'est perdu ; si tout le mot est trouvé, c'est gagné.",
+      exemples: [["A, puis R, puis Z", "*A**** / *ARR*** / *ARR*** (9 erreurs restantes)"]],
+      indices: ["Un tableau d'int de la même longueur que le mot retient quelles lettres sont trouvées : 0 ou 1.", "`scanf(\" %c\", &lettre)` : l'espace avant %c saute le retour à la ligne laissé par la saisie précédente.", "Le joueur a gagné quand toutes les cases du tableau valent 1."],
+      pieges: ["Compter une erreur quand la lettre est dans le mot.", "Oublier l'espace dans \" %c\" : le programme lit le retour à la ligne comme une lettre."],
+      cours: ["chaines", "boucles"]},
+    {id: "ft_point", niv: 9, fn: "set_point", titre: "Une première structure", fichier: "set_point.c", hdr: "ft_point.h", hdrCode: "typedef struct s_point\n{\n\tint\tx;\n\tint\ty;\n}\tt_point;", proto: "void\tset_point(t_point *point);", auto: [],
+      consigne: "Le type t_point est défini dans ft_point.h. Écris une fonction set_point qui met 42 dans le champ x et 21 dans le champ y du point dont elle reçoit l'adresse. Écris aussi le fichier ft_point.h, protégé contre la double inclusion.",
+      exemples: [["t_point p, puis set_point(&p);", "p.x vaut 42, p.y vaut 21"]],
+      indices: ["point est une adresse : pour atteindre un champ, on utilise la flèche.", "point->x désigne le champ x du point de l'appelant.", "Le header : #ifndef FT_POINT_H, # define FT_POINT_H, la structure, puis #endif."],
+      pieges: ["Écrire point.x au lieu de point->x.", "Oublier le point-virgule après l'accolade de la structure."],
+      cours: ["structures", "preprocesseur"]},
+    {id: "ft_create_elem", niv: 9, titre: "Créer un maillon", hdr: "ft_list.h", hdrCode: "typedef struct s_list\n{\n\tstruct s_list\t*next;\n\tvoid\t\t\t*data;\n}\tt_list;", proto: "t_list\t*ft_create_elem(void *data);", auto: ["malloc"],
+      consigne: "Écris une fonction qui crée un nouveau maillon de liste avec malloc. Sa donnée est data, son suivant est NULL. Elle renvoie l'adresse du maillon, ou NULL si malloc échoue.",
+      exemples: [["ft_create_elem(\"salut\")", "un maillon : data = \"salut\", next = NULL"]],
+      indices: ["malloc(sizeof(t_list)) réserve la place d'un maillon.", "Vérifie le retour de malloc avant d'écrire dedans.", "Deux champs à remplir, avec la flèche."],
+      pieges: ["Oublier de mettre next à NULL : la liste n'a plus de fin.", "Réserver sizeof(t_list *) : la taille d'un pointeur, pas d'un maillon."],
+      cours: ["listes", "malloc"]},
+    {id: "ft_list_push_front", niv: 9, titre: "Ajouter en tête", hdr: "ft_list.h", hdrCode: "typedef struct s_list\n{\n\tstruct s_list\t*next;\n\tvoid\t\t\t*data;\n}\tt_list;", proto: "void\tft_list_push_front(t_list **begin_list, void *data);", auto: ["malloc"],
+      consigne: "Écris une fonction qui ajoute au début de la liste un nouveau maillon contenant data. Tu peux recopier ft_create_elem dans le même fichier.",
+      exemples: [["liste 2 → 3, puis ft_list_push_front(&liste, 1)", "liste 1 → 2 → 3"], ["liste vide (NULL)", "la liste contient un seul maillon"]],
+      indices: ["begin_list est l'adresse du pointeur de tête : *begin_list est la tête.", "Le nouveau maillon pointe sur l'ancienne tête.", "Puis il devient la tête : on écrit dans *begin_list."],
+      pieges: ["Changer la tête avant de brancher le nouveau maillon : l'ancienne liste est perdue."],
+      cours: ["listes"]},
+    {id: "ft_list_size", niv: 9, titre: "Compter les maillons", hdr: "ft_list.h", hdrCode: "typedef struct s_list\n{\n\tstruct s_list\t*next;\n\tvoid\t\t\t*data;\n}\tt_list;", proto: "int\tft_list_size(t_list *begin_list);", auto: [],
+      consigne: "Écris une fonction qui renvoie le nombre de maillons de la liste.",
+      exemples: [["1 → 2 → 3", "3"], ["NULL", "0"]],
+      indices: ["Suis les maillons jusqu'à NULL.", "Un compteur augmente à chaque maillon.", "Une liste vide doit renvoyer 0 sans planter."],
+      pieges: ["Lire begin_list->next quand begin_list vaut NULL."],
+      cours: ["listes"]},
+    {id: "ft_list_last", niv: 9, titre: "Le dernier maillon", hdr: "ft_list.h", hdrCode: "typedef struct s_list\n{\n\tstruct s_list\t*next;\n\tvoid\t\t\t*data;\n}\tt_list;", proto: "t_list\t*ft_list_last(t_list *begin_list);", auto: [],
+      consigne: "Écris une fonction qui renvoie l'adresse du dernier maillon de la liste, ou NULL si la liste est vide.",
+      exemples: [["1 → 2 → 3", "le maillon 3"], ["NULL", "NULL"]],
+      indices: ["Le dernier maillon est celui dont next vaut NULL.", "Avance tant que le suivant existe.", "Traite d'abord la liste vide."],
+      pieges: ["Avancer jusqu'à NULL : tu renverrais NULL au lieu du dernier maillon."],
+      cours: ["listes"]},
+    {id: "ft_list_clear", niv: 9, titre: "Libérer toute la liste", hdr: "ft_list.h", hdrCode: "typedef struct s_list\n{\n\tstruct s_list\t*next;\n\tvoid\t\t\t*data;\n}\tt_list;", proto: "void\tft_list_clear(t_list *begin_list, void (*free_fct)(void *));", auto: ["free"],
+      consigne: "Écris une fonction qui libère tous les maillons de la liste. Pour chaque maillon, elle appelle d'abord free_fct sur sa donnée, puis libère le maillon.",
+      exemples: [["1 → 2 → 3", "les 3 données et les 3 maillons sont libérés"]],
+      indices: ["Après free(maillon), tu ne peux plus lire maillon->next.", "Garde l'adresse du suivant AVANT de libérer.", "free_fct(maillon->data) libère la donnée, free(maillon) le maillon."],
+      pieges: ["Lire le suivant après avoir libéré le maillon.", "Oublier d'appeler free_fct : les données fuient."],
+      cours: ["listes", "ptrfonctions"]},
+    {id: "ft_foreach", niv: 9, titre: "Appliquer une fonction à un tableau", proto: "void\tft_foreach(int *tab, int length, void (*f)(int));", auto: [],
+      consigne: "Écris une fonction qui appelle f sur chaque case du tableau tab, dans l'ordre.",
+      exemples: [["ft_foreach(tab, 3, &ft_putnbr) avec tab = {1, 2, 3}", "123"]],
+      indices: ["f est une fonction : on l'appelle comme une fonction normale, f(valeur).", "Une boucle de 0 à length − 1.", "La fonction ne renvoie rien : elle se contente d'appeler f."],
+      pieges: ["Oublier les parenthèses dans le type du paramètre : void (*f)(int)."],
+      cours: ["ptrfonctions"]},
+    {id: "ft_map", niv: 9, titre: "Transformer un tableau", proto: "int\t*ft_map(int *tab, int length, int (*f)(int));", auto: ["malloc"],
+      consigne: "Écris une fonction qui renvoie un nouveau tableau, réservé avec malloc, dont chaque case contient f appliquée à la case correspondante de tab. tab ne change pas.",
+      exemples: [["tab = {1, 2, 3}, f qui double", "un nouveau tableau {2, 4, 6}"]],
+      indices: ["Réserve length int avec malloc, et vérifie le retour.", "Case par case : nouveau[i] reçoit f(tab[i]).", "Renvoie le nouveau tableau ; l'appelant le libérera."],
+      pieges: ["Modifier tab au lieu d'en créer un nouveau.", "Réserver length octets au lieu de length int."],
+      cours: ["ptrfonctions", "malloc"]}
   ];
   EXOS.sort((x, y) => x.niv - y.niv);
-  EXOS.forEach((e, i) => { e.i = i; if (!e.fichier) e.fichier = e.id + ".c"; e.nom = e.main ? "main" : e.id; });
+  EXOS.forEach((e, i) => { e.i = i; if (!e.fichier) e.fichier = e.id + ".c"; e.nom = e.main ? "main" : (e.fn || e.id); });
   const EX = Object.fromEntries(EXOS.map(e => [e.id, e]));
   L.EXO_IDS = EXOS.map(e => e.id);
   L.EXOS = EXOS;
@@ -469,7 +530,7 @@
       if (decls && lastDecl + 1 < f.close && sl[lastDecl + 1].trim()) add(lastDecl + 2, "Laisse une ligne vide après les déclarations.");
       com.forEach(c => { if (c[0] > f.open + 1 && c[0] < f.close + 1) add(c[0], "Les commentaires sont interdits à l'intérieur d'une fonction."); });
       if (exo && (f.name !== "main" || exo.main)) {
-        const allowed = new Set((exo.auto || []).concat((exo.auto || []).includes("malloc") ? ["free"] : []));
+        const allowed = new Set((exo.auto || []).concat((exo.auto || []).includes("malloc") ? ["free"] : [], [...f.sig.matchAll(/\(\s*\*\s*(\w+)\s*\)/g)].map(m => m[1])));
         const re = /\b([A-Za-z_]\w*)\s*\(/g;
         for (let k = f.open + 1; k < f.close; k++) {
           let m; re.lastIndex = 0;
@@ -508,10 +569,10 @@
 
   /* ---------- Éditeur ---------- */
   const KEYS = [["⇥", "\t"], ["{", "{"], ["}", "}"], ["(", "("], [")", ")"], [";", ";"], ["'", "'"], ["\"", "\""], ["\\", "\\"], ["[", "["], ["]", "]"], ["*", "*"], ["&", "&"], ["<", "<"], [">", ">"], ["=", "="], ["!", "!"], ["+", "+"], ["-", "-"], ["%", "%"], ["#", "#"], ["|", "|"]];
-  const INCL = {write: "unistd.h", read: "unistd.h", close: "unistd.h", open: "fcntl.h", printf: "stdio.h", scanf: "stdio.h", fgets: "stdio.h", malloc: "stdlib.h", free: "stdlib.h"};
+  const INCL = {write: "unistd.h", read: "unistd.h", close: "unistd.h", open: "fcntl.h", printf: "stdio.h", scanf: "stdio.h", fgets: "stdio.h", malloc: "stdlib.h", free: "stdlib.h", rand: "stdlib.h", srand: "stdlib.h", time: "time.h"};
   const skeleton = e => {
     const inc = [...new Set((e.auto || []).map(f => INCL[f]).filter(Boolean))].sort().map(h => "#include <" + h + ">\n").join("");
-    return (inc ? inc + "\n" : "") + e.proto.replace(/;$/, "") + "\n{\n\t\n" + (e.main ? "\treturn (0);\n" : "") + "}\n";
+    return (inc ? inc + (e.hdr ? "" : "\n") : "") + (e.hdr ? "#include \"" + e.hdr + "\"\n\n" : "") + e.proto.replace(/;$/, "") + "\n{\n\t\n" + (e.main ? "\treturn (0);\n" : "") + "}\n";
   };
   const editor = (id, code) => `<div class="ed"><div class="ed-h"><span>${esc(id)}</span><span id="edPos">ligne 1</span></div><textarea id="edCode" rows="14" autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false" wrap="off" aria-label="Ton code">${esc(code)}</textarea></div><div class="keys" id="edKeys">${KEYS.map(k => `<button type="button" class="key" data-ek="${esc(k[1])}">${esc(k[0])}</button>`).join("")}</div>`;
   let saveT = null;
@@ -554,6 +615,7 @@
   const subjectHTML = (e, withNotes) => `<div class="card sujet">
     <div class="srow"><span class="small">Fichier à rendre</span><code>${esc(e.fichier)}</code></div>
     <div class="srow"><span class="small">Fonctions autorisées</span><b>${e.auto.length ? e.auto.map(esc).join(", ") : "aucune"}</b></div>
+    ${e.hdrCode ? `<p class="small" style="margin:12px 0 4px">Dans ${esc(e.hdr)}</p><pre class="proto">${esc(e.hdrCode)}</pre>` : ""}
     <p class="small" style="margin:12px 0 4px">${e.main ? "Ton programme" : "Prototype"}</p><pre class="proto">${esc(e.proto)}</pre>
     <h3>${ic("target")}Ce qu'il faut faire</h3>${fmt(e.consigne)}
     <h3>${ic("play")}Exemples</h3><table class="extable"><thead><tr><th>${e.main ? "Tu tapes" : "Appel"}</th><th>${e.main ? "Le programme affiche" : "Résultat attendu"}</th></tr></thead><tbody>${e.exemples.map(x => `<tr><td><code>${esc(x[0])}</code></td><td><code>${esc(x[1])}</code></td></tr>`).join("")}</tbody></table>

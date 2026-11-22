@@ -63,6 +63,19 @@
       ["> En France, s'introduire sans autorisation dans un système informatique est un délit (article 323-1 du Code pénal), même « juste pour voir ». On n'attaque que ses propres machines, les plateformes d'entraînement, ou avec une autorisation écrite.", []],
       ["Suivre l'actu", [["CERT-FR", "Les alertes officielles"], ["ANSSI", "L'agence nationale de la sécurité"], ["Cybermalveillance.gouv.fr", "Aide aux victimes, conseils"]]]
     ]},
+    {id: "linux", t: "Administrer Linux", d: "Utilisateurs, paquets, services, processus", ic: "sliders", tone: "dk", cours: "utilisateurs", s: [
+      ["Utilisateurs", [["whoami / id", "Qui suis-je, dans quels groupes"], ["sudo adduser alex", "Créer un utilisateur"], ["sudo usermod -aG sudo alex", "Ajouter à un groupe (avec -a !)"], ["sudo passwd alex", "Changer un mot de passe"], ["sudo visudo", "Modifier les règles de sudo sans risque"], ["sudo chage -l alex", "Voir l'expiration d'un mot de passe"]]],
+      ["Paquets", [["sudo apt update", "Rafraîchir la liste des paquets"], ["sudo apt upgrade", "Installer les mises à jour"], ["sudo apt install nom", "Installer un logiciel"], ["sudo apt remove nom", "Le désinstaller"]]],
+      ["Processus", [["ps aux", "Tous les processus"], ["top", "En direct, triés par consommation"], ["kill PID", "Demander l'arrêt (SIGTERM)"], ["kill -9 PID", "Forcer l'arrêt, en dernier recours"], ["cmd &  /  jobs  /  fg", "Arrière-plan et premier plan"], ["echo $?", "Code de retour de la dernière commande"]]],
+      ["Services et journaux", [["systemctl status ssh", "État d'un service"], ["sudo systemctl restart ssh", "Le redémarrer"], ["sudo systemctl enable ssh", "Le lancer au démarrage"], ["journalctl -u ssh", "Son journal"], ["journalctl -f", "Suivre les messages en direct"], ["crontab -e", "Planifier : minute heure jour mois jour_semaine"]]],
+      ["Disques et réseau", [["df -h", "Place libre par partition"], ["du -sh dossier", "Taille d'un dossier"], ["lsblk", "Disques et partitions"], ["ip a", "Adresses IP"], ["ss -tuln", "Ports ouverts"], ["sudo ufw status", "État du pare-feu"]]]
+    ]},
+    {id: "makefile", t: "Makefile", d: "Le modèle à 42, ligne par ligne", ic: "code", tone: "bs", cours: "makefile", s: [
+      ["Les variables", [["NAME = libft.a", "Ce que le Makefile construit"], ["CC = cc", "Le compilateur"], ["CFLAGS = -Wall -Wextra -Werror", "Les options obligatoires à 42"], ["SRCS = a.c b.c", "Les sources, listées une par une"], ["OBJS = $(SRCS:.c=.o)", "Les .o correspondants"]]],
+      ["Les règles", [["all: $(NAME)", "La règle par défaut"], ["$(NAME): $(OBJS)", "Assembler : ar rcs pour une bibliothèque, $(CC) pour un programme"], ["%.o: %.c", "Compiler un .c : $(CC) $(CFLAGS) -c $< -o $@"], ["clean:", "rm -f $(OBJS)"], ["fclean: clean", "rm -f $(NAME)"], ["re: fclean all", "Tout refaire"], [".PHONY: all clean fclean re", "Ce sont des actions, pas des fichiers"]]],
+      ["> Chaque recette commence par une vraie tabulation. Lance make deux fois : la seconde fois, il ne doit rien refaire (pas de relink).", []],
+      ["Les symboles", [["$@", "La cible"], ["$<", "La première dépendance"], ["$^", "Toutes les dépendances"], ["make -C dossier", "Lancer make dans un autre dossier (pour la Libft)"]]]
+    ]},
     {id: "piscine", t: "Survivre à la Piscine", d: "Les réflexes qui font la différence", ic: "flame", tone: "ys", s: [
       ["Chaque jour", [["Lis le sujet en entier", "Nom du fichier, dossier, fonctions autorisées"], ["Teste avec ton main", "Tous les exemples et les cas limites"], ["norminette", "Avant chaque push"], ["git push", "Souvent, et vérifie qu'il est passé"], ["man", "Le premier réflexe quand tu bloques"]]],
       ["Avec les autres", [["Demande à ton voisin", "Le peer-learning est la règle, pas la triche"], ["Explique à ton tour", "C'est comme ça que tu retiens"], ["Corrections", "Prépare-toi à expliquer chaque ligne de ton code"], ["Pas de copier-coller", "Tu devras le refaire seul à l'examen"]]],

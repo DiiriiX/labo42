@@ -43,6 +43,9 @@
     ["jeux-10", "Joueur", "Joue 10 parties d'entraînement", "spark", "ys", x => x.parties >= 10],
     ["sans-faute", "Sans faute", "Fais 10 / 10 à un entraînement", "check", "gs", x => x.sansFaute],
     ["touche-a-tout", "Touche-à-tout", "Essaie tous les entraînements", "sliders", "bs", x => x.essayes >= x.nbJeux],
+    ["lecteur-oc", "Lecteur assidu", "Coche tous les chapitres du cours OpenClassrooms", "book", "bs", x => x.oc >= (L.OC_TOTAL || 21)],
+    ["pingouin", "Pingouin", "Termine l'étape Linux du parcours", "term", "dk", x => x.etapes[3]],
+    ["pret-42", "Prêt pour le tronc commun", "Termine l'étape « Vers le tronc commun de 42 »", "flag", "gs", x => x.etapes[6]],
     ["parcours", "Parcours terminé", "Termine tous les cours du parcours", "flag", "rs", x => x.cours >= x.coursTotal]
   ];
   const medal = (icon, tone) => `<svg class="il" viewBox="0 0 64 64" aria-hidden="true"><path d="M23 42l-6 18 9-4 6 6 3-18z" class="r o" style="stroke-width:1.8"/><path d="M41 42l6 18-9-4-6 6-3-18z" class="b o" style="stroke-width:1.8"/><circle cx="32" cy="28" r="22" class="y o"/><circle cx="32" cy="28" r="15.5" class="${tone} o" style="stroke-width:1.6"/><g transform="translate(20 16)" class="bi${tone === "dk" ? " bk" : ""}">${ICONS[icon] || ""}</g></svg>`;
@@ -50,7 +53,7 @@
     const s = S(), x = L.stats(), a = s.atelier || {};
     const j = Object.values(s.jeux || {});
     return Object.assign(x, {serie: serie(), c: Object.keys(a.done || {}).length, norm: a.norm || 0, exam: (s.exams || []).reduce((m, e) => Math.max(m, e.score), 0), bandit: Object.values(s.bandit || {}).filter(b => b && b.ok).length,
-      parties: j.reduce((n, g) => n + (g.plays || 0), 0), sansFaute: j.some(g => g.best >= 10), essayes: j.filter(g => g.plays).length, nbJeux: (L.GAMES || []).length || 11, examens: (s.exams || []).length, notes: Object.keys(s.notes || {}).length});
+      parties: j.reduce((n, g) => n + (g.plays || 0), 0), sansFaute: j.some(g => g.best >= 10), essayes: j.filter(g => g.plays).length, nbJeux: (L.GAMES || []).length || 11, examens: (s.exams || []).length, notes: Object.keys(s.notes || {}).length, oc: Object.keys(s.oc || {}).length});
   };
   function checkBadges() {
     const s = S(), x = allStats(), first = !s.badges;
@@ -79,7 +82,7 @@
       + card("#jeux", "jeux", "Entraînements", `${x.parties} partie${x.parties > 1 ? "s" : ""} · 11 mini-jeux, questions tirées au hasard`, x.essayes, x.nbJeux)
       + card("#examen", "examen", "Examen blanc", best >= 0 ? `Meilleur score : ${best} / 100` : "Chronométré, comme les exams de 42", 0, 0)
       + card("#bandit", "bandit", "Carnet Bandit", `${x.bandit} / 34 niveaux cochés · tes notes et mots de passe`, x.bandit, 34)
-      + card("#memos", "memos", "Mémos", "Vim, Git, terminal, C, Norme, erreurs, réseau, cyber", 0, 0);
+      + card("#memos", "memos", "Mémos", "Vim, Git, terminal, Linux, C, Makefile, Norme, réseau, cyber", 0, 0);
   }
 
   /* ---------- Moi ---------- */
@@ -96,7 +99,7 @@
     const nb = (n, t) => `<div><b>${n}</b><span>${t}</span></div>`;
     const notes = Object.entries(s.notes || {}).filter(([id]) => L.TOPIC[id]);
     const extra = `<div class="card"><h3 style="margin-top:0">${ic("cal")}Ton activité, 13 dernières semaines</h3><div class="heat">${heat}</div><div class="heatl"><span>il y a 3 mois</span><span>${act.size} jour${act.size > 1 ? "s" : ""} actif${act.size > 1 ? "s" : ""}</span><span>aujourd'hui</span></div>
-      <div class="nums">${nb(x.cours + " / " + x.coursTotal, "cours terminés")}${nb(x.fiches + " / " + x.fichesTotal, "fiches sues")}${nb(x.defis + " / " + x.defisTotal, "défis du terminal")}${nb(x.c + " / " + ((L.EXOS || []).length || 54), "exercices de C")}${nb(x.parties, "parties d'entraînement")}${nb(x.examens, "examens blancs")}${nb(x.lues, "actus lues")}${nb(x.bandit + " / 34", "niveaux de Bandit")}</div></div>`
+      <div class="nums">${nb(x.cours + " / " + x.coursTotal, "cours terminés")}${nb(x.fiches + " / " + x.fichesTotal, "fiches sues")}${nb(x.defis + " / " + x.defisTotal, "défis du terminal")}${nb(x.c + " / " + ((L.EXOS || []).length || 54), "exercices de C")}${nb(x.parties, "parties d'entraînement")}${nb(x.examens, "examens blancs")}${nb(x.oc + " / " + (L.OC_TOTAL || 21), "chapitres OpenClassrooms")}${nb(x.lues, "actus lues")}${nb(x.bandit + " / 34", "niveaux de Bandit")}</div></div>`
       + (notes.length ? `<h2>Tes notes</h2>${notes.map(([id, t]) => `<div class="notec"><a class="link" href="#cours-${id}">${esc(L.TOPIC[id].t)}</a><p>${esc(t)}</p></div>`).join("")}` : "");
     $("moiTop").innerHTML = `<div class="mgrid"><div class="mstat fire">${ic("flame")}<b>${n}</b><span>jour${n > 1 ? "s" : ""} de suite</span><small>record : ${r}</small></div><div class="mstat">${ic("medal")}<b>${Object.keys(s.badges || {}).length}</b><span>badges sur ${BADGES.length}</span><small>${x.c} exercice${x.c > 1 ? "s" : ""} de C</small></div></div>${cd}${extra}`;
     const got = s.badges || {};
@@ -109,7 +112,7 @@
       <p class="small" id="expNote" style="margin-top:6px">Le code contient aussi ton carnet Bandit : ne le partage avec personne.</p>
       <details class="help" style="margin-top:14px"><summary>Restaurer une sauvegarde</summary><p class="small">Colle ici un code de sauvegarde. Il remplace la progression de ${L.inClaude ? "cette version" : "cette appli"}.</p><textarea id="impCode" rows="3" placeholder="L42-…" autocapitalize="off" spellcheck="false"></textarea><button class="btn ghost full" type="button" data-mo="import">Restaurer</button><p class="small" id="impNote"></p></details></div>`;
   }
-  const KEEP = ["known", "days", "seen", "srs", "term", "atelier", "exams", "lastExam", "bandit", "read", "later", "checkin", "size", "theme", "badges", "free"];
+  const KEEP = ["known", "days", "seen", "srs", "term", "atelier", "exams", "lastExam", "bandit", "read", "later", "checkin", "size", "theme", "badges", "free", "notes", "jeux", "oc"];
   const toCode = () => { const s = S(), o = {v: 1}; KEEP.forEach(k => { if (s[k] !== undefined) o[k] = s[k]; }); return "L42-" + btoa(unescape(encodeURIComponent(JSON.stringify(o)))); };
   const fromCode = t => { const m = String(t).trim().replace(/\s+/g, ""); if (!m.startsWith("L42-")) throw 0; const o = JSON.parse(decodeURIComponent(escape(atob(m.slice(4))))); if (!o || typeof o !== "object" || !Array.isArray(o.days)) throw 0; return o; };
   const copyText = async txt => { try { await navigator.clipboard.writeText(txt); return true; } catch (e) { const t = document.createElement("textarea"); t.value = txt; t.style.position = "fixed"; t.style.opacity = "0"; document.body.appendChild(t); t.select(); let ok = false; try { ok = document.execCommand("copy"); } catch (er) {} t.remove(); return ok; } };

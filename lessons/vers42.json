@@ -1,0 +1,748 @@
+{
+ "makefile": {
+  "titre": "Le Makefile",
+  "objectif": "Écrire un Makefile qui compile ton projet avec les règles exigées à 42, sans recompiler pour rien.",
+  "pourquoi": "Dès Libft, tous les projets de 42 se rendent avec un Makefile : la commande `make` doit produire le programme ou la bibliothèque, et la correction commence par là. Un Makefile qui ne marche pas, c'est un projet à 0.\n\nAu-delà de 42, make est utilisé depuis des décennies pour construire des logiciels : savoir en lire et en écrire un est un vrai savoir-faire de développeur.",
+  "analogie": "Un Makefile, c'est la fiche de montage d'un meuble : pour obtenir la table (la cible), il faut le plateau et les pieds (les dépendances), et voici les gestes à faire (la recette). Et si les pieds sont déjà montés, on ne les remonte pas.",
+  "vocabulaire": [
+   {
+    "mot": "Cible",
+    "def": "Ce qu'on veut obtenir : un programme, un .o, ou une action comme clean."
+   },
+   {
+    "mot": "Dépendance",
+    "def": "Ce dont la cible a besoin ; si elle a changé, la cible est refaite."
+   },
+   {
+    "mot": "Recette",
+    "def": "Les commandes à exécuter, chacune précédée d'une TABULATION."
+   },
+   {
+    "mot": "Relink",
+    "def": "Refaire l'édition de liens alors que rien n'a changé : interdit à 42."
+   }
+  ],
+  "sections": [
+   {
+    "titre": "Une règle",
+    "texte": "`cible: dépendances`, puis à la ligne, une tabulation et la commande. Exemple : `main.o: main.c` puis `\tcc -Wall -Wextra -Werror -c main.c`.\n\nmake compare les dates : si main.c est plus récent que main.o, il recompile ; sinon, il ne fait rien. C'est tout l'intérêt : sur un gros projet, seuls les fichiers modifiés sont recompilés."
+   },
+   {
+    "titre": "Les variables",
+    "texte": "On évite de tout répéter : `NAME = libft.a`, `CC = cc`, `CFLAGS = -Wall -Wextra -Werror`, `SRCS = ft_strlen.c ft_putstr.c`, et `OBJS = $(SRCS:.c=.o)` qui transforme chaque .c en .o.\n\nOn les utilise avec `$(NOM)`. La règle générique `%.o: %.c` dit comment fabriquer n'importe quel .o à partir de son .c, avec `$<` pour la source et `$@` pour la cible."
+   },
+   {
+    "titre": "Les règles exigées à 42",
+    "texte": "- `$(NAME)` : construit le programme ou la bibliothèque.\n- `all` : la règle par défaut, qui dépend de $(NAME).\n- `clean` : supprime les .o.\n- `fclean` : clean, plus la suppression de $(NAME).\n- `re` : fclean, puis all.\n\n`.PHONY: all clean fclean re` précise que ce sont des actions, pas des fichiers."
+   },
+   {
+    "titre": "Ne pas relinker",
+    "texte": "Lance `make` deux fois de suite : la seconde doit répondre « rien à faire ». Si elle recompile ou refait l'édition de liens, c'est un relink, et les correcteurs le vérifient.\n\nLa cause habituelle : une cible qui ne correspond à aucun fichier réel, ou des dépendances mal écrites. Avec NAME qui dépend de $(OBJS), le problème ne se pose pas."
+   }
+  ],
+  "exemple": {
+   "titre": "Le Makefile d'une bibliothèque",
+   "code": "NAME\t= libft.a\nCC\t\t= cc\nCFLAGS\t= -Wall -Wextra -Werror\nSRCS\t= ft_strlen.c ft_putchar.c ft_putstr.c\nOBJS\t= $(SRCS:.c=.o)\n\nall: $(NAME)\n\n$(NAME): $(OBJS)\n\tar rcs $(NAME) $(OBJS)\n\n%.o: %.c\n\t$(CC) $(CFLAGS) -c $< -o $@\n\nclean:\n\trm -f $(OBJS)\n\nfclean: clean\n\trm -f $(NAME)\n\nre: fclean all\n\n.PHONY: all clean fclean re",
+   "explication": "`make` compile chaque .c en .o, puis les rassemble dans libft.a avec ar. `make` une seconde fois ne fait rien. `make re` repart de zéro.\n\nAttention : les recettes commencent par une vraie tabulation. Avec des espaces, make affiche « missing separator »."
+  },
+  "pieges": [
+   "Des espaces au lieu d'une tabulation devant une recette : « missing separator ».",
+   "Une règle qui relinke : make deux fois de suite doit ne rien faire la seconde fois.",
+   "Oublier un fichier dans SRCS.",
+   "Utiliser un joker comme *.c dans SRCS : la plupart des sujets de 42 l'interdisent, liste tes fichiers."
+  ],
+  "retenir": [
+   "Une règle : cible, dépendances, puis une recette indentée par une tabulation.",
+   "make ne refait que ce qui a changé, grâce aux dates.",
+   "NAME, CC, CFLAGS, SRCS, OBJS = $(SRCS:.c=.o).",
+   "À 42 : $(NAME), all, clean, fclean, re, et .PHONY.",
+   "Pas de relink : un second make ne doit rien faire."
+  ],
+  "quiz": [
+   {
+    "q": "Que doit faire make fclean ?",
+    "choix": [
+     "Supprimer seulement les .o",
+     "Supprimer les .o et le programme ou la bibliothèque",
+     "Recompiler"
+    ],
+    "bonne": 1,
+    "explication": "fclean fait clean, puis supprime $(NAME)."
+   },
+   {
+    "q": "Pourquoi make affiche-t-il « missing separator » ?",
+    "choix": [
+     "Il manque un point-virgule",
+     "La recette est indentée avec des espaces au lieu d'une tabulation",
+     "Le fichier .c n'existe pas"
+    ],
+    "bonne": 1,
+    "explication": "make exige une vraie tabulation devant chaque commande."
+   },
+   {
+    "q": "Que fait OBJS = $(SRCS:.c=.o) ?",
+    "choix": [
+     "Il supprime les .c",
+     "Il crée la liste des .o à partir des .c",
+     "Il compile"
+    ],
+    "bonne": 1,
+    "explication": "C'est une substitution de texte sur la liste."
+   }
+  ],
+  "question": "Écris le Makefile de ton projet César en plusieurs fichiers (cesar.c, main.c), avec les règles all, clean, fclean et re."
+ },
+ "bibliotheque": {
+  "titre": "Bibliothèque statique : Libft",
+  "objectif": "Comprendre ce qu'est une bibliothèque .a, la construire et l'utiliser, comme pour le premier projet de 42.",
+  "pourquoi": "Le premier projet du tronc commun s'appelle Libft : tu recodes une partie de la bibliothèque standard du C (ft_strlen, ft_memset, ft_split, ft_itoa…) et tu la ranges dans une bibliothèque, libft.a, que tu réutiliseras dans presque tous tes projets suivants.\n\nComprendre comment on emballe et comment on relie une bibliothèque, c'est aussi comprendre ce qui se passe quand tu écris #include <string.h>.",
+  "analogie": "Une bibliothèque statique, c'est ta caisse à outils personnelle. Tu forges chaque outil une fois (chaque fonction), tu les ranges dans la caisse (le fichier .a), et pour chaque nouveau chantier (chaque projet), tu emportes la caisse au lieu de tout reforger.",
+  "vocabulaire": [
+   {
+    "mot": "Bibliothèque statique",
+    "def": "Une archive de fichiers .o, avec l'extension .a, copiée dans le programme à la compilation."
+   },
+   {
+    "mot": "ar",
+    "def": "La commande qui crée et remplit une archive : ar rcs libft.a *.o."
+   },
+   {
+    "mot": "Header de la bibliothèque",
+    "def": "Le .h qui annonce toutes ses fonctions, comme libft.h."
+   },
+   {
+    "mot": "Bibliothèque dynamique",
+    "def": "Une bibliothèque .so chargée au lancement du programme, au lieu d'être copiée dedans."
+   }
+  ],
+  "sections": [
+   {
+    "titre": "Ce qu'il y a dans une .a",
+    "texte": "Une bibliothèque statique, c'est simplement un paquet de fichiers .o, regroupés dans une archive avec un index. `ar rcs libft.a ft_strlen.o ft_putstr.o` la crée ; `ar t libft.a` liste ce qu'elle contient.\n\nÀ la compilation d'un programme, l'éditeur de liens va y chercher le code des fonctions dont il a besoin et le copie dans l'exécutable."
+   },
+   {
+    "titre": "Utiliser la bibliothèque",
+    "texte": "Dans ton code : `#include \"libft.h\"`. À la compilation : `cc main.c libft.a`, ou `cc main.c -L. -lft` (-L. : cherche dans le dossier courant ; -lft : la bibliothèque libft.a).\n\nDans un projet qui utilise Libft, le Makefile appelle souvent `make -C libft` pour construire la bibliothèque d'abord."
+   },
+   {
+    "titre": "Ce que contient Libft",
+    "texte": "Des fonctions sur les caractères (ft_isalpha, ft_toupper), sur les chaînes (ft_strlen, ft_strchr, ft_strdup, ft_substr, ft_strjoin, ft_split), sur la mémoire (ft_memset, ft_bzero, ft_memcpy, ft_calloc), des conversions (ft_atoi, ft_itoa), et des fonctions d'affichage sur un descripteur (ft_putstr_fd).\n\nLa partie bonus ajoute les listes chaînées avec t_list : ft_lstnew, ft_lstadd_front, ft_lstsize… exactement ce que tu as vu dans le cours sur les listes."
+   },
+   {
+    "titre": "Ce que ça t'apprend",
+    "texte": "Recoder memcpy ou strlcpy, c'est lire le manuel au mot près : que se passe-t-il si la taille vaut 0 ? Si les zones se chevauchent ? Les tests de la moulinette vérifient chaque cas limite.\n\nLa bonne méthode : lire `man 3 memcpy`, écrire ta version, puis la comparer à la vraie sur des dizaines de cas, y compris les plus tordus."
+   }
+  ],
+  "exemple": {
+   "titre": "Construire et utiliser une bibliothèque",
+   "code": "$ cc -Wall -Wextra -Werror -c ft_strlen.c ft_putstr.c\n$ ar rcs libft.a ft_strlen.o ft_putstr.o\n$ ar t libft.a\nft_strlen.o\nft_putstr.o\n$ cc -Wall -Wextra -Werror main.c -L. -lft\n$ ./a.out",
+   "explication": "On compile les sources en .o, on les range dans libft.a, on vérifie le contenu, puis on compile un programme qui s'en sert. -L. indique où chercher, -lft quelle bibliothèque utiliser (le lib et le .a sont ajoutés automatiquement)."
+  },
+  "pieges": [
+   "Écrire -llibft au lieu de -lft.",
+   "Oublier d'inclure libft.h : « implicit declaration of function ».",
+   "Ne pas tester les cas limites : taille 0, chaîne vide, pointeur NULL quand le manuel le permet."
+  ],
+  "retenir": [
+   "Une .a est une archive de .o, créée avec ar rcs.",
+   "On l'utilise avec cc main.c -L. -lft et #include \"libft.h\".",
+   "Libft recode des fonctions de la libc : chaînes, mémoire, conversions, affichage.",
+   "Le bonus de Libft, ce sont les listes chaînées.",
+   "man 3 fonction est ta référence pour chaque comportement."
+  ],
+  "quiz": [
+   {
+    "q": "Qu'est-ce qu'un fichier .a ?",
+    "choix": [
+     "Un programme exécutable",
+     "Une archive de fichiers .o",
+     "Un header"
+    ],
+    "bonne": 1,
+    "explication": "C'est une bibliothèque statique."
+   },
+   {
+    "q": "Que signifie -lft dans une commande cc ?",
+    "choix": [
+     "Utiliser la bibliothèque libft.a (ou libft.so)",
+     "Lancer le programme ft",
+     "Supprimer libft"
+    ],
+    "bonne": 0,
+    "explication": "-l ajoute le préfixe lib et cherche l'archive dans les dossiers donnés par -L."
+   },
+   {
+    "q": "Quelle section du manuel décrit les fonctions de la bibliothèque C, comme memcpy ?",
+    "choix": [
+     "man 1",
+     "man 2",
+     "man 3"
+    ],
+    "bonne": 2,
+    "explication": "1 : commandes, 2 : appels système comme write, 3 : fonctions de la bibliothèque C."
+   }
+  ],
+  "question": "Parmi les exercices de l'atelier que tu as faits, lesquels pourraient déjà entrer dans ta future Libft ?"
+ },
+ "variadiques": {
+  "titre": "Les fonctions variadiques : ft_printf",
+  "objectif": "Écrire une fonction qui accepte un nombre variable d'arguments, comme printf.",
+  "pourquoi": "printf peut recevoir un argument, ou dix : c'est une fonction variadique. Le projet ft_printf de 42 te demande de la recoder, avec les conversions principales.\n\nC'est l'occasion de comprendre comment un programme lit des arguments dont il ne connaît ni le nombre ni le type à l'avance, et pourquoi un mauvais format peut faire lire n'importe quoi en mémoire.",
+  "analogie": "Le format de printf, c'est la liste de courses que tu donnes avec un sac rempli d'articles. La liste dit dans quel ordre sortir les articles et ce que chacun est : « un nombre, puis un mot ». Si la liste ment, tu sors un article en croyant que c'est autre chose.",
+  "vocabulaire": [
+   {
+    "mot": "Fonction variadique",
+    "def": "Une fonction qui accepte un nombre variable d'arguments : int ft_printf(const char *format, ...);"
+   },
+   {
+    "mot": "va_list",
+    "def": "Le type qui sert à parcourir les arguments supplémentaires."
+   },
+   {
+    "mot": "va_start, va_arg, va_end",
+    "def": "Démarrer le parcours, lire l'argument suivant avec son type, terminer."
+   },
+   {
+    "mot": "Conversion",
+    "def": "Un % suivi d'une lettre dans le format : %d, %s, %x…"
+   }
+  ],
+  "sections": [
+   {
+    "titre": "Déclarer et parcourir",
+    "texte": "Les `...` dans le prototype annoncent des arguments en plus. Dans la fonction, avec `#include <stdarg.h>` : `va_list args; va_start(args, format);` démarre après le dernier paramètre nommé.\n\nChaque `va_arg(args, int)` lit l'argument suivant en le considérant comme un int. À la fin, `va_end(args);`. Rien n'indique combien il y a d'arguments : c'est le format qui le dit."
+   },
+   {
+    "titre": "Lire le format",
+    "texte": "On parcourt la chaîne de format caractère par caractère. Un caractère normal s'affiche tel quel. Un `%` annonce une conversion : on regarde la lettre suivante pour savoir quoi lire avec va_arg, et comment l'afficher.\n\n`%%` affiche simplement un %."
+   },
+   {
+    "titre": "Les conversions de ft_printf",
+    "texte": "- `%c` un caractère (lu comme un int), `%s` une chaîne (`char *`), `%p` une adresse en hexadécimal.\n- `%d` et `%i` un int en décimal, `%u` un unsigned int.\n- `%x` et `%X` un unsigned int en hexadécimal, minuscules ou majuscules.\n- `%%` le caractère %.\n\nTu as déjà presque tout : ft_putchar, ft_putstr, ft_putnbr et ft_putnbr_base."
+   },
+   {
+    "titre": "La valeur de retour",
+    "texte": "printf renvoie le nombre de caractères affichés. ft_printf doit faire de même : chaque fonction d'affichage renvoie combien elle a écrit, et on additionne.\n\nCôté sécurité, un format qui vient de l'utilisateur, comme `printf(saisie)`, est une faille connue : la saisie peut contenir des %x qui font lire la mémoire. On écrit toujours `printf(\"%s\", saisie)`."
+   }
+  ],
+  "exemple": {
+   "titre": "Une mini ft_printf qui gère %c, %s et %d",
+   "code": "#include <stdarg.h>\n#include <unistd.h>\n\nint\tft_putchar_n(char c);\nint\tft_putstr_n(char *s);\nint\tft_putnbr_n(int n);\n\nint\tconversion(char c, va_list *args)\n{\n\tif (c == 'c')\n\t\treturn (ft_putchar_n((char)va_arg(*args, int)));\n\tif (c == 's')\n\t\treturn (ft_putstr_n(va_arg(*args, char *)));\n\tif (c == 'd')\n\t\treturn (ft_putnbr_n(va_arg(*args, int)));\n\treturn (ft_putchar_n(c));\n}\n\nint\tmini_printf(const char *format, ...)\n{\n\tva_list\targs;\n\tint\t\ttotal;\n\n\tva_start(args, format);\n\ttotal = 0;\n\twhile (*format)\n\t{\n\t\tif (*format == '%' && *(format + 1))\n\t\t\ttotal += conversion(*(++format), &args);\n\t\telse\n\t\t\ttotal += ft_putchar_n(*format);\n\t\tformat++;\n\t}\n\tva_end(args);\n\treturn (total);\n}",
+   "explication": "mini_printf parcourt le format. Sur un %, elle passe à la lettre suivante et appelle conversion, qui lit le bon type avec va_arg. Chaque fonction d'affichage renvoie le nombre de caractères écrits (le _n de leur nom), et on additionne pour renvoyer le total, comme printf.\n\nUn %% tombe dans le dernier cas de conversion : il affiche simplement le caractère %. Il reste à écrire les trois fonctions _n, et à ajouter %i, %u, %x, %X et %p."
+  },
+  "pieges": [
+   "Lire un char avec va_arg(args, char) : les petits types sont promus, on lit un int.",
+   "Oublier va_end.",
+   "Oublier de compter les caractères affichés pour la valeur de retour.",
+   "Passer une saisie de l'utilisateur directement comme format."
+  ],
+  "retenir": [
+   "Les ... annoncent un nombre variable d'arguments.",
+   "va_start, va_arg(args, type), va_end, avec stdarg.h.",
+   "C'est le format qui dit combien d'arguments lire, et de quel type.",
+   "ft_printf : %c %s %p %d %i %u %x %X %%.",
+   "La valeur de retour est le nombre de caractères affichés."
+  ],
+  "quiz": [
+   {
+    "q": "Quel en-tête faut-il pour va_list et va_arg ?",
+    "choix": [
+     "stdio.h",
+     "stdarg.h",
+     "stdlib.h"
+    ],
+    "bonne": 1,
+    "explication": "stdarg.h fournit les outils des fonctions variadiques."
+   },
+   {
+    "q": "Comment lit-on un %c avec va_arg ?",
+    "choix": [
+     "va_arg(args, char)",
+     "va_arg(args, int)",
+     "va_arg(args, char *)"
+    ],
+    "bonne": 1,
+    "explication": "Un char passé dans les ... est promu en int."
+   },
+   {
+    "q": "Que renvoie printf ?",
+    "choix": [
+     "0",
+     "Le nombre de caractères affichés",
+     "Le nombre d'arguments"
+    ],
+    "bonne": 1,
+    "explication": "ft_printf doit renvoyer la même valeur."
+   }
+  ],
+  "question": "Avec tes exercices ft_putnbr et ft_putnbr_base, quelles conversions de ft_printf sais-tu déjà presque faire ?"
+ },
+ "lecture": {
+  "titre": "Lire ligne par ligne : get_next_line",
+  "objectif": "Lire un fichier ligne par ligne avec read et une variable static, sans fuite de mémoire.",
+  "pourquoi": "read lit des blocs d'octets, pas des lignes. Pourtant, on a souvent besoin de lire un fichier ligne par ligne : une configuration, une carte de jeu, des logs. Le projet get_next_line de 42 te demande d'écrire cette fonction.\n\nIl t'apprend trois notions clés : les variables static, la gestion fine de malloc et free, et la lecture par blocs de taille variable.",
+  "analogie": "Imagine que tu lis un livre par paquets de 10 lettres tirés d'une machine. Ton but : réciter une phrase complète à chaque fois qu'on te le demande. Si un paquet contient la fin d'une phrase et le début de la suivante, tu gardes le début dans ta poche pour la prochaine fois. Ta poche, c'est la variable static.",
+  "vocabulaire": [
+   {
+    "mot": "Variable static",
+    "def": "Une variable locale qui garde sa valeur d'un appel de la fonction à l'autre."
+   },
+   {
+    "mot": "BUFFER_SIZE",
+    "def": "La taille des blocs lus par read, définie à la compilation avec -D."
+   },
+   {
+    "mot": "Reste",
+    "def": "Ce qui a été lu après la fin de la ligne, gardé pour l'appel suivant."
+   },
+   {
+    "mot": "Fuite de mémoire",
+    "def": "Une zone réservée avec malloc et jamais libérée."
+   }
+  ],
+  "sections": [
+   {
+    "titre": "La variable static",
+    "texte": "Une variable locale normale disparaît à la fin de la fonction. Avec `static`, elle survit : `static char *reste;` garde sa valeur d'un appel à l'autre, et vaut NULL au tout premier appel.\n\nC'est la pièce maîtresse de get_next_line : la fonction retrouve, à chaque appel, ce qu'elle avait lu en trop la fois précédente."
+   },
+   {
+    "titre": "L'algorithme",
+    "texte": "1. Tant que le reste ne contient pas de '\\n' et que read lit quelque chose : lire BUFFER_SIZE octets et les coller au reste.\n2. Extraire du reste la ligne, jusqu'au '\\n' compris : c'est ce qu'on renvoie.\n3. Garder dans le reste tout ce qui suit le '\\n'.\n4. À la fin du fichier, renvoyer la dernière ligne si elle existe, puis NULL."
+   },
+   {
+    "titre": "BUFFER_SIZE",
+    "texte": "La fonction doit marcher avec n'importe quelle taille de bloc : 1, 42, 10 000 000. On compile avec `cc -D BUFFER_SIZE=42 …`.\n\nAvec BUFFER_SIZE=1, read est appelé pour chaque caractère : c'est lent, mais ça doit marcher. Avec une taille énorme, attention à ne pas réserver la mémoire n'importe comment."
+   },
+   {
+    "titre": "La mémoire, sans fuite",
+    "texte": "Chaque ligne renvoyée est réservée avec malloc : c'est l'appelant qui la libère. Le reste, lui, est géré par ta fonction : quand tu le remplaces, libère l'ancien ; à la fin du fichier ou en cas d'erreur, libère-le et remets-le à NULL.\n\nPour vérifier, `valgrind --leak-check=full ./a.out` sur Linux, ou `leaks` sur macOS : zéro fuite est exigé."
+   }
+  ],
+  "exemple": {
+   "titre": "Un main pour tester",
+   "code": "#include <fcntl.h>\n#include <stdio.h>\n#include <stdlib.h>\n#include \"get_next_line.h\"\n\nint\tmain(void)\n{\n\tint\t\tfd;\n\tchar\t*ligne;\n\n\tfd = open(\"texte.txt\", O_RDONLY);\n\tligne = get_next_line(fd);\n\twhile (ligne != NULL)\n\t{\n\t\tprintf(\"%s\", ligne);\n\t\tfree(ligne);\n\t\tligne = get_next_line(fd);\n\t}\n\tclose(fd);\n\treturn (0);\n}",
+   "explication": "Le main appelle get_next_line jusqu'à ce qu'elle renvoie NULL, affiche chaque ligne (qui contient déjà son '\\n'), puis la libère.\n\nCompile avec plusieurs tailles : `cc -D BUFFER_SIZE=1 …`, puis 42, puis 9999. Le résultat doit être identique, et valgrind ne doit signaler aucune fuite."
+  },
+  "pieges": [
+   "Oublier de libérer l'ancien reste quand on en crée un nouveau.",
+   "Renvoyer la ligne sans son '\\n' : le sujet le veut, sauf pour la dernière ligne s'il n'y en a pas.",
+   "Ne tester qu'avec un seul BUFFER_SIZE.",
+   "Oublier le cas d'un fichier vide ou d'un fd invalide."
+  ],
+  "retenir": [
+   "read lit des blocs ; get_next_line reconstruit des lignes.",
+   "Une variable static garde le reste entre deux appels.",
+   "Lire jusqu'à trouver '\\n', extraire la ligne, garder la suite.",
+   "La fonction doit marcher avec n'importe quel BUFFER_SIZE.",
+   "Zéro fuite : vérifie avec valgrind ou leaks."
+  ],
+  "quiz": [
+   {
+    "q": "Que fait le mot-clé static devant une variable locale ?",
+    "choix": [
+     "Il la rend constante",
+     "Il lui fait garder sa valeur d'un appel à l'autre",
+     "Il la rend globale à tout le programme"
+    ],
+    "bonne": 1,
+    "explication": "Elle reste visible seulement dans la fonction, mais ne disparaît pas."
+   },
+   {
+    "q": "Comment définir BUFFER_SIZE à la compilation ?",
+    "choix": [
+     "cc -B 42",
+     "cc -D BUFFER_SIZE=42",
+     "cc --size 42"
+    ],
+    "bonne": 1,
+    "explication": "-D définit une constante du préprocesseur."
+   },
+   {
+    "q": "Qui doit libérer la ligne renvoyée par get_next_line ?",
+    "choix": [
+     "get_next_line elle-même",
+     "L'appelant",
+     "Personne"
+    ],
+    "bonne": 1,
+    "explication": "La ligne est réservée pour l'appelant, qui la libère après usage."
+   }
+  ],
+  "question": "Déroule sur papier get_next_line avec BUFFER_SIZE=4 sur le texte « abc\\ndefgh\\nij » : que contient le reste après chaque appel ?"
+ },
+ "bits": {
+  "titre": "Bits et signaux : minitalk",
+  "objectif": "Manipuler les bits d'un octet et faire communiquer deux programmes avec des signaux Unix.",
+  "pourquoi": "Tout, dans un ordinateur, finit en bits : des 0 et des 1. Savoir lire et écrire un bit précis sert partout : protocoles réseau, permissions, compression, cryptographie.\n\nLe projet minitalk de 42 te fait envoyer un message d'un programme à un autre en n'utilisant que deux signaux : un pour 0, un pour 1. Il faut donc découper chaque caractère en bits, les envoyer, et les reconstruire de l'autre côté.",
+  "analogie": "Imagine que tu ne peux communiquer avec ton voisin qu'avec une lampe torche : un flash court pour 0, un flash long pour 1. Pour envoyer la lettre A (01000001), tu fais huit flashs, et lui note chaque flash pour reconstituer la lettre. C'est exactement minitalk.",
+  "vocabulaire": [
+   {
+    "mot": "Bit",
+    "def": "La plus petite information : 0 ou 1. Un octet en compte 8."
+   },
+   {
+    "mot": "Opérateurs bit à bit",
+    "def": "& (et), | (ou), ^ (ou exclusif), ~ (non), << et >> (décalages)."
+   },
+   {
+    "mot": "Masque",
+    "def": "Un nombre utilisé avec & pour isoler certains bits."
+   },
+   {
+    "mot": "SIGUSR1 / SIGUSR2",
+    "def": "Deux signaux Unix libres, que les programmes utilisent comme ils veulent."
+   }
+  ],
+  "sections": [
+   {
+    "titre": "Les opérateurs",
+    "texte": "`a & b` garde les bits à 1 dans les deux, `a | b` ceux à 1 dans l'un ou l'autre, `a ^ b` ceux qui diffèrent, `~a` inverse tout. `a << 1` décale tous les bits d'un cran vers la gauche (cela multiplie par 2), `a >> 1` vers la droite.\n\nNe confonds pas `&` et `&&`, `|` et `||` : les doubles travaillent sur des conditions vraies ou fausses, les simples sur chaque bit."
+   },
+   {
+    "titre": "Lire et écrire un bit",
+    "texte": "Le bit numéro i de c (0 est celui de droite) : `(c >> i) & 1`. On décale pour l'amener tout à droite, puis on garde seulement lui.\n\nMettre le bit i à 1 : `c |= (1 << i)`. Le mettre à 0 : `c &= ~(1 << i)`. Avec ces trois lignes, tu peux découper un caractère en bits et le reconstruire."
+   },
+   {
+    "titre": "Les signaux en C",
+    "texte": "`kill(pid, SIGUSR1)` envoie un signal au processus de numéro pid. Malgré son nom, kill ne tue pas forcément : il envoie le signal choisi.\n\nPour réagir, le processus qui reçoit installe un gestionnaire avec `sigaction` (ou `signal`) : une fonction appelée à chaque signal reçu. `getpid()` donne le PID du programme, que le serveur affiche au démarrage pour que le client sache à qui écrire."
+   },
+   {
+    "titre": "L'architecture de minitalk",
+    "texte": "Le serveur se lance, affiche son PID et attend. Le client reçoit ce PID et un message ; pour chaque caractère, il envoie 8 signaux, SIGUSR1 pour un 0 et SIGUSR2 pour un 1 par exemple.\n\nLe serveur reconstruit chaque caractère bit par bit et l'affiche quand il en a reçu 8. Piège classique : envoyer les signaux trop vite. Le client doit laisser au serveur le temps de traiter chaque signal, ou attendre un accusé de réception."
+   }
+  ],
+  "exemple": {
+   "titre": "Découper un caractère en bits",
+   "code": "#include <unistd.h>\n\nvoid\tafficher_bits(unsigned char c)\n{\n\tint\t\ti;\n\tchar\tb;\n\n\ti = 7;\n\twhile (i >= 0)\n\t{\n\t\tb = ((c >> i) & 1) + '0';\n\t\twrite(1, &b, 1);\n\t\ti--;\n\t}\n\twrite(1, \"\\n\", 1);\n}\n\n/* afficher_bits('A') affiche 01000001 */",
+   "explication": "On part du bit 7, celui de gauche, jusqu'au bit 0. Pour chacun, `(c >> i) & 1` donne 0 ou 1, et `+ '0'` le transforme en caractère à afficher. 'A' vaut 65, soit 64 + 1 : 01000001.\n\nDans minitalk, à la place du write, le client enverrait SIGUSR1 ou SIGUSR2 selon le bit."
+  },
+  "pieges": [
+   "Confondre & et &&, | et ||.",
+   "Se tromper dans l'ordre des bits entre l'envoi et la réception.",
+   "Envoyer les signaux trop vite : certains se perdent.",
+   "Utiliser un char signé pour les décalages : préfère unsigned char."
+  ],
+  "retenir": [
+   "Un octet = 8 bits ; & | ^ ~ << >> travaillent bit par bit.",
+   "Lire le bit i : (c >> i) & 1.",
+   "Mettre à 1 : c |= (1 << i) ; à 0 : c &= ~(1 << i).",
+   "kill(pid, signal) envoie un signal ; sigaction installe un gestionnaire.",
+   "minitalk : 8 signaux par caractère, reconstruits par le serveur."
+  ],
+  "quiz": [
+   {
+    "q": "Que vaut (5 >> 0) & 1 ?",
+    "choix": [
+     "0",
+     "1",
+     "5"
+    ],
+    "bonne": 1,
+    "explication": "5 s'écrit 101 : le bit 0, à droite, vaut 1."
+   },
+   {
+    "q": "Que fait x << 1 sur un nombre positif ?",
+    "choix": [
+     "Il divise par 2",
+     "Il multiplie par 2",
+     "Il inverse les bits"
+    ],
+    "bonne": 1,
+    "explication": "Décaler d'un cran vers la gauche double la valeur, tant qu'on ne déborde pas."
+   },
+   {
+    "q": "Que fait kill(pid, SIGUSR1) ?",
+    "choix": [
+     "Il arrête forcément le processus",
+     "Il envoie le signal SIGUSR1 au processus",
+     "Il crée un processus"
+    ],
+    "bonne": 1,
+    "explication": "kill envoie un signal ; SIGUSR1 n'arrête rien si le processus le gère."
+   }
+  ],
+  "question": "Écris sur papier les 8 bits de la lettre B, puis de la lettre a. Quel bit change entre une majuscule et sa minuscule ?"
+ },
+ "fork_pipe": {
+  "titre": "Processus en C : fork, exec et pipe",
+  "objectif": "Créer des processus depuis ton code, lancer des commandes et les relier par des pipes, comme le shell.",
+  "pourquoi": "Quand tu tapes `ls | wc -l`, ton shell crée deux processus, lance ls et wc, et branche la sortie de l'un sur l'entrée de l'autre. Les projets pipex et minishell de 42 te demandent de faire exactement ça, en C.\n\nC'est aussi la base pour comprendre comment fonctionnent un serveur, un terminal ou un malware qui lance des commandes.",
+  "analogie": "fork, c'est une photocopieuse à processus : on obtient deux copies identiques du programme, le parent et l'enfant. exec, c'est l'enfant qui jette sa copie et la remplace par un tout autre programme. Et pipe, c'est un tuyau entre deux pièces : ce qu'on verse d'un côté sort de l'autre.",
+  "vocabulaire": [
+   {
+    "mot": "fork",
+    "def": "Crée un nouveau processus, copie du processus qui l'appelle."
+   },
+   {
+    "mot": "execve",
+    "def": "Remplace le programme du processus par un autre, par exemple /bin/ls."
+   },
+   {
+    "mot": "waitpid",
+    "def": "Le parent attend la fin d'un enfant et récupère son code de retour."
+   },
+   {
+    "mot": "pipe",
+    "def": "Crée un tuyau : deux descripteurs, un pour lire, un pour écrire."
+   },
+   {
+    "mot": "dup2",
+    "def": "Fait pointer un descripteur sur un autre : sert à rediriger l'entrée ou la sortie."
+   }
+  ],
+  "sections": [
+   {
+    "titre": "fork : se dédoubler",
+    "texte": "`pid_t pid = fork();` : à partir de cette ligne, il y a deux processus qui exécutent la suite. Dans l'enfant, fork renvoie 0 ; dans le parent, il renvoie le PID de l'enfant ; en cas d'échec, -1.\n\nC'est ce qui permet d'écrire `if (pid == 0)` pour le code de l'enfant, et `else` pour celui du parent."
+   },
+   {
+    "titre": "exec : changer de programme",
+    "texte": "`execve(\"/bin/ls\", args, envp)` remplace le programme de l'enfant par ls. Si execve réussit, il ne revient jamais : le code qui suit ne s'exécute que s'il a échoué.\n\nIl faut le chemin complet du programme : pipex et minishell doivent le chercher dans les dossiers du PATH, comme le fait ton shell."
+   },
+   {
+    "titre": "wait : attendre ses enfants",
+    "texte": "Le parent appelle `waitpid(pid, &status, 0)` pour attendre la fin de l'enfant et récupérer son code de retour. Sans ça, l'enfant terminé reste en mémoire sous forme de processus « zombie ».\n\nC'est ainsi que le shell connaît le code de retour d'une commande, celui que tu lis avec echo $?."
+   },
+   {
+    "titre": "pipe et dup2 : brancher les tuyaux",
+    "texte": "`pipe(fd)` remplit fd[0] (le bout où on lit) et fd[1] (le bout où on écrit). Pour `cmd1 | cmd2` : le premier enfant fait `dup2(fd[1], 1)`, sa sortie va dans le tuyau ; le second fait `dup2(fd[0], 0)`, son entrée vient du tuyau.\n\nChaque processus ferme ensuite les bouts qu'il n'utilise pas. Sinon, le lecteur attend indéfiniment une fin de données qui n'arrive jamais."
+   }
+  ],
+  "exemple": {
+   "titre": "Lancer ls dans un processus enfant",
+   "code": "#include <unistd.h>\n#include <sys/wait.h>\n#include <stdio.h>\n\nint\tmain(int argc, char **argv, char **envp)\n{\n\tpid_t\tpid;\n\tint\t\tstatus;\n\tchar\t*args[3];\n\n\t(void)argc;\n\t(void)argv;\n\targs[0] = \"ls\";\n\targs[1] = \"-l\";\n\targs[2] = NULL;\n\tpid = fork();\n\tif (pid == -1)\n\t\treturn (1);\n\tif (pid == 0)\n\t{\n\t\texecve(\"/bin/ls\", args, envp);\n\t\tperror(\"execve\");\n\t\treturn (127);\n\t}\n\twaitpid(pid, &status, 0);\n\tprintf(\"ls est terminé\\n\");\n\treturn (0);\n}",
+   "explication": "Le processus se dédouble. L'enfant devient ls -l ; s'il n'y arrive pas, perror explique pourquoi et il renvoie 127, comme le shell pour une commande introuvable. Le parent attend la fin de l'enfant, puis affiche son message.\n\nLe main reçoit ici un troisième paramètre, envp, l'environnement, qu'on transmet à execve. Selon les systèmes, ls peut se trouver dans /usr/bin plutôt que /bin : c'est pour ça que pipex cherche dans le PATH."
+  },
+  "pieges": [
+   "Oublier que le code après fork s'exécute dans les deux processus.",
+   "Croire qu'execve revient après avoir réussi.",
+   "Oublier de fermer les bouts de pipe inutilisés : le programme se bloque.",
+   "Oublier waitpid : des processus zombies s'accumulent."
+  ],
+  "retenir": [
+   "fork renvoie 0 dans l'enfant, le PID de l'enfant dans le parent, -1 en cas d'échec.",
+   "execve remplace le programme ; s'il revient, c'est une erreur.",
+   "waitpid attend l'enfant et récupère son code de retour.",
+   "pipe(fd) : fd[0] pour lire, fd[1] pour écrire.",
+   "dup2 redirige ; on ferme toujours les bouts inutiles."
+  ],
+  "quiz": [
+   {
+    "q": "Que renvoie fork dans le processus enfant ?",
+    "choix": [
+     "Le PID du parent",
+     "0",
+     "-1"
+    ],
+    "bonne": 1,
+    "explication": "0 dans l'enfant, le PID de l'enfant dans le parent."
+   },
+   {
+    "q": "Que se passe-t-il après un execve réussi ?",
+    "choix": [
+     "Le code suivant s'exécute",
+     "Le programme est remplacé : le code suivant ne s'exécute jamais",
+     "Le processus s'arrête"
+    ],
+    "bonne": 1,
+    "explication": "Le code après execve ne sert qu'en cas d'échec."
+   },
+   {
+    "q": "Dans pipe(fd), quel descripteur sert à écrire ?",
+    "choix": [
+     "fd[0]",
+     "fd[1]",
+     "Les deux"
+    ],
+    "bonne": 1,
+    "explication": "fd[0] est le bout lecture, fd[1] le bout écriture."
+   }
+  ],
+  "question": "Dessine les processus et les tuyaux de la commande < infile cat | wc -l > outfile. Qui ferme quel bout du pipe ?"
+ },
+ "threads": {
+  "titre": "Threads et mutex : philosophers",
+  "objectif": "Faire travailler plusieurs fils d'exécution en même temps sans qu'ils se marchent dessus.",
+  "pourquoi": "Un processeur moderne a plusieurs cœurs : pour en profiter, un programme lance plusieurs threads, des fils d'exécution qui travaillent en parallèle dans la même mémoire. C'est plus rapide, mais beaucoup plus piégeux.\n\nLe projet philosophers de 42 en fait un casse-tête célèbre : des philosophes autour d'une table doivent partager des fourchettes sans se bloquer et sans mourir de faim. Les concurrences mal gérées sont aussi une source réelle de failles.",
+  "analogie": "Des threads, ce sont plusieurs cuisiniers dans la même cuisine. Ils vont plus vite qu'un seul, mais s'ils prennent le même couteau en même temps, c'est l'accident. Le mutex, c'est la règle « un seul à la fois touche au couteau, les autres attendent ».",
+  "vocabulaire": [
+   {
+    "mot": "Thread",
+    "def": "Un fil d'exécution à l'intérieur d'un processus, qui partage sa mémoire avec les autres threads."
+   },
+   {
+    "mot": "Data race",
+    "def": "Deux threads qui accèdent à la même donnée en même temps, dont au moins un qui écrit : résultat imprévisible."
+   },
+   {
+    "mot": "Mutex",
+    "def": "Un verrou : un seul thread à la fois peut le tenir."
+   },
+   {
+    "mot": "Interblocage (deadlock)",
+    "def": "Des threads qui s'attendent mutuellement pour toujours."
+   }
+  ],
+  "sections": [
+   {
+    "titre": "Créer et attendre des threads",
+    "texte": "`pthread_create(&t, NULL, routine, arg)` lance la fonction routine dans un nouveau thread, avec arg en paramètre. `pthread_join(t, NULL)` attend qu'il se termine.\n\nOn compile avec `-pthread`. Tous les threads voient les mêmes variables globales et les mêmes zones réservées avec malloc : c'est leur force et leur danger."
+   },
+   {
+    "titre": "Le problème : la data race",
+    "texte": "`compteur++` semble être une seule opération, mais le processeur fait trois choses : lire la valeur, ajouter 1, écrire le résultat. Si deux threads lisent 41 en même temps, tous deux écrivent 42 : un ajout est perdu.\n\nLe résultat change d'une exécution à l'autre, ce qui rend ces bugs très difficiles à trouver. Des outils comme `-fsanitize=thread` ou helgrind les détectent."
+   },
+   {
+    "titre": "Le mutex",
+    "texte": "`pthread_mutex_lock(&m)` prend le verrou, ou attend qu'il soit libre. `pthread_mutex_unlock(&m)` le rend. Entre les deux, un seul thread à la fois : on protège ainsi chaque accès à une donnée partagée.\n\nLe mutex s'initialise avec `pthread_mutex_init` et se détruit avec `pthread_mutex_destroy`. Tout lock doit avoir son unlock, sur tous les chemins du code."
+   },
+   {
+    "titre": "L'interblocage et les philosophes",
+    "texte": "Chaque philosophe a besoin des deux fourchettes à côté de lui, chaque fourchette est un mutex. Si tous prennent leur fourchette gauche en même temps, chacun attend la droite pour toujours : c'est l'interblocage.\n\nSolutions classiques : faire prendre les fourchettes dans un ordre différent à un philosophe sur deux, ou décaler leurs départs. Il faut aussi surveiller qui n'a pas mangé depuis trop longtemps, sans data race sur cette information."
+   }
+  ],
+  "exemple": {
+   "titre": "Un compteur partagé, protégé",
+   "code": "#include <pthread.h>\n#include <stdio.h>\n\nint\t\t\t\tg_compteur = 0;\npthread_mutex_t\tg_verrou;\n\nvoid\t*ajouter(void *arg)\n{\n\tint\ti;\n\n\t(void)arg;\n\ti = 0;\n\twhile (i < 100000)\n\t{\n\t\tpthread_mutex_lock(&g_verrou);\n\t\tg_compteur++;\n\t\tpthread_mutex_unlock(&g_verrou);\n\t\ti++;\n\t}\n\treturn (NULL);\n}\n\nint\tmain(void)\n{\n\tpthread_t\tt1;\n\tpthread_t\tt2;\n\n\tpthread_mutex_init(&g_verrou, NULL);\n\tpthread_create(&t1, NULL, ajouter, NULL);\n\tpthread_create(&t2, NULL, ajouter, NULL);\n\tpthread_join(t1, NULL);\n\tpthread_join(t2, NULL);\n\tpthread_mutex_destroy(&g_verrou);\n\tprintf(\"%d\\n\", g_compteur);\n\treturn (0);\n}",
+   "explication": "Deux threads ajoutent chacun 100 000 au compteur. Grâce au mutex, le résultat est toujours 200 000. Retire le lock et l'unlock, et relance plusieurs fois : tu obtiendras des nombres différents, et plus petits.\n\nLes variables globales servent ici à garder l'exemple court : dans philosophers, la Norme les interdit, et on passe les données par la structure donnée en argument."
+  },
+  "pieges": [
+   "Accéder à une donnée partagée sans mutex.",
+   "Oublier un unlock sur un chemin du code : les autres threads attendent pour toujours.",
+   "Prendre plusieurs mutex dans un ordre différent selon les threads : interblocage.",
+   "Croire qu'un programme sans erreur à un essai est correct : les data races sont aléatoires."
+  ],
+  "retenir": [
+   "Les threads d'un processus partagent la même mémoire.",
+   "pthread_create lance, pthread_join attend ; on compile avec -pthread.",
+   "Une data race donne des résultats imprévisibles.",
+   "Un mutex protège une donnée : lock, accès, unlock.",
+   "L'interblocage vient de threads qui s'attendent en cercle."
+  ],
+  "quiz": [
+   {
+    "q": "Pourquoi compteur++ peut-il donner un mauvais résultat avec deux threads ?",
+    "choix": [
+     "Parce que ++ est interdit",
+     "Parce que lire, ajouter et écrire peuvent s'entremêler entre les threads",
+     "Parce que les threads n'ont pas de mémoire"
+    ],
+    "bonne": 1,
+    "explication": "C'est une data race : un ajout peut être perdu."
+   },
+   {
+    "q": "Que fait pthread_mutex_lock si le verrou est déjà pris ?",
+    "choix": [
+     "Il renvoie une erreur tout de suite",
+     "Il attend que le verrou soit libéré",
+     "Il supprime le verrou"
+    ],
+    "bonne": 1,
+    "explication": "Le thread attend son tour."
+   },
+   {
+    "q": "Qu'est-ce qu'un interblocage ?",
+    "choix": [
+     "Un thread trop rapide",
+     "Des threads qui s'attendent mutuellement pour toujours",
+     "Un mutex détruit"
+    ],
+    "bonne": 1,
+    "explication": "Chacun tient une ressource et attend celle de l'autre."
+   }
+  ],
+  "question": "Avec 5 philosophes et 5 fourchettes, propose une règle pour prendre les fourchettes qui empêche l'interblocage."
+ },
+ "ptrfonctions": {
+  "titre": "Les pointeurs sur fonctions",
+  "objectif": "Ranger une fonction dans une variable, la passer à une autre fonction, et construire des tableaux de fonctions.",
+  "pourquoi": "Une fonction a une adresse, comme une variable. On peut donc la ranger dans un pointeur et l'appeler plus tard, ou la donner à une autre fonction qui l'appliquera à chaque élément d'un tableau.\n\nÀ la Piscine, le module C11 est consacré à ça (ft_foreach, ft_map, ft_count_if…), et on s'en sert ensuite partout : ft_lstiter dans Libft, le choix de la conversion dans ft_printf, les commandes intégrées de minishell.",
+  "analogie": "Un pointeur sur fonction, c'est une télécommande programmable. Tu y enregistres une action (allumer, changer de chaîne), et la personne qui tient la télécommande déclenche l'action sans savoir ce qu'elle fait exactement. Tu peux changer l'action enregistrée sans changer la télécommande.",
+  "vocabulaire": [
+   {
+    "mot": "Pointeur sur fonction",
+    "def": "Une variable qui contient l'adresse d'une fonction : int (*f)(int);"
+   },
+   {
+    "mot": "Fonction de rappel (callback)",
+    "def": "Une fonction donnée en paramètre à une autre, qui l'appellera."
+   },
+   {
+    "mot": "Tableau de fonctions",
+    "def": "Un tableau de pointeurs sur fonctions, pour choisir laquelle appeler selon un index."
+   },
+   {
+    "mot": "typedef de fonction",
+    "def": "Un nom court pour un type de pointeur sur fonction."
+   }
+  ],
+  "sections": [
+   {
+    "titre": "Déclarer et appeler",
+    "texte": "`int (*f)(int);` déclare f, un pointeur sur une fonction qui prend un int et renvoie un int. Les parenthèses autour de *f sont indispensables : sans elles, on déclarerait une fonction qui renvoie un int *.\n\n`f = &ft_abs;` (ou simplement `f = ft_abs;`) range l'adresse, et `f(-4)` appelle la fonction."
+   },
+   {
+    "titre": "Passer une fonction en paramètre",
+    "texte": "`void ft_foreach(int *tab, int length, void (*f)(int))` applique f à chaque case du tableau. On l'appelle avec `ft_foreach(tab, 5, &ft_putnbr);`.\n\nLa même fonction ft_foreach sert à afficher, à compter, à tester : il suffit de lui donner une autre fonction. C'est le principe des callbacks, partout en programmation."
+   },
+   {
+    "titre": "Les tableaux de fonctions",
+    "texte": "`int (*ops[4])(int, int) = {add, sub, mul, div};` range quatre fonctions dans un tableau. `ops[2](6, 7)` appelle mul.\n\nC'est une façon élégante de remplacer une longue suite de if : dans do-op (C11), on choisit l'opération selon le caractère +, -, *, / ou %, et dans ft_printf, la conversion selon la lettre après le %."
+   },
+   {
+    "titre": "Rendre lisible avec typedef",
+    "texte": "`typedef int (*t_op)(int, int);` crée le nom t_op. On écrit ensuite `t_op ops[4];` ou `int appliquer(t_op f, int a, int b)`.\n\nLes pointeurs sur fonctions ont aussi un côté sécurité : beaucoup d'attaques par débordement de tampon cherchent à écraser un pointeur sur fonction pour faire exécuter leur propre code."
+   }
+  ],
+  "exemple": {
+   "titre": "Compter avec une fonction de test",
+   "code": "int\test_pair(int n)\n{\n\treturn (n % 2 == 0);\n}\n\nint\tcompter_si(int *tab, int n, int (*f)(int))\n{\n\tint\ti;\n\tint\ttotal;\n\n\ti = 0;\n\ttotal = 0;\n\twhile (i < n)\n\t{\n\t\tif (f(tab[i]))\n\t\t\ttotal++;\n\t\ti++;\n\t}\n\treturn (total);\n}\n\n/* compter_si(tab, 5, &est_pair) compte les nombres pairs */",
+   "explication": "compter_si ne sait rien de la parité : elle compte les cases pour lesquelles la fonction reçue renvoie vrai. Avec une fonction est_negatif, elle compterait les négatifs, sans changer une ligne.\n\nC'est exactement l'esprit de ft_count_if dans le module C11."
+  },
+  "pieges": [
+   "Oublier les parenthèses : `int *f(int)` déclare une fonction, pas un pointeur.",
+   "Passer une fonction dont les paramètres ne correspondent pas au type attendu.",
+   "Appeler un pointeur sur fonction resté NULL : plantage."
+  ],
+  "retenir": [
+   "Une fonction a une adresse : int (*f)(int) peut la contenir.",
+   "f(x) appelle la fonction pointée.",
+   "On passe une fonction en paramètre pour qu'une autre l'applique : c'est un callback.",
+   "Un tableau de fonctions remplace une longue suite de if.",
+   "typedef rend ces types lisibles."
+  ],
+  "quiz": [
+   {
+    "q": "Que déclare int (*f)(char) ?",
+    "choix": [
+     "Une fonction qui renvoie un int *",
+     "Un pointeur sur une fonction qui prend un char et renvoie un int",
+     "Un tableau de char"
+    ],
+    "bonne": 1,
+    "explication": "Les parenthèses autour de *f en font un pointeur sur fonction."
+   },
+   {
+    "q": "Comment appeler la fonction pointée par f avec 42 ?",
+    "choix": [
+     "*f[42]",
+     "f(42)",
+     "&f(42)"
+    ],
+    "bonne": 1,
+    "explication": "On écrit simplement f(42) ; (*f)(42) marche aussi."
+   },
+   {
+    "q": "À quoi sert un tableau de pointeurs sur fonctions ?",
+    "choix": [
+     "À trier des fonctions",
+     "À choisir quelle fonction appeler selon un index",
+     "À libérer la mémoire"
+    ],
+    "bonne": 1,
+    "explication": "Il remplace une suite de conditions par un simple index."
+   }
+  ],
+  "question": "Réécris l'exemple pour compter les nombres négatifs, puis les multiples de 3, sans toucher à compter_si."
+ }
+}
