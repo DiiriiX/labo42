@@ -1,1 +1,22 @@
-[]
+[
+  {
+    "date": "2026-11-23",
+    "bilan": "Tu as déjà vu les fichiers, `ssh`, la compilation, l'ASCII et César, et tu as réussi les versions 1 et 3 de ton chiffrement de César. Ta prochaine marche, c'est la version 4 : chiffrer un mot entier, avec les quatre questions du prof qui t'attendent encore.",
+    "etape": {
+      "titre": "César v4 : chiffrer un mot entier",
+      "detail": "Ouvre l'exercice **cesar_v4** de l'atelier et réponds d'abord par écrit aux quatre questions du prof : où ranger le mot, comment le lire, quand la boucle s'arrête. Ensuite écris ton code, compile avec `cc -Wall -Wextra -Werror` et teste avec plusieurs mots, puis passe la mini norminette.",
+      "lien": "#atelier-cesar_v4"
+    },
+    "actus": [
+      "**Fuite chez Decathlon** : environ 163 000 fiches clients publiées par un pirate ; méfie-toi des SMS ou appels sur un colis Decathlon, c'est du phishing tout prêt.",
+      "**Cyberattaque au CHU de Guadeloupe** : plan blanc et opérations reportées ; les équipes de défense isolent, vérifient chaque système et fouillent les logs.",
+      "**Faille critique chez Cisco Expressway** : des identifiants écrits en dur dans le code permettent de lancer des commandes en root, l'erreur classique à ne jamais faire.",
+      "**Routeurs GL.iNet piratés via GoodCloud** : les défenseurs cherchent les processus suspects avec `ps` et `netstat`, des commandes de tes cours Linux."
+    ],
+    "question": {
+      "texte": "En ASCII, quel écart y a-t-il entre une lettre majuscule et la même lettre en minuscule, et comment l'utiliserais-tu en C pour passer de l'une à l'autre ?",
+      "cours": "ascii"
+    },
+    "mot": "Une lettre à la fois, puis un mot entier : c'est exactement comme ça qu'on avance à 42."
+  }
+]
