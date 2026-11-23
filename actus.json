@@ -1,5 +1,128 @@
 [
   {
+    "id": "2026-11-23-commission-europeenne",
+    "date": "2026-11-23",
+    "ts": "2026-11-23T22:42:31+01:00",
+    "cat": "Cyber",
+    "theme": "intrusion",
+    "importance": 2,
+    "titre": "Commission européenne : une intrusion toujours en cours",
+    "resume": "Le service informatique de la Commission européenne a repéré un intrus dans ses réseaux internes le 22 octobre. Un mois plus tard, d'après Euronews, l'attaque n'est toujours pas complètement maîtrisée, et la plateforme de formation EU Academy a été coupée.\n\nLa Commission confirme la fuite des noms et adresses mail des utilisateurs d'EU Academy et prévient qu'ils risquent de recevoir du phishing. Des sources soupçonnent un groupe lié à la Chine, mais rien n'est confirmé officiellement, et la Chine dément.",
+    "pourquoi": "Une intrusion qui dure des semaines, c'est exactement ce que doivent repérer et nettoyer les équipes de défense (SOC, réponse à incident). Et même une petite fuite (noms, mails) suffit à préparer des mails de phishing crédibles.",
+    "cours": "phishing",
+    "source": "Euronews",
+    "url": "https://fr.euronews.com/2026/11/23/des-hackers-lies-a-la-chine-soupconnes-dune-vaste-cyberattaque-visant-la-commission-europe",
+    "schemas": [
+      {
+        "type": "dates",
+        "titre": "Le déroulé",
+        "items": [
+          {
+            "date": "22 octobre",
+            "t": "Intrus repéré dans le réseau",
+            "ton": "attaque"
+          },
+          {
+            "date": "Samedi",
+            "t": "EU Academy coupée",
+            "ton": "defense"
+          },
+          {
+            "date": "23 novembre",
+            "t": "Pas encore maîtrisée",
+            "ton": "attaque"
+          }
+        ]
+      },
+      {
+        "type": "cibles",
+        "titre": "Ce qui est touché",
+        "centre": {
+          "t": "Commission européenne",
+          "d": "réseaux internes",
+          "ton": "cible"
+        },
+        "autour": [
+          {
+            "t": "EU Academy",
+            "d": "plateforme coupée"
+          },
+          {
+            "t": "Noms et mails",
+            "d": "des utilisateurs, fuités"
+          },
+          {
+            "t": "Applis internes",
+            "d": "coupées par précaution"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "2026-11-23-azure-apim",
+    "date": "2026-11-23",
+    "ts": "2026-11-23T22:42:31+01:00",
+    "cat": "Cyber",
+    "theme": "cloud",
+    "importance": 2,
+    "titre": "Azure : une faille exploitée pour voler des secrets d'API",
+    "resume": "Microsoft a signalé une faille dans Azure API Management, dans les anciennes offres « Classic » (la version v2 n'est pas touchée). Un attaquant pouvait accéder aux fonctions d'administration et lire des secrets : clés d'abonnement, jetons, secrets de connexion.\n\nLa faille a été exploitée, notamment contre des entreprises d'énergie en Norvège comme Equinor. Microsoft a fermé l'accès le 19 novembre, mais les secrets déjà volés restent valables : il faut les changer.",
+    "pourquoi": "Dans le cloud, une seule faille chez le fournisseur peut exposer les secrets de nombreux clients. Le bon réflexe, que tu verras dans le cours cloud : changer (faire tourner) les clés et lire les journaux après un incident.",
+    "cours": "cloud",
+    "source": "BleepingComputer",
+    "url": "https://www.bleepingcomputer.com/news/security/microsoft-azure-flaw-exploited-to-steal-customers-api-credentials/",
+    "schemas": [
+      {
+        "type": "chaine",
+        "titre": "Comment l'attaque marche",
+        "etapes": [
+          {
+            "t": "Faille dans APIM Classic",
+            "d": "service d'API d'Azure",
+            "ton": "attaque"
+          },
+          {
+            "t": "Accès à l'administration",
+            "d": "sans autorisation",
+            "ton": "attaque"
+          },
+          {
+            "t": "Vol des secrets",
+            "d": "clés, jetons, mots de passe",
+            "ton": "attaque"
+          },
+          {
+            "t": "Changer les clés",
+            "d": "le correctif ne suffit pas",
+            "ton": "defense"
+          }
+        ]
+      },
+      {
+        "type": "dates",
+        "titre": "Les dates",
+        "items": [
+          {
+            "date": "17 novembre",
+            "t": "Equinor signale une attaque",
+            "ton": "attaque"
+          },
+          {
+            "date": "18 novembre",
+            "t": "Microsoft repère la faille",
+            "ton": "neutre"
+          },
+          {
+            "date": "19 novembre",
+            "t": "Accès fermé",
+            "ton": "defense"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "2026-11-23-delubac",
     "date": "2026-11-23",
     "ts": "2026-11-23T19:46:20+01:00",
