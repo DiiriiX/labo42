@@ -1,5 +1,124 @@
 [
   {
+    "id": "2026-11-23-cairn-agents-ia",
+    "date": "2026-11-23",
+    "ts": "2026-11-23T07:44:35+01:00",
+    "cat": "Cyber",
+    "theme": "ia",
+    "importance": 2,
+    "titre": "Des agents IA ont trouvé seuls une faille dans des universités",
+    "resume": "Amazon raconte une attaque menée en septembre 2026 contre des universités d'Asie de l'Est. Les pirates, probablement liés à la Chine, ont utilisé Cairn, un outil libre de test d'intrusion piloté par des agents IA : on lui donne une cible, il prépare et lance les étapes tout seul.\n\nEn 11 minutes environ, les agents ont trouvé une faille inconnue (un « path traversal ») dans MONAI Label, une appli d'imagerie médicale, et ont pu écrire des fichiers sur le serveur. Amazon a découvert tout cela grâce à une instance de Cairn laissée en ligne sans mot de passe. Les développeurs de MONAI Label ont publié une correction.",
+    "pourquoi": "Un path traversal, c'est un chemin de fichier mal vérifié (comme ../../) : le même genre d'erreur que tu éviteras en contrôlant les entrées de tes programmes en C. Et ça montre que les défenseurs devront réagir à la vitesse des machines, d'où l'importance des logs et des alertes automatiques.",
+    "cours": "ia",
+    "source": "AWS Security Blog (Amazon)",
+    "url": "https://aws.amazon.com/blogs/security/chinese-nexus-actors-cairn-ai-agents-found-a-zero-day-on-their-own/",
+    "schemas": [
+      {
+        "type": "chaine",
+        "titre": "Comment les agents IA ont attaqué",
+        "etapes": [
+          {
+            "t": "Une cible donnée à Cairn",
+            "d": "des universités d'Asie de l'Est",
+            "ton": "attaque"
+          },
+          {
+            "t": "Les agents explorent l'API",
+            "d": "de l'appli MONAI Label",
+            "ton": "neutre"
+          },
+          {
+            "t": "Faille path traversal",
+            "d": "un chemin de fichier non vérifié",
+            "ton": "attaque"
+          },
+          {
+            "t": "Fichiers écrits",
+            "d": "sur le serveur, en 11 min environ",
+            "ton": "attaque"
+          },
+          {
+            "t": "Parade : la mise à jour",
+            "d": "et l'authentification activée",
+            "ton": "defense"
+          }
+        ]
+      },
+      {
+        "type": "chiffres",
+        "titre": "Les chiffres de l'attaque",
+        "items": [
+          {
+            "n": "11 min",
+            "t": "de l'API à l'écriture",
+            "ton": "attaque"
+          },
+          {
+            "n": "48 h",
+            "t": "durée de la campagne",
+            "ton": "neutre"
+          },
+          {
+            "n": "30 000+",
+            "t": "mots de passe essayés",
+            "ton": "attaque"
+          },
+          {
+            "n": "0",
+            "t": "connexion réussie au GPU",
+            "ton": "defense"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "2026-11-23-cleverbridge",
+    "date": "2026-11-23",
+    "ts": "2026-11-23T07:44:35+01:00",
+    "cat": "Cyber",
+    "theme": "fuite",
+    "importance": 2,
+    "titre": "Cleverbridge : des données de cartes bancaires copiées",
+    "resume": "Cleverbridge gère les paiements en ligne et les abonnements pour d'autres entreprises. Le 4 novembre 2026, elle a repéré une activité anormale sur sa plateforme : un pirate a copié des données de cartes bancaires qui y étaient stockées.\n\nCe n'est pas un rançongiciel, aucun système n'a été chiffré. Depuis le 20 novembre, l'entreprise prévient les clients touchés, qui connaissent souvent le nom du site marchand plutôt que celui de Cleverbridge.",
+    "pourquoi": "Après une fuite, les pirates envoient souvent de faux mails « suite à l'incident » pour voler encore plus d'informations : c'est du phishing. C'est aussi une leçon de défense : moins on stocke de données sensibles, moins il y en a à voler.",
+    "cours": "phishing",
+    "source": "Cleverbridge",
+    "url": "https://grow.cleverbridge.com/incident-update",
+    "schemas": [
+      {
+        "type": "dates",
+        "titre": "Ce qui s'est passé",
+        "items": [
+          {
+            "date": "4 novembre",
+            "t": "Activité anormale repérée",
+            "ton": "attaque"
+          },
+          {
+            "date": "4 novembre",
+            "t": "Systèmes coupés et relancés",
+            "ton": "defense"
+          },
+          {
+            "date": "20 novembre",
+            "t": "Clients touchés prévenus",
+            "ton": "neutre"
+          }
+        ]
+      },
+      {
+        "type": "parade",
+        "titre": "Si tu reçois un avis de Cleverbridge",
+        "items": [
+          "Vérifie tes relevés et signale tout achat inconnu à ta banque.",
+          "Méfie-toi des mails, appels ou SMS qui parlent de l'incident.",
+          "Ne donne jamais ton code de carte : Cleverbridge ne le demande pas."
+        ]
+      }
+    ]
+  },
+  {
     "id": "2026-11-22-upload2shell",
     "date": "2026-11-22",
     "ts": "2026-11-22T22:46:46+01:00",
