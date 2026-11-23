@@ -1,5 +1,125 @@
 [
   {
+    "id": "2026-11-23-decathlon",
+    "date": "2026-11-23",
+    "ts": "2026-11-23T14:43:28+01:00",
+    "cat": "Cyber",
+    "theme": "fuite",
+    "importance": 3,
+    "titre": "Decathlon : 163 000 fiches clients diffusées par un pirate",
+    "resume": "Un pirate qui se fait appeler « 4me1 » a publié ce lundi 23 novembre, sur un forum de pirates, des fichiers qu'il dit avoir copiés chez Decathlon. On y trouve environ 163 600 fiches clients (nom, e-mail, téléphone, adresse) et 255 000 commandes, dont 611 livraisons prévues du 23 au 28 novembre. Plus de 22 500 fiches sont liées aux magasins de Lyon, Grenoble et Annecy.\n\nAucun mot de passe ni numéro de carte bancaire n'a été trouvé dans les fichiers. Decathlon n'a pas encore confirmé, et on ne sait pas si la fuite vient de l'enseigne ou d'un prestataire. Le vrai risque : des faux SMS ou appels sur une « livraison » qui ont l'air crédibles.",
+    "pourquoi": "Toi ou tes proches à Lyon êtes peut-être dans le fichier : méfie-toi des SMS sur un colis Decathlon. C'est un cas d'école du cours sur le phishing : une fuite sans mot de passe sert quand même à rendre une arnaque très crédible.",
+    "cours": "phishing",
+    "source": "Selectra",
+    "url": "https://selectra.info/telecom/actualites/marche/decathlon-fuite-donnees-clients-2026-livraisons",
+    "schemas": [
+      {
+        "type": "chiffres",
+        "titre": "Ce que contient la fuite",
+        "items": [
+          {
+            "n": "163 646",
+            "t": "fiches clients",
+            "ton": "attaque"
+          },
+          {
+            "n": "255 011",
+            "t": "commandes (2021 à 2026)",
+            "ton": "attaque"
+          },
+          {
+            "n": "611",
+            "t": "livraisons du 23 au 28/11",
+            "ton": "cible"
+          },
+          {
+            "n": "22 500",
+            "t": "fiches Lyon, Grenoble, Annecy",
+            "ton": "cible"
+          }
+        ]
+      },
+      {
+        "type": "parade",
+        "titre": "Si tu reçois un message « Decathlon »",
+        "items": [
+          "Vérifie ta commande dans l'appli officielle, pas via un lien reçu",
+          "Ne paie jamais des frais de livraison par un lien",
+          "Ne donne aucun code ni coordonnées bancaires au téléphone",
+          "Transfère le SMS suspect au 33700"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "2026-11-23-crowdstrike-zscaler",
+    "date": "2026-11-23",
+    "ts": "2026-11-23T14:43:28+01:00",
+    "cat": "Tech",
+    "theme": "cloud",
+    "importance": 2,
+    "titre": "CrowdStrike va racheter Zscaler pour 43,9 milliards de dollars",
+    "resume": "Le 23 novembre, deux géants de la cybersécurité, CrowdStrike et Zscaler, ont annoncé leur fusion : CrowdStrike rachète Zscaler en payant avec ses propres actions, pour environ 43,9 milliards de dollars. Chaque actionnaire de Zscaler recevra 1,135 action CrowdStrike, soit environ 34 % de plus que le cours de Zscaler.\n\nLe rachat doit encore être accepté par les actionnaires de Zscaler et par les autorités. Les deux entreprises visent plus de 10 milliards de dollars de revenus récurrents ensemble. Le fondateur de Zscaler, Jay Chaudhry, continuera de diriger Zscaler et entrera au conseil de CrowdStrike.",
+    "pourquoi": "CrowdStrike protège les ordinateurs et serveurs, Zscaler protège les connexions vers Internet et le cloud : ensemble, ils couvrent une grande partie de la défense d'une entreprise. Ce sont des employeurs et des outils que tu croiseras sûrement dans les métiers de la défense.",
+    "cours": "metiers",
+    "source": "SEC (communiqué CrowdStrike et Zscaler)",
+    "url": "https://www.sec.gov/Archives/edgar/data/0001713683/000110465926130801/tm2630454d2_ex99-1.htm",
+    "schemas": [
+      {
+        "type": "chiffres",
+        "titre": "Le rachat en chiffres",
+        "items": [
+          {
+            "n": "43,9 Md$",
+            "t": "valeur du rachat",
+            "ton": "neutre"
+          },
+          {
+            "n": "+34 %",
+            "t": "prime pour Zscaler",
+            "ton": "neutre"
+          },
+          {
+            "n": "10 Md$",
+            "t": "revenus récurrents visés",
+            "ton": "cible"
+          },
+          {
+            "n": "8 000",
+            "t": "clients Zscaler à gagner",
+            "ton": "cible"
+          }
+        ]
+      },
+      {
+        "type": "dates",
+        "titre": "Les étapes du rachat",
+        "items": [
+          {
+            "date": "20 novembre",
+            "t": "Cours de référence",
+            "ton": "neutre"
+          },
+          {
+            "date": "23 novembre",
+            "t": "Annonce de la fusion",
+            "ton": "neutre"
+          },
+          {
+            "date": "Plus tard",
+            "t": "Vote et feu vert autorités",
+            "ton": "neutre"
+          },
+          {
+            "date": "Exercice 28",
+            "t": "Fin prévue du rachat",
+            "ton": "neutre"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "2026-11-23-chu-guadeloupe",
     "date": "2026-11-23",
     "ts": "2026-11-23T11:43:56+01:00",
