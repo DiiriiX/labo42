@@ -1,5 +1,182 @@
 [
   {
+    "id": "2026-11-23-chu-guadeloupe",
+    "date": "2026-11-23",
+    "ts": "2026-11-23T11:43:56+01:00",
+    "cat": "Cyber",
+    "theme": "intrusion",
+    "importance": 3,
+    "titre": "Cyberattaque au CHU de Guadeloupe : plan blanc et opérations reportées",
+    "resume": "Le CHU de Guadeloupe est touché par une cyberattaque depuis le samedi 21 novembre au soir. Le dimanche 22, après une réunion de crise, l'hôpital a déclenché son plan blanc. La téléphonie interne, des logiciels médicaux, la radiologie et le laboratoire sont perturbés, et les soignants travaillent en partie sur papier.\n\nUne partie des opérations, consultations et examens d'imagerie est reportée jusqu'au vendredi 27 novembre. Les urgences et le 15 fonctionnent. L'ANSSI a été appelée en renfort ; le CHU dit qu'aucune fuite de données personnelles ou médicales n'est constatée à ce stade.",
+    "pourquoi": "C'est exactement le travail des équipes de défense que tu vises : isoler, vérifier chaque système avant de le rallumer, chercher par où l'attaquant est entré grâce aux logs. Un hôpital montre aussi que la cyber, ce n'est pas que des données : ce sont des patients soignés plus lentement.",
+    "cours": "logs",
+    "source": "Cyberattaque.org",
+    "url": "https://www.cyberattaque.org/chu-de-guadeloupe-une-cyberattaque-paralyse-les-hopitaux-des-donnees-chiffrees-et-des-operations-annulees/",
+    "schemas": [
+      {
+        "type": "dates",
+        "titre": "Le fil de l'attaque",
+        "items": [
+          {
+            "date": "21 novembre",
+            "t": "Premières pannes vers 21 h",
+            "ton": "attaque"
+          },
+          {
+            "date": "22 novembre",
+            "t": "Attaque confirmée, plan blanc",
+            "ton": "neutre"
+          },
+          {
+            "date": "22 novembre",
+            "t": "L'ANSSI appelée en renfort",
+            "ton": "defense"
+          },
+          {
+            "date": "27 novembre",
+            "t": "Fin prévue des reports",
+            "ton": "neutre"
+          }
+        ]
+      },
+      {
+        "type": "cibles",
+        "titre": "Ce qui est touché à l'hôpital",
+        "centre": {
+          "t": "Cyberattaque",
+          "d": "CHU de Guadeloupe",
+          "ton": "attaque"
+        },
+        "autour": [
+          {
+            "t": "Téléphonie interne",
+            "ton": "cible"
+          },
+          {
+            "t": "Logiciels médicaux",
+            "ton": "cible"
+          },
+          {
+            "t": "Radiologie et labo",
+            "ton": "cible"
+          },
+          {
+            "t": "Opérations reportées",
+            "ton": "cible"
+          },
+          {
+            "t": "Urgences et 15 : OK",
+            "ton": "defense"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "2026-11-23-glinet-goodcloud",
+    "date": "2026-11-23",
+    "ts": "2026-11-23T11:43:56+01:00",
+    "cat": "Cyber",
+    "theme": "reseau",
+    "importance": 2,
+    "titre": "GL.iNet : le cloud GoodCloud détourné pour pirater des routeurs",
+    "resume": "GL.iNet fabrique des routeurs basés sur OpenWrt (un Linux pour routeurs) et des boîtiers KVM pour piloter un PC à distance. Une faille dans GoodCloud, son service d'administration à distance, a permis à un pirate d'installer un programme malveillant sur certains appareils. Le fabricant l'a repérée le 20 novembre.\n\nSur les KVM, le programme se cache sous le nom « crond -i /tmp/.log » et remplace netstat pour masquer ses connexions. GL.iNet a corrigé son cloud et publié de nouveaux firmwares le 23 novembre, qui retirent le programme sans remise à zéro.",
+    "pourquoi": "Tu vois ici des commandes de tes cours Linux (ps, netstat, /tmp) utilisées pour la vraie défense : chercher un processus suspect. Et un vrai piège d'attaquant : remplacer netstat pour cacher ce qu'il fait, d'où l'intérêt de croiser plusieurs sources.",
+    "cours": "processus",
+    "source": "IT-Connect",
+    "url": "https://www.it-connect.fr/gl-inet-goodcloud-routeurs-kvm-malware/",
+    "schemas": [
+      {
+        "type": "chaine",
+        "titre": "Comment les appareils ont été infectés",
+        "etapes": [
+          {
+            "t": "Faille dans GoodCloud",
+            "d": "le cloud d'administration",
+            "ton": "attaque"
+          },
+          {
+            "t": "Commande envoyée",
+            "d": "vers les routeurs et KVM",
+            "ton": "attaque"
+          },
+          {
+            "t": "Programme installé",
+            "d": "relancé à chaque démarrage",
+            "ton": "attaque"
+          },
+          {
+            "t": "Il se cache",
+            "d": "faux crond, netstat modifié",
+            "ton": "attaque"
+          },
+          {
+            "t": "Parade : nouveau firmware",
+            "d": "publié le 23 novembre",
+            "ton": "defense"
+          }
+        ]
+      },
+      {
+        "type": "parade",
+        "titre": "Si tu as un appareil GL.iNet",
+        "items": [
+          "Installer le firmware corrigé de ton modèle",
+          "Chercher le processus « crond -i /tmp/.log » avec ps",
+          "Couper GoodCloud si tu ne t'en sers pas",
+          "Vérifier les PC branchés : comptes et tâches inconnus"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "2026-11-23-cisco-expressway",
+    "date": "2026-11-23",
+    "ts": "2026-11-23T11:43:56+01:00",
+    "cat": "Cyber",
+    "theme": "faille",
+    "importance": 2,
+    "titre": "Cisco Expressway : une faille critique exploitée par des pirates",
+    "resume": "Cisco Expressway est une passerelle qui relie les visioconférences d'une entreprise à Internet. La faille CVE-2026-76466 vient d'identifiants écrits en dur dans le code et d'une vérification incomplète des certificats : sans mot de passe, un attaquant peut lancer des commandes en root.\n\nL'agence américaine CISA a confirmé le 20 novembre qu'elle est exploitée et a donné trois jours aux administrations américaines pour corriger. Selon la société F6, des pirates aidés d'un assistant IA ont pris deux appareils exposés, puis sont passés au réseau interne pour voler des identifiants. Cisco a publié les correctifs fin octobre.",
+    "pourquoi": "Un mot de passe écrit en dur dans un programme, c'est l'erreur classique à ne jamais faire dans ton code. Et l'attaque montre le « mouvement latéral » : une machine exposée sur Internet sert de porte d'entrée vers tout le réseau, d'où les pare-feu et la séparation des réseaux.",
+    "cours": "parefeu",
+    "source": "BleepingComputer",
+    "url": "https://www.bleepingcomputer.com/news/security/cisa-flags-critical-cisco-expressway-rce-flaw-as-actively-exploited/",
+    "schemas": [
+      {
+        "type": "chaine",
+        "titre": "Comment les pirates ont avancé",
+        "etapes": [
+          {
+            "t": "Identifiants en dur",
+            "d": "dans Cisco Expressway",
+            "ton": "attaque"
+          },
+          {
+            "t": "Commandes en root",
+            "d": "sur 2 appareils exposés",
+            "ton": "attaque"
+          },
+          {
+            "t": "Passage au réseau interne",
+            "d": "2 autres appareils du cluster",
+            "ton": "attaque"
+          },
+          {
+            "t": "Vol d'identifiants",
+            "d": "via SMB, SQL Server, GitLab",
+            "ton": "attaque"
+          },
+          {
+            "t": "Parade : le correctif",
+            "d": "publié par Cisco fin octobre",
+            "ton": "defense"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "2026-11-23-cairn-agents-ia",
     "date": "2026-11-23",
     "ts": "2026-11-23T07:44:35+01:00",
