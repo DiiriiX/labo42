@@ -1,5 +1,184 @@
 [
   {
+    "id": "2026-11-23-delubac",
+    "date": "2026-11-23",
+    "ts": "2026-11-23T19:46:20+01:00",
+    "cat": "Cyber",
+    "theme": "intrusion",
+    "importance": 2,
+    "titre": "Banque Delubac : fraude évitée, mais des données clients ont fuité",
+    "resume": "La Banque Delubac & Cie, une banque familiale d'Ardèche, a repéré le vendredi 20 novembre une intrusion dans ses systèmes. Les pirates ont essayé de faire de faux virements : la banque dit les avoir bloqués, sans perte d'argent pour les clients.\n\nL'intrusion a quand même causé une fuite de données d'une partie des clients, mais on ne sait pas encore combien ni quelles données. La banque a coupé sa banque en ligne par précaution, prévenu la CNIL et l'ACPR, porté plainte, et met en garde contre de faux SMS à son nom.",
+    "pourquoi": "C'est un bon exemple de défense : détecter vite l'intrusion et couper les accès a empêché le vol d'argent, ce que fait une équipe SOC. Et comme pour Decathlon, une fuite sert ensuite à des SMS de phishing crédibles.",
+    "cours": "phishing",
+    "source": "Le Monde Informatique",
+    "url": "https://www.lemondeinformatique.fr/cybersecurite-conformite/cyberattaque-la-banque-delubac-cie-dejoue-une-tentative-de-fraude-mais-subit-une-fuite-de-donnees",
+    "schemas": [
+      {
+        "type": "dates",
+        "titre": "Le déroulé",
+        "items": [
+          {
+            "date": "20 novembre",
+            "t": "Intrusion détectée",
+            "ton": "attaque"
+          },
+          {
+            "date": "20 novembre",
+            "t": "Faux virements bloqués",
+            "ton": "defense"
+          },
+          {
+            "date": "20 novembre",
+            "t": "Banque en ligne coupée",
+            "ton": "defense"
+          },
+          {
+            "date": "23 novembre",
+            "t": "Annonce et fuite confirmée",
+            "ton": "neutre"
+          }
+        ]
+      },
+      {
+        "type": "parade",
+        "titre": "Si tu reçois un message « de ta banque »",
+        "items": [
+          "Une banque ne demande jamais tes codes par SMS, mail ou téléphone",
+          "Ne clique pas sur le lien : ouvre toi-même l'appli de la banque",
+          "En cas de doute, appelle ton conseiller au numéro habituel"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "2026-11-23-screenconnect",
+    "date": "2026-11-23",
+    "ts": "2026-11-23T19:46:20+01:00",
+    "cat": "Cyber",
+    "theme": "faille",
+    "importance": 2,
+    "titre": "ScreenConnect : une faille exploitée pour pirater des techniciens",
+    "resume": "ScreenConnect est un logiciel de prise en main à distance, très utilisé par les entreprises qui gèrent l'informatique d'autres sociétés. Une faille notée 9,9 sur 10 (CVE-2026-84869) permet à un « invité » de la session d'envoyer un fichier et de le lancer sur le PC du technicien qui se connecte.\n\nDes pirates s'en servent : un poste a été pris en environ 9 secondes le 12 novembre, et plus de 688 000 tentatives ont été vues entre le 20 octobre et le 16 novembre. La parade : mettre à jour le client ScreenConnect en version 26.6.5 ou plus, ou retirer le droit d'envoyer des fichiers.",
+    "pourquoi": "Ici, ce n'est pas le serveur qui est attaqué mais l'outil du défenseur lui-même : un rappel qu'un accès à distance (comme ssh) doit être limité au strict nécessaire. Ce genre d'alerte est le quotidien d'un analyste SOC.",
+    "cours": "ssh",
+    "source": "The Hacker News",
+    "url": "https://thehackernews.com/2026/11/hackers-exploit-critical-screenconnect.html",
+    "schemas": [
+      {
+        "type": "chaine",
+        "titre": "Comment le technicien est piégé",
+        "etapes": [
+          {
+            "t": "Le pirate ouvre une session",
+            "d": "il se fait passer pour un invité",
+            "ton": "attaque"
+          },
+          {
+            "t": "Le technicien se connecte",
+            "d": "pour aider le faux client",
+            "ton": "cible"
+          },
+          {
+            "t": "Fichier envoyé et lancé",
+            "d": "un script .bat sur son PC",
+            "ton": "attaque"
+          },
+          {
+            "t": "Faux ScreenConnect installé",
+            "d": "le pirate garde l'accès",
+            "ton": "attaque"
+          },
+          {
+            "t": "Parade : version 26.6.5",
+            "d": "ou bloquer l'envoi de fichiers",
+            "ton": "defense"
+          }
+        ]
+      },
+      {
+        "type": "chiffres",
+        "titre": "Chiffres clés",
+        "items": [
+          {
+            "n": "9,9/10",
+            "t": "gravité de la faille",
+            "ton": "attaque"
+          },
+          {
+            "n": "9 s",
+            "t": "pour prendre un poste",
+            "ton": "attaque"
+          },
+          {
+            "n": "688 000",
+            "t": "tentatives d'envoi",
+            "ton": "attaque"
+          },
+          {
+            "n": "42",
+            "t": "serveurs visés",
+            "ton": "cible"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "2026-11-23-edge-lockdown",
+    "date": "2026-11-23",
+    "ts": "2026-11-23T19:46:20+01:00",
+    "cat": "Tech",
+    "theme": "maj",
+    "importance": 1,
+    "titre": "Edge teste un « mode verrouillé » contre les attaques",
+    "resume": "Microsoft teste dans Edge Canary (la version d'essai) un « Lockdown Mode », désactivé par défaut. Il bloque WebGL et WebGPU, les fonctions qui laissent un site utiliser la carte graphique.\n\nSelon Microsoft, ce mode aurait contré environ 60 % des attaques réelles de ce type vues depuis 2022. Il vise les personnes très exposées (journalistes, dirigeants, chercheurs, administrateurs), mais il casse certains sites comme les cartes ou les jeux.",
+    "pourquoi": "C'est le principe de la réduction de la surface d'attaque : moins de fonctions actives, moins de portes d'entrée pour un pirate. Tu retrouveras cette idée partout en défense, du navigateur au serveur Linux de Born2beroot.",
+    "cours": "http",
+    "source": "IT-Connect",
+    "url": "https://www.it-connect.fr/edge-lockdown-mode-webgl-webgpu/",
+    "schemas": [
+      {
+        "type": "cibles",
+        "titre": "Ce que le mode bloque",
+        "centre": {
+          "t": "Lockdown Mode",
+          "d": "Edge Canary, désactivé par défaut",
+          "ton": "defense"
+        },
+        "autour": [
+          {
+            "t": "WebGL",
+            "d": "graphismes 3D"
+          },
+          {
+            "t": "WebGL2",
+            "d": "version plus récente"
+          },
+          {
+            "t": "WebGPU",
+            "d": "accès à la carte graphique"
+          }
+        ]
+      },
+      {
+        "type": "chiffres",
+        "titre": "Chiffres clés",
+        "items": [
+          {
+            "n": "60 %",
+            "t": "attaques contrées (estimé)",
+            "ton": "defense"
+          },
+          {
+            "n": "2022",
+            "t": "début de la période étudiée",
+            "ton": "neutre"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "2026-11-23-decathlon",
     "date": "2026-11-23",
     "ts": "2026-11-23T14:43:28+01:00",
