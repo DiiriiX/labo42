@@ -387,6 +387,24 @@ a.chip{text-decoration:none;display:inline-flex;align-items:center;gap:6px}
 .occ .chip,.proj .chip{min-height:36px;padding:6px 12px;font-size:14px}
 .chip.ex{font-family:ui-monospace,Menlo,monospace;font-size:13.5px}
 .chip .ico{flex:none;width:18px;height:18px}
+.cmd{display:flex;align-items:center;gap:8px;background:#0d1117;border:1px solid #30363d;border-radius:12px;padding:6px 6px 6px 12px;margin:6px 0}
+.cmd code{flex:1;min-width:0;color:#e6edf3;font:13.5px/1.45 ui-monospace,Menlo,monospace;white-space:pre-wrap;word-break:break-all;background:none;padding:0}
+.cpy{flex:none;width:40px;height:40px;border:0;border-radius:10px;background:#21262d;color:#e6edf3;display:grid;place-items:center;cursor:pointer}
+.cpy .ico{width:18px;height:18px}
+.pcsteps{list-style:none;margin:6px 0 12px;padding:0}
+.pcsteps li{border-top:1px solid var(--line);padding:6px 0 10px}.pcsteps li:first-child{border-top:0}
+.pcsteps .chk>span{display:flex;flex-direction:column;gap:3px}
+.pcsteps li.on .chk b{color:var(--mute)}
+.pcd{font-size:14.5px;color:var(--mute);line-height:1.45}
+.pcsteps .proto{margin:6px 0}
+.btn.sm{width:auto;min-height:40px;padding:8px 14px;font-size:14.5px;margin:6px 8px 0 0}
+.pch,.pcx-h{display:flex;gap:12px;align-items:center;margin-bottom:10px}
+.pcx-h b,.pch b{font-size:17px}
+.card.pcx.done{border-color:var(--acc)}
+.loop{display:flex;flex-wrap:wrap;gap:6px}.loop span{background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:5px 11px;font-size:13.5px;font-weight:600}
+.pcnav{display:flex;justify-content:space-between;gap:10px;margin:18px 0}.pcnav .btn{flex:1;font-size:14px;width:auto}
+.quick{display:grid;grid-template-columns:1fr 1fr;gap:10px}.quick .linkcard{margin:0;padding:12px;gap:8px;flex-direction:column;align-items:flex-start}
+.modes{margin-top:16px}
 .mlist{display:grid;gap:10px;margin-top:14px}.mlist .linkcard{margin:0}
 .mhead{display:flex;gap:14px;align-items:center;margin-top:6px}
 .mhead .stile{width:52px;height:52px;border-radius:16px}.mhead .stile .ico{width:26px;height:26px}
@@ -445,8 +463,11 @@ a.chip{text-decoration:none;display:inline-flex;align-items:center;gap:6px}
     <h2>Ton résumé du jour</h2>
     <div id="resumeBox"></div>
   </div>
-  <h2>Ta séance du jour</h2>
+  <div class="duo modes"><a class="linkcard" href="#tel"><span class="ltile" data-art="tel_s"></span><span><b>Sur ton téléphone</b><small>Apprendre, réviser, t'entraîner</small></span></a><a class="linkcard" href="#pc"><span class="ltile" data-art="pc_s"></span><span><b>Sur ton PC</b><small>Coder pour de vrai, mission par mission</small></span></a></div>
+  <h2>Sur ton téléphone aujourd'hui</h2>
   <div class="steps" id="plan"></div>
+  <h2>Sur ton PC</h2>
+  <div id="pcHome"></div>
   <div id="motJour"></div>
   <h2>Ton prochain cours</h2>
   <div id="nextBox"></div>
@@ -531,6 +552,10 @@ a.chip{text-decoration:none;display:inline-flex;align-items:center;gap:6px}
 <section class="view" id="v-oc"><div id="ocBox"></div></section>
 
 <section class="view" id="v-cursus"><div id="cursusBox"></div></section>
+
+<section class="view" id="v-pc"><div id="pcBox"></div></section>
+
+<section class="view" id="v-tel"><div id="telBox"></div></section>
 
 <section class="view" id="v-examen"><div id="examBox"></div></section>
 
@@ -724,6 +749,17 @@ const ART = {
 <path d="M12 106h136" class="n o"/>`),
   oc_s: il(`<rect width="52" height="52" rx="14" class="bs"/><path d="M26 15c-4-3-10-3-15-1.5v22c5-1.5 11-1.5 15 1.5zM26 15c4-3 10-3 15-1.5v22c-5-1.5-11-1.5-15 1.5z" class="w o" style="stroke-width:1.8"/><text x="18.5" y="30" class="t" style="font-size:11px">C</text><path d="M30 20h7M30 24h7M30 28h5" class="n o" style="stroke-width:1.6"/>`, "0 0 52 52"),
   cursus_s: il(`<rect width="52" height="52" rx="14" class="ys"/><rect x="10" y="30" width="10" height="12" rx="2" class="g o" style="stroke-width:1.6"/><rect x="20" y="22" width="10" height="20" rx="2" class="b o" style="stroke-width:1.6"/><rect x="30" y="14" width="10" height="28" rx="2" class="r o" style="stroke-width:1.6"/><path d="M8 42h36" class="n o" style="stroke-width:1.6"/>`, "0 0 52 52"),
+  pc: il(`<circle cx="80" cy="60" r="52" class="bs"/>
+<rect x="30" y="26" width="100" height="64" rx="6" class="dk o"/><path d="M42 42l8 6-8 6" class="wk"/><path d="M56 54h16" class="wk"/>
+<rect x="42" y="64" width="44" height="5" rx="2.5" class="g"/><rect x="42" y="74" width="64" height="5" rx="2.5" class="m"/>
+<path d="M16 94h128l-8 10H24z" class="w o"/><circle cx="128" cy="32" r="12" class="g o"/><path d="M122 32l4 4 8-8" class="wk"/>`),
+  tel: il(`<circle cx="80" cy="60" r="52" class="gs"/>
+<rect x="56" y="14" width="48" height="94" rx="9" class="w o"/><path d="M74 21h12" class="n o"/>
+<rect x="63" y="30" width="34" height="22" rx="4" class="y o" style="stroke-width:1.6"/><rect x="63" y="58" width="34" height="8" rx="4" class="b"/><rect x="63" y="71" width="24" height="8" rx="4" class="m"/>
+<rect x="63" y="84" width="34" height="14" rx="4" class="g o" style="stroke-width:1.6"/><circle cx="116" cy="36" r="11" class="r o"/><text x="116" y="40.5" class="tw">3</text>
+<path d="M32 50l9 4M30 62h10M32 74l9-4" class="n o"/>`),
+  pc_s: il(`<rect width="52" height="52" rx="14" class="bs"/><rect x="11" y="12" width="30" height="21" rx="3" class="dk o" style="stroke-width:1.6"/><path d="M16 18l4 3-4 3M22 25h6" class="wk" style="stroke-width:1.6"/><path d="M7 37h38l-3 4H10z" class="w o" style="stroke-width:1.6"/>`, "0 0 52 52"),
+  tel_s: il(`<rect width="52" height="52" rx="14" class="gs"/><rect x="17" y="8" width="18" height="36" rx="4" class="w o" style="stroke-width:1.6"/><rect x="21" y="14" width="10" height="7" rx="2" class="y"/><rect x="21" y="24" width="10" height="3" rx="1.5" class="m"/><rect x="21" y="30" width="7" height="3" rx="1.5" class="m"/>`, "0 0 52 52"),
   lexique_s: il(`<rect width="52" height="52" rx="14" class="bs"/><path d="M26 15c-4-3-10-3-15-1.5v22c5-1.5 11-1.5 15 1.5zM26 15c4-3 10-3 15-1.5v22c-5-1.5-11-1.5-15 1.5z" class="w o" style="stroke-width:1.8"/><path d="M14 20h8M14 24h8M14 28h6M30 20h8M30 24h8M30 28h5" class="n o" style="stroke-width:1.6"/>`, "0 0 52 52"),
   cat_cyber: il(`<rect width="48" height="48" rx="13" class="rs"/><path d="M24 9l12 5v9c0 8-5 13-12 16-7-3-12-8-12-16v-9z" class="w o" style="stroke-width:2"/><rect x="18.5" y="22" width="11" height="9" rx="2" class="ink"/><path d="M20.5 22v-3a3.5 3.5 0 0 1 7 0v3" class="n o" style="stroke-width:2"/>`, "0 0 48 48"),
   cat_dev: il(`<rect width="48" height="48" rx="13" class="bs"/><rect x="9" y="12" width="30" height="24" rx="4" class="w o" style="stroke-width:2"/><path d="M19 19l-5 5 5 5M29 19l5 5-5 5M26 17l-4 14" class="n o" style="stroke-width:2;stroke:var(--blue)"/>`, "0 0 48 48"),
@@ -756,7 +792,9 @@ const ICONS = {
   save: '<path d="M12 3v12M7 10l5 5 5-5M4 21h16"/>',
   medal: '<circle cx="12" cy="9" r="6"/><path d="M8.5 13.5 7.5 22l4.5-2.5 4.5 2.5-1-8.5"/>',
   eye: '<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
-  user: '<circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/>'
+  user: '<circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/>',
+  pc: '<rect x="4" y="5" width="16" height="11" rx="1.5"/><path d="M2 19h20"/>',
+  phone: '<rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/>'
 };
 const ic = (n, c = "ico") => `<svg class="${c}" viewBox="0 0 24 24" aria-hidden="true">${ICONS[n] || ""}</svg>`;
 
@@ -1189,25 +1227,27 @@ const stats = () => ({
   defis: store.term ? Object.keys(store.term.solved || {}).length : 0, defisTotal: (window.Labo && window.Labo.DEFI_TOTAL) || 16,
   etapes: ETAPES.map(e => e.ids.every(id => store.seen[id])), lues: Object.keys(store.read || {}).length
 });
+function phoneSteps(){
+  const n = nextId(), d = store.day, dueNow = dueList().length, nu = unreadCount();
+  const pi = window.Labo && window.Labo.pcInfo ? window.Labo.pcInfo() : null, rd = pi && pi.read.length ? pi.read[0] : null, les = rd || n;
+  return [
+    [dueNow === 0, "Tes fiches du jour", dueNow ? dueNow + " fiche" + (dueNow > 1 ? "s" : "") + " à réviser" : "Terminé pour aujourd'hui", "#reviser", "cards", "ys"],
+    [d.lesson, les ? "Cours : " + TOPIC[les].t : "Revoir un cours", rd ? "Pour préparer ta mission sur PC" : "Le suivant dans ton parcours", les ? "#cours-" + les : "#parcours", "book", "gs"],
+    [d.jeu, "Un entraînement : " + (pi && pi.jeu ? pi.jeu[1] : "au choix"), "10 questions, avec l'explication à chaque fois", pi && pi.jeu ? "#jeux-" + pi.jeu[0] : "#jeux", "spark", "bs"],
+    [d.news, "Lire les actus du jour", nu ? nu + " actu" + (nu > 1 ? "s" : "") + " pas encore lue" + (nu > 1 ? "s" : "") : "Expliquées en image", "#veille", "news", "rs"]
+  ];
+}
 function refresh(){
   const st = stats();
   $("sKnown").textContent = st.fiches;
   $("sSeen").textContent = st.cours;
   $("sDays").textContent = store.days.length;
   const n = nextId(), d = store.day, dueNow = dueList().length;
-  const at = window.Labo && window.Labo.atelierInfo ? window.Labo.atelierInfo() : null;
-  const nu = unreadCount();
-  const steps = [
-    [dueNow === 0, "Tes fiches du jour", dueNow ? dueNow + " fiche" + (dueNow > 1 ? "s" : "") + " à réviser" : "Terminé pour aujourd'hui", "#reviser", "cards", "ys"],
-    [d.lesson, n ? "Cours : " + TOPIC[n].t : "Revoir un cours", "Le suivant dans ton parcours", n ? "#cours-" + n : "#parcours", "book", "gs"],
-    [d.atelier, at && at.next ? "Exercice de C : " + at.next.id : "Un exercice de C", at ? at.done + " / " + at.total + " exercices réussis" : "Atelier C", at && at.next ? "#atelier-" + at.next.id : "#atelier", "code", "bs"],
-    [d.term, "Un défi du terminal", st.defis + " / " + st.defisTotal + " défis réussis", "#terminal", "term", "dk"],
-    [d.news, "Lire les actus du jour", nu ? nu + " actu" + (nu > 1 ? "s" : "") + " pas encore lue" + (nu > 1 ? "s" : "") : "Expliquées simplement", "#veille", "news", "rs"]
-  ];
+  const steps = phoneSteps();
   $("plan").innerHTML = steps.map(x => `<a class="step${x[0] ? " done" : ""}" href="${x[3]}"><span class="stile ${x[0] ? "ok" : x[5]}">${ic(x[0] ? "check2" : x[4])}</span><span><b>${esc(x[1])}</b><small>${esc(x[2])}</small></span><span class="chev">›</span></a>`).join("");
   const hr = new Date().getHours(), nd = steps.filter(x => x[0]).length;
   $("helloT").textContent = hr >= 18 || hr < 5 ? "Bonsoir !" : "Bonjour !";
-  $("hello").textContent = nd === steps.length ? "Séance du jour terminée, bravo !" : nd ? nd + " étape" + (nd > 1 ? "s" : "") + " sur " + steps.length + " faite" + (nd > 1 ? "s" : "") + " aujourd'hui." : "Voici ta séance du jour.";
+  $("hello").textContent = nd === steps.length ? "Ta partie téléphone est faite. Place à ta mission sur PC !" : nd ? nd + " sur " + steps.length + " faits sur ton téléphone aujourd'hui, puis ta mission sur PC." : "Un peu de téléphone, puis ta mission sur PC.";
   $("nextBox").innerHTML = n ? `<p class="small">Étape ${ETAPE_OF[n].n} · ${esc(ETAPE_OF[n].t)} · cours ${ORDER.indexOf(n)+1} sur ${ORDER.length}</p>` + fig(TOPIC[n].s) + `<a class="btn acc full" href="#cours-${n}">Commencer : ${esc(TOPIC[n].t)}</a>` : `<p>Tu as vu tous les cours du parcours. Bravo ! Révise tes fiches et pose tes propres questions au prof.</p>`;
   renderPath(); renderAcquis();
   document.dispatchEvent(new Event("labo:refresh"));
@@ -1681,10 +1721,10 @@ $("copyLink").addEventListener("click", async () => {
 
 /* ---------- Résumé du jour ---------- */
 let resumes = [], wantResume = false;
-const LIENS = ["#terminal","#reviser","#parcours","#veille","#acquis","#moi","#pratique","#atelier","#examen","#lexique","#bandit","#jeux","#memos","#oc","#cursus"];
+const LIENS = ["#terminal","#reviser","#parcours","#veille","#acquis","#moi","#pratique","#atelier","#examen","#lexique","#bandit","#jeux","#memos","#oc","#cursus","#pc","#tel"];
 const exoIds = () => (window.Labo && window.Labo.EXO_IDS) || [];
-const okLien = l => typeof l === "string" && (LIENS.includes(l) || (l.startsWith("#cours-") && !!TOPIC[l.slice(7)]) || (l.startsWith("#atelier-") && exoIds().includes(l.slice(9))));
-const goLabel = l => l === "#jeux" ? "Faire un entraînement" : l === "#memos" ? "Ouvrir les mémos" : l.startsWith("#cours-") ? "Ouvrir le cours : " + TOPIC[l.slice(7)].t : l.startsWith("#atelier-") ? "Ouvrir l'exercice : " + l.slice(9) : ({"#terminal":"Ouvrir le terminal","#reviser":"Réviser mes fiches","#veille":"Lire les actus","#acquis":"Voir mes acquis","#moi":"Voir ma progression","#pratique":"Aller à la pratique","#atelier":"Ouvrir l'atelier C","#examen":"Passer un examen blanc","#lexique":"Ouvrir le lexique","#bandit":"Ouvrir le carnet Bandit","#oc":"Ouvrir le programme OpenClassrooms","#cursus":"Voir mon cursus 42"})[l] || "Voir mon parcours";
+const okLien = l => typeof l === "string" && (LIENS.includes(l) || (l.startsWith("#cours-") && !!TOPIC[l.slice(7)]) || (l.startsWith("#atelier-") && exoIds().includes(l.slice(9))) || /^#pc-m\d\d$/.test(l));
+const goLabel = l => l === "#jeux" ? "Faire un entraînement" : l === "#memos" ? "Ouvrir les mémos" : l.startsWith("#cours-") ? "Ouvrir le cours : " + TOPIC[l.slice(7)].t : l.startsWith("#atelier-") ? "Ouvrir l'exercice : " + l.slice(9) : ({"#terminal":"Ouvrir le terminal","#reviser":"Réviser mes fiches","#veille":"Lire les actus","#acquis":"Voir mes acquis","#moi":"Voir ma progression","#pratique":"Aller à la pratique","#atelier":"Ouvrir l'atelier C","#examen":"Passer un examen blanc","#lexique":"Ouvrir le lexique","#bandit":"Ouvrir le carnet Bandit","#oc":"Ouvrir le programme OpenClassrooms","#cursus":"Voir mon cursus 42","#pc":"Voir mon programme sur PC","#tel":"Voir ma partie téléphone"})[l] || (l.startsWith("#pc-") ? "Ouvrir la mission sur PC" : "") || "Voir mon parcours";
 const coursLink = id => TOPIC[id] ? `<a class="link" href="#cours-${id}">Revoir le cours : ${esc(TOPIC[id].t)}</a>` : "";
 function resumeCard(r){
   const e = r.etape || {}, q = r.question || {}, ac = arr(r.actus).filter(x => typeof x === "string" && x.trim());
@@ -1728,8 +1768,8 @@ document.addEventListener("labo:view", ev => { const v = ev.detail.v; if ((v ===
 if (!inClaude && "serviceWorker" in navigator) navigator.serviceWorker.addEventListener("message", e => { if (e.data && e.data.type === "refresh") { wake(true); setTimeout(() => wake(true), 45000); setTimeout(() => wake(true), 100000); } });
 
 /* ---------- Navigation ---------- */
-const VIEWS = ["accueil","parcours","reviser","pratique","terminal","atelier","examen","bandit","jeux","memos","lexique","oc","cursus","veille","moi"];
-const TAB_OF = {cours:"parcours", lexique:"parcours", oc:"parcours", cursus:"parcours", memos:"pratique", terminal:"pratique", atelier:"pratique", examen:"pratique", bandit:"pratique", jeux:"pratique"};
+const VIEWS = ["accueil","parcours","reviser","pratique","terminal","atelier","examen","bandit","jeux","memos","lexique","oc","cursus","pc","tel","veille","moi"];
+const TAB_OF = {pc:"accueil", tel:"accueil", cours:"parcours", lexique:"parcours", oc:"parcours", cursus:"parcours", memos:"pratique", terminal:"pratique", atelier:"pratique", examen:"pratique", bandit:"pratique", jeux:"pratique"};
 let curView = {v: "accueil", arg: ""};
 function route(){
   let h = location.hash.slice(1);
@@ -1743,6 +1783,7 @@ function route(){
   if (h.startsWith("atelier-")) { v = "atelier"; arg = h.slice(8); }
   else if (h.startsWith("jeux-")) { v = "jeux"; arg = h.slice(5); }
   else if (h.startsWith("memos-")) { v = "memos"; arg = h.slice(6); }
+  else if (h.startsWith("pc-")) { v = "pc"; arg = h.slice(3); }
   if (v === "veille" && !store.day.news) { store.day.news = true; active(); }
   document.querySelectorAll(".view").forEach(x => x.classList.toggle("on", x.id === "v-" + v));
   const tab = TAB_OF[v] || v;
@@ -1773,7 +1814,7 @@ window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); deferr
 $("installBtn").addEventListener("click", async () => { if (!deferred) return; deferred.prompt(); try { await deferred.userChoice; } catch (e) {} deferred = null; $("installBtn").classList.add("off"); });
 if (!inClaude && "serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("sw.js").catch(() => {});
 if (!inClaude) aiOff();
-window.Labo = Object.assign(window.Labo || {}, {store: () => store, save, active: () => active(), esc, inline, fmt, arr, TOPIC, ORDER, ETAPES, ETAPE_OF, ART, ICONS, ic, toast, stats, today, dayLabel, addDays,
+window.Labo = Object.assign(window.Labo || {}, {phoneSteps, store: () => store, save, active: () => active(), esc, inline, fmt, arr, TOPIC, ORDER, ETAPES, ETAPE_OF, ART, ICONS, ic, toast, stats, today, dayLabel, addDays,
   refresh: () => refresh(), view: () => curView, lessons: () => lessonsReady.then(() => STATIC), lessonOf, inClaude, CLAUDE_URL, APP_URL, PROF, errMsg, dead,
   ai: async () => { const x = await samp; return x && !aiDead ? x : null; }, aiOff: () => aiOff()});
 lessonsReady.then(() => refresh());
@@ -1786,6 +1827,7 @@ refresh(); build(); renderActus(); route();
 <script src="jeux.js"></script>
 <script src="memos.js"></script>
 <script src="cursus.js"></script>
+<script src="pc.js"></script>
 <script src="extras.js"></script>
 </body>
 </html>

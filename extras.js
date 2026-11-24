@@ -43,6 +43,8 @@
     ["jeux-10", "Joueur", "Joue 10 parties d'entraînement", "spark", "ys", x => x.parties >= 10],
     ["sans-faute", "Sans faute", "Fais 10 / 10 à un entraînement", "check", "gs", x => x.sansFaute],
     ["touche-a-tout", "Touche-à-tout", "Essaie tous les entraînements", "sliders", "bs", x => x.essayes >= x.nbJeux],
+    ["pc-1", "Au clavier", "Termine ta première mission sur ton PC", "code", "bs", x => x.pcm >= 1],
+    ["pc-10", "Codeur assidu", "Termine 10 missions sur ton PC", "flame", "ys", x => x.pcm >= 10],
     ["lecteur-oc", "Lecteur assidu", "Coche tous les chapitres du cours OpenClassrooms", "book", "bs", x => x.oc >= (L.OC_TOTAL || 21)],
     ["pingouin", "Pingouin", "Termine l'étape Linux du parcours", "term", "dk", x => x.etapes[3]],
     ["pret-42", "Prêt pour le tronc commun", "Termine l'étape « Vers le tronc commun de 42 »", "flag", "gs", x => x.etapes[6]],
@@ -53,7 +55,7 @@
     const s = S(), x = L.stats(), a = s.atelier || {};
     const j = Object.values(s.jeux || {});
     return Object.assign(x, {serie: serie(), c: Object.keys(a.done || {}).length, norm: a.norm || 0, exam: (s.exams || []).reduce((m, e) => Math.max(m, e.score), 0), bandit: Object.values(s.bandit || {}).filter(b => b && b.ok).length,
-      parties: j.reduce((n, g) => n + (g.plays || 0), 0), sansFaute: j.some(g => g.best >= 10), essayes: j.filter(g => g.plays).length, nbJeux: (L.GAMES || []).length || 11, examens: (s.exams || []).length, notes: Object.keys(s.notes || {}).length, oc: Object.keys(s.oc || {}).length});
+      parties: j.reduce((n, g) => n + (g.plays || 0), 0), sansFaute: j.some(g => g.best >= 10), essayes: j.filter(g => g.plays).length, nbJeux: (L.GAMES || []).length || 11, examens: (s.exams || []).length, notes: Object.keys(s.notes || {}).length, oc: Object.keys(s.oc || {}).length, pcm: Object.keys((s.pc || {}).done || {}).length});
   };
   function checkBadges() {
     const s = S(), x = allStats(), first = !s.badges;
@@ -77,7 +79,8 @@
   function renderHub() {
     const s = S(), x = allStats(), best = (s.exams || []).reduce((m, e) => Math.max(m, e.score), -1), total = (L.EXOS || []).length || 20;
     const card = (href, art, t, sub, n, max) => `<a class="hubc" href="${href}"><span class="hart">${ART[art]}</span><span class="hubt"><b>${t}</b><small>${sub}</small>${max ? `<span class="bar"><i style="width:${Math.round(n / max * 100)}%"></i></span>` : ""}</span><span class="chev">›</span></a>`;
-    $("hub").innerHTML = card("#terminal", "terminal", "Terminal", `${x.defis} / ${x.defisTotal} défis, du premier ls à l'enquête SOC`, x.defis, x.defisTotal)
+    $("hub").innerHTML = card("#pc", "pc", "Sur ton PC", `${x.pcm} / ${L.PC_MISSIONS || 44} missions · le programme à coder pour de vrai`, x.pcm, L.PC_MISSIONS || 44)
+      + card("#terminal", "terminal", "Terminal", `${x.defis} / ${x.defisTotal} défis, du premier ls à l'enquête SOC`, x.defis, x.defisTotal)
       + card("#atelier", "atelier", "Atelier C", `${x.c} / ${total} exercices façon Piscine, avec mini norminette`, x.c, total)
       + card("#jeux", "jeux", "Entraînements", `${x.parties} partie${x.parties > 1 ? "s" : ""} · 11 mini-jeux, questions tirées au hasard`, x.essayes, x.nbJeux)
       + card("#examen", "examen", "Examen blanc", best >= 0 ? `Meilleur score : ${best} / 100` : "Chronométré, comme les exams de 42", 0, 0)
@@ -112,7 +115,7 @@
       <p class="small" id="expNote" style="margin-top:6px">Le code contient aussi ton carnet Bandit : ne le partage avec personne.</p>
       <details class="help" style="margin-top:14px"><summary>Restaurer une sauvegarde</summary><p class="small">Colle ici un code de sauvegarde. Il remplace la progression de ${L.inClaude ? "cette version" : "cette appli"}.</p><textarea id="impCode" rows="3" placeholder="L42-…" autocapitalize="off" spellcheck="false"></textarea><button class="btn ghost full" type="button" data-mo="import">Restaurer</button><p class="small" id="impNote"></p></details></div>`;
   }
-  const KEEP = ["known", "days", "seen", "srs", "term", "atelier", "exams", "lastExam", "bandit", "read", "later", "checkin", "size", "theme", "badges", "free", "notes", "jeux", "oc"];
+  const KEEP = ["known", "days", "seen", "srs", "term", "atelier", "exams", "lastExam", "bandit", "read", "later", "checkin", "size", "theme", "badges", "free", "notes", "jeux", "oc", "pc"];
   const toCode = () => { const s = S(), o = {v: 1}; KEEP.forEach(k => { if (s[k] !== undefined) o[k] = s[k]; }); return "L42-" + btoa(unescape(encodeURIComponent(JSON.stringify(o)))); };
   const fromCode = t => { const m = String(t).trim().replace(/\s+/g, ""); if (!m.startsWith("L42-")) throw 0; const o = JSON.parse(decodeURIComponent(escape(atob(m.slice(4))))); if (!o || typeof o !== "object" || !Array.isArray(o.days)) throw 0; return o; };
   const copyText = async txt => { try { await navigator.clipboard.writeText(txt); return true; } catch (e) { const t = document.createElement("textarea"); t.value = txt; t.style.position = "fixed"; t.style.opacity = "0"; document.body.appendChild(t); t.select(); let ok = false; try { ok = document.execCommand("copy"); } catch (er) {} t.remove(); return ok; } };
