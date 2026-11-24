@@ -405,6 +405,8 @@ a.chip{text-decoration:none;display:inline-flex;align-items:center;gap:6px}
 .pcnav{display:flex;justify-content:space-between;gap:10px;margin:18px 0}.pcnav .btn{flex:1;font-size:14px;width:auto}
 .quick{display:grid;grid-template-columns:1fr 1fr;gap:10px}.quick .linkcard{margin:0;padding:12px;gap:8px;flex-direction:column;align-items:flex-start}
 .modes{margin-top:16px}
+.syncl{margin:12px 0;padding-left:22px}.syncl li{margin:0 0 12px}.syncl li .small{display:block;margin-top:4px}.syncl .btn.sm{display:flex;width:fit-content;margin-top:8px}
+.syncst{display:flex;gap:8px;align-items:center;font-size:15px;color:var(--acc-ink);margin:6px 0 12px}.syncst.err{color:var(--red)}.syncst .ico{flex:none;width:18px;height:18px}
 .mlist{display:grid;gap:10px;margin-top:14px}.mlist .linkcard{margin:0}
 .mhead{display:flex;gap:14px;align-items:center;margin-top:6px}
 .mhead .stile{width:52px;height:52px;border-radius:16px}.mhead .stile .ico{width:26px;height:26px}
@@ -598,6 +600,8 @@ a.chip{text-decoration:none;display:inline-flex;align-items:center;gap:6px}
   <div id="bilan" aria-live="polite"></div>
   <h2>Réglages</h2>
   <div id="reglages"></div>
+  <h2>Synchroniser PC et téléphone</h2>
+  <div id="syncBox"></div>
   <h2>Sauvegarde</h2>
   <div id="sauvegarde"></div>
 </section>
@@ -1161,7 +1165,7 @@ const today = new Date().toISOString().slice(0,10);
 let store = {known:{}, days:[], seen:{}, lessons:{}, order:[], day:{}};
 try { store = Object.assign(store, JSON.parse(localStorage.getItem("labo42") || "{}")); } catch (e) {}
 if (store.day.date !== today) store.day = {date:today, cards:0, lesson:false, news:false};
-const save = () => { try { localStorage.setItem("labo42", JSON.stringify(store)); } catch (e) {} };
+const save = () => { store._t = Date.now(); try { localStorage.setItem("labo42", JSON.stringify(store)); } catch (e) {} if (window.Labo && window.Labo.syncSoon) window.Labo.syncSoon(); };
 const keepLesson = (k, d) => { store.lessons[k] = d; store.order = store.order.filter(x => x !== k).concat(k); while (store.order.length > 40) delete store.lessons[store.order.shift()]; save(); };
 let STATIC = {};
 const lessonsReady = Promise.all(["terminal", "c", "cavance", "linux", "reseau", "cyber", "vers42", "apres"].map(f => fetch("lessons/" + f + ".json").then(r => r.ok ? r.json() : {}).catch(() => ({})))).then(list => { list.forEach(o => Object.assign(STATIC, o)); });
@@ -1814,7 +1818,7 @@ window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); deferr
 $("installBtn").addEventListener("click", async () => { if (!deferred) return; deferred.prompt(); try { await deferred.userChoice; } catch (e) {} deferred = null; $("installBtn").classList.add("off"); });
 if (!inClaude && "serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("sw.js").catch(() => {});
 if (!inClaude) aiOff();
-window.Labo = Object.assign(window.Labo || {}, {phoneSteps, store: () => store, save, active: () => active(), esc, inline, fmt, arr, TOPIC, ORDER, ETAPES, ETAPE_OF, ART, ICONS, ic, toast, stats, today, dayLabel, addDays,
+window.Labo = Object.assign(window.Labo || {}, {phoneSteps, route, store: () => store, save, active: () => active(), esc, inline, fmt, arr, TOPIC, ORDER, ETAPES, ETAPE_OF, ART, ICONS, ic, toast, stats, today, dayLabel, addDays,
   refresh: () => refresh(), view: () => curView, lessons: () => lessonsReady.then(() => STATIC), lessonOf, inClaude, CLAUDE_URL, APP_URL, PROF, errMsg, dead,
   ai: async () => { const x = await samp; return x && !aiDead ? x : null; }, aiOff: () => aiOff()});
 lessonsReady.then(() => refresh());
@@ -1829,5 +1833,6 @@ refresh(); build(); renderActus(); route();
 <script src="cursus.js"></script>
 <script src="pc.js"></script>
 <script src="extras.js"></script>
+<script src="sync.js"></script>
 </body>
 </html>
