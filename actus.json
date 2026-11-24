@@ -1,5 +1,57 @@
 [
   {
+    "id": "2026-11-24-gotronic-fuite",
+    "date": "2026-11-24",
+    "ts": "2026-11-24T22:44:34+01:00",
+    "cat": "Cyber",
+    "theme": "fuite",
+    "importance": 2,
+    "titre": "GoTronic : les données de clients mises en vente",
+    "resume": "GoTronic, un magasin français de composants électroniques et de robotique, confirme une fuite de données après une cyberattaque chez un de ses prestataires informatiques. Noms, e-mails, téléphones, adresses, historique des commandes et mots de passe chiffrés des clients ont été touchés, mais pas les cartes bancaires ni PayPal.\n\nLe 21 novembre, un pirate nommé « Chimera » a mis en vente une base de 2,3 Go qu'il dit contenir 328 190 adresses e-mail. Dans les extraits étudiés par Cyberattaque.org, la plupart des mots de passe étaient protégés par MD5, un hachage ancien et trop rapide, et quelques-uns par Argon2i, bien plus solide.",
+    "pourquoi": "Le choix du hachage décide si un mot de passe volé tient ou non : MD5 se casse vite, Argon2 résiste, c'est exactement ton cours sur le hachage. Et l'attaque est passée par un prestataire : la sécurité d'une boutique dépend aussi de celle de ses fournisseurs.",
+    "cours": "hachage",
+    "source": "Cyberattaque.org",
+    "url": "https://www.cyberattaque.org/gotronic-328-000-adresses-email-en-fuite-apres-une-cyberattaque/",
+    "schemas": [
+      {
+        "type": "chiffres",
+        "titre": "Ce que le pirate dit avoir",
+        "items": [
+          {
+            "n": "328 190",
+            "t": "adresses e-mail",
+            "ton": "attaque"
+          },
+          {
+            "n": "2,3 Go",
+            "t": "de données en vente",
+            "ton": "attaque"
+          },
+          {
+            "n": "143/173",
+            "t": "mots de passe en MD5",
+            "ton": "cible"
+          },
+          {
+            "n": "0",
+            "t": "carte bancaire touchée",
+            "ton": "defense"
+          }
+        ]
+      },
+      {
+        "type": "parade",
+        "titre": "Si tu es client GoTronic",
+        "items": [
+          "Change ton mot de passe GoTronic.",
+          "Change-le aussi partout où tu as utilisé le même.",
+          "Méfie-toi des faux mails au nom de GoTronic ou d'un transporteur.",
+          "Côté développeur : hacher avec Argon2 ou bcrypt, jamais MD5."
+        ]
+      }
+    ]
+  },
+  {
     "id": "2026-11-24-radware-cles-cloud",
     "date": "2026-11-24",
     "ts": "2026-11-24T19:47:41+01:00",
