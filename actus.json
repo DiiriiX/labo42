@@ -1,5 +1,125 @@
 [
   {
+    "id": "2026-11-24-babidighost-agent-ia",
+    "date": "2026-11-24",
+    "ts": "2026-11-24T07:48:28+01:00",
+    "cat": "Cyber",
+    "theme": "ia",
+    "importance": 2,
+    "titre": "Un pirate débutant guidé par une IA débridée",
+    "resume": "D'après la société SOCRadar, un pirate peu expérimenté surnommé BabidiGhost a utilisé pendant neuf jours de novembre un agent IA débridé (basé sur un modèle DeepSeek), en lui donnant ses ordres en français. Il a visé plus de 50 organisations, surtout en Belgique, en France et en Suisse : banques, assureurs, mairies.\n\nIl a volé environ 8,6 Go de fichiers publics de plus de 13 communes et la base clients d'un assureur. Aucune faille inconnue n'a servi : un tableau de bord Metabase pas mis à jour (CVE-2023-38646) et une page d'administration exposée sur Internet avec un mot de passe faible ont suffi.",
+    "pourquoi": "L'IA permet maintenant à un débutant de mener des attaques, mais elles passent encore par les mêmes erreurs de base : logiciel pas à jour, mot de passe faible, service exposé. C'est ce que tu apprendras à repérer et à fermer, côté défense comme côté test d'intrusion.",
+    "cours": "parefeu",
+    "source": "Cyber Security News (rapport SOCRadar)",
+    "url": "https://cybersecuritynews.com/jailbroken-ai-agent/",
+    "schemas": [
+      {
+        "type": "chaine",
+        "titre": "Comment l'attaque s'est déroulée",
+        "etapes": [
+          {
+            "t": "Ordres en français",
+            "d": "à un agent IA débridé",
+            "ton": "attaque"
+          },
+          {
+            "t": "Recherche de cibles",
+            "d": "plus de 50 organisations",
+            "ton": "attaque"
+          },
+          {
+            "t": "Failles connues",
+            "d": "Metabase pas à jour, mot de passe",
+            "ton": "attaque"
+          },
+          {
+            "t": "Vol de données",
+            "d": "environ 8,6 Go",
+            "ton": "attaque"
+          },
+          {
+            "t": "Clé IA coupée",
+            "d": "le 14 novembre",
+            "ton": "defense"
+          }
+        ]
+      },
+      {
+        "type": "chiffres",
+        "titre": "En chiffres (SOCRadar)",
+        "items": [
+          {
+            "n": "9 jours",
+            "t": "d'attaque en novembre",
+            "ton": "neutre"
+          },
+          {
+            "n": "1 801",
+            "t": "ordres donnés à l'IA",
+            "ton": "attaque"
+          },
+          {
+            "n": "8,6 Go",
+            "t": "de fichiers volés",
+            "ton": "attaque"
+          },
+          {
+            "n": "4 sur 14",
+            "t": "cibles ont résisté",
+            "ton": "defense"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "2026-11-24-shirudo",
+    "date": "2026-11-24",
+    "ts": "2026-11-24T07:48:28+01:00",
+    "cat": "Tech",
+    "theme": "ia",
+    "importance": 2,
+    "titre": "OpenAI et Cisco lancent Shirudo, un bouclier pour Linux",
+    "resume": "Le 23 novembre, OpenAI et Cisco ont présenté Shirudo, un outil open source pour les serveurs Linux. Il pose des « boucliers » qui bloquent une attaque précise pendant que l'équipe prépare et installe le vrai correctif, sans redémarrer le serveur.\n\nIl utilise eBPF, une technique qui fait tourner de petits programmes contrôlés dans le noyau Linux, et une IA peut proposer le bouclier. Lors d'un test, un bouclier écrit par Codex a bloqué une attaque Java4Shell. Le projet est encore en préversion et ne remplace pas la mise à jour.",
+    "pourquoi": "Protéger un serveur en attendant le correctif, c'est le quotidien des équipes de défense. Et le noyau Linux, les appels système et les processus, que tu vois dans les cours Linux, sont exactement ce que surveille ce genre d'outil.",
+    "cours": "processus",
+    "source": "Cyber Security News",
+    "url": "https://cybersecuritynews.com/openai-and-cisco-launch-shirudo/",
+    "schemas": [
+      {
+        "type": "chaine",
+        "titre": "Comment marche un bouclier",
+        "etapes": [
+          {
+            "t": "Faille découverte",
+            "d": "ex. Java4Shell",
+            "ton": "attaque"
+          },
+          {
+            "t": "L'IA propose un bouclier",
+            "d": "un petit programme eBPF",
+            "ton": "neutre"
+          },
+          {
+            "t": "L'équipe l'observe",
+            "d": "avant de l'activer",
+            "ton": "cible"
+          },
+          {
+            "t": "Attaque bloquée",
+            "d": "sans redémarrage",
+            "ton": "defense"
+          },
+          {
+            "t": "Vrai correctif installé",
+            "d": "le bouclier ne le remplace pas",
+            "ton": "defense"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "2026-11-23-commission-europeenne",
     "date": "2026-11-23",
     "ts": "2026-11-23T22:42:31+01:00",
