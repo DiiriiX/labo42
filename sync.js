@@ -7,7 +7,7 @@
   const {esc, ic} = L;
   const CFG = "labo42_sync", FILE = "progress.json", API = "https://api.github.com/repos/";
   /* Ce qui reste sur chaque appareil : le carnet Bandit (mots de passe), les réglages d'affichage, les caches et l'examen en cours */
-  const EXCL = ["lessons", "order", "bandit", "size", "theme", "exam", "editCheckin", "_t"];
+  const EXCL = ["lessons", "order", "bandit", "size", "theme", "exam", "editCheckin", "hideNotif", "_t"];
   const SAFE = ["accueil", "parcours", "pratique", "moi", "pc", "tel", "cursus", "oc", "acquis"];
 
   let cfg = {};

@@ -407,6 +407,7 @@ a.chip{text-decoration:none;display:inline-flex;align-items:center;gap:6px}
 .modes{margin-top:16px}
 .syncl{margin:12px 0;padding-left:22px}.syncl li{margin:0 0 12px}.syncl li .small{display:block;margin-top:4px}.syncl .btn.sm{display:flex;width:fit-content;margin-top:8px}
 .syncst{display:flex;gap:8px;align-items:center;font-size:15px;color:var(--acc-ink);margin:6px 0 12px}.syncst.err{color:var(--red)}.syncst .ico{flex:none;width:18px;height:18px}
+.ncardh{display:flex;justify-content:space-between;align-items:center;gap:10px}.ncardh .btn.sm{margin:0;min-height:36px;padding:6px 12px}
 .mlist{display:grid;gap:10px;margin-top:14px}.mlist .linkcard{margin:0}
 .mhead{display:flex;gap:14px;align-items:center;margin-top:6px}
 .mhead .stile{width:52px;height:52px;border-radius:16px}.mhead .stile .ico{width:26px;height:26px}
@@ -609,12 +610,13 @@ a.chip{text-decoration:none;display:inline-flex;align-items:center;gap:6px}
 <section class="view" id="v-veille">
   <div class="hero"><div><h1>Veille</h1><p class="sub">Les actus tech, dev et cyber, expliquées simplement.</p></div><span class="hart" data-art="veille"></span></div>
   <div class="card" id="notifCard">
-    <b>Notifications</b>
+    <div class="ncardh"><b>Notifications</b><button class="btn ghost sm" type="button" id="notifHide">Masquer</button></div>
     <p class="small" id="notifTxt" style="margin:4px 0 0"></p>
     <div id="notifBtns"></div>
   </div>
   <div class="chips" id="actuFilters"></div>
   <div id="actus"></div>
+  <p class="small" id="notifShowP" style="text-align:center;margin:14px 0 0"><button class="link" type="button" id="notifShow">Afficher le réglage des notifications</button></p>
   <h2>Les sources à suivre</h2>
   <ul class="src" id="srcs"></ul>
   <h2>Comprendre un article</h2>
@@ -1642,8 +1644,10 @@ function renderActus(){
   refresh();
 }
 let actusSig = "", actusAt = 0, actusBusy = false, dbOn = false, actusFile = false;
+const ACTU_DAYS = 3;
 function setActus(list){
-  const l = arr(list).filter(a => a && a.titre && a.date).sort((a, b) => a.date < b.date ? 1 : a.date > b.date ? -1 : tsOf(b) - tsOf(a));
+  const from = addDays(today, -(ACTU_DAYS - 1));
+  const l = arr(list).filter(a => a && a.titre && a.date && a.date >= from).sort((a, b) => a.date < b.date ? 1 : a.date > b.date ? -1 : tsOf(b) - tsOf(a));
   const sig = l.map(a => a.id + "@" + (a.ts || "")).join("|");
   if (sig === actusSig && actusState === "ok") { tickAgo(); return; }
   const known = new Set(actus.map(a => a.id)), fresh = actusSig ? l.filter(a => !known.has(a.id)) : [];
@@ -1728,6 +1732,10 @@ async function enableNotif(){
   renderNotif();
 }
 renderNotif();
+const notifVis = () => { const h = !!store.hideNotif; $("notifCard").classList.toggle("off", h); $("notifShowP").classList.toggle("off", !h); };
+$("notifHide").addEventListener("click", () => { store.hideNotif = true; save(); notifVis(); });
+$("notifShow").addEventListener("click", () => { delete store.hideNotif; save(); notifVis(); });
+notifVis();
 
 /* ---------- Installation ---------- */
 $("copyLink").addEventListener("click", async () => {
