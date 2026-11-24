@@ -1,5 +1,129 @@
 [
   {
+    "id": "2026-11-24-dgac-fuite",
+    "date": "2026-11-24",
+    "ts": "2026-11-24T14:43:28+01:00",
+    "cat": "Cyber",
+    "theme": "fuite",
+    "importance": 2,
+    "titre": "Aviation civile : le site de paiement piraté, cartes exposées",
+    "resume": "Le site où pilotes, propriétaires d'avions, compagnies et écoles paient leurs redevances à l'aviation civile (DGAC) a été piraté entre le 5 et le 9 novembre. L'affaire a été révélée par Ouest-France le 24 novembre.\n\nTous les comptes sont touchés : nom, date de naissance, adresse, téléphone, mot de passe chiffré, mais aussi des données de carte (numéro partiel, date d'expiration, cryptogramme). Le prestataire a coupé ses serveurs, et le nombre de victimes n'a pas été donné.",
+    "pourquoi": "Une fuite de cryptogramme montre que des données qui ne devraient jamais être stockées l'étaient : c'est une erreur de conception, pas seulement une attaque. Et le mot de passe « chiffré » te rappelle le cours sur le hachage : bien le stocker limite les dégâts.",
+    "cours": "hachage",
+    "source": "INCYBER NEWS",
+    "url": "https://incyber.org/article/fuite-donnees-direction-generale-aviation-civile/",
+    "schemas": [
+      {
+        "type": "cibles",
+        "titre": "Ce qui a fuité",
+        "centre": {
+          "t": "Site de paiement DGAC",
+          "d": "piraté du 5 au 9 novembre",
+          "ton": "attaque"
+        },
+        "autour": [
+          {
+            "t": "Identité",
+            "d": "nom, date de naissance"
+          },
+          {
+            "t": "Contact",
+            "d": "adresse, téléphone"
+          },
+          {
+            "t": "Mot de passe",
+            "d": "stocké chiffré"
+          },
+          {
+            "t": "Carte bancaire",
+            "d": "numéro partiel, cryptogramme"
+          },
+          {
+            "t": "Commandes",
+            "d": "montants, adresse IP"
+          }
+        ]
+      },
+      {
+        "type": "parade",
+        "titre": "Si tu as un compte",
+        "items": [
+          "Change ton mot de passe, et partout où tu utilisais le même.",
+          "Surveille tes relevés bancaires et fais opposition au moindre doute.",
+          "Méfie-toi des mails ou SMS qui citent tes commandes pour te piéger."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "2026-11-24-inca-cyberattaque",
+    "date": "2026-11-24",
+    "ts": "2026-11-24T14:43:28+01:00",
+    "cat": "Cyber",
+    "theme": "intrusion",
+    "importance": 2,
+    "titre": "Institut national du cancer : intrusion et fuite de données",
+    "resume": "L'Institut national du cancer (INCa) a détecté le 18 novembre une intrusion sur ses sites cancer.fr et pediatrie.cancer.fr, qui sont hors ligne. Il l'a annoncé le 23 novembre : des données personnelles ont été volées, sans préciser lesquelles.\n\nL'INCa dit avoir stoppé l'intrusion, a prévenu la CNIL et contactera les personnes touchées. Rien ne confirme le vol de données médicales, et il met en garde contre des messages piégés qui se feraient passer pour lui.",
+    "pourquoi": "Après une fuite, l'attaque suivante est souvent un phishing qui utilise les vraies infos volées pour paraître crédible. C'est exactement le scénario du cours sur le phishing, et le travail d'une équipe de réponse aux incidents : contenir, prévenir, notifier.",
+    "cours": "phishing",
+    "source": "Cyberattaque.org",
+    "url": "https://www.cyberattaque.org/linstitut-national-du-cancer-victime-dune-cyberattaque-avec-fuite-de-donnees/",
+    "schemas": [
+      {
+        "type": "dates",
+        "titre": "Le fil des événements",
+        "items": [
+          {
+            "date": "18 novembre",
+            "t": "Intrusion détectée",
+            "ton": "attaque"
+          },
+          {
+            "date": "Ensuite",
+            "t": "Intrusion stoppée",
+            "ton": "defense"
+          },
+          {
+            "date": "23 novembre",
+            "t": "Annonce et CNIL prévenue",
+            "ton": "neutre"
+          },
+          {
+            "date": "À venir",
+            "t": "Sites remis en ligne",
+            "ton": "neutre"
+          }
+        ]
+      },
+      {
+        "type": "chaine",
+        "titre": "Le risque d'après",
+        "etapes": [
+          {
+            "t": "Données volées",
+            "d": "sur les sites de l'INCa",
+            "ton": "attaque"
+          },
+          {
+            "t": "Faux message",
+            "d": "au nom de l'INCa",
+            "ton": "attaque"
+          },
+          {
+            "t": "Demande de codes",
+            "d": "identifiants ou carte",
+            "ton": "attaque"
+          },
+          {
+            "t": "Ne jamais répondre",
+            "d": "l'INCa ne les demande pas",
+            "ton": "defense"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "2026-11-24-chrome-variations",
     "date": "2026-11-24",
     "ts": "2026-11-24T11:48:57+01:00",
