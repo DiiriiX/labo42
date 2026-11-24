@@ -1,5 +1,62 @@
 [
   {
+    "id": "2026-11-24-radware-cles-cloud",
+    "date": "2026-11-24",
+    "ts": "2026-11-24T19:47:41+01:00",
+    "cat": "Cyber",
+    "theme": "cloud",
+    "importance": 2,
+    "titre": "Radware : une API ouverte laisse fuiter des clés cloud",
+    "resume": "Le 19 novembre, un pirate a utilisé une API interne de Radware, une entreprise de sécurité qui protège des sites web (pare-feu applicatif Cloud WAF). Cette API devait rester interne, mais elle était joignable depuis Internet sans aucune authentification. L'accès a été repéré dix heures plus tard.\n\nLe pirate a pu voir les coordonnées de clients et, pour une partie d'entre eux, les clés qui servent à envoyer leurs journaux vers leur propre stockage (Amazon S3, Azure Blob, SFTP). Radware a bloqué l'API et demande aux clients de changer ces clés au plus vite et de vérifier les accès à leur stockage depuis le 19 novembre.",
+    "pourquoi": "Même une entreprise de cybersécurité peut oublier de protéger une API : une seule porte sans mot de passe suffit. Ça illustre tes cours sur le cloud et les logs : une clé d'accès volée se change tout de suite, et ce sont les journaux qui montrent qui est passé.",
+    "cours": "cloud",
+    "source": "BleepingComputer",
+    "url": "https://www.bleepingcomputer.com/news/security/radware-discloses-breach-exposing-customer-cloud-access-keys/",
+    "schemas": [
+      {
+        "type": "chaine",
+        "titre": "Comment les clés ont fuité",
+        "etapes": [
+          {
+            "t": "API interne exposée",
+            "d": "joignable depuis Internet",
+            "ton": "cible"
+          },
+          {
+            "t": "Aucune authentification",
+            "d": "pas de mot de passe ni de clé",
+            "ton": "attaque"
+          },
+          {
+            "t": "Accès le 19 novembre",
+            "d": "repéré 10 heures plus tard",
+            "ton": "attaque"
+          },
+          {
+            "t": "Clés de stockage lues",
+            "d": "S3, Azure Blob, SFTP",
+            "ton": "attaque"
+          },
+          {
+            "t": "API bloquée",
+            "d": "clés à changer par les clients",
+            "ton": "defense"
+          }
+        ]
+      },
+      {
+        "type": "parade",
+        "titre": "La leçon pour protéger une API",
+        "items": [
+          "Ne jamais laisser une API interne joignable depuis Internet.",
+          "Exiger une authentification sur chaque API, même « interne ».",
+          "Changer tout de suite une clé d'accès qui a pu être lue.",
+          "Lire les journaux d'accès du stockage pour repérer un intrus."
+        ]
+      }
+    ]
+  },
+  {
     "id": "2026-11-24-dgac-fuite",
     "date": "2026-11-24",
     "ts": "2026-11-24T14:43:28+01:00",
