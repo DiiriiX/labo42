@@ -1,5 +1,25 @@
 [
   {
+    "date": "2026-11-24",
+    "bilan": "Ton poste est prêt pour faire comme à 42 : Ubuntu (WSL) est installé, avec ton dossier `~/piscine`, `cc` et la vraie norminette. Tu as reçu ta séance C00 cet après-midi, et tu n'as pas encore rendu de code : c'est le moment de lancer ta toute première boucle complète.",
+    "etape": {
+      "titre": "Mission m02 : ft_putchar sous Ubuntu",
+      "detail": "Dans `~/piscine/c00/ex00`, écris ft_putchar puis un main.c de test à côté, compile avec `cc -Wall -Wextra -Werror` et lance `./a.out` avec plusieurs caractères. Passe `norminette` sur ft_putchar.c (pas sur le main.c), ajoute l'en-tête 42 et fais ton commit Git. Si c'est déjà fait, enchaîne avec la mission m03. Sur ton téléphone : relis le cours **write** et le sujet ft_putchar de l'atelier avant de t'asseoir au PC.",
+      "lien": "#pc-m02"
+    },
+    "actus": [
+      "**Chrome : faille critique corrigée** : une page piégée pouvait sortir du bac à sable du navigateur ; mets Chrome à jour sur ton PC.",
+      "**Site de paiement de l'aviation civile piraté** : même le cryptogramme des cartes était stocké, une erreur de conception qui aggrave la fuite.",
+      "**Intrusion à l'Institut national du cancer** : des données personnelles volées ; méfie-toi des messages piégés qui se feraient passer pour lui.",
+      "**Un pirate débutant guidé par une IA** : aucune faille inconnue, juste un logiciel pas à jour et un mot de passe faible ; les erreurs de base restent la porte d'entrée."
+    ],
+    "question": {
+      "texte": "Quand tu compiles avec `cc -Wall -Wextra -Werror`, que change exactement l'option `-Werror` par rapport à `-Wall -Wextra` seules ?",
+      "cours": "compilation"
+    },
+    "mot": "Un premier exercice qui compile sans erreur et passe la norminette, c'est ta première vraie brique de Piscine."
+  },
+  {
     "date": "2026-11-23",
     "bilan": "Tu as déjà vu les fichiers, `ssh`, la compilation, l'ASCII et César, et tu as réussi les versions 1 et 3 de ton chiffrement de César. Ta prochaine marche, c'est la version 4 : chiffrer un mot entier, avec les quatre questions du prof qui t'attendent encore.",
     "etape": {
