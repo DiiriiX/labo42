@@ -968,7 +968,7 @@ const CARDS = [
  ["Terminal","Comment lire un fichier qui s'appelle juste - ?","Avec un chemin devant, <code>cat ./-</code>, ou avec une redirection, <code>cat &lt; -</code>.","fichiers"],
  ["Terminal","Que veut dire -- dans une commande ?","« Fin des options » : tout ce qui suit est un nom de fichier, même s'il commence par un tiret.","fichiers"],
  ["Terminal","Deux façons d'écrire un nom de fichier qui contient des espaces ?","Entre guillemets <code>\"mon fichier\"</code>, ou avec un antislash devant chaque espace <code>mon\\ fichier</code>.","fichiers"],
- ["Terminal","À quoi sert cd .. ?","À remonter d'un dossier, vers le dossier parent.","fichiers"],
+ ["Terminal", "Que fait <code>cd</code> tout seul, sans rien après ?", "Il te ramène dans ton dossier personnel, <code>~</code>. Pratique quand tu es perdu.", "fichiers"],
  ["Terminal","Dans man, comment chercher un mot, et comment quitter ?","<code>/</code> puis le mot et Entrée pour chercher, <code>q</code> pour quitter.","fichiers"],
  ["Terminal","Que fait find sans argument ?","Il liste tous les fichiers du dossier et de ses sous-dossiers, cachés compris.","fichiers"],
  ["Terminal","Que veulent dire r, w et x ?","r : lire, w : écrire, x : exécuter.","permissions"],
@@ -982,7 +982,7 @@ const CARDS = [
  ["C","Avec if / else, combien de blocs sont exécutés ?","Un seul : celui du if si la condition est vraie, sinon celui du else.","conditions"],
  ["C","Que se passe-t-il si on oublie i++ dans une boucle while ?","i ne change jamais, la condition reste vraie : la boucle tourne à l'infini.","boucles"],
  ["C","À quoi sert return dans une fonction ?","À renvoyer un résultat à celui qui a appelé la fonction, et à en sortir.","fonctions"],
- ["C","Que veut dire le 1 dans write(1, ...) ?","C'est la sortie standard, c'est-à-dire l'écran.","write"],
+ ["C", "Que renvoie <code>write</code> ?", "Le nombre d'octets qu'il a vraiment écrits, ou -1 en cas d'erreur.", "write"],
  ["C","Par quel caractère se termine toute chaîne en C ?","Par le caractère nul <code>'\\0'</code>, qui marque la fin.","chaines"],
  ["C","Quel est le numéro de la première case d'un tableau ?","0 : la case <code>str[0]</code> est le premier caractère.","chaines"],
  ["C","Quels formats pour un entier, un caractère, une chaîne ?","<code>%d</code> pour un entier, <code>%c</code> pour un caractère, <code>%s</code> pour une chaîne.","chaines"],
@@ -997,7 +997,7 @@ const CARDS = [
  ["Réseau","À quoi sert le DNS ?","À traduire un nom de site en adresse IP que les machines comprennent.","dns"],
  ["Réseau","Les trois étapes de la poignée de main TCP ?","SYN, SYN-ACK, ACK.","tcp"],
  ["Réseau","Différence principale entre TCP et UDP ?","TCP établit une connexion et vérifie que tout arrive. UDP envoie sans vérifier, plus vite.","tcp"],
- ["Réseau","Que veut dire le code HTTP 404 ?","La page demandée est introuvable.","http"],
+ ["Réseau", "Que veulent dire les codes HTTP 200 et 403 ?", "200 : tout va bien, la page est renvoyée. 403 : accès interdit, même si la page existe.", "http"],
  ["Cyber","Red Team et Blue Team, c'est quoi ?","La Red Team attaque légalement pour trouver les failles. La Blue Team défend et détecte les attaques.","metiers"],
  ["Cyber","Que fait un SOC ?","Un centre opérationnel de sécurité surveille les alertes, détecte les attaques et réagit.","metiers"],
  ["Cyber","Quand a-t-on le droit de tester les failles d'un système ?","Seulement avec une autorisation, ou sur des plateformes et machines prévues pour (Root-Me, TryHackMe, ses propres VM).","metiers"],
@@ -1011,58 +1011,58 @@ const CARDS = [
  ["Cyber","Qu'est-ce que le CERT-FR ?","Le service officiel français qui publie les alertes et avis de sécurité, rattaché à l'ANSSI.","metiers"],
  ["Terminal","Que veut dire chmod 755 ?","rwxr-xr-x : le propriétaire peut tout faire, le groupe et les autres peuvent lire et exécuter.","permissions"],
  ["Terminal","Quelle valeur a chaque droit en chiffres ?","r = 4, w = 2, x = 1. On additionne : rwx = 7, r-x = 5, r-- = 4.","permissions"],
- ["Terminal","Pourquoi écrire ./script.sh pour lancer un script ?","Le shell ne cherche pas les programmes dans le dossier courant : <code>./</code> lui dit « ici ».","permissions"],
- ["Terminal","Différence entre &gt; et &gt;&gt; ?","<code>&gt;</code> remplace le contenu du fichier, <code>&gt;&gt;</code> ajoute à la fin.","redirections"],
+ ["Terminal", "Qui peut changer les droits d'un fichier ?", "Son propriétaire, et root (par exemple avec <code>sudo</code>).", "permissions"],
+ ["Terminal", "Que fait <code>&lt;</code> dans <code>wc -l &lt; notes.txt</code> ?", "Il donne le contenu de notes.txt comme entrée de la commande, à la place du clavier.", "redirections"],
  ["Terminal","Que fait 2&gt; erreurs.txt ?","Il envoie la sortie d'erreur, le canal 2, dans le fichier erreurs.txt.","redirections"],
  ["Terminal","Que fait &amp;&amp; entre deux commandes ?","La seconde ne se lance que si la première a réussi.","redirections"],
- ["Terminal","Sur quel port écoute SSH par défaut ?","22.","ssh"],
+ ["Terminal", "Comment quitter une connexion SSH ?", "Avec <code>exit</code> ou Ctrl+D : tu reviens dans le terminal de ta machine.", "ssh"],
  ["Terminal","Pourquoi SSH a-t-il remplacé Telnet ?","SSH chiffre toute la connexion ; Telnet envoie tout en clair, mots de passe compris.","ssh"],
  ["Terminal","À quoi sert une clé SSH ?","À se connecter sans mot de passe : la clé privée reste chez toi, la clé publique va sur le serveur.","ssh"],
- ["Terminal","Les trois commandes pour envoyer un changement avec Git ?","<code>git add</code>, <code>git commit -m \"message\"</code>, <code>git push</code>.","git"],
+ ["Terminal", "Quelle différence entre <code>git commit</code> et <code>git push</code> ?", "commit enregistre une étape dans le dépôt de ta machine ; push l'envoie sur le serveur (GitHub, ou le dépôt de 42).", "git"],
  ["Terminal","Que montre git status ?","Les fichiers modifiés, ceux prêts pour le commit, et ceux que Git ne suit pas.","git"],
  ["Terminal","Pourquoi ne jamais pousser un mot de passe sur Git ?","L'historique le garde, même si tu le supprimes ensuite : il faut changer le mot de passe.","git"],
- ["C","Que fait l'option -Werror ?","Elle transforme les avertissements en erreurs : le programme ne compile pas tant qu'il en reste.","compilation"],
+ ["C", "Que fait l'option <code>-o</code> dans <code>cc main.c -o mon_prog</code> ?", "Elle choisit le nom du programme créé : mon_prog au lieu de a.out.", "compilation"],
  ["C","Quelle erreur de compilation corriger en premier ?","Toujours la première : elle en provoque souvent d'autres en cascade.","compilation"],
  ["C","Que vaut une variable locale jamais initialisée ?","N'importe quoi : ce qui traînait en mémoire. Initialise-la toujours avant de la lire.","variables"],
  ["C","Que donne 7 / 2 entre deux int ? Et 7 % 2 ?","3 : la division entière coupe ce qui est après la virgule. 7 % 2 donne le reste : 1.","variables"],
- ["C","Différence entre = et == ?","<code>=</code> range une valeur dans une variable, <code>==</code> compare deux valeurs.","conditions"],
+ ["C", "Dans un if, que veulent dire <code>&amp;&amp;</code> et <code>||</code> ?", "<code>&amp;&amp;</code> : les deux conditions doivent être vraies. <code>||</code> : il suffit que l'une des deux le soit.", "conditions"],
  ["C","Les trois parties d'une boucle while bien écrite ?","Une initialisation avant, une condition, et une mise à jour dans le bloc.","boucles"],
  ["C","Pourquoi n'y a-t-il pas de for à la Piscine ?","La Norme de 42 l'interdit : toutes les boucles s'écrivent avec while.","boucles"],
  ["C","Que reçoit une fonction quand on lui passe un int ?","Une copie : modifier le paramètre ne change pas la variable de l'appelant.","fonctions"],
  ["C","Que faut-il pour qu'une fonction récursive s'arrête ?","Un cas d'arrêt, qui renvoie une valeur sans s'appeler à nouveau.","fonctions"],
  ["C","Que veulent dire les 3 paramètres de write ?","Où écrire (1 = l'écran), l'adresse de ce qu'on écrit, et le nombre d'octets.","write"],
  ["C","Sur quel canal write doit-il envoyer un message d'erreur ?","Le 2, la sortie d'erreur : <code>write(2, ...)</code>.","write"],
- ["C","Comment sait-on où se termine une chaîne en C ?","Grâce au caractère <code>'\0'</code>, de code 0, placé juste après le dernier caractère.","chaines"],
+ ["C", "Combien de cases faut-il pour ranger « 42 » dans un tableau de char ?", "3 : le '4', le '2', puis le <code>'\\0'</code> final.", "chaines"],
  ["C","Comment passer d'une minuscule à sa majuscule ?","On retire 32 : 'a' (97) − 32 = 'A' (65).","ascii"],
  ["C","Que vaut '7' - '0' ?","Le nombre 7 : c'est l'astuce pour transformer un chiffre en nombre.","ascii"],
  ["C","Que contient un pointeur ?","Une adresse. <code>*p</code> donne la valeur rangée à cette adresse.","pointeurs"],
  ["C","Pourquoi passer &amp;x à une fonction ?","Pour qu'elle puisse modifier x lui-même, et pas une copie.","pointeurs"],
- ["C","Pourquoi malloc(ft_strlen(s) + 1) ?","Le +1 laisse la place du <code>'\0'</code> final.","malloc"],
+ ["C","Pourquoi malloc(ft_strlen(s) + 1) ?","Le +1 laisse la place du <code>'\\0'</code> final.","malloc"],
  ["C","Que faire si malloc renvoie NULL ?","S'arrêter proprement : la mémoire n'a pas pu être réservée, l'utiliser ferait planter le programme.","malloc"],
  ["C","Qu'est-ce qu'un use-after-free ?","Utiliser une mémoire déjà rendue avec free : c'est un bug, et souvent une faille.","malloc"],
- ["Réseau","Combien de couches dans le modèle OSI ?","7, de la couche physique (1) à l'application (7).","osi"],
+ ["Réseau", "À quelle couche travaille un switch ? Et un routeur ?", "Le switch à la couche 2 (adresses MAC, dans le réseau local) ; le routeur à la couche 3 (adresses IP, entre les réseaux).", "osi"],
  ["Réseau","À quelle couche vivent les adresses IP ? Et les ports ?","Les adresses IP à la couche 3 (réseau), les ports à la couche 4 (transport).","osi"],
  ["Réseau","Quelles sont les plages d'adresses privées ?","10.0.0.0/8, 172.16.0.0/12 et 192.168.0.0/16.","reseaulocal"],
  ["Réseau","Combien de machines dans un réseau /24 ?","254 : 256 adresses, moins celle du réseau et celle de diffusion.","reseaulocal"],
- ["Réseau","Ports de HTTP et de HTTPS ?","80 pour HTTP, 443 pour HTTPS.","ports"],
- ["Réseau","Que fait le DNS ?","Il traduit un nom de domaine en adresse IP.","dns"],
+ ["Réseau", "À quoi sert un numéro de port ?", "À savoir à quel programme on parle : l'adresse IP trouve la machine, le port trouve le service (web, SSH…).", "ports"],
+ ["Réseau", "Quelle commande demande au DNS l'adresse IP d'un site ?", "<code>dig</code> ou <code>nslookup</code>, par exemple <code>dig example.com</code>.", "dns"],
  ["Réseau","Qu'est-ce que le TTL d'une réponse DNS ?","La durée pendant laquelle on peut garder la réponse en cache.","dns"],
- ["Réseau","Différence entre TCP et UDP ?","TCP garantit l'arrivée et l'ordre ; UDP est plus rapide, sans garantie.","tcp"],
+ ["Réseau", "Pour un appel vidéo, plutôt TCP ou UDP ?", "Plutôt UDP : mieux vaut perdre une image que tout ralentir pour la renvoyer en retard.", "tcp"],
  ["Réseau","Que veulent dire les codes 404 et 500 ?","404 : page introuvable, erreur du client. 500 : erreur interne du serveur.","http"],
  ["Réseau","Qu'apporte HTTPS par rapport à HTTP ?","Le chiffrement : personne entre toi et le site ne peut lire ni modifier les échanges.","http"],
  ["Cyber","Un rançongiciel bloque les serveurs d'un hôpital : quel pilier est touché ?","La disponibilité, et souvent aussi la confidentialité si des données ont été volées.","triade"],
  ["Cyber","Que garantit l'intégrité ?","Que les données n'ont pas été modifiées sans autorisation.","triade"],
- ["Cyber","Pourquoi le chiffrement de César est-il faible ?","Il n'y a que 25 clés possibles : on les essaie toutes en un instant.","cesar"],
+ ["Cyber", "Avec une clé de 3, que devient « ZOO » ?", "« CRR » : Z repart au début de l'alphabet et devient C, chaque O devient R.", "cesar"],
  ["Cyber","Qu'est-ce que l'analyse de fréquences ?","Repérer les lettres les plus fréquentes du message chiffré : en français, le E est la plus courante.","cesar"],
- ["Cyber","Pourquoi un site ne stocke-t-il jamais ton mot de passe en clair ?","Si sa base fuit, tout le monde le lirait : il ne garde qu'une empreinte (un hachage).","hachage"],
+ ["Cyber", "Qu'est-ce qu'une attaque par dictionnaire sur des hashs ?", "Hacher des millions de mots de passe courants et comparer les empreintes : un mot de passe connu tombe vite. D'où les mots de passe longs et uniques.", "hachage"],
  ["Cyber","Qu'est-ce qu'un sel, pour un mot de passe ?","Une valeur aléatoire ajoutée avant le hachage : deux mots de passe identiques n'ont plus la même empreinte.","hachage"],
- ["Cyber","Quatre signes d'un message de phishing ?","Une adresse d'expéditeur bizarre, l'urgence, une demande de mot de passe ou de code, un lien qui ne mène pas au vrai site.","phishing"],
+ ["Cyber", "Qu'est-ce que le smishing ?", "Du phishing par SMS : un faux colis, une fausse amende… avec un lien piégé.", "phishing"],
  ["Cyber","Un message de ta banque te semble suspect : que fais-tu ?","Tu ne cliques pas : tu vas toi-même sur le site ou l'appli de la banque, ou tu l'appelles.","phishing"],
  ["Cyber","Quelle est la bonne politique par défaut d'un pare-feu ?","Tout bloquer en entrée, puis n'ouvrir que le strict nécessaire.","parefeu"],
  ["Cyber","Que dit le principe du moindre privilège ?","Ne donner que les accès indispensables, rien de plus.","parefeu"],
  ["Cyber","Comment compter les échecs SSH dans auth.log ?","<code>grep \"Failed password\" auth.log | wc -l</code>, ou <code>grep -c</code>.","logs"],
  ["Cyber","À quoi sert un SIEM ?","À rassembler les logs de tout un réseau et à déclencher des alertes.","logs"],
- ["Cyber","Comment se protéger de l'injection SQL ?","Avec des requêtes préparées : la saisie reste une donnée, jamais du code.","injection"],
+ ["Cyber", "Que doit faire un serveur de toute saisie d'un utilisateur ?", "La traiter comme suspecte : la vérifier, la limiter, et ne jamais la mélanger à du code (SQL, commandes, HTML).", "injection"],
  ["Cyber","Pourquoi ' OR '1'='1 est-il dangereux dans un formulaire mal protégé ?","Il rend la condition toujours vraie : la requête peut laisser entrer n'importe qui.","injection"],
  ["Et après","Comment lance-t-on un script Python ?","<code>python3 script.py</code> : pas de compilation, l'interpréteur l'exécute ligne par ligne.","python"],
  ["Et après","En Python, qu'est-ce qui remplace les accolades du C ?","L'indentation : les lignes décalées sous un if ou une boucle forment son bloc.","python"],
@@ -1073,7 +1073,7 @@ const CARDS = [
  ["Et après","Comment apprend un modèle d'apprentissage automatique ?","À partir de nombreux exemples, au lieu de règles écrites à la main.","ia"],
  ["Et après","Qu'est-ce qu'une injection de prompt ?","Des instructions cachées dans un contenu lu par une IA, pour la détourner.","ia"],
  ["Et après","Que ne faut-il jamais coller dans un outil d'IA ?","Un mot de passe, une clé d'accès ou des données personnelles.","ia"],
- ["C avancé", "Que vaut 7 / 2 en C, avec deux int ?", "3 : entre deux int, la division est entière. Le reste, 1, s'obtient avec <code>7 % 2</code>.", "calculs"],
+ ["C avancé", "Que vaut <code>17 % 5</code> ? Et à quoi sert souvent <code>%</code> ?", "2. <code>%</code> sert à savoir si un nombre est pair (<code>n % 2 == 0</code>) ou à revenir au début, comme dans César avec <code>% 26</code>.", "calculs"],
  ["C avancé", "Comment obtenir 3.5 à partir de a = 7 et b = 2, deux int ?", "Convertis au moins l'un des deux : <code>(double)a / b</code>.", "calculs"],
  ["C avancé", "Que vaut 2 + 3 * 4 ?", "14 : la multiplication passe avant l'addition. <code>(2 + 3) * 4</code> vaut 20.", "calculs"],
  ["C avancé", "À quoi sert un fichier .h ?", "À rassembler les prototypes et les types partagés entre plusieurs fichiers .c. On l'inclut avec des guillemets : <code>#include \"ft.h\"</code>.", "modulaire"],
@@ -1084,7 +1084,7 @@ const CARDS = [
  ["C avancé", "À quoi servent #ifndef, #define et #endif en haut d'un .h ?", "À protéger le header : s'il est inclus deux fois, son contenu n'est lu qu'une fois. La Norme l'exige.", "preprocesseur"],
  ["C avancé", "a.x ou p-&gt;x : lequel pour un pointeur sur structure ?", "<code>p-&gt;x</code>, un raccourci de <code>(*p).x</code>. Pour une variable, c'est <code>a.x</code>.", "structures"],
  ["C avancé", "À 42, comment nomme-t-on une structure et son typedef ?", "La structure commence par s_, le type par t_ : <code>typedef struct s_point { … } t_point;</code>", "structures"],
- ["C avancé", "Pour qu'une fonction modifie une structure, que faut-il lui passer ?", "Son adresse, comme pour n'importe quelle variable : <code>deplacer(&amp;p)</code>.", "structures"],
+ ["C avancé", "Que donne <code>sizeof(t_point)</code> si t_point contient deux int ?", "En général 8 octets (2 × 4), mais le compilateur peut ajouter des octets de remplissage : fie-toi toujours à sizeof.", "structures"],
  ["C avancé", "Que renvoie open en cas d'échec ?", "-1. Vérifie-le toujours avant de lire ou d'écrire.", "fichiers_c"],
  ["C avancé", "Que veut dire un read qui renvoie 0 ?", "La fin du fichier est atteinte. Un nombre positif, c'est le nombre d'octets lus ; -1, une erreur.", "fichiers_c"],
  ["C avancé", "Quelles fonctions de fichiers utilise-t-on surtout à 42 ?", "open, read, write et close. Chaque open a son close.", "fichiers_c"],
@@ -1122,7 +1122,7 @@ const CARDS = [
  ["Linux", "systemctl start ou enable : quelle différence ?", "start lance le service maintenant ; enable le fait démarrer tout seul à chaque allumage.", "services"],
  ["Linux", "Que veut dire la ligne cron <code>*/10 * * * * script.sh</code> ?", "Lancer script.sh toutes les 10 minutes. Les champs : minute, heure, jour, mois, jour de la semaine.", "services"],
  ["Linux", "Quels réglages SSH demande Born2beroot ?", "Le port 4242, la connexion directe en root interdite (<code>PermitRootLogin no</code>). Puis on redémarre le service et on teste.", "serveur"],
- ["Linux", "Quelle est la règle de base d'un pare-feu comme UFW ?", "Tout refuser en entrée (<code>ufw default deny incoming</code>), puis n'autoriser que le nécessaire, par exemple <code>ufw allow 4242</code>.", "serveur"],
+ ["Linux", "Avec UFW, comment n'ouvrir que le port 4242 ?", "<code>sudo ufw default deny incoming</code>, puis <code>sudo ufw allow 4242</code>. Vérifie avec <code>sudo ufw status</code>.", "serveur"],
  ["Linux", "Pourquoi s'entraîner dans une machine virtuelle ?", "On peut tout casser sans risque, faire des instantanés et recommencer. Born2beroot se fait d'ailleurs dans une VM.", "serveur"],
  ["Vers 42", "Quelles règles un Makefile doit-il avoir à 42 ?", "$(NAME), all, clean, fclean et re, sans oublier .PHONY.", "makefile"],
  ["Vers 42", "Par quoi doit commencer chaque ligne de recette d'un Makefile ?", "Par une vraie tabulation. Avec des espaces, make affiche « missing separator ».", "makefile"],
@@ -1404,31 +1404,41 @@ const MODES = ["Du jour"].concat(DECKS);
 let deck = "Du jour", order = [], pos = 0;
 function build(){
   if (deck === "Du jour") order = dueList();
-  else { order = CARDS.map((c,i) => i).filter(i => deck === "Tout" || CARDS[i][0] === deck); order.sort((a,b) => ((srsOf(CARDS[a]) || {b:-1}).b - (srsOf(CARDS[b]) || {b:-1}).b) || Math.random() - .5); }
+  else {
+    order = CARDS.map((c,i) => i).filter(i => deck === "Tout" || CARDS[i][0] === deck);
+    for (let k = order.length - 1; k > 0; k--) { const r = Math.floor(Math.random() * (k + 1)); [order[k], order[r]] = [order[r], order[k]]; }
+    const box = i => (srsOf(CARDS[i]) || {b: -1}).b;
+    order.sort((a, b) => box(a) - box(b));
+  }
   pos = 0; renderDecks(); show();
 }
 function renderDecks(){
-  $("decks").innerHTML = MODES.map(d => { const n = d === "Du jour" ? dueList().length : d === "Tout" ? CARDS.length : CARDS.filter(c => c[0] === d).length; return `<button class="chip${d === deck ? " on" : ""}" type="button" data-d="${d}">${d} (${n})</button>`; }).join("");
+  $("decks").innerHTML = MODES.map(d => { const n = d === "Du jour" ? (deck === "Du jour" ? order.length : dueList().length) : d === "Tout" ? CARDS.length : CARDS.filter(c => c[0] === d).length; return `<button class="chip${d === deck ? " on" : ""}" type="button" data-d="${d}">${d} (${n})</button>`; }).join("");
 }
 function show(){
-  const empty = !order.length;
+  const free = deck !== "Du jour", over = free && order.length > 0 && pos >= order.length, empty = !order.length || over;
   ["flash","bShow"].forEach(id => $(id).classList.toggle("off", empty)); $("judge").classList.add("off");
   $("revDone").classList.toggle("off", !empty);
+  if (over) {
+    const k = order.filter(j => isKnown(CARDS[j])).length;
+    $("revDone").innerHTML = `<div class="box acc"><h3>Paquet « ${esc(deck)} » terminé</h3><p>Tu as vu les ${order.length} fiches : tu en sais ${k}. Les fiches « Du jour » reviennent toutes seules au bon moment ; ici, tu peux refaire le paquet dans un nouvel ordre.</p><button class="btn acc full" type="button" id="revAgain">Recommencer le paquet</button></div>`;
+    $("bar").style.width = Math.round(k / order.length * 100) + "%"; $("barTxt").textContent = k + " sur " + order.length + " fiches sues dans ce paquet"; return;
+  }
   if (empty) {
     const t1 = dueOn(addDays(today, 1)), t3 = [2,3,4,5,6,7].reduce((n, k) => n + dueOn(addDays(today, k)), 0);
     $("revDone").innerHTML = `<div class="box acc"><h3>Fiches du jour terminées !</h3><p>Reviens demain : ${t1} fiche${t1 > 1 ? "s" : ""} t'attendent, et ${t3} dans les 6 jours suivants. Tu peux aussi réviser un paquet librement avec les filtres ci-dessus.</p></div>`;
     $("bar").style.width = "100%"; $("barTxt").textContent = ""; return;
   }
-  if (pos >= order.length) pos = 0;
-  const c = CARDS[order[pos]], e = srsOf(c);
+  if (!free) pos = 0;
+  const c = CARDS[order[pos]], e = srsOf(c), dj = store.day.dj || 0;
   $("flash").classList.remove("open"); $("bShow").classList.remove("off");
   $("fTag").textContent = c[0];
-  $("fNum").innerHTML = `<span class="lvl">${!e ? "Nouvelle" : e.b === 0 ? "À revoir" : "Niveau " + e.b + " / 5"}</span> · ${pos + 1} / ${order.length}`;
-  $("fQ").textContent = c[1];
+  $("fNum").innerHTML = `<span class="lvl">${!e ? "Nouvelle" : e.b === 0 ? "À revoir" : "Niveau " + e.b + " / 5"}</span> · Fiche ${free ? (pos + 1) + " sur " + order.length : (dj + 1) + " sur " + (dj + order.length)}`;
+  $("fQ").innerHTML = c[1];
   $("fAns").innerHTML = c[2];
   $("fLesson").textContent = "Revoir le cours : " + TOPIC[c[3]].t;
   $("fLesson").dataset.t = c[3];
-  if (deck === "Du jour") { const done = store.day.cards, left = order.length; $("bar").style.width = Math.round(done / Math.max(1, done + left) * 100) + "%"; $("barTxt").textContent = left + " fiche" + (left > 1 ? "s" : "") + " restante" + (left > 1 ? "s" : "") + " aujourd'hui"; }
+  if (!free) { const left = order.length; $("bar").style.width = Math.round(dj / Math.max(1, dj + left) * 100) + "%"; $("barTxt").textContent = left + " fiche" + (left > 1 ? "s" : "") + " restante" + (left > 1 ? "s" : "") + " aujourd'hui"; }
   else { const k = order.filter(j => isKnown(CARDS[j])).length; $("bar").style.width = Math.round(k / order.length * 100) + "%"; $("barTxt").textContent = k + " sur " + order.length + " fiches sues dans ce paquet"; }
 }
 function answer(ok){
@@ -1438,15 +1448,18 @@ function answer(ok){
   else next = {b: 0, d: today};
   if (!e) store.day.newSeen++;
   store.srs[ckey(c)] = next; store.day.cards++;
-  $("revNote").textContent = ok ? (INTERVALS[next.b] === 1 ? "Bien ! Elle revient demain." : `Bien ! Elle revient dans ${INTERVALS[next.b]} jours.`) : "Pas grave : elle revient un peu plus tard aujourd'hui.";
-  if (deck === "Du jour") { order.splice(pos, 1); if (!ok) order.push(i); if (pos >= order.length) pos = 0; }
-  else pos = (pos + 1) % order.length;
+  const last = deck === "Du jour" && order.length === 1;
+  $("revNote").textContent = ok ? (INTERVALS[next.b] === 1 ? "Bien ! Elle revient demain." : `Bien ! Elle revient dans ${INTERVALS[next.b]} jours.`) : last ? "Pas grave : c'est la dernière, elle revient tout de suite." : "Pas grave : elle revient à la fin de tes fiches du jour.";
+  if (deck === "Du jour") { store.day.dj = (store.day.dj || 0) + 1; order.splice(pos, 1); if (!ok) order.push(i); pos = 0; }
+  else pos++;
   active(); renderDecks(); show();
 }
 $("decks").addEventListener("click", e => {
   const b = e.target.closest("[data-d]"); if (!b) return;
   deck = b.dataset.d; $("revNote").textContent = ""; build();
 });
+$("revDone").addEventListener("click", e => { if (e.target.closest("#revAgain")) { $("revNote").textContent = ""; build(); } });
+document.addEventListener("labo:view", ev => { if (ev.detail.v !== "reviser") return; if (deck === "Du jour") build(); else { renderDecks(); show(); } });
 $("bShow").addEventListener("click", () => { $("flash").classList.add("open"); $("bShow").classList.add("off"); $("judge").classList.remove("off"); });
 $("bOk").addEventListener("click", () => answer(true));
 $("bKo").addEventListener("click", () => answer(false));
