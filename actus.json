@@ -1,5 +1,125 @@
 [
   {
+    "id": "2026-11-24-chrome-variations",
+    "date": "2026-11-24",
+    "ts": "2026-11-24T11:48:57+01:00",
+    "cat": "Cyber",
+    "theme": "maj",
+    "importance": 2,
+    "titre": "Chrome : une faille critique corrigée, mets à jour",
+    "resume": "Google a publié une mise à jour de Chrome qui corrige une seule faille, mais elle est critique : CVE-2026-134401, notée 9,6 sur 10. Elle se trouve dans « Variations », le système qui active les fonctions en test dans le navigateur, et vient d'une mauvaise vérification des données reçues.\n\nUne page web piégée pourrait faire exécuter du code hors du « bac à sable » de Chrome, la zone isolée qui protège le reste de l'ordinateur. Google l'a trouvée lui-même le 28 août et aucune attaque n'est signalée pour l'instant.",
+    "pourquoi": "Le bac à sable est une défense clé : une faille qui en sort est bien plus grave qu'une faille qui reste dedans. Et une mauvaise vérification des entrées, c'est le même genre d'erreur que celles que tu apprendras à éviter en C.",
+    "cours": "injection",
+    "source": "IT-Connect",
+    "url": "https://www.it-connect.fr/cve-2026-134401-faille-critique-chrome/",
+    "schemas": [
+      {
+        "type": "chaine",
+        "titre": "Le risque, étape par étape",
+        "etapes": [
+          {
+            "t": "Page web piégée",
+            "d": "ouverte dans Chrome",
+            "ton": "attaque"
+          },
+          {
+            "t": "Faille dans Variations",
+            "d": "entrée mal vérifiée",
+            "ton": "attaque"
+          },
+          {
+            "t": "Sortie du bac à sable",
+            "d": "code lancé sur le PC",
+            "ton": "attaque"
+          },
+          {
+            "t": "Mise à jour 158",
+            "d": "puis relancer Chrome",
+            "ton": "defense"
+          }
+        ]
+      },
+      {
+        "type": "chiffres",
+        "titre": "En chiffres",
+        "items": [
+          {
+            "n": "9,6/10",
+            "t": "gravité selon la CISA",
+            "ton": "attaque"
+          },
+          {
+            "n": "1",
+            "t": "seule faille corrigée",
+            "ton": "neutre"
+          },
+          {
+            "n": "3 mois",
+            "t": "entre découverte et patch",
+            "ton": "neutre"
+          },
+          {
+            "n": "0",
+            "t": "attaque signalée",
+            "ton": "defense"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "2026-11-24-retadup-coffeeloader",
+    "date": "2026-11-24",
+    "ts": "2026-11-24T11:48:57+01:00",
+    "cat": "Cyber",
+    "theme": "intrusion",
+    "importance": 2,
+    "titre": "Le ver USB Retadup revient, sept ans après sa chute",
+    "resume": "Retadup est un ver, un programme qui se recopie tout seul, ici sur les clés USB branchées. En 2019, ses serveurs de commande ont été saisis (par la gendarmerie française, selon IT-Connect) et plus de 850 000 ordinateurs ont été nettoyés à distance.\n\nMais le ver a survécu sur de vieilles clés USB. En 2024, des pirates ont racheté les anciens noms de domaine de ses serveurs : une clé infectée qu'on rebranche reçoit maintenant l'ordre de télécharger CoffeeLoader, qui installe ensuite d'autres logiciels malveillants. Kaspersky a bloqué environ 15 000 tentatives en 2026.",
+    "pourquoi": "Cette histoire montre qu'un réseau de machines piratées peut renaître si on laisse ses noms de domaine libres, une leçon de DNS très concrète. Elle rappelle aussi pourquoi on désactive l'exécution automatique des clés USB sur un poste ou un serveur.",
+    "cours": "dns",
+    "source": "IT-Connect (rapport Kaspersky)",
+    "url": "https://www.kaspersky.com/about/press-releases/kaspersky-dead-retadup-worm-tried-to-infect-at-least-15000-devices-seven-years-after-its-takedown",
+    "schemas": [
+      {
+        "type": "dates",
+        "titre": "L'histoire de Retadup",
+        "items": [
+          {
+            "date": "2017",
+            "t": "Se répand par clés USB",
+            "ton": "attaque"
+          },
+          {
+            "date": "2019",
+            "t": "Serveurs saisis, 850 000 PC",
+            "ton": "defense"
+          },
+          {
+            "date": "2024",
+            "t": "Domaines rachetés",
+            "ton": "attaque"
+          },
+          {
+            "date": "2026",
+            "t": "15 000 tentatives bloquées",
+            "ton": "neutre"
+          }
+        ]
+      },
+      {
+        "type": "parade",
+        "titre": "Se protéger des clés USB",
+        "items": [
+          "Désactiver l'exécution automatique des clés USB.",
+          "Analyser une vieille clé avec l'antivirus avant de l'ouvrir.",
+          "Afficher les extensions et se méfier des raccourcis .lnk.",
+          "Garder une sauvegarde à part, hors de l'ordinateur."
+        ]
+      }
+    ]
+  },
+  {
     "id": "2026-11-24-babidighost-agent-ia",
     "date": "2026-11-24",
     "ts": "2026-11-24T07:48:28+01:00",
