@@ -1,5 +1,125 @@
 [
   {
+    "id": "2026-11-25-pix-fuite",
+    "date": "2026-11-25",
+    "ts": "2026-11-25T07:48:09+01:00",
+    "cat": "Cyber",
+    "theme": "fuite",
+    "importance": 2,
+    "titre": "Pix : les données de 44 000 élèves en fuite",
+    "resume": "Un pirate nommé « Cruel » affirme avoir récupéré des données liées à Pix, la plateforme française qui évalue les compétences numériques des élèves. Il parle de 43 940 élèves et 1 692 membres du personnel dans 55 établissements : noms, dates de naissance, classes, établissements, rôles.\n\nPix n'a pas encore confirmé. Les extraits ne contiennent ni mot de passe ni jeton de connexion, et rien ne montre que les serveurs centraux de Pix ont été piratés : un compte avec beaucoup de droits ou un export par un tiers sont aussi possibles.",
+    "pourquoi": "Avec un nom, une classe et un établissement, un pirate peut écrire un faux mail très crédible à un élève ou un prof : c'est ton cours sur le phishing. Et tu verras qu'un seul compte avec trop de droits suffit parfois à tout exposer.",
+    "cours": "phishing",
+    "source": "Cyberattaque.org",
+    "url": "https://www.cyberattaque.org/pix-les-donnees-de-44-000-eleves-dans-55-etablissements-francais-en-fuite/",
+    "schemas": [
+      {
+        "type": "chiffres",
+        "titre": "Ce que le pirate revendique",
+        "items": [
+          {
+            "n": "43 940",
+            "t": "fiches d'élèves",
+            "ton": "attaque"
+          },
+          {
+            "n": "1 692",
+            "t": "membres du personnel",
+            "ton": "attaque"
+          },
+          {
+            "n": "55",
+            "t": "établissements",
+            "ton": "cible"
+          },
+          {
+            "n": "0",
+            "t": "mot de passe dans l'extrait",
+            "ton": "defense"
+          }
+        ]
+      },
+      {
+        "type": "parade",
+        "titre": "Si tu reçois un mail « Pix »",
+        "items": [
+          "Ne clique pas sur un lien qui demande ton mot de passe Pix.",
+          "Va sur pix.fr en tapant l'adresse toi-même.",
+          "Un mail qui cite ta classe n'est pas forcément vrai.",
+          "Préviens ton établissement si un message te paraît bizarre."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "2026-11-25-checkpoint-parefeu",
+    "date": "2026-11-25",
+    "ts": "2026-11-25T07:48:09+01:00",
+    "cat": "Cyber",
+    "theme": "intrusion",
+    "importance": 2,
+    "titre": "Check Point : des pirates aux commandes de pare-feu",
+    "resume": "GreyNoise suit une campagne baptisée GT13 contre les serveurs qui pilotent les pare-feu Check Point. Au moins 22 organisations dans le monde, dont en France, ont été touchées entre octobre et début novembre, et le pirate garde encore l'accès chez beaucoup d'entre elles.\n\nIl a utilisé une faille de contournement d'authentification dans SmartConsole (CVE-2026-16232) pour lancer des scripts sur ces serveurs. Il a copié la base du pare-feu et l'autorité de certification interne, et a essayé de désactiver les règles de sécurité.",
+    "pourquoi": "Le pare-feu protège tout le réseau : celui qui contrôle son serveur de gestion peut ouvrir toutes les portes. C'est pour ça qu'on n'expose jamais une interface d'administration à Internet, comme tu le feras avec UFW et SSH dans Born2beroot.",
+    "cours": "parefeu",
+    "source": "Cyber Security News",
+    "url": "https://cybersecuritynews.com/check-point-security-management-servers/",
+    "schemas": [
+      {
+        "type": "chaine",
+        "titre": "Comment le pirate a procédé",
+        "etapes": [
+          {
+            "t": "Un serveur HFS piraté",
+            "d": "faille CVE-2026-61500, le 2 octobre",
+            "ton": "attaque"
+          },
+          {
+            "t": "SmartConsole contourné",
+            "d": "faille CVE-2026-16232",
+            "ton": "attaque"
+          },
+          {
+            "t": "Scripts sur le serveur",
+            "d": "30 scripts Python, 100 tâches",
+            "ton": "attaque"
+          },
+          {
+            "t": "Base et certificats copiés",
+            "d": "règles de sécurité visées",
+            "ton": "cible"
+          },
+          {
+            "t": "Parade : corriger, filtrer",
+            "d": "accès admin depuis IP sûres",
+            "ton": "defense"
+          }
+        ]
+      },
+      {
+        "type": "chiffres",
+        "titre": "La campagne GT13 en chiffres",
+        "items": [
+          {
+            "n": "22",
+            "t": "organisations touchées",
+            "ton": "cible"
+          },
+          {
+            "n": "99",
+            "t": "adresses IP du pirate",
+            "ton": "attaque"
+          },
+          {
+            "n": "30",
+            "t": "scripts Python",
+            "ton": "attaque"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "2026-11-24-gotronic-fuite",
     "date": "2026-11-24",
     "ts": "2026-11-24T22:44:34+01:00",
@@ -1186,377 +1306,6 @@
           "Vérifie tes relevés et signale tout achat inconnu à ta banque.",
           "Méfie-toi des mails, appels ou SMS qui parlent de l'incident.",
           "Ne donne jamais ton code de carte : Cleverbridge ne le demande pas."
-        ]
-      }
-    ]
-  },
-  {
-    "id": "2026-11-22-upload2shell",
-    "date": "2026-11-22",
-    "ts": "2026-11-22T22:46:46+01:00",
-    "cat": "Cyber",
-    "theme": "faille",
-    "importance": 2,
-    "titre": "Upload2Shell : une faille dans Ghostscript touche WordPress, mails et imprimantes",
-    "resume": "Des chercheurs ont trouvé une faille dans Ghostscript, un logiciel qui lit les fichiers PDF et PostScript sur beaucoup de serveurs (CVE-2026-125396). C'est un « use-after-free » dans le chargeur de polices : le programme réutilise une zone mémoire déjà libérée, ce qui permet de contourner sa protection -dSAFER.\n\nAvec un simple fichier envoyé, ils ont fait exécuter des commandes sur un site WordPress, un webmail Roundcube et un serveur d'impression CUPS. Aucune attaque réelle n'est signalée pour l'instant, et la version 10.08.0 de Ghostscript corrige le problème.",
-    "pourquoi": "Un use-after-free, c'est une erreur de C : utiliser un pointeur après avoir fait free() dessus. Quand tu apprendras malloc et free, tu sauras pourquoi il faut mettre le pointeur à NULL et ne plus s'en servir.",
-    "cours": "malloc",
-    "source": "Cyber Security News",
-    "url": "https://cybersecuritynews.com/upload2shell-flaw/",
-    "schemas": [
-      {
-        "type": "chaine",
-        "titre": "Comment marche l'attaque",
-        "etapes": [
-          {
-            "t": "Un fichier piégé",
-            "d": "un PDF ou une image envoyé au site",
-            "ton": "attaque"
-          },
-          {
-            "t": "Ghostscript l'ouvre",
-            "d": "pour lire ou convertir le fichier",
-            "ton": "neutre"
-          },
-          {
-            "t": "Bug use-after-free",
-            "d": "une mémoire réutilisée après free()",
-            "ton": "attaque"
-          },
-          {
-            "t": "Commandes exécutées",
-            "d": "le serveur obéit à l'attaquant",
-            "ton": "attaque"
-          },
-          {
-            "t": "Parade : version 10.08.0",
-            "d": "la mise à jour corrige le bug",
-            "ton": "defense"
-          }
-        ]
-      },
-      {
-        "type": "cibles",
-        "titre": "Qui utilise Ghostscript sans le savoir",
-        "centre": {
-          "t": "Ghostscript",
-          "d": "lit les PDF et le PostScript",
-          "ton": "attaque"
-        },
-        "autour": [
-          {
-            "t": "WordPress",
-            "d": "sites web"
-          },
-          {
-            "t": "Roundcube",
-            "d": "webmail"
-          },
-          {
-            "t": "CUPS",
-            "d": "impression"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "id": "2026-11-22-openrouter",
-    "date": "2026-11-22",
-    "ts": "2026-11-22T22:46:46+01:00",
-    "cat": "Tech",
-    "theme": "ia",
-    "importance": 2,
-    "titre": "OpenRouter : des conversations avec des IA ont pu fuiter chez des hébergeurs",
-    "resume": "OpenRouter est un service qui envoie tes questions à des modèles d'IA hébergés par d'autres entreprises. L'entreprise de sécurité Dragos a envoyé environ deux millions de messages pièges (liens et faux mots de passe) et a vu que trois hébergeurs avaient été compromis.\n\nCertains messages censés n'être jamais gardés ont été conservés ou transférés ; un lien de test a même réapparu 24 jours plus tard ailleurs. OpenRouter a retiré trois hébergeurs et prévenu les clients concernés.",
-    "pourquoi": "Ça montre la confidentialité, le premier pilier de la triade : ce que tu envoies à une IA passe par des machines que tu ne contrôles pas. Règle simple à garder pour le cloud et l'IA : jamais de mot de passe ni de clé dans un message.",
-    "cours": "triade",
-    "source": "Cyber Security News",
-    "url": "https://cybersecuritynews.com/openrouter-ai-chat-leaks/",
-    "schemas": [
-      {
-        "type": "chaine",
-        "titre": "Le trajet de ton message",
-        "etapes": [
-          {
-            "t": "Ta question",
-            "d": "envoyée à OpenRouter",
-            "ton": "neutre"
-          },
-          {
-            "t": "OpenRouter la transmet",
-            "d": "à un hébergeur de modèles d'IA",
-            "ton": "neutre"
-          },
-          {
-            "t": "Hébergeur compromis",
-            "d": "3 hébergeurs pris en faute",
-            "ton": "attaque"
-          },
-          {
-            "t": "Message gardé ou copié",
-            "d": "alors qu'il devait être effacé",
-            "ton": "attaque"
-          }
-        ]
-      },
-      {
-        "type": "chiffres",
-        "titre": "Le test de Dragos",
-        "items": [
-          {
-            "n": "2 M",
-            "t": "messages pièges envoyés",
-            "ton": "neutre"
-          },
-          {
-            "n": "3",
-            "t": "hébergeurs compromis",
-            "ton": "attaque"
-          },
-          {
-            "n": "24 j",
-            "t": "avant qu'un lien piège réapparaisse",
-            "ton": "attaque"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "id": "2026-11-22-entra-connect-health",
-    "date": "2026-11-22",
-    "ts": "2026-11-22T19:47:06+01:00",
-    "cat": "Cyber",
-    "theme": "cloud",
-    "importance": 2,
-    "titre": "Microsoft Entra : une faille exploitée pour lire des données d'entreprises",
-    "resume": "Microsoft a annoncé qu'un pirate a exploité une faille dans l'API d'Entra Connect Health, un service cloud qui surveille les annuaires d'identité des entreprises. La faille existait depuis le 23 juillet et a été découverte le 9 novembre.\n\nLe pirate a pu lire des informations sur les clients : e-mails des administrateurs, noms de domaine, identifiants de tenant. Selon Microsoft, aucun mot de passe ni jeton n'a fuité, et le correctif a été appliqué côté serveur le 19 novembre.",
-    "pourquoi": "Les e-mails d'administrateurs volés servent souvent à préparer du phishing ciblé, un sujet de ton cours sur le phishing. Cela montre aussi qu'un service cloud mal protégé peut exposer des milliers d'entreprises d'un coup.",
-    "cours": "phishing",
-    "source": "BleepingComputer",
-    "url": "https://www.bleepingcomputer.com/news/security/microsoft-entra-connect-health-flaw-exploited-to-steal-tenant-data/",
-    "schemas": [
-      {
-        "type": "dates",
-        "titre": "Presque 4 mois sans être vue",
-        "items": [
-          {
-            "date": "23 juillet",
-            "t": "La faille existe dans l'API",
-            "ton": "attaque"
-          },
-          {
-            "date": "9 novembre",
-            "t": "Microsoft la découvre",
-            "ton": "neutre"
-          },
-          {
-            "date": "19 novembre",
-            "t": "Correctif appliqué côté serveur",
-            "ton": "defense"
-          }
-        ]
-      },
-      {
-        "type": "cibles",
-        "titre": "Ce que le pirate a pu lire",
-        "centre": {
-          "t": "Entra Connect Health",
-          "d": "surveille les annuaires d'identité",
-          "ton": "attaque"
-        },
-        "autour": [
-          {
-            "t": "E-mails d'admins",
-            "ton": "attaque"
-          },
-          {
-            "t": "Noms de domaine",
-            "ton": "attaque"
-          },
-          {
-            "t": "Identifiants de tenant",
-            "ton": "attaque"
-          },
-          {
-            "t": "Pas de mot de passe",
-            "d": "selon Microsoft",
-            "ton": "defense"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "id": "2026-11-22-n-able",
-    "date": "2026-11-22",
-    "ts": "2026-11-22T14:42:34+01:00",
-    "cat": "Cyber",
-    "theme": "intrusion",
-    "importance": 2,
-    "titre": "N-able : une intrusion provoque une grosse panne mondiale",
-    "resume": "N-able, une entreprise qui vend des outils pour gérer les ordinateurs et les e-mails de milliers de sociétés, a été piratée. Les attaquants sont entrés sur un serveur de ses services anti-spam Mail Assure et SpamExperts.\n\nPour se protéger, N-able a coupé le portail de gestion, la quarantaine et les journaux, ce qui a provoqué une panne en Amérique, en Asie et en Europe. Les e-mails continuent d'être filtrés, et l'entreprise dit ne pas avoir de preuve que des données de clients ont été volées. Une autre de ses plateformes, N-central, est aussi visée par des failles exploitées.",
-    "pourquoi": "C'est un exemple concret de la triade sécurité : pour protéger la confidentialité, l'entreprise a sacrifié la disponibilité de ses services. Quand un fournisseur d'outils est piraté, tous ses clients sont touchés : c'est pour ça que les équipes de défense surveillent aussi leurs prestataires.",
-    "cours": "triade",
-    "source": "BleepingComputer",
-    "url": "https://www.bleepingcomputer.com/news/microsoft/n-able-says-recent-security-breach-led-to-major-service-outage/",
-    "schemas": [
-      {
-        "type": "chaine",
-        "titre": "De l'intrusion à la panne",
-        "etapes": [
-          {
-            "t": "Intrusion",
-            "d": "sur un serveur des services anti-spam",
-            "ton": "attaque"
-          },
-          {
-            "t": "N-able coupe ses outils",
-            "d": "portail, quarantaine et journaux",
-            "ton": "defense"
-          },
-          {
-            "t": "Panne mondiale",
-            "d": "en Amérique, en Asie et en Europe",
-            "ton": "attaque"
-          },
-          {
-            "t": "Les e-mails restent filtrés",
-            "d": "pas de vol de données prouvé",
-            "ton": "neutre"
-          }
-        ]
-      },
-      {
-        "type": "cibles",
-        "titre": "Un fournisseur touché, tous ses clients touchés",
-        "centre": {
-          "t": "N-able",
-          "d": "outils de gestion et d'e-mail",
-          "ton": "attaque"
-        },
-        "autour": [
-          {
-            "t": "Entreprise",
-            "d": "ses e-mails"
-          },
-          {
-            "t": "Entreprise",
-            "d": "ses PC"
-          },
-          {
-            "t": "Entreprise",
-            "d": "ses serveurs"
-          },
-          {
-            "t": "Des milliers",
-            "d": "dans le monde"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "id": "2026-11-22-rackspace-kubernetes",
-    "date": "2026-11-22",
-    "ts": "2026-11-22T11:48:34+01:00",
-    "cat": "Cyber",
-    "theme": "cloud",
-    "importance": 2,
-    "titre": "Rackspace Spot : des pirates ont lu des secrets Kubernetes",
-    "resume": "Le 17 novembre, des pirates sont entrés dans Rackspace Spot, un service cloud qui fait tourner des applications avec Kubernetes. Ils ont utilisé des identifiants volés, puis ont agi comme de vrais utilisateurs : création de « pods » (petits conteneurs) et lecture des « Secrets », là où sont rangés les mots de passe et les clés.\n\nRackspace l'a appris le lendemain grâce à un client. L'entreprise a coupé les accès, changé ses clés et demande à ses clients de renouveler leurs jetons, de changer leurs secrets et de relire leurs journaux depuis le 17 novembre.",
-    "pourquoi": "Pas besoin de faille : un simple identifiant volé suffit à ouvrir un service cloud, d'où l'importance de protéger et de changer régulièrement ses accès. C'est aussi un exemple concret du travail de défense : repérer les actions suspectes dans les journaux (logs), puis couper et nettoyer.",
-    "cours": "logs",
-    "source": "BleepingComputer",
-    "url": "https://www.bleepingcomputer.com/news/security/rackspace-spot-breach-let-hackers-access-customer-kubernetes-secrets/",
-    "schemas": [
-      {
-        "type": "chaine",
-        "titre": "Comment ils sont entrés, sans aucune faille",
-        "etapes": [
-          {
-            "t": "Identifiants volés",
-            "d": "un simple mot de passe ou jeton",
-            "ton": "attaque"
-          },
-          {
-            "t": "Connexion à Rackspace Spot",
-            "d": "comme un vrai client",
-            "ton": "attaque"
-          },
-          {
-            "t": "Création de pods",
-            "d": "des petits conteneurs Kubernetes",
-            "ton": "attaque"
-          },
-          {
-            "t": "Lecture des Secrets",
-            "d": "là où sont rangés mots de passe et clés",
-            "ton": "attaque"
-          },
-          {
-            "t": "Alerte d'un client",
-            "d": "accès coupés, clés changées",
-            "ton": "defense"
-          }
-        ]
-      },
-      {
-        "type": "parade",
-        "titre": "Ce que les clients doivent faire",
-        "items": [
-          "Renouveler leurs jetons d'accès",
-          "Changer tous leurs secrets",
-          "Relire leurs journaux depuis le 17 novembre"
-        ]
-      }
-    ]
-  },
-  {
-    "id": "2026-11-22-php-sessions",
-    "date": "2026-11-22",
-    "ts": "2026-11-22T09:01:40+01:00",
-    "cat": "Cyber",
-    "theme": "maj",
-    "importance": 2,
-    "titre": "PHP : failles critiques dans toutes les versions maintenues",
-    "resume": "L'équipe de PHP a annoncé des failles de sécurité qui touchent PHP 8.2, 8.3, 8.4 et 8.5, avec des correctifs publiés le 19 novembre. La plus connue, CVE-2026-115560, se trouve dans le suivi de progression des envois de fichiers liés aux sessions.\n\nDans certaines configurations peu courantes, elle permet d'exécuter du code à distance sur le serveur. Aucune attaque réelle n'est confirmée pour l'instant, mais il faut mettre PHP à jour, et on peut couper ce suivi (session.upload_progress.enabled = 0) en attendant.",
-    "pourquoi": "PHP fait tourner une grande partie des sites web, donc une faille dans PHP concerne énormément de serveurs. C'est un bon exemple de ce qu'un défenseur doit faire : repérer ses installations, appliquer une mesure temporaire, puis mettre à jour.",
-    "cours": "http",
-    "source": "Cyberattaque.org",
-    "url": "https://www.cyberattaque.org/php-lance-une-nouvelle-alerte-critique-toutes-les-versions-maintenues-concernees-par-des-failles-de-securite/",
-    "schemas": [
-      {
-        "type": "cibles",
-        "titre": "Toutes les versions maintenues sont touchées",
-        "centre": {
-          "t": "PHP",
-          "d": "fait tourner une grande partie du web",
-          "ton": "attaque"
-        },
-        "autour": [
-          {
-            "t": "PHP 8.2"
-          },
-          {
-            "t": "PHP 8.3"
-          },
-          {
-            "t": "PHP 8.4"
-          },
-          {
-            "t": "PHP 8.5"
-          }
-        ]
-      },
-      {
-        "type": "parade",
-        "titre": "Le réflexe du défenseur",
-        "items": [
-          "Repérer ses serveurs qui utilisent PHP",
-          "En attendant : session.upload_progress.enabled = 0",
-          "Mettre PHP à jour (correctifs du 19 novembre)"
         ]
       }
     ]
