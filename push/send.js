@@ -15,6 +15,11 @@ const RAPPELS = [
   "Un cours de ton parcours ce soir ? Le suivant t'attend.",
   "Fin de semaine : révise tes fiches avant de souffler."
 ];
+// Pas de notification la nuit : GitHub lance parfois les tâches planifiées avec des heures de retard.
+const parisMin = d => { const p = new Intl.DateTimeFormat("fr-FR", {timeZone: "Europe/Paris", hour: "numeric", minute: "numeric", hourCycle: "h23"}).formatToParts(d); return +p.find(x => x.type === "hour").value * 60 + +p.find(x => x.type === "minute").value; };
+const maintenant = parisMin(new Date());
+if (process.env.FORCER !== "1" && (maintenant < 7 * 60 || maintenant >= 23 * 60)) { console.log("Il fait nuit à Paris (" + Math.floor(maintenant / 60) + " h) : pas de notification."); process.exit(0); }
+if (process.env.RAPPEL === "1" && process.env.FORCER !== "1" && (maintenant < 18 * 60 || maintenant > 21 * 60 + 30)) { console.log("Le rappel du soir arrive trop tard (ou trop tôt) : pas de rappel."); process.exit(0); }
 if (process.env.RAPPEL === "1") {
   const jour = new Date().toLocaleDateString("sv-SE", {timeZone: "Europe/Paris"});
   let derniers = [];
