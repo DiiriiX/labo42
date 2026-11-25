@@ -1,5 +1,25 @@
 [
   {
+    "date": "2026-11-25",
+    "bilan": "Ton poste Ubuntu est prêt avec ton dossier `~/piscine`, et tu as dit que les exercices étaient un peu durs : c'est normal quand on débute, et l'appli a maintenant des **Premiers pas en C** faits pour toi. Tu sais déjà utiliser `printf`, `scanf`, les conditions, les boucles et les tableaux, il te reste à passer au style de 42 avec ton tout premier exercice rendu.",
+    "etape": {
+      "titre": "Mission m02 : ft_putchar, pas à pas",
+      "detail": "Prends ft_putchar en toute petite marche : d'abord un main.c dans `~/piscine/c00/ex00` qui affiche une seule lettre avec `write` (sans `printf`), puis transforme-le en fonction ft_putchar dans son propre fichier et appelle-la depuis ton main.c. Compile avec `cc -Wall -Wextra -Werror`, teste avec trois caractères différents, puis passe `norminette` sur ft_putchar.c seulement. Si tu bloques, colle ton code dans la conversation avec le prof. Sur ton téléphone : fais d'abord le niveau 5 des **Premiers pas en C** (« Vers le style 42 », sur `write` et ses 3 paramètres).",
+      "lien": "#pc-m02"
+    },
+    "actus": [
+      "**Drupal : faille critique exploitée** : une page d'installation oubliée (install.php) permet de prendre le contrôle d'un site ; mettre à jour ou bloquer cette adresse.",
+      "**Check Point : pare-feu sous contrôle de pirates** : 22 organisations touchées via l'interface d'administration ; on n'expose jamais une interface d'admin à Internet.",
+      "**Pix : données de 44 000 élèves en fuite** : noms, classes et établissements suffisent pour un faux mail crédible, méfie-toi du phishing.",
+      "**VMware : trois failles critiques** : vCenter et ESX à mettre à jour ; n'ouvrir un port qu'aux machines qui en ont besoin, c'est le rôle du pare-feu."
+    ],
+    "question": {
+      "texte": "Sous Linux, à quoi reconnaît-on un fichier caché, et quelle option de `ls` permet de le voir ?",
+      "cours": "fichiers"
+    },
+    "mot": "Une seule lettre affichée avec `write`, c'est petit, mais c'est le premier pas de toute la Piscine : vas-y tranquille."
+  },
+  {
     "date": "2026-11-24",
     "bilan": "Ton poste est prêt pour faire comme à 42 : Ubuntu (WSL) est installé, avec ton dossier `~/piscine`, `cc` et la vraie norminette. Tu as reçu ta séance C00 cet après-midi, et tu n'as pas encore rendu de code : c'est le moment de lancer ta toute première boucle complète.",
     "etape": {
