@@ -1,5 +1,56 @@
 [
   {
+    "id": "2026-11-25-vmware-vcenter-esx",
+    "date": "2026-11-25",
+    "ts": "2026-11-25T14:43:47+01:00",
+    "cat": "Cyber",
+    "theme": "faille",
+    "importance": 2,
+    "titre": "VMware : trois nouvelles failles critiques à corriger",
+    "resume": "VMware (Broadcom) fait des logiciels qui font tourner beaucoup de machines virtuelles en entreprise. Son bulletin du 24 novembre corrige 23 failles, dont 4 critiques. Trois sont notées 9,8 sur 10 : une dans vCenter (CVE-2026-123903), exploitable sans compte, et deux dans ESX, exploitables par le réseau.\n\nCe n'est pas la faille de vCenter déjà exploitée depuis septembre : celle-ci est nouvelle. Broadcom ne signale pas d'attaque pour l'instant. Il faut installer les mises à jour ; pour ESX 8.0, on peut aussi n'autoriser que l'adresse du vCenter sur le port 9080.",
+    "pourquoi": "Tu installeras toi-même une machine virtuelle avec Born2beroot : VMware fait la même chose, à grande échelle, pour des entreprises entières. La parade sur le port 9080 montre aussi à quoi sert un pare-feu : n'ouvrir un port qu'aux machines qui en ont besoin.",
+    "cours": "ports",
+    "source": "IT-Connect",
+    "url": "https://www.it-connect.fr/vmware-vcenter-esx-cve-2026-123903-failles-novembre/",
+    "schemas": [
+      {
+        "type": "chiffres",
+        "titre": "Le bulletin en chiffres",
+        "items": [
+          {
+            "n": "23",
+            "t": "failles corrigées",
+            "ton": "neutre"
+          },
+          {
+            "n": "4",
+            "t": "failles critiques",
+            "ton": "attaque"
+          },
+          {
+            "n": "9,8/10",
+            "t": "note des 3 plus graves",
+            "ton": "attaque"
+          },
+          {
+            "n": "0",
+            "t": "attaque signalée",
+            "ton": "defense"
+          }
+        ]
+      },
+      {
+        "type": "parade",
+        "titre": "Ce que font les administrateurs",
+        "items": [
+          "Mettre à jour vCenter et ESX vers les versions corrigées",
+          "Sur ESX 8.0 : port 9080 ouvert seulement pour l'adresse du vCenter",
+          "Ne pas confondre avec la faille de septembre : les deux sont à corriger"
+        ]
+      }
+    ]
+  },
+  {
     "id": "2026-11-25-drupal-installeur",
     "date": "2026-11-25",
     "ts": "2026-11-25T11:43:35+01:00",
