@@ -1,5 +1,105 @@
 [
   {
+    "id": "2026-11-25-septeo",
+    "date": "2026-11-25",
+    "ts": "2026-11-25T19:43:45+01:00",
+    "cat": "Cyber",
+    "theme": "intrusion",
+    "importance": 2,
+    "titre": "Septeo : des données clients volées chez un éditeur français",
+    "resume": "Septeo est un éditeur français de logiciels pour les professionnels (plus de 400 000 clients). Le 22 novembre à 14 h, sa filiale Septeo IT Solutions (ex-RG System) a détecté une intrusion dans son outil interne de gestion des clients. L'accès a été coupé le jour même, mais des données ont été copiées.\n\nOnt fuité : des fiches de contacts clients, des informations de facturation et le détail de tickets d'assistance. Selon Septeo, les logiciels livrés aux clients ne sont pas touchés. Une plainte est annoncée.",
+    "pourquoi": "Avec des tickets d'assistance et des factures, un pirate peut écrire un faux mail très crédible (« votre RIB a changé »). C'est du phishing ciblé, le sujet de ton cours : vérifier une demande par un autre canal connu est le bon réflexe.",
+    "cours": "phishing",
+    "source": "Cyberattaque.org",
+    "url": "https://www.cyberattaque.org/cyberattaque-chez-septeo-lediteur-francais-de-logiciels-professionnels-victime-dun-vol-de-donnees/",
+    "schemas": [
+      {
+        "type": "cibles",
+        "titre": "Ce qui a été copié",
+        "centre": {
+          "t": "Outil clients Septeo IT",
+          "d": "intrusion le 22 novembre",
+          "ton": "attaque"
+        },
+        "autour": [
+          {
+            "t": "Fiches contacts",
+            "d": "clients professionnels",
+            "ton": "cible"
+          },
+          {
+            "t": "Facturation",
+            "ton": "cible"
+          },
+          {
+            "t": "Tickets d'assistance",
+            "ton": "cible"
+          },
+          {
+            "t": "Logiciels livrés",
+            "d": "non touchés selon Septeo",
+            "ton": "defense"
+          }
+        ]
+      },
+      {
+        "type": "parade",
+        "titre": "Les bons réflexes pour les clients",
+        "items": [
+          "Se méfier des mails qui citent un vrai ticket ou une vraie facture",
+          "Vérifier tout changement de RIB par un numéro déjà connu",
+          "Prévenir les équipes du risque de phishing ciblé"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "2026-11-25-locservice",
+    "date": "2026-11-25",
+    "ts": "2026-11-25T19:43:45+01:00",
+    "cat": "Cyber",
+    "theme": "fuite",
+    "importance": 2,
+    "titre": "LocService : des liens vers des dossiers de location volés",
+    "resume": "LocService est un site français qui met en relation propriétaires et locataires. Un pirate a utilisé une faille dans un de ses outils internes pour copier plusieurs bases de données. L'intrusion a été vue le 30 octobre et la fuite confirmée le 2 novembre ; l'entreprise l'a annoncée par mail.\n\nOnt fuité : noms, e-mails, téléphones, factures, certaines adresses IP et des liens de partage vers des dossiers DossierFacile. Les mots de passe et les données bancaires ne seraient pas touchés. Même d'anciens comptes sont concernés, car les factures sont gardées 10 ans.",
+    "pourquoi": "Un lien de partage, c'est une clé : celui qui l'a peut ouvrir le dossier, d'où l'intérêt de pouvoir le désactiver. Cela rejoint la triade du cours : ici, c'est la confidentialité qui est attaquée.",
+    "cours": "triade",
+    "source": "Cyberattaque.org",
+    "url": "https://www.cyberattaque.org/locservice-confirme-une-cyberattaque-des-liens-vers-les-dossiers-de-location-exposes/",
+    "schemas": [
+      {
+        "type": "dates",
+        "titre": "Les dates de l'attaque",
+        "items": [
+          {
+            "date": "30 octobre",
+            "t": "Intrusion détectée",
+            "ton": "attaque"
+          },
+          {
+            "date": "2 novembre",
+            "t": "Fuite confirmée",
+            "ton": "attaque"
+          },
+          {
+            "date": "24 novembre",
+            "t": "Annonce publique",
+            "ton": "neutre"
+          }
+        ]
+      },
+      {
+        "type": "parade",
+        "titre": "Ce que peuvent faire les locataires",
+        "items": [
+          "Sur DossierFacile, couper les liens de partage inutiles",
+          "Se méfier d'un faux propriétaire qui demande documents ou dépôt",
+          "Ne jamais payer de dépôt de garantie avant une vraie visite"
+        ]
+      }
+    ]
+  },
+  {
     "id": "2026-11-25-vmware-vcenter-esx",
     "date": "2026-11-25",
     "ts": "2026-11-25T14:43:47+01:00",
