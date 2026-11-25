@@ -1,5 +1,192 @@
 [
   {
+    "id": "2026-11-25-drupal-installeur",
+    "date": "2026-11-25",
+    "ts": "2026-11-25T11:43:35+01:00",
+    "cat": "Cyber",
+    "theme": "faille",
+    "importance": 3,
+    "titre": "Drupal : une faille critique exploitée pour pirater des sites",
+    "resume": "Drupal est un logiciel très utilisé pour créer des sites web. Une faille (CVE-2026-132165) touche son fichier d'installation, install.php : dans certains cas, un visiteur inconnu peut s'en servir pour réinstaller Drupal, puis prendre le contrôle du site ou y lancer son propre code.\n\nL'équipe de sécurité de Drupal confirme des attaques sur de vrais sites depuis le 19 novembre. L'agence américaine CISA l'a ajoutée à sa liste des failles exploitées. Il faut mettre Drupal à jour, ou au moins bloquer l'accès à /core/install.php.",
+    "pourquoi": "C'est le genre de faille que tu étudieras côté web : une page oubliée sur le serveur suffit à tout perdre. Côté défense, tu vois aussi qu'une règle simple (bloquer une adresse) protège en attendant la mise à jour.",
+    "cours": "http",
+    "source": "BleepingComputer",
+    "url": "https://www.bleepingcomputer.com/news/security/hackers-now-exploit-critical-drupal-rce-flaw-to-hijack-sites/",
+    "schemas": [
+      {
+        "type": "chaine",
+        "titre": "Comment le site est piraté",
+        "etapes": [
+          {
+            "t": "Page install.php",
+            "d": "laissée accessible sur le site",
+            "ton": "cible"
+          },
+          {
+            "t": "Le pirate l'ouvre",
+            "d": "sans aucun compte",
+            "ton": "attaque"
+          },
+          {
+            "t": "Il réinstalle Drupal",
+            "d": "dans certaines conditions",
+            "ton": "attaque"
+          },
+          {
+            "t": "Site sous son contrôle",
+            "d": "ou son code lancé dessus",
+            "ton": "attaque"
+          },
+          {
+            "t": "Parade",
+            "d": "mise à jour ou install.php bloqué",
+            "ton": "defense"
+          }
+        ]
+      },
+      {
+        "type": "dates",
+        "titre": "Les dates clés",
+        "items": [
+          {
+            "date": "19 novembre",
+            "t": "premières attaques vues",
+            "ton": "attaque"
+          },
+          {
+            "date": "24 novembre",
+            "t": "ajoutée à la liste CISA",
+            "ton": "neutre"
+          },
+          {
+            "date": "27 novembre",
+            "t": "date limite des agences US",
+            "ton": "defense"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "2026-11-25-quimper-cyberattaque",
+    "date": "2026-11-25",
+    "ts": "2026-11-25T11:43:35+01:00",
+    "cat": "Cyber",
+    "theme": "intrusion",
+    "importance": 2,
+    "titre": "Quimper et son agglomération touchées par une cyberattaque",
+    "resume": "La ville de Quimper et l'agglomération Quimper Bretagne Occidentale (14 communes, environ 100 000 habitants, dans le Finistère) ont annoncé le 23 novembre une activité malveillante sur leurs systèmes. Les outils informatiques internes sont surtout touchés, ce qui peut ralentir les démarches administratives.\n\nLes services publics continuent de fonctionner. On ne sait pas encore comment les pirates sont entrés, ni si des données ont été volées. L'ANSSI a été prévenue et des experts sécurisent le réseau.",
+    "pourquoi": "Les mairies sont des cibles fréquentes en France, et c'est souvent là que travaillent les équipes de réponse à incident. Tu vois la triade en action : ici, c'est surtout la disponibilité des outils qui est touchée.",
+    "cours": "triade",
+    "source": "Cyberattaque.org",
+    "url": "https://www.cyberattaque.org/quimper-et-son-agglomeration-victimes-dune-cyberattaque-qui-perturbe-leurs-systemes-informatiques/",
+    "schemas": [
+      {
+        "type": "cibles",
+        "titre": "Ce qui est touché",
+        "centre": {
+          "t": "Cyberattaque",
+          "d": "détectée le 23 novembre",
+          "ton": "attaque"
+        },
+        "autour": [
+          {
+            "t": "Ville de Quimper"
+          },
+          {
+            "t": "L'agglomération",
+            "d": "14 communes"
+          },
+          {
+            "t": "Outils internes",
+            "d": "surtout eux"
+          },
+          {
+            "t": "Démarches",
+            "d": "peuvent être ralenties"
+          }
+        ]
+      },
+      {
+        "type": "chaine",
+        "titre": "La réaction des collectivités",
+        "etapes": [
+          {
+            "t": "Activité suspecte",
+            "d": "repérée sur le réseau",
+            "ton": "attaque"
+          },
+          {
+            "t": "Protections lancées",
+            "d": "dès la découverte",
+            "ton": "defense"
+          },
+          {
+            "t": "ANSSI prévenue",
+            "ton": "defense"
+          },
+          {
+            "t": "Experts sur place",
+            "d": "pour remettre les systèmes",
+            "ton": "defense"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "2026-11-25-cia-osint",
+    "date": "2026-11-25",
+    "ts": "2026-11-25T11:43:35+01:00",
+    "cat": "Cyber",
+    "theme": "intrusion",
+    "importance": 2,
+    "titre": "CIA : un système d'analyse piraté avec un outil d'IA",
+    "resume": "D'après le New York Times, des pirates ont pénétré un système de la CIA qui sert à analyser des informations publiques (le renseignement en sources ouvertes, ou OSINT). D'autres agences de renseignement américaines seraient aussi touchées.\n\nL'attaque aurait été menée avec ARTEX, un outil de test d'intrusion qui utilise l'IA. Selon la source, aucune donnée classée secrète n'a été exposée. La CIA n'a pas encore réagi et personne n'a été désigné comme responsable.",
+    "pourquoi": "Les outils de test d'intrusion servent aux pentesteurs, mais aussi aux pirates : avec l'IA, ils vont plus vite. C'est une des raisons pour lesquelles tu apprendras l'IA après le réseau et la cyber.",
+    "cours": "ia",
+    "source": "BleepingComputer",
+    "url": "https://www.bleepingcomputer.com/news/security/hackers-reportedly-breached-cia-intelligence-analysis-system/",
+    "schemas": [
+      {
+        "type": "cibles",
+        "titre": "Les agences touchées",
+        "centre": {
+          "t": "Outil ARTEX",
+          "d": "test d'intrusion avec IA",
+          "ton": "attaque"
+        },
+        "autour": [
+          {
+            "t": "CIA",
+            "d": "système d'analyse OSINT",
+            "ton": "cible"
+          },
+          {
+            "t": "ODNI",
+            "d": "direction du renseignement",
+            "ton": "cible"
+          },
+          {
+            "t": "NGA",
+            "d": "renseignement géographique",
+            "ton": "cible"
+          }
+        ]
+      },
+      {
+        "type": "parade",
+        "titre": "Ce qu'on sait, ce qu'on ignore",
+        "items": [
+          "Connu : un outil de test d'intrusion avec IA a servi.",
+          "Selon la source : rien de classé secret n'est exposé.",
+          "Inconnu : comment les pirates sont entrés.",
+          "Inconnu : qui est derrière l'attaque."
+        ]
+      }
+    ]
+  },
+  {
     "id": "2026-11-25-pix-fuite",
     "date": "2026-11-25",
     "ts": "2026-11-25T07:48:09+01:00",
