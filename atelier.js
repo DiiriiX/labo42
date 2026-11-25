@@ -630,6 +630,7 @@
     const best = (S().exams || []).reduce((m, x) => Math.max(m, x.score), -1);
     $("atelierBox").innerHTML = `<button class="back" type="button" data-go="#pratique">← Pratique</button>
       <div class="hero"><div><h1>Atelier C</h1><p class="sub">Des exercices façon Piscine : le sujet, des indices, jamais la solution.</p></div><span class="hart">${ART.atelier}</span></div>
+      ${(() => { const db = L.debutInfo ? L.debutInfo() : null; return db && db.lvl ? `<a class="debutban" href="#debut"><span class="stile">${L.ic("code")}</span><span><b>Tu débutes ? Commence par les Premiers pas</b><small>Des exercices plus courts, à ton niveau · ${db.done} / ${db.total}</small></span><span class="chev">›</span></a>` : ""; })()}
       ${progressBar(done, EXOS.length)}<p class="small">${done} / ${EXOS.length} exercices réussis${a.norm ? ` · ${a.norm} code${a.norm > 1 ? "s" : ""} sans faute de Norme` : ""}</p>
       ${info.next ? `<a class="btn acc full" href="#atelier-${info.next.id}">${done ? "Continuer" : "Commencer"} : ${esc(info.next.id)}</a>` : `<p class="note">Tu as réussi tous les exercices. Passe un examen blanc pour t'entraîner en conditions réelles !</p>`}
       <details class="help"><summary>Comment ça marche</summary><ol>

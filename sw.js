@@ -1,5 +1,5 @@
-const CACHE = "labo42-v12";
-const SHELL = ["./", "./index.html", "./terminal.js", "./atelier.js", "./lexique.js", "./extras.js", "./jeux.js", "./memos.js", "./cursus.js", "./pc.js", "./sync.js", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png", "./actus.json", "./resume.json", "./lessons/terminal.json", "./lessons/c.json", "./lessons/cavance.json", "./lessons/linux.json", "./lessons/reseau.json", "./lessons/cyber.json", "./lessons/vers42.json", "./lessons/apres.json"];
+const CACHE = "labo42-v13";
+const SHELL = ["./", "./index.html", "./terminal.js", "./premiers.js", "./atelier.js", "./lexique.js", "./extras.js", "./jeux.js", "./memos.js", "./cursus.js", "./pc.js", "./sync.js", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png", "./actus.json", "./resume.json", "./lessons/terminal.json", "./lessons/c.json", "./lessons/cavance.json", "./lessons/linux.json", "./lessons/reseau.json", "./lessons/cyber.json", "./lessons/vers42.json", "./lessons/apres.json"];
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting()));
 });

@@ -377,6 +377,24 @@ a.chip{text-decoration:none;display:inline-flex;align-items:center;gap:6px}
 .gq{font-size:20px;margin:10px 0 12px}
 .g10{grid-template-columns:repeat(10,1fr);gap:4px}
 .exsteps i.ko{background:var(--red)}
+.dlines{padding:6px 0}
+.dline{display:flex;gap:10px;width:100%;text-align:left;background:none;border:0;border-left:3px solid transparent;color:#e6edf3;padding:8px 12px;min-height:44px;font:14px/1.45 "JetBrains Mono",ui-monospace,monospace;cursor:pointer;align-items:flex-start}
+.dline code{background:none;color:inherit;white-space:pre-wrap;overflow-wrap:anywhere;tab-size:4;padding:0}
+.dline .dn{color:#6e7681;min-width:18px;text-align:right;flex:none}
+.dline:not(:disabled):active{background:#1f2630}
+.dline.ok{background:rgba(63,209,143,.18);border-left-color:#3fd18f}.dline.ko{background:rgba(255,107,107,.18);border-left-color:#ff6b6b}
+.dline:disabled{cursor:default}
+.dord{min-height:48px}.dord mark{background:rgba(255,107,107,.3);color:inherit;border-radius:3px}
+.dpool{display:flex;flex-direction:column;gap:8px;margin:0 0 12px}
+.dpiece{text-align:left;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:12px;padding:10px 12px;min-height:44px;cursor:pointer;font:14px "JetBrains Mono",ui-monospace,monospace}
+.dpiece code{background:none;padding:0;white-space:pre-wrap;overflow-wrap:anywhere}
+.dpiece.used{opacity:.35}
+.mine{display:inline-flex;gap:6px;align-items:center;background:var(--blue-soft);color:var(--ink);border-radius:999px;padding:4px 12px;font-size:13px;font-weight:600;margin:4px 0}
+.mine .ico{width:16px;height:16px}
+.exsteps.g10{grid-template-columns:repeat(auto-fit,minmax(18px,1fr))}
+.debutban{display:flex;gap:12px;align-items:center;border:2px solid var(--acc);background:var(--acc-soft);border-radius:16px;padding:10px 12px;color:var(--ink);text-decoration:none;margin:0 0 14px}
+.pitem.next .stile.gs{background:var(--bg)}
+.debutban .stile{background:var(--bg)}.debutban small{display:block;color:var(--acc-ink);font-weight:600}
 .gch{margin-top:6px}
 .gch .opt{font-size:16px}
 .occ,.proj{border:1px solid var(--line);border-radius:16px;padding:10px 14px 4px;margin:10px 0}
@@ -555,6 +573,8 @@ a.chip{text-decoration:none;display:inline-flex;align-items:center;gap:6px}
 <section class="view" id="v-oc"><div id="ocBox"></div></section>
 
 <section class="view" id="v-cursus"><div id="cursusBox"></div></section>
+
+<section class="view" id="v-debut"><div id="debutBox"></div></section>
 
 <section class="view" id="v-pc"><div id="pcBox"></div></section>
 
@@ -755,6 +775,11 @@ const ART = {
 <path d="M12 106h136" class="n o"/>`),
   oc_s: il(`<rect width="52" height="52" rx="14" class="bs"/><path d="M26 15c-4-3-10-3-15-1.5v22c5-1.5 11-1.5 15 1.5zM26 15c4-3 10-3 15-1.5v22c-5-1.5-11-1.5-15 1.5z" class="w o" style="stroke-width:1.8"/><text x="18.5" y="30" class="t" style="font-size:11px">C</text><path d="M30 20h7M30 24h7M30 28h5" class="n o" style="stroke-width:1.6"/>`, "0 0 52 52"),
   cursus_s: il(`<rect width="52" height="52" rx="14" class="ys"/><rect x="10" y="30" width="10" height="12" rx="2" class="g o" style="stroke-width:1.6"/><rect x="20" y="22" width="10" height="20" rx="2" class="b o" style="stroke-width:1.6"/><rect x="30" y="14" width="10" height="28" rx="2" class="r o" style="stroke-width:1.6"/><path d="M8 42h36" class="n o" style="stroke-width:1.6"/>`, "0 0 52 52"),
+  debut: il(`<circle cx="80" cy="60" r="52" class="ys"/>
+<rect x="30" y="78" width="32" height="28" rx="4" class="g o"/><rect x="62" y="58" width="32" height="48" rx="4" class="b o"/><rect x="94" y="38" width="32" height="68" rx="4" class="r o"/>
+<text x="46" y="97" class="t">1</text><text x="78" y="87" class="tw">2</text><text x="110" y="76" class="tw">3</text>
+<path d="M110 38V12" class="n o"/><path d="M110 13h20l-5 6 5 6h-20z" class="y o" style="stroke-width:1.8"/>
+<circle cx="40" cy="58" r="12" class="w o"/><text x="40" y="62.5" class="t">C</text><path d="M20 106h120" class="n o"/>`),
   pc: il(`<circle cx="80" cy="60" r="52" class="bs"/>
 <rect x="30" y="26" width="100" height="64" rx="6" class="dk o"/><path d="M42 42l8 6-8 6" class="wk"/><path d="M56 54h16" class="wk"/>
 <rect x="42" y="64" width="44" height="5" rx="2.5" class="g"/><rect x="42" y="74" width="64" height="5" rx="2.5" class="m"/>
@@ -1236,10 +1261,12 @@ const stats = () => ({
 function phoneSteps(){
   const n = nextId(), d = store.day, dueNow = dueList().length, nu = unreadCount();
   const pi = window.Labo && window.Labo.pcInfo ? window.Labo.pcInfo() : null, rd = pi && pi.read.length ? pi.read[0] : null, les = rd || n;
+  const db = window.Labo && window.Labo.debutInfo ? window.Labo.debutInfo() : null;
   return [
     [dueNow === 0, "Tes fiches du jour", dueNow ? dueNow + " fiche" + (dueNow > 1 ? "s" : "") + " à réviser" : "Terminé pour aujourd'hui", "#reviser", "cards", "ys"],
     [d.lesson, les ? "Cours : " + TOPIC[les].t : "Revoir un cours", rd ? "Pour préparer ta mission sur PC" : "Le suivant dans ton parcours", les ? "#cours-" + les : "#parcours", "book", "gs"],
-    [d.jeu, "Un entraînement : " + (pi && pi.jeu ? pi.jeu[1] : "au choix"), "10 questions, avec l'explication à chaque fois", pi && pi.jeu ? "#jeux-" + pi.jeu[0] : "#jeux", "spark", "bs"],
+    db && db.lvl ? [d.jeu, "Premiers pas en C : niveau " + db.lvl, db.t + " · " + db.done + " / " + db.total + " réussis", "#debut-" + db.lvl, "code", "bs"]
+      : [d.jeu, "Un entraînement : " + (pi && pi.jeu ? pi.jeu[1] : "au choix"), "10 questions, avec l'explication à chaque fois", pi && pi.jeu ? "#jeux-" + pi.jeu[0] : "#jeux", "spark", "bs"],
     [d.news, "Lire les actus du jour", nu ? nu + " actu" + (nu > 1 ? "s" : "") + " pas encore lue" + (nu > 1 ? "s" : "") : "Expliquées en image", "#veille", "news", "rs"]
   ];
 }
@@ -1793,8 +1820,8 @@ document.addEventListener("labo:view", ev => { const v = ev.detail.v; if ((v ===
 if (!inClaude && "serviceWorker" in navigator) navigator.serviceWorker.addEventListener("message", e => { if (e.data && e.data.type === "refresh") { wake(true); setTimeout(() => wake(true), 45000); setTimeout(() => wake(true), 100000); } });
 
 /* ---------- Navigation ---------- */
-const VIEWS = ["accueil","parcours","reviser","pratique","terminal","atelier","examen","bandit","jeux","memos","lexique","oc","cursus","pc","tel","veille","moi"];
-const TAB_OF = {pc:"accueil", tel:"accueil", cours:"parcours", lexique:"parcours", oc:"parcours", cursus:"parcours", memos:"pratique", terminal:"pratique", atelier:"pratique", examen:"pratique", bandit:"pratique", jeux:"pratique"};
+const VIEWS = ["accueil","parcours","reviser","pratique","terminal","debut","atelier","examen","bandit","jeux","memos","lexique","oc","cursus","pc","tel","veille","moi"];
+const TAB_OF = {pc:"accueil", tel:"accueil", cours:"parcours", lexique:"parcours", oc:"parcours", cursus:"parcours", memos:"pratique", terminal:"pratique", debut:"pratique", atelier:"pratique", examen:"pratique", bandit:"pratique", jeux:"pratique"};
 let curView = {v: "accueil", arg: ""};
 function route(){
   let h = location.hash.slice(1);
@@ -1809,6 +1836,7 @@ function route(){
   else if (h.startsWith("jeux-")) { v = "jeux"; arg = h.slice(5); }
   else if (h.startsWith("memos-")) { v = "memos"; arg = h.slice(6); }
   else if (h.startsWith("pc-")) { v = "pc"; arg = h.slice(3); }
+  else if (h.startsWith("debut-")) { v = "debut"; arg = h.slice(6); }
   if (v === "veille" && !store.day.news) { store.day.news = true; active(); }
   document.querySelectorAll(".view").forEach(x => x.classList.toggle("on", x.id === "v-" + v));
   const tab = TAB_OF[v] || v;
@@ -1847,6 +1875,7 @@ refresh(); build(); renderActus(); route();
 }
 </script>
 <script src="terminal.js"></script>
+<script src="premiers.js"></script>
 <script src="atelier.js"></script>
 <script src="lexique.js"></script>
 <script src="jeux.js"></script>

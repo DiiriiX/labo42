@@ -33,6 +33,8 @@
     ["defis-all", "Enquêteur SOC", "Réussis tous les défis du terminal", "flag", "rs", x => x.defis >= x.defisTotal],
     ["serie-3", "Régulier", "Travaille 3 jours de suite", "flame", "ys", x => x.serie >= 3],
     ["serie-7", "Une semaine pile", "Travaille 7 jours de suite", "flame", "rs", x => x.serie >= 7],
+    ["debut-1", "Premiers pas", "Réussis le niveau 1 des Premiers pas en C", "code", "gs", x => x.debut1],
+    ["debut-all", "Bases solides", "Réussis tous les Premiers pas en C", "medal", "ys", x => x.debut >= (L.DEBUT_TOTAL || 49)],
     ["c-1", "Premier exercice", "Réussis un exercice de C", "code", "bs", x => x.c >= 1],
     ["c-10", "Codeur", "Réussis 10 exercices de C", "code", "bs", x => x.c >= 10],
     ["norme", "Code propre", "Écris un code sans faute de Norme", "check", "gs", x => x.norm >= 1],
@@ -55,7 +57,7 @@
     const s = S(), x = L.stats(), a = s.atelier || {};
     const j = Object.values(s.jeux || {});
     return Object.assign(x, {serie: serie(), c: Object.keys(a.done || {}).length, norm: a.norm || 0, exam: (s.exams || []).reduce((m, e) => Math.max(m, e.score), 0), bandit: Object.values(s.bandit || {}).filter(b => b && b.ok).length,
-      parties: j.reduce((n, g) => n + (g.plays || 0), 0), sansFaute: j.some(g => g.best >= 10), essayes: j.filter(g => g.plays).length, nbJeux: (L.GAMES || []).length || 11, examens: (s.exams || []).length, notes: Object.keys(s.notes || {}).length, oc: Object.keys(s.oc || {}).length, pcm: Object.keys((s.pc || {}).done || {}).length});
+      parties: j.reduce((n, g) => n + (g.plays || 0), 0), sansFaute: j.some(g => g.best >= 10), essayes: j.filter(g => g.plays).length, nbJeux: (L.GAMES || []).length || 11, examens: (s.exams || []).length, notes: Object.keys(s.notes || {}).length, oc: Object.keys(s.oc || {}).length, pcm: Object.keys((s.pc || {}).done || {}).length, debut: Object.keys((s.debut || {}).ok || {}).length, debut1: [1, 2, 3, 4, 5, 6, 7, 8].every(k => ((s.debut || {}).ok || {})["1." + k])});
   };
   function checkBadges() {
     const s = S(), x = allStats(), first = !s.badges;
@@ -79,7 +81,9 @@
   function renderHub() {
     const s = S(), x = allStats(), best = (s.exams || []).reduce((m, e) => Math.max(m, e.score), -1), total = (L.EXOS || []).length || 20;
     const card = (href, art, t, sub, n, max) => `<a class="hubc" href="${href}"><span class="hart">${ART[art]}</span><span class="hubt"><b>${t}</b><small>${sub}</small>${max ? `<span class="bar"><i style="width:${Math.round(n / max * 100)}%"></i></span>` : ""}</span><span class="chev">›</span></a>`;
-    $("hub").innerHTML = card("#pc", "pc", "Sur ton PC", `${x.pcm} / ${L.PC_MISSIONS || 44} missions · le programme à coder pour de vrai`, x.pcm, L.PC_MISSIONS || 44)
+    const db = L.debutInfo ? L.debutInfo() : {done: 0, total: 49};
+    $("hub").innerHTML = card("#debut", "debut", "Premiers pas en C", `${db.done} / ${db.total} exercices courts · pour débuter, à faire sur ton téléphone`, db.done, db.total)
+      + card("#pc", "pc", "Sur ton PC", `${x.pcm} / ${L.PC_MISSIONS || 44} missions · le programme à coder pour de vrai`, x.pcm, L.PC_MISSIONS || 44)
       + card("#terminal", "terminal", "Terminal", `${x.defis} / ${x.defisTotal} défis, du premier ls à l'enquête SOC`, x.defis, x.defisTotal)
       + card("#atelier", "atelier", "Atelier C", `${x.c} / ${total} exercices façon Piscine, avec mini norminette`, x.c, total)
       + card("#jeux", "jeux", "Entraînements", `${x.parties} partie${x.parties > 1 ? "s" : ""} · 11 mini-jeux, questions tirées au hasard`, x.essayes, x.nbJeux)
@@ -115,7 +119,7 @@
       <p class="small" id="expNote" style="margin-top:6px">Le code contient aussi ton carnet Bandit : ne le partage avec personne.</p>
       <details class="help" style="margin-top:14px"><summary>Restaurer une sauvegarde</summary><p class="small">Colle ici un code de sauvegarde. Il remplace la progression de ${L.inClaude ? "cette version" : "cette appli"}.</p><textarea id="impCode" rows="3" placeholder="L42-…" autocapitalize="off" spellcheck="false"></textarea><button class="btn ghost full" type="button" data-mo="import">Restaurer</button><p class="small" id="impNote"></p></details></div>`;
   }
-  const KEEP = ["known", "days", "seen", "srs", "term", "atelier", "exams", "lastExam", "bandit", "read", "later", "checkin", "size", "theme", "badges", "free", "notes", "jeux", "oc", "pc"];
+  const KEEP = ["known", "days", "seen", "srs", "term", "atelier", "exams", "lastExam", "bandit", "read", "later", "checkin", "size", "theme", "badges", "free", "notes", "jeux", "oc", "pc", "debut"];
   const toCode = () => { const s = S(), o = {v: 1}; KEEP.forEach(k => { if (s[k] !== undefined) o[k] = s[k]; }); return "L42-" + btoa(unescape(encodeURIComponent(JSON.stringify(o)))); };
   const fromCode = t => { const m = String(t).trim().replace(/\s+/g, ""); if (!m.startsWith("L42-")) throw 0; const o = JSON.parse(decodeURIComponent(escape(atob(m.slice(4))))); if (!o || typeof o !== "object" || !Array.isArray(o.days)) throw 0; return o; };
   const copyText = async txt => { try { await navigator.clipboard.writeText(txt); return true; } catch (e) { const t = document.createElement("textarea"); t.value = txt; t.style.position = "fixed"; t.style.opacity = "0"; document.body.appendChild(t); t.select(); let ok = false; try { ok = document.execCommand("copy"); } catch (er) {} t.remove(); return ok; } };

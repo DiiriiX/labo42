@@ -305,7 +305,8 @@
     sync();
     const m = current(), rd = toRead(m), jeu = m ? JEU[m.bloc] : ["quiz", "Le grand quiz"];
     const steps = L.phoneSteps ? L.phoneSteps() : [];
-    const quick = [["#reviser", "cards", "ys", "10 fiches", "La révision espacée du jour"], ["#jeux-" + jeu[0], "spark", "gs", jeu[1], "L'entraînement qui prépare ta mission"], ["#lexique", "book", "bs", "Le mot du jour", "Un mot du métier"],
+    const db = L.debutInfo ? L.debutInfo() : null;
+    const quick = [...(db && db.lvl ? [["#debut-" + db.lvl, "code", "bs", "Premiers pas en C", "Niveau " + db.lvl + " · " + db.done + " / " + db.total + " réussis"]] : []), ["#reviser", "cards", "ys", "10 fiches", "La révision espacée du jour"], ["#jeux-" + jeu[0], "spark", "gs", jeu[1], "L'entraînement qui prépare ta mission"], ["#lexique", "book", "bs", "Le mot du jour", "Un mot du métier"],
       ["#jeux-norme", "alert", "rs", "Les fautes de Norme", "10 questions"], ["#memos", "bookmark", "ys", "Un mémo", "Vim, Git, C, Linux…"], ["#veille", "news", "rs", "Les actus", "Expliquées en image"]];
     $("telBox").innerHTML = `<button class="back" type="button" data-go="#accueil">← Accueil</button>
       <div class="hero"><div><h1>Sur ton téléphone</h1><p class="sub">Tout ce que tu ne fais pas sur ton PC : apprendre, réviser, t'entraîner et suivre l'actu. 15 à 30 minutes par jour, dans les transports ou avant de coder.</p></div><span class="hart">${L.ART.tel}</span></div>
