@@ -1,5 +1,108 @@
 [
   {
+    "id": "2026-11-25-1password",
+    "date": "2026-11-25",
+    "ts": "2026-11-25T22:48:55+01:00",
+    "cat": "Cyber",
+    "theme": "intrusion",
+    "importance": 2,
+    "titre": "1Password : des données clients volées via GitHub",
+    "resume": "1Password est un gestionnaire de mots de passe très utilisé. Le 19 novembre, l'entreprise a vu que le compte GitHub professionnel d'un employé était piraté. Avec ce compte, le pirate a lu du code source privé, accédé au système CI/CD (qui construit et déploie les logiciels) et glissé du code malveillant dans des services internes.\n\nCe code a copié des données de comptes : noms, e-mails, identifiants, dates de connexion, clés publiques et des jetons de liens d'invitation ou de récupération. Les coffres de mots de passe et leurs clés de chiffrement ne sont pas touchés, selon 1Password. Pas besoin de changer son mot de passe, mais il faut se méfier des faux mails « sécurisez votre compte ».",
+    "pourquoi": "Un seul compte GitHub piraté a suffi pour toucher le cœur d'une entreprise de sécurité : protège ton compte GitHub avec la double authentification dès maintenant. Et comme le coffre est chiffré, le vol n'a pas donné les mots de passe : c'est la confidentialité de la triade, défendue par le chiffrement.",
+    "cours": "git",
+    "source": "BleepingComputer",
+    "url": "https://www.bleepingcomputer.com/news/security/1password-customer-data-stolen-after-employee-github-account-breach/",
+    "schemas": [
+      {
+        "type": "chaine",
+        "titre": "Comment le pirate est entré",
+        "etapes": [
+          {
+            "t": "Compte GitHub piraté",
+            "d": "Celui d'un employé de 1Password",
+            "ton": "attaque"
+          },
+          {
+            "t": "Code privé et CI/CD",
+            "d": "Code source lu, déploiement atteint",
+            "ton": "attaque"
+          },
+          {
+            "t": "Code malveillant injecté",
+            "d": "Dans des services internes",
+            "ton": "attaque"
+          },
+          {
+            "t": "Données de comptes copiées",
+            "d": "Noms, e-mails, jetons…",
+            "ton": "cible"
+          },
+          {
+            "t": "Coffres intacts",
+            "d": "Ils restent chiffrés",
+            "ton": "defense"
+          }
+        ]
+      },
+      {
+        "type": "parade",
+        "titre": "Ce que peuvent faire les clients",
+        "items": [
+          "Ne pas cliquer sur un mail qui demande de « sécuriser » le compte",
+          "Ouvrir l'appli ou le site 1Password directement, pas un lien",
+          "Ne jamais donner mot de passe maître, Secret Key ou code reçu",
+          "Signaler une invitation ou une récupération de compte inattendue"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "2026-11-25-lnb",
+    "date": "2026-11-25",
+    "ts": "2026-11-25T22:48:55+01:00",
+    "cat": "Cyber",
+    "theme": "fuite",
+    "importance": 2,
+    "titre": "Basket : un pirate menace la LNB via une notification",
+    "resume": "Un pirate qui se fait appeler « Alduin » dit avoir volé les données d'environ 40 000 utilisateurs de la Ligue nationale de basket (LNB). Des supporters ont reçu une notification au nom et au logo de la LNB, titrée « Cyberattaque en Cours », qui menace de publier les données si la ligue ne paie pas, avec un compte à rebours d'environ 71 heures.\n\nLes données revendiquées : noms, e-mails, téléphones, dates de naissance, pays, type d'abonnement. Pas de mots de passe ni de données bancaires dans la description. La LNB n'a pas encore confirmé, et on ne sait pas comment le pirate est entré.",
+    "pourquoi": "Ton appli Labo 42 envoie aussi des notifications : si quelqu'un vole la clé d'envoi (comme ta clé VAPID), il peut écrire à tous les abonnés. C'est pour ça qu'une clé secrète se range dans les secrets du dépôt, jamais dans le code.",
+    "cours": "phishing",
+    "source": "Cyberattaque.org",
+    "url": "https://www.cyberattaque.org/ligue-nationale-de-basket-un-hacker-revendique-40-000-comptes-et-diffuse-une-notification-de-chantage-aux-supporters/",
+    "schemas": [
+      {
+        "type": "chiffres",
+        "titre": "Ce que dit le pirate",
+        "items": [
+          {
+            "n": "40 000",
+            "t": "Comptes revendiqués",
+            "ton": "attaque"
+          },
+          {
+            "n": "71 h",
+            "t": "Compte à rebours affiché",
+            "ton": "attaque"
+          },
+          {
+            "n": "0",
+            "t": "Confirmation de la LNB",
+            "ton": "neutre"
+          }
+        ]
+      },
+      {
+        "type": "parade",
+        "titre": "Si tu as un compte LNB",
+        "items": [
+          "Se méfier des appels ou mails qui citent tes infos de supporter",
+          "Ne jamais payer ni répondre à un message de chantage",
+          "Ne pas réutiliser ailleurs le mot de passe de ce compte"
+        ]
+      }
+    ]
+  },
+  {
     "id": "2026-11-25-septeo",
     "date": "2026-11-25",
     "ts": "2026-11-25T19:43:45+01:00",
