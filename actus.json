@@ -1,5 +1,118 @@
 [
   {
+    "id": "2026-11-26-wp-connect",
+    "date": "2026-11-26",
+    "ts": "2026-11-26T14:43:40+01:00",
+    "cat": "Cyber",
+    "theme": "intrusion",
+    "importance": 2,
+    "titre": "WP Connect : 6 extensions WordPress piégées",
+    "resume": "WP Connect est un éditeur nantais d'extensions pour WordPress, le logiciel qui fait tourner beaucoup de sites. Le soir du 22 novembre, un pirate a utilisé le jeton GitHub d'un partenaire de développement pour ajouter une porte dérobée dans le code de six extensions gratuites (dont Air WP Sync), installées sur plus de 3 600 sites. L'outil automatique de l'éditeur a ensuite envoyé ces 9 versions piégées vers WordPress.org.\n\nLa porte dérobée pouvait exécuter des commandes, lire la base de données et voler les mots de passe chiffrés. Selon WP Connect, le contrôle de WordPress.org a bloqué ces versions avant leur diffusion : qui a installé une version d'avant le 22 novembre n'a rien à faire. Seules les copies téléchargées directement depuis GitHub sont à risque.",
+    "pourquoi": "Tout est parti d'un seul jeton GitHub volé : c'est ce que tu utiliseras pour pousser ton code, et c'est pour ça qu'un jeton doit avoir le moins de droits possible et ne jamais traîner dans un fichier. Cette attaque « par la chaîne d'approvisionnement » vise le code d'un développeur pour toucher tous ses utilisateurs d'un coup.",
+    "cours": "ssh",
+    "source": "Cyberattaque.org",
+    "url": "https://www.cyberattaque.org/wp-connect-un-hacker-piege-six-extensions-wordpress-de-lediteur-francais-et-menace-3-600-sites/",
+    "schemas": [
+      {
+        "type": "chaine",
+        "titre": "Du jeton volé aux sites WordPress",
+        "etapes": [
+          {
+            "t": "Jeton GitHub volé",
+            "d": "Celui d'un partenaire",
+            "ton": "attaque"
+          },
+          {
+            "t": "Code piégé poussé",
+            "d": "6 extensions, 9 versions",
+            "ton": "attaque"
+          },
+          {
+            "t": "Envoi automatique",
+            "d": "Vers WordPress.org",
+            "ton": "attaque"
+          },
+          {
+            "t": "Versions bloquées",
+            "d": "Contrôle de WordPress.org",
+            "ton": "defense"
+          }
+        ]
+      },
+      {
+        "type": "parade",
+        "titre": "Protéger son code et ses jetons",
+        "items": [
+          "Donner à chaque jeton GitHub le moins de droits possible.",
+          "Ne jamais écrire un jeton dans un fichier poussé sur Git.",
+          "Révoquer tout de suite un jeton qui a pu fuiter.",
+          "Installer les extensions depuis le site officiel, pas un ZIP."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "2026-11-26-fifa",
+    "date": "2026-11-26",
+    "ts": "2026-11-26T14:43:40+01:00",
+    "cat": "Cyber",
+    "theme": "rancon",
+    "importance": 2,
+    "titre": "La FIFA confirme une cyberattaque",
+    "resume": "La FIFA, qui organise la Coupe du monde de football, a confirmé le 25 novembre qu'un accès non autorisé a touché « un ensemble limité » de données personnelles et professionnelles. Elle travaille avec la police.\n\nLe groupe de pirates Handsome Boy Hacking Club dit avoir volé plus de 12 Go de documents et les a publiés après l'échec du chantage, pour de l'argent. Il parle de pièces d'identité, de documents financiers et de contrats de sponsors du Mondial 2026, mais la FIFA n'a pas confirmé cette liste.",
+    "pourquoi": "C'est le schéma classique du vol de données avec chantage : voler, menacer de publier, puis publier si la victime ne paie pas. En défense, on apprend à repérer ce genre de sortie de données dans les journaux (les logs) avant qu'il soit trop tard.",
+    "cours": "logs",
+    "source": "Cyberattaque.org",
+    "url": "https://www.cyberattaque.org/la-fifa-confirme-une-cyberattaque-plus-de-12-go-de-documents-confidentiels-revendiques/",
+    "schemas": [
+      {
+        "type": "dates",
+        "titre": "Du chantage à la confirmation",
+        "items": [
+          {
+            "date": "20 novembre",
+            "t": "FIFA sur le site des pirates",
+            "ton": "attaque"
+          },
+          {
+            "date": "Ensuite",
+            "t": "Données publiées",
+            "ton": "attaque"
+          },
+          {
+            "date": "25 novembre",
+            "t": "La FIFA confirme l'accès",
+            "ton": "neutre"
+          }
+        ]
+      },
+      {
+        "type": "cibles",
+        "titre": "Ce que les pirates disent avoir pris",
+        "centre": {
+          "t": "FIFA",
+          "d": "Plus de 12 Go revendiqués",
+          "ton": "attaque"
+        },
+        "autour": [
+          {
+            "t": "Pièces d'identité"
+          },
+          {
+            "t": "Documents financiers"
+          },
+          {
+            "t": "Contrats de sponsors",
+            "d": "Coupe du monde 2026"
+          },
+          {
+            "t": "Documents juridiques"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "2026-11-26-nginx2root",
     "date": "2026-11-26",
     "ts": "2026-11-26T11:44:34+01:00",
