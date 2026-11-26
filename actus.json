@@ -1,5 +1,70 @@
 [
   {
+    "id": "2026-11-26-afp",
+    "date": "2026-11-26",
+    "ts": "2026-11-26T22:43:14+01:00",
+    "cat": "Cyber",
+    "theme": "intrusion",
+    "importance": 2,
+    "titre": "L'AFP coupe sa plateforme après une cyberattaque",
+    "resume": "L'Agence France-Presse (AFP) fournit des dépêches, des photos et des vidéos aux médias du monde entier. Dans la nuit du 25 au 26 novembre, à partir de 1 h 30, des pirates ont attaqué AFP Forum, la plateforme où ses clients consultent et téléchargent ces contenus.\n\nDès que l'intrusion a été repérée, les équipes de l'AFP ont isolé la plateforme, qui reste fermée par précaution. L'agence ne sait pas encore qui est derrière l'attaque ni si des données ont été volées : des experts extérieurs analysent ce qui s'est passé.",
+    "pourquoi": "Isoler tout de suite le système touché, c'est le premier réflexe de la réponse à incident, le métier de défense qui t'intéresse. Le cours sur les journaux (logs) montre comment les défenseurs repèrent une intrusion comme celle-ci.",
+    "cours": "logs",
+    "source": "Clubic",
+    "url": "https://www.clubic.com/actualite-641320-l-afp-coupe-l-acces-a-sa-plateforme-apres-une-cyberattaque.html",
+    "schemas": [
+      {
+        "type": "chaine",
+        "titre": "Comment l'AFP a réagi",
+        "etapes": [
+          {
+            "t": "Attaque à 1 h 30",
+            "d": "nuit du 25 au 26 novembre",
+            "ton": "attaque"
+          },
+          {
+            "t": "Intrusion repérée",
+            "d": "sur la plateforme AFP Forum",
+            "ton": "cible"
+          },
+          {
+            "t": "Plateforme isolée",
+            "d": "coupée du reste, fermée",
+            "ton": "defense"
+          },
+          {
+            "t": "Enquête en cours",
+            "d": "avec des experts extérieurs",
+            "ton": "neutre"
+          }
+        ]
+      },
+      {
+        "type": "cibles",
+        "titre": "Ce qui est touché",
+        "centre": {
+          "t": "AFP Forum",
+          "d": "fermée par précaution",
+          "ton": "attaque"
+        },
+        "autour": [
+          {
+            "t": "Médias clients",
+            "d": "solutions de secours proposées"
+          },
+          {
+            "t": "Dépêches",
+            "d": "consultées par les clients"
+          },
+          {
+            "t": "Photos et vidéos",
+            "d": "téléchargées par les clients"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "2026-11-26-alexandre-de-paris",
     "date": "2026-11-26",
     "ts": "2026-11-26T19:44:28+01:00",
