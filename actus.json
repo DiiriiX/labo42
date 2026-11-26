@@ -1,5 +1,113 @@
 [
   {
+    "id": "2026-11-26-fragnesia",
+    "date": "2026-11-26",
+    "ts": "2026-11-26T07:50:33+01:00",
+    "cat": "Cyber",
+    "theme": "faille",
+    "importance": 2,
+    "titre": "Palo Alto corrige Fragnesia, utilisée pour pirater des pare-feu",
+    "resume": "Palo Alto Networks fabrique des pare-feu très utilisés en entreprise. Le 24 novembre, il a publié des mises à jour de PAN-OS, le système de ses pare-feu, contre Fragnesia (CVE-2026-46300) : une faille du noyau Linux qui permet de devenir root, c'est-à-dire administrateur total.\n\nDes pirates s'en sont servis : ils entraient d'abord par les failles PHP2Shell de PHP, via une page d'administration ouverte sur Internet, puis utilisaient Fragnesia pour passer root. 25 serveurs ont été touchés, dont 24 pare-feu. Palo Alto conseille d'installer les correctifs et de ne jamais laisser l'administration accessible depuis Internet.",
+    "pourquoi": "C'est une élévation de privilèges : une première faille donne un compte limité, une seconde le transforme en root, comme tu le verras avec les utilisateurs et sudo de Born2beroot. Et un pare-feu dont l'interface d'administration est ouverte à tous devient lui-même la porte d'entrée.",
+    "cours": "parefeu",
+    "source": "SecurityWeek",
+    "url": "https://www.securityweek.com/palo-alto-networks-patches-fragnesia-flaw-used-to-root-firewalls/",
+    "schemas": [
+      {
+        "type": "chaine",
+        "titre": "De la page web au contrôle total",
+        "etapes": [
+          {
+            "t": "Administration exposée",
+            "d": "Pare-feu joignable depuis Internet",
+            "ton": "cible"
+          },
+          {
+            "t": "Failles PHP2Shell",
+            "d": "Exécution de code, compte limité",
+            "ton": "attaque"
+          },
+          {
+            "t": "Faille Fragnesia",
+            "d": "Noyau Linux : on devient root",
+            "ton": "attaque"
+          },
+          {
+            "t": "Pare-feu contrôlé",
+            "d": "Webshell installé en root",
+            "ton": "attaque"
+          },
+          {
+            "t": "Correctif PAN-OS",
+            "d": "Publié le 24 novembre",
+            "ton": "defense"
+          }
+        ]
+      },
+      {
+        "type": "parade",
+        "titre": "Ce que doivent faire les admins",
+        "items": [
+          "Installer la version corrigée de PAN-OS",
+          "Ne jamais exposer l'interface d'administration sur Internet",
+          "N'y accéder que depuis le réseau d'administration ou un VPN"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "2026-11-26-agents-ia",
+    "date": "2026-11-26",
+    "ts": "2026-11-26T07:50:33+01:00",
+    "cat": "Cyber",
+    "theme": "ia",
+    "importance": 2,
+    "titre": "Italie et Suisse : des agents IA ont piraté des organisations",
+    "resume": "Les agences de cybersécurité d'Italie (CSIRT Italia) et de Suisse (NCSC) alertent sur des attaques menées par des agents IA, des programmes qui enchaînent seuls les étapes d'un piratage. En Suisse, ce sont les premiers cas signalés, et dans tous les cas connus l'attaque a réussi, y compris contre des opérateurs d'infrastructures critiques.\n\nEn Italie, plusieurs agents travaillaient en parallèle : repérage, exploitation, puis maintien dans le réseau, avec du code malveillant écrit en direct pour échapper aux défenses. Ils profitaient de mots de passe faibles et de failles connues non corrigées sur des machines exposées à Internet.",
+    "pourquoi": "Les agents IA n'inventent pas de nouvelles failles ici : ils exploitent très vite les erreurs classiques, mots de passe faibles et mises à jour oubliées. Les défenses de base que tu apprends (mots de passe solides, correctifs, moins de services ouverts) restent donc la meilleure protection.",
+    "cours": "ia",
+    "source": "BleepingComputer",
+    "url": "https://www.bleepingcomputer.com/news/security/italy-and-switzerland-warn-of-autonomous-ai-driven-cyberattacks/",
+    "schemas": [
+      {
+        "type": "chaine",
+        "titre": "Une attaque menée par des agents IA",
+        "etapes": [
+          {
+            "t": "Repérage",
+            "d": "Machines exposées à Internet",
+            "ton": "attaque"
+          },
+          {
+            "t": "Faiblesses exploitées",
+            "d": "Mots de passe faibles, failles",
+            "ton": "attaque"
+          },
+          {
+            "t": "Entrée dans le réseau",
+            "d": "Code écrit en direct",
+            "ton": "attaque"
+          },
+          {
+            "t": "Organisations touchées",
+            "d": "Dont infrastructures critiques",
+            "ton": "cible"
+          }
+        ]
+      },
+      {
+        "type": "parade",
+        "titre": "Les conseils des agences",
+        "items": [
+          "Corriger les failles critiques dans les 24 heures",
+          "Activer la double authentification ou les passkeys",
+          "Réduire les machines et services exposés à Internet",
+          "Surveiller les connexions et le trafic inhabituels"
+        ]
+      }
+    ]
+  },
+  {
     "id": "2026-11-25-1password",
     "date": "2026-11-25",
     "ts": "2026-11-25T22:48:55+01:00",
@@ -1029,724 +1137,6 @@
             "d": "le bouclier ne le remplace pas",
             "ton": "defense"
           }
-        ]
-      }
-    ]
-  },
-  {
-    "id": "2026-11-23-commission-europeenne",
-    "date": "2026-11-23",
-    "ts": "2026-11-23T22:42:31+01:00",
-    "cat": "Cyber",
-    "theme": "intrusion",
-    "importance": 2,
-    "titre": "Commission européenne : une intrusion toujours en cours",
-    "resume": "Le service informatique de la Commission européenne a repéré un intrus dans ses réseaux internes le 22 octobre. Un mois plus tard, d'après Euronews, l'attaque n'est toujours pas complètement maîtrisée, et la plateforme de formation EU Academy a été coupée.\n\nLa Commission confirme la fuite des noms et adresses mail des utilisateurs d'EU Academy et prévient qu'ils risquent de recevoir du phishing. Des sources soupçonnent un groupe lié à la Chine, mais rien n'est confirmé officiellement, et la Chine dément.",
-    "pourquoi": "Une intrusion qui dure des semaines, c'est exactement ce que doivent repérer et nettoyer les équipes de défense (SOC, réponse à incident). Et même une petite fuite (noms, mails) suffit à préparer des mails de phishing crédibles.",
-    "cours": "phishing",
-    "source": "Euronews",
-    "url": "https://fr.euronews.com/2026/11/23/des-hackers-lies-a-la-chine-soupconnes-dune-vaste-cyberattaque-visant-la-commission-europe",
-    "schemas": [
-      {
-        "type": "dates",
-        "titre": "Le déroulé",
-        "items": [
-          {
-            "date": "22 octobre",
-            "t": "Intrus repéré dans le réseau",
-            "ton": "attaque"
-          },
-          {
-            "date": "Samedi",
-            "t": "EU Academy coupée",
-            "ton": "defense"
-          },
-          {
-            "date": "23 novembre",
-            "t": "Pas encore maîtrisée",
-            "ton": "attaque"
-          }
-        ]
-      },
-      {
-        "type": "cibles",
-        "titre": "Ce qui est touché",
-        "centre": {
-          "t": "Commission européenne",
-          "d": "réseaux internes",
-          "ton": "cible"
-        },
-        "autour": [
-          {
-            "t": "EU Academy",
-            "d": "plateforme coupée"
-          },
-          {
-            "t": "Noms et mails",
-            "d": "des utilisateurs, fuités"
-          },
-          {
-            "t": "Applis internes",
-            "d": "coupées par précaution"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "id": "2026-11-23-azure-apim",
-    "date": "2026-11-23",
-    "ts": "2026-11-23T22:42:31+01:00",
-    "cat": "Cyber",
-    "theme": "cloud",
-    "importance": 2,
-    "titre": "Azure : une faille exploitée pour voler des secrets d'API",
-    "resume": "Microsoft a signalé une faille dans Azure API Management, dans les anciennes offres « Classic » (la version v2 n'est pas touchée). Un attaquant pouvait accéder aux fonctions d'administration et lire des secrets : clés d'abonnement, jetons, secrets de connexion.\n\nLa faille a été exploitée, notamment contre des entreprises d'énergie en Norvège comme Equinor. Microsoft a fermé l'accès le 19 novembre, mais les secrets déjà volés restent valables : il faut les changer.",
-    "pourquoi": "Dans le cloud, une seule faille chez le fournisseur peut exposer les secrets de nombreux clients. Le bon réflexe, que tu verras dans le cours cloud : changer (faire tourner) les clés et lire les journaux après un incident.",
-    "cours": "cloud",
-    "source": "BleepingComputer",
-    "url": "https://www.bleepingcomputer.com/news/security/microsoft-azure-flaw-exploited-to-steal-customers-api-credentials/",
-    "schemas": [
-      {
-        "type": "chaine",
-        "titre": "Comment l'attaque marche",
-        "etapes": [
-          {
-            "t": "Faille dans APIM Classic",
-            "d": "service d'API d'Azure",
-            "ton": "attaque"
-          },
-          {
-            "t": "Accès à l'administration",
-            "d": "sans autorisation",
-            "ton": "attaque"
-          },
-          {
-            "t": "Vol des secrets",
-            "d": "clés, jetons, mots de passe",
-            "ton": "attaque"
-          },
-          {
-            "t": "Changer les clés",
-            "d": "le correctif ne suffit pas",
-            "ton": "defense"
-          }
-        ]
-      },
-      {
-        "type": "dates",
-        "titre": "Les dates",
-        "items": [
-          {
-            "date": "17 novembre",
-            "t": "Equinor signale une attaque",
-            "ton": "attaque"
-          },
-          {
-            "date": "18 novembre",
-            "t": "Microsoft repère la faille",
-            "ton": "neutre"
-          },
-          {
-            "date": "19 novembre",
-            "t": "Accès fermé",
-            "ton": "defense"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "id": "2026-11-23-delubac",
-    "date": "2026-11-23",
-    "ts": "2026-11-23T19:46:20+01:00",
-    "cat": "Cyber",
-    "theme": "intrusion",
-    "importance": 2,
-    "titre": "Banque Delubac : fraude évitée, mais des données clients ont fuité",
-    "resume": "La Banque Delubac & Cie, une banque familiale d'Ardèche, a repéré le vendredi 20 novembre une intrusion dans ses systèmes. Les pirates ont essayé de faire de faux virements : la banque dit les avoir bloqués, sans perte d'argent pour les clients.\n\nL'intrusion a quand même causé une fuite de données d'une partie des clients, mais on ne sait pas encore combien ni quelles données. La banque a coupé sa banque en ligne par précaution, prévenu la CNIL et l'ACPR, porté plainte, et met en garde contre de faux SMS à son nom.",
-    "pourquoi": "C'est un bon exemple de défense : détecter vite l'intrusion et couper les accès a empêché le vol d'argent, ce que fait une équipe SOC. Et comme pour Decathlon, une fuite sert ensuite à des SMS de phishing crédibles.",
-    "cours": "phishing",
-    "source": "Le Monde Informatique",
-    "url": "https://www.lemondeinformatique.fr/cybersecurite-conformite/cyberattaque-la-banque-delubac-cie-dejoue-une-tentative-de-fraude-mais-subit-une-fuite-de-donnees",
-    "schemas": [
-      {
-        "type": "dates",
-        "titre": "Le déroulé",
-        "items": [
-          {
-            "date": "20 novembre",
-            "t": "Intrusion détectée",
-            "ton": "attaque"
-          },
-          {
-            "date": "20 novembre",
-            "t": "Faux virements bloqués",
-            "ton": "defense"
-          },
-          {
-            "date": "20 novembre",
-            "t": "Banque en ligne coupée",
-            "ton": "defense"
-          },
-          {
-            "date": "23 novembre",
-            "t": "Annonce et fuite confirmée",
-            "ton": "neutre"
-          }
-        ]
-      },
-      {
-        "type": "parade",
-        "titre": "Si tu reçois un message « de ta banque »",
-        "items": [
-          "Une banque ne demande jamais tes codes par SMS, mail ou téléphone",
-          "Ne clique pas sur le lien : ouvre toi-même l'appli de la banque",
-          "En cas de doute, appelle ton conseiller au numéro habituel"
-        ]
-      }
-    ]
-  },
-  {
-    "id": "2026-11-23-screenconnect",
-    "date": "2026-11-23",
-    "ts": "2026-11-23T19:46:20+01:00",
-    "cat": "Cyber",
-    "theme": "faille",
-    "importance": 2,
-    "titre": "ScreenConnect : une faille exploitée pour pirater des techniciens",
-    "resume": "ScreenConnect est un logiciel de prise en main à distance, très utilisé par les entreprises qui gèrent l'informatique d'autres sociétés. Une faille notée 9,9 sur 10 (CVE-2026-84869) permet à un « invité » de la session d'envoyer un fichier et de le lancer sur le PC du technicien qui se connecte.\n\nDes pirates s'en servent : un poste a été pris en environ 9 secondes le 12 novembre, et plus de 688 000 tentatives ont été vues entre le 20 octobre et le 16 novembre. La parade : mettre à jour le client ScreenConnect en version 26.6.5 ou plus, ou retirer le droit d'envoyer des fichiers.",
-    "pourquoi": "Ici, ce n'est pas le serveur qui est attaqué mais l'outil du défenseur lui-même : un rappel qu'un accès à distance (comme ssh) doit être limité au strict nécessaire. Ce genre d'alerte est le quotidien d'un analyste SOC.",
-    "cours": "ssh",
-    "source": "The Hacker News",
-    "url": "https://thehackernews.com/2026/11/hackers-exploit-critical-screenconnect.html",
-    "schemas": [
-      {
-        "type": "chaine",
-        "titre": "Comment le technicien est piégé",
-        "etapes": [
-          {
-            "t": "Le pirate ouvre une session",
-            "d": "il se fait passer pour un invité",
-            "ton": "attaque"
-          },
-          {
-            "t": "Le technicien se connecte",
-            "d": "pour aider le faux client",
-            "ton": "cible"
-          },
-          {
-            "t": "Fichier envoyé et lancé",
-            "d": "un script .bat sur son PC",
-            "ton": "attaque"
-          },
-          {
-            "t": "Faux ScreenConnect installé",
-            "d": "le pirate garde l'accès",
-            "ton": "attaque"
-          },
-          {
-            "t": "Parade : version 26.6.5",
-            "d": "ou bloquer l'envoi de fichiers",
-            "ton": "defense"
-          }
-        ]
-      },
-      {
-        "type": "chiffres",
-        "titre": "Chiffres clés",
-        "items": [
-          {
-            "n": "9,9/10",
-            "t": "gravité de la faille",
-            "ton": "attaque"
-          },
-          {
-            "n": "9 s",
-            "t": "pour prendre un poste",
-            "ton": "attaque"
-          },
-          {
-            "n": "688 000",
-            "t": "tentatives d'envoi",
-            "ton": "attaque"
-          },
-          {
-            "n": "42",
-            "t": "serveurs visés",
-            "ton": "cible"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "id": "2026-11-23-edge-lockdown",
-    "date": "2026-11-23",
-    "ts": "2026-11-23T19:46:20+01:00",
-    "cat": "Tech",
-    "theme": "maj",
-    "importance": 1,
-    "titre": "Edge teste un « mode verrouillé » contre les attaques",
-    "resume": "Microsoft teste dans Edge Canary (la version d'essai) un « Lockdown Mode », désactivé par défaut. Il bloque WebGL et WebGPU, les fonctions qui laissent un site utiliser la carte graphique.\n\nSelon Microsoft, ce mode aurait contré environ 60 % des attaques réelles de ce type vues depuis 2022. Il vise les personnes très exposées (journalistes, dirigeants, chercheurs, administrateurs), mais il casse certains sites comme les cartes ou les jeux.",
-    "pourquoi": "C'est le principe de la réduction de la surface d'attaque : moins de fonctions actives, moins de portes d'entrée pour un pirate. Tu retrouveras cette idée partout en défense, du navigateur au serveur Linux de Born2beroot.",
-    "cours": "http",
-    "source": "IT-Connect",
-    "url": "https://www.it-connect.fr/edge-lockdown-mode-webgl-webgpu/",
-    "schemas": [
-      {
-        "type": "cibles",
-        "titre": "Ce que le mode bloque",
-        "centre": {
-          "t": "Lockdown Mode",
-          "d": "Edge Canary, désactivé par défaut",
-          "ton": "defense"
-        },
-        "autour": [
-          {
-            "t": "WebGL",
-            "d": "graphismes 3D"
-          },
-          {
-            "t": "WebGL2",
-            "d": "version plus récente"
-          },
-          {
-            "t": "WebGPU",
-            "d": "accès à la carte graphique"
-          }
-        ]
-      },
-      {
-        "type": "chiffres",
-        "titre": "Chiffres clés",
-        "items": [
-          {
-            "n": "60 %",
-            "t": "attaques contrées (estimé)",
-            "ton": "defense"
-          },
-          {
-            "n": "2022",
-            "t": "début de la période étudiée",
-            "ton": "neutre"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "id": "2026-11-23-decathlon",
-    "date": "2026-11-23",
-    "ts": "2026-11-23T14:43:28+01:00",
-    "cat": "Cyber",
-    "theme": "fuite",
-    "importance": 3,
-    "titre": "Decathlon : 163 000 fiches clients diffusées par un pirate",
-    "resume": "Un pirate qui se fait appeler « 4me1 » a publié ce lundi 23 novembre, sur un forum de pirates, des fichiers qu'il dit avoir copiés chez Decathlon. On y trouve environ 163 600 fiches clients (nom, e-mail, téléphone, adresse) et 255 000 commandes, dont 611 livraisons prévues du 23 au 28 novembre. Plus de 22 500 fiches sont liées aux magasins de Lyon, Grenoble et Annecy.\n\nAucun mot de passe ni numéro de carte bancaire n'a été trouvé dans les fichiers. Decathlon n'a pas encore confirmé, et on ne sait pas si la fuite vient de l'enseigne ou d'un prestataire. Le vrai risque : des faux SMS ou appels sur une « livraison » qui ont l'air crédibles.",
-    "pourquoi": "Toi ou tes proches à Lyon êtes peut-être dans le fichier : méfie-toi des SMS sur un colis Decathlon. C'est un cas d'école du cours sur le phishing : une fuite sans mot de passe sert quand même à rendre une arnaque très crédible.",
-    "cours": "phishing",
-    "source": "Selectra",
-    "url": "https://selectra.info/telecom/actualites/marche/decathlon-fuite-donnees-clients-2026-livraisons",
-    "schemas": [
-      {
-        "type": "chiffres",
-        "titre": "Ce que contient la fuite",
-        "items": [
-          {
-            "n": "163 646",
-            "t": "fiches clients",
-            "ton": "attaque"
-          },
-          {
-            "n": "255 011",
-            "t": "commandes (2021 à 2026)",
-            "ton": "attaque"
-          },
-          {
-            "n": "611",
-            "t": "livraisons du 23 au 28/11",
-            "ton": "cible"
-          },
-          {
-            "n": "22 500",
-            "t": "liées à Lyon et aux Alpes",
-            "ton": "cible"
-          }
-        ]
-      },
-      {
-        "type": "parade",
-        "titre": "Si tu reçois un message « Decathlon »",
-        "items": [
-          "Vérifie ta commande dans l'appli officielle, pas via un lien reçu",
-          "Ne paie jamais des frais de livraison par un lien",
-          "Ne donne aucun code ni coordonnées bancaires au téléphone",
-          "Transfère le SMS suspect au 33700"
-        ]
-      }
-    ]
-  },
-  {
-    "id": "2026-11-23-crowdstrike-zscaler",
-    "date": "2026-11-23",
-    "ts": "2026-11-23T14:43:28+01:00",
-    "cat": "Tech",
-    "theme": "cloud",
-    "importance": 2,
-    "titre": "CrowdStrike va racheter Zscaler pour 43,9 milliards de dollars",
-    "resume": "Le 23 novembre, deux géants de la cybersécurité, CrowdStrike et Zscaler, ont annoncé leur fusion : CrowdStrike rachète Zscaler en payant avec ses propres actions, pour environ 43,9 milliards de dollars. Chaque actionnaire de Zscaler recevra 1,135 action CrowdStrike, soit environ 34 % de plus que le cours de Zscaler.\n\nLe rachat doit encore être accepté par les actionnaires de Zscaler et par les autorités. Les deux entreprises visent plus de 10 milliards de dollars de revenus récurrents ensemble. Le fondateur de Zscaler, Jay Chaudhry, continuera de diriger Zscaler et entrera au conseil de CrowdStrike.",
-    "pourquoi": "CrowdStrike protège les ordinateurs et serveurs, Zscaler protège les connexions vers Internet et le cloud : ensemble, ils couvrent une grande partie de la défense d'une entreprise. Ce sont des employeurs et des outils que tu croiseras sûrement dans les métiers de la défense.",
-    "cours": "metiers",
-    "source": "SEC (communiqué CrowdStrike et Zscaler)",
-    "url": "https://www.sec.gov/Archives/edgar/data/0001713683/000110465926130801/tm2630454d2_ex99-1.htm",
-    "schemas": [
-      {
-        "type": "chiffres",
-        "titre": "Le rachat en chiffres",
-        "items": [
-          {
-            "n": "43,9 Md$",
-            "t": "valeur du rachat",
-            "ton": "neutre"
-          },
-          {
-            "n": "+34 %",
-            "t": "prime pour Zscaler",
-            "ton": "neutre"
-          },
-          {
-            "n": "10 Md$",
-            "t": "revenus récurrents visés",
-            "ton": "cible"
-          },
-          {
-            "n": "8 000",
-            "t": "clients Zscaler à gagner",
-            "ton": "cible"
-          }
-        ]
-      },
-      {
-        "type": "dates",
-        "titre": "Les étapes du rachat",
-        "items": [
-          {
-            "date": "20 novembre",
-            "t": "Cours de référence",
-            "ton": "neutre"
-          },
-          {
-            "date": "23 novembre",
-            "t": "Annonce de la fusion",
-            "ton": "neutre"
-          },
-          {
-            "date": "Plus tard",
-            "t": "Vote et feu vert autorités",
-            "ton": "neutre"
-          },
-          {
-            "date": "Exercice 28",
-            "t": "Fin prévue du rachat",
-            "ton": "neutre"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "id": "2026-11-23-chu-guadeloupe",
-    "date": "2026-11-23",
-    "ts": "2026-11-23T11:43:56+01:00",
-    "cat": "Cyber",
-    "theme": "intrusion",
-    "importance": 3,
-    "titre": "Cyberattaque au CHU de Guadeloupe : plan blanc et opérations reportées",
-    "resume": "Le CHU de Guadeloupe est touché par une cyberattaque depuis le samedi 21 novembre au soir. Le dimanche 22, après une réunion de crise, l'hôpital a déclenché son plan blanc. La téléphonie interne, des logiciels médicaux, la radiologie et le laboratoire sont perturbés, et les soignants travaillent en partie sur papier.\n\nUne partie des opérations, consultations et examens d'imagerie est reportée jusqu'au vendredi 27 novembre. Les urgences et le 15 fonctionnent. L'ANSSI a été appelée en renfort ; le CHU dit qu'aucune fuite de données personnelles ou médicales n'est constatée à ce stade.",
-    "pourquoi": "C'est exactement le travail des équipes de défense que tu vises : isoler, vérifier chaque système avant de le rallumer, chercher par où l'attaquant est entré grâce aux logs. Un hôpital montre aussi que la cyber, ce n'est pas que des données : ce sont des patients soignés plus lentement.",
-    "cours": "logs",
-    "source": "Cyberattaque.org",
-    "url": "https://www.cyberattaque.org/chu-de-guadeloupe-une-cyberattaque-paralyse-les-hopitaux-des-donnees-chiffrees-et-des-operations-annulees/",
-    "schemas": [
-      {
-        "type": "dates",
-        "titre": "Le fil de l'attaque",
-        "items": [
-          {
-            "date": "21 novembre",
-            "t": "Premières pannes vers 21 h",
-            "ton": "attaque"
-          },
-          {
-            "date": "22 novembre",
-            "t": "Plan blanc déclenché",
-            "ton": "neutre"
-          },
-          {
-            "date": "22 novembre",
-            "t": "L'ANSSI appelée en renfort",
-            "ton": "defense"
-          },
-          {
-            "date": "27 novembre",
-            "t": "Fin prévue des reports",
-            "ton": "neutre"
-          }
-        ]
-      },
-      {
-        "type": "cibles",
-        "titre": "Ce qui est touché à l'hôpital",
-        "centre": {
-          "t": "Cyberattaque",
-          "d": "CHU de Guadeloupe",
-          "ton": "attaque"
-        },
-        "autour": [
-          {
-            "t": "Téléphonie interne",
-            "ton": "cible"
-          },
-          {
-            "t": "Logiciels médicaux",
-            "ton": "cible"
-          },
-          {
-            "t": "Radiologie et labo",
-            "ton": "cible"
-          },
-          {
-            "t": "Opérations reportées",
-            "ton": "cible"
-          },
-          {
-            "t": "Urgences et 15 : OK",
-            "ton": "defense"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "id": "2026-11-23-glinet-goodcloud",
-    "date": "2026-11-23",
-    "ts": "2026-11-23T11:43:56+01:00",
-    "cat": "Cyber",
-    "theme": "reseau",
-    "importance": 2,
-    "titre": "GL.iNet : le cloud GoodCloud détourné pour pirater des routeurs",
-    "resume": "GL.iNet fabrique des routeurs basés sur OpenWrt (un Linux pour routeurs) et des boîtiers KVM pour piloter un PC à distance. Une faille dans GoodCloud, son service d'administration à distance, a permis à un pirate d'installer un programme malveillant sur certains appareils. Le fabricant l'a repérée le 20 novembre.\n\nSur les KVM, le programme se cache sous le nom « crond -i /tmp/.log » et remplace netstat pour masquer ses connexions. GL.iNet a corrigé son cloud et publié de nouveaux firmwares le 23 novembre, qui retirent le programme sans remise à zéro.",
-    "pourquoi": "Tu vois ici des commandes de tes cours Linux (ps, netstat, /tmp) utilisées pour la vraie défense : chercher un processus suspect. Et un vrai piège d'attaquant : remplacer netstat pour cacher ce qu'il fait, d'où l'intérêt de croiser plusieurs sources.",
-    "cours": "processus",
-    "source": "IT-Connect",
-    "url": "https://www.it-connect.fr/gl-inet-goodcloud-routeurs-kvm-malware/",
-    "schemas": [
-      {
-        "type": "chaine",
-        "titre": "Comment les appareils ont été infectés",
-        "etapes": [
-          {
-            "t": "Faille dans GoodCloud",
-            "d": "le cloud d'administration",
-            "ton": "attaque"
-          },
-          {
-            "t": "Commande envoyée",
-            "d": "vers les routeurs et KVM",
-            "ton": "attaque"
-          },
-          {
-            "t": "Programme installé",
-            "d": "relancé à chaque démarrage",
-            "ton": "attaque"
-          },
-          {
-            "t": "Il se cache",
-            "d": "faux crond, netstat modifié",
-            "ton": "attaque"
-          },
-          {
-            "t": "Parade : nouveau firmware",
-            "d": "publié le 23 novembre",
-            "ton": "defense"
-          }
-        ]
-      },
-      {
-        "type": "parade",
-        "titre": "Si tu as un appareil GL.iNet",
-        "items": [
-          "Installer le firmware corrigé de ton modèle",
-          "Chercher le processus « crond -i /tmp/.log » avec ps",
-          "Couper GoodCloud si tu ne t'en sers pas",
-          "Vérifier les PC branchés : comptes et tâches inconnus"
-        ]
-      }
-    ]
-  },
-  {
-    "id": "2026-11-23-cisco-expressway",
-    "date": "2026-11-23",
-    "ts": "2026-11-23T11:43:56+01:00",
-    "cat": "Cyber",
-    "theme": "faille",
-    "importance": 2,
-    "titre": "Cisco Expressway : une faille critique exploitée par des pirates",
-    "resume": "Cisco Expressway est une passerelle qui relie les visioconférences d'une entreprise à Internet. La faille CVE-2026-76466 vient d'identifiants écrits en dur dans le code et d'une vérification incomplète des certificats : sans mot de passe, un attaquant peut lancer des commandes en root.\n\nL'agence américaine CISA a confirmé le 20 novembre qu'elle est exploitée et a donné trois jours aux administrations américaines pour corriger. Selon la société F6, des pirates aidés d'un assistant IA ont pris deux appareils exposés, puis sont passés au réseau interne pour voler des identifiants. Cisco a publié les correctifs fin octobre.",
-    "pourquoi": "Un mot de passe écrit en dur dans un programme, c'est l'erreur classique à ne jamais faire dans ton code. Et l'attaque montre le « mouvement latéral » : une machine exposée sur Internet sert de porte d'entrée vers tout le réseau, d'où les pare-feu et la séparation des réseaux.",
-    "cours": "parefeu",
-    "source": "BleepingComputer",
-    "url": "https://www.bleepingcomputer.com/news/security/cisa-flags-critical-cisco-expressway-rce-flaw-as-actively-exploited/",
-    "schemas": [
-      {
-        "type": "chaine",
-        "titre": "Comment les pirates ont avancé",
-        "etapes": [
-          {
-            "t": "Identifiants en dur",
-            "d": "dans Cisco Expressway",
-            "ton": "attaque"
-          },
-          {
-            "t": "Commandes en root",
-            "d": "sur 2 appareils exposés",
-            "ton": "attaque"
-          },
-          {
-            "t": "Passage au réseau interne",
-            "d": "2 autres appareils du cluster",
-            "ton": "attaque"
-          },
-          {
-            "t": "Vol d'identifiants",
-            "d": "via SMB, SQL Server, GitLab",
-            "ton": "attaque"
-          },
-          {
-            "t": "Parade : le correctif",
-            "d": "publié par Cisco fin octobre",
-            "ton": "defense"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "id": "2026-11-23-cairn-agents-ia",
-    "date": "2026-11-23",
-    "ts": "2026-11-23T07:44:35+01:00",
-    "cat": "Cyber",
-    "theme": "ia",
-    "importance": 2,
-    "titre": "Des agents IA ont trouvé seuls une faille dans des universités",
-    "resume": "Amazon raconte une attaque menée en septembre 2026 contre des universités d'Asie de l'Est. Les pirates, probablement liés à la Chine, ont utilisé Cairn, un outil libre de test d'intrusion piloté par des agents IA : on lui donne une cible, il prépare et lance les étapes tout seul.\n\nEn 11 minutes environ, les agents ont trouvé une faille inconnue (un « path traversal ») dans MONAI Label, une appli d'imagerie médicale, et ont pu écrire des fichiers sur le serveur. Amazon a découvert tout cela grâce à une instance de Cairn laissée en ligne sans mot de passe. Les développeurs de MONAI Label ont publié une correction.",
-    "pourquoi": "Un path traversal, c'est un chemin de fichier mal vérifié (comme ../../) : le même genre d'erreur que tu éviteras en contrôlant les entrées de tes programmes en C. Et ça montre que les défenseurs devront réagir à la vitesse des machines, d'où l'importance des logs et des alertes automatiques.",
-    "cours": "ia",
-    "source": "AWS Security Blog (Amazon)",
-    "url": "https://aws.amazon.com/blogs/security/chinese-nexus-actors-cairn-ai-agents-found-a-zero-day-on-their-own/",
-    "schemas": [
-      {
-        "type": "chaine",
-        "titre": "Comment les agents IA ont attaqué",
-        "etapes": [
-          {
-            "t": "Une cible donnée à Cairn",
-            "d": "des universités d'Asie de l'Est",
-            "ton": "attaque"
-          },
-          {
-            "t": "Les agents explorent l'API",
-            "d": "de l'appli MONAI Label",
-            "ton": "neutre"
-          },
-          {
-            "t": "Faille path traversal",
-            "d": "un chemin de fichier non vérifié",
-            "ton": "attaque"
-          },
-          {
-            "t": "Fichiers écrits",
-            "d": "sur le serveur, en 11 min environ",
-            "ton": "attaque"
-          },
-          {
-            "t": "Parade : la mise à jour",
-            "d": "et l'authentification activée",
-            "ton": "defense"
-          }
-        ]
-      },
-      {
-        "type": "chiffres",
-        "titre": "Les chiffres de l'attaque",
-        "items": [
-          {
-            "n": "11 min",
-            "t": "de l'API à l'écriture",
-            "ton": "attaque"
-          },
-          {
-            "n": "48 h",
-            "t": "durée de la campagne",
-            "ton": "neutre"
-          },
-          {
-            "n": "30 000+",
-            "t": "mots de passe essayés",
-            "ton": "attaque"
-          },
-          {
-            "n": "0",
-            "t": "connexion réussie au GPU",
-            "ton": "defense"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "id": "2026-11-23-cleverbridge",
-    "date": "2026-11-23",
-    "ts": "2026-11-23T07:44:35+01:00",
-    "cat": "Cyber",
-    "theme": "fuite",
-    "importance": 2,
-    "titre": "Cleverbridge : des données de cartes bancaires copiées",
-    "resume": "Cleverbridge gère les paiements en ligne et les abonnements pour d'autres entreprises. Le 4 novembre 2026, elle a repéré une activité anormale sur sa plateforme : un pirate a copié des données de cartes bancaires qui y étaient stockées.\n\nCe n'est pas un rançongiciel, aucun système n'a été chiffré. Depuis le 20 novembre, l'entreprise prévient les clients touchés, qui connaissent souvent le nom du site marchand plutôt que celui de Cleverbridge.",
-    "pourquoi": "Après une fuite, les pirates envoient souvent de faux mails « suite à l'incident » pour voler encore plus d'informations : c'est du phishing. C'est aussi une leçon de défense : moins on stocke de données sensibles, moins il y en a à voler.",
-    "cours": "phishing",
-    "source": "Cleverbridge",
-    "url": "https://grow.cleverbridge.com/incident-update",
-    "schemas": [
-      {
-        "type": "dates",
-        "titre": "Ce qui s'est passé",
-        "items": [
-          {
-            "date": "4 novembre",
-            "t": "Activité anormale repérée",
-            "ton": "attaque"
-          },
-          {
-            "date": "4 novembre",
-            "t": "Systèmes coupés et relancés",
-            "ton": "defense"
-          },
-          {
-            "date": "20 novembre",
-            "t": "Clients touchés prévenus",
-            "ton": "neutre"
-          }
-        ]
-      },
-      {
-        "type": "parade",
-        "titre": "Si tu reçois un avis de Cleverbridge",
-        "items": [
-          "Vérifie tes relevés et signale tout achat inconnu à ta banque.",
-          "Méfie-toi des mails, appels ou SMS qui parlent de l'incident.",
-          "Ne donne jamais ton code de carte : Cleverbridge ne le demande pas."
         ]
       }
     ]
