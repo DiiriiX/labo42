@@ -1,5 +1,161 @@
 [
   {
+    "id": "2026-11-26-alexandre-de-paris",
+    "date": "2026-11-26",
+    "ts": "2026-11-26T19:44:28+01:00",
+    "cat": "Cyber",
+    "theme": "fuite",
+    "importance": 2,
+    "titre": "Alexandre de Paris : 87 000 clients dans une fuite",
+    "resume": "Alexandre de Paris est une marque française d'accessoires de luxe pour les cheveux. Le 25 novembre, un pirate qui se fait appeler « Chimera » a publié une archive de 2,39 Go qu'il dit avoir volée. Cyberattaque.org l'a analysée : 87 837 adresses e-mail différentes, des noms, adresses, téléphones, dates de naissance, commandes et factures.\n\nLes 21 108 comptes clients ont un mot de passe rangé sous forme d'empreinte MD5, un hachage ancien et facile à casser. Les données vont de 2011 à 2020 : ce serait une vieille sauvegarde, peut-être liée au piratage d'une agence web lyonnaise, mais rien n'est prouvé et la marque n'a rien confirmé.",
+    "pourquoi": "Cette fuite montre pourquoi on ne garde jamais un mot de passe en clair ni avec un hachage rapide comme MD5 : c'est exactement ce que tu verras dans le cours sur le hachage. Elle rappelle aussi qu'une vieille sauvegarde oubliée reste une cible.",
+    "cours": "hachage",
+    "source": "Cyberattaque.org",
+    "url": "https://www.cyberattaque.org/cyberattque-alexandre-de-paris-90-000-emails-et-21-000-mots-de-passe-en-fuite/",
+    "schemas": [
+      {
+        "type": "chiffres",
+        "titre": "Ce que contient l'archive",
+        "items": [
+          {
+            "n": "87 837",
+            "t": "adresses e-mail différentes",
+            "ton": "attaque"
+          },
+          {
+            "n": "21 108",
+            "t": "comptes avec empreinte MD5",
+            "ton": "attaque"
+          },
+          {
+            "n": "173 146",
+            "t": "commandes",
+            "ton": "cible"
+          },
+          {
+            "n": "2011-20",
+            "t": "années des données",
+            "ton": "neutre"
+          }
+        ]
+      },
+      {
+        "type": "parade",
+        "titre": "Si tu étais client",
+        "items": [
+          "Changer ce mot de passe partout où tu l'as réutilisé.",
+          "Se méfier des faux messages de livraison ou de remboursement.",
+          "Utiliser un mot de passe différent pour chaque site."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "2026-11-26-geoserver",
+    "date": "2026-11-26",
+    "ts": "2026-11-26T19:44:28+01:00",
+    "cat": "Cyber",
+    "theme": "faille",
+    "importance": 2,
+    "titre": "GeoServer : deux failles visées par des pirates",
+    "resume": "GeoServer est un serveur web open source, écrit en Java, qui sert des cartes et des données géographiques. Le 24 novembre, ses développeurs ont publié plusieurs failles, dont CVE-2026-120705 (lire des fichiers du serveur sans être connecté, note 8,6) et CVE-2026-129243 (appeler des fonctions protégées sans autorisation, 8,8).\n\nLe 25 novembre au matin, la société watchTowr a vu des pirates tester deux de ces failles sur ses serveurs pièges. Des chercheurs montrent qu'en enchaînant cinq failles, on pourrait prendre le contrôle du serveur. Il faut passer en version 2.27.7, 2.28.6 ou 3.0.2.",
+    "pourquoi": "C'est un exemple concret de « chaîne » : plusieurs petites failles mises bout à bout donnent un contrôle total, comme dans les CTF. On y retrouve aussi les requêtes HTTP et les droits d'accès que tu étudies.",
+    "cours": "http",
+    "source": "The Hacker News",
+    "url": "https://thehackernews.com/2026/11/hackers-exploit-two-geoserver-flaws-as.html",
+    "schemas": [
+      {
+        "type": "chaine",
+        "titre": "La chaîne décrite par les chercheurs",
+        "etapes": [
+          {
+            "t": "Chemin du serveur révélé",
+            "d": "Message d'erreur trop bavard",
+            "ton": "attaque"
+          },
+          {
+            "t": "Fonctions protégées",
+            "d": "Appelées sans autorisation",
+            "ton": "attaque"
+          },
+          {
+            "t": "Fichiers lus",
+            "d": "Sans être connecté",
+            "ton": "attaque"
+          },
+          {
+            "t": "Session admin forgée",
+            "d": "Clé « geoserver » codée en dur",
+            "ton": "attaque"
+          },
+          {
+            "t": "Mise à jour",
+            "d": "2.27.7, 2.28.6 ou 3.0.2",
+            "ton": "defense"
+          }
+        ]
+      },
+      {
+        "type": "chiffres",
+        "titre": "Les deux failles testées",
+        "items": [
+          {
+            "n": "8,6/10",
+            "t": "lecture de fichiers",
+            "ton": "attaque"
+          },
+          {
+            "n": "6,9/10",
+            "t": "fuite du chemin des données",
+            "ton": "attaque"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "2026-11-26-fincen",
+    "date": "2026-11-26",
+    "ts": "2026-11-26T19:44:28+01:00",
+    "cat": "Cyber",
+    "theme": "intrusion",
+    "importance": 2,
+    "titre": "États-Unis : le service anti-blanchiment piraté",
+    "resume": "Le FinCEN est le service du Trésor américain qui lutte contre le blanchiment d'argent : les banques lui envoient leurs déclarations d'opérations suspectes. Il a annoncé un « accès non autorisé à une partie limitée de ses systèmes » et en a coupé certains par précaution.\n\nLe site de dépôt des déclarations est perturbé, et les dates limites sont repoussées au 30 décembre. Selon The Register, rien ne montre pour l'instant que les bases de données ont été lues. L'enquête est menée avec le FBI et la CISA.",
+    "pourquoi": "Couper des systèmes pour contenir une intrusion, puis enquêter avec des experts, c'est le travail de la réponse à incident, un des métiers de la défense. Les journaux (logs) servent ensuite à savoir ce que l'intrus a touché.",
+    "cours": "logs",
+    "source": "The Register",
+    "url": "https://www.theregister.com/security/2026/11/25/us-treasury-financial-crimes-unit-becomes-latest-fed-breach-victim/5312165",
+    "schemas": [
+      {
+        "type": "chaine",
+        "titre": "Comment le FinCEN réagit",
+        "etapes": [
+          {
+            "t": "Accès non autorisé",
+            "d": "Une partie des systèmes",
+            "ton": "attaque"
+          },
+          {
+            "t": "Systèmes coupés",
+            "d": "Par précaution",
+            "ton": "defense"
+          },
+          {
+            "t": "Dépôts perturbés",
+            "d": "Site BSA E-Filing",
+            "ton": "cible"
+          },
+          {
+            "t": "Enquête",
+            "d": "Avec le FBI et la CISA",
+            "ton": "defense"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "2026-11-26-wp-connect",
     "date": "2026-11-26",
     "ts": "2026-11-26T14:43:40+01:00",
