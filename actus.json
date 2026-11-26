@@ -1,5 +1,130 @@
 [
   {
+    "id": "2026-11-26-nginx2root",
+    "date": "2026-11-26",
+    "ts": "2026-11-26T11:44:34+01:00",
+    "cat": "Cyber",
+    "theme": "faille",
+    "importance": 2,
+    "titre": "NGINX : une faille HTTP/2 serait exploitée",
+    "resume": "NGINX est un serveur web qui fait tourner une très grande partie des sites d'Internet. Le 26 novembre, l'agence de cybersécurité de Singapour (CSA) a alerté : la faille CVE-2026-123007, surnommée « nginx2root », serait exploitée par des pirates. Elle est dans la gestion du protocole HTTP/2 et peut faire planter le serveur, abîmer sa mémoire et parfois exécuter du code à distance.\n\nLa faille avait été publiée le 18 novembre par Rapid7 et F5, avec un code d'attaque public. L'attaque demande d'envoyer environ 128 Go de trafic HTTP/2. Les correctifs existent : NGINX 1.30.7 ou 1.31.9 (et NGINX Plus 37.0.8.1 ou 37.3.0.1).",
+    "pourquoi": "C'est un débordement de mémoire dans du code C : un compteur passe sous zéro, une taille devient négative et le programme écrit là où il ne devrait pas. C'est exactement le genre d'erreur que la Norme et la rigueur de 42 t'apprennent à éviter avec les tailles et les pointeurs.",
+    "cours": "http",
+    "source": "CSA Singapour",
+    "url": "https://www.csa.gov.sg/alerts-and-advisories/alerts/al-2026-168/",
+    "schemas": [
+      {
+        "type": "chaine",
+        "titre": "Comment marche nginx2root",
+        "etapes": [
+          {
+            "t": "Serveur NGINX en HTTP/2",
+            "d": "Joignable depuis Internet",
+            "ton": "cible"
+          },
+          {
+            "t": "Énorme trafic HTTP/2",
+            "d": "Environ 128 Go envoyés",
+            "ton": "attaque"
+          },
+          {
+            "t": "Compteur sous zéro",
+            "d": "Taille de tampon négative",
+            "ton": "attaque"
+          },
+          {
+            "t": "Mémoire corrompue",
+            "d": "Plantage ou code exécuté",
+            "ton": "attaque"
+          },
+          {
+            "t": "Mise à jour",
+            "d": "NGINX 1.30.7 ou 1.31.9",
+            "ton": "defense"
+          }
+        ]
+      },
+      {
+        "type": "dates",
+        "titre": "De la découverte à l'alerte",
+        "items": [
+          {
+            "date": "18 novembre",
+            "t": "Faille et code publiés",
+            "ton": "neutre"
+          },
+          {
+            "date": "19 novembre",
+            "t": "8,8 millions exposés",
+            "ton": "cible"
+          },
+          {
+            "date": "26 novembre",
+            "t": "CSA : faille exploitée",
+            "ton": "attaque"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "2026-11-26-2-milliards-identifiants",
+    "date": "2026-11-26",
+    "ts": "2026-11-26T11:44:34+01:00",
+    "cat": "Cyber",
+    "theme": "fuite",
+    "importance": 2,
+    "titre": "2 milliards d'identifiants trouvés en accès libre",
+    "resume": "Le chercheur Jeremiah Fowler a découvert une base de données ouverte sur Internet, sans mot de passe ni chiffrement. Elle contenait environ 2 milliards d'identifiants en clair : comptes Gmail, Facebook, Netflix, PayPal, mais aussi des adresses .gov et .edu.\n\nCes données semblent venir d'infostealers, des logiciels espions qui volent les mots de passe enregistrés dans le navigateur, les cookies de session et les portefeuilles crypto. Il l'a signalé le 24 novembre et l'accès a été coupé quelques jours plus tard. On ne sait pas à qui appartient la base.",
+    "pourquoi": "Ici, ce n'est pas un site qui a été piraté : c'est l'ordinateur des victimes, infecté, qui a tout donné. Et laisser une base de données ouverte sans mot de passe est une erreur de configuration classique, celle que les tests d'intrusion cherchent en premier.",
+    "cours": "hachage",
+    "source": "Cyberattaque.org",
+    "url": "https://www.cyberattaque.org/2-milliards-identifiants-exposes-un-chercheur-decouvre-une-fuite-de-donnees-sans-precedent/",
+    "schemas": [
+      {
+        "type": "chaine",
+        "titre": "Du PC infecté à la base ouverte",
+        "etapes": [
+          {
+            "t": "PC infecté",
+            "d": "Logiciel espion (infostealer)",
+            "ton": "attaque"
+          },
+          {
+            "t": "Vol des secrets",
+            "d": "Mots de passe, cookies, crypto",
+            "ton": "attaque"
+          },
+          {
+            "t": "Tout est regroupé",
+            "d": "Base de données en clair",
+            "ton": "cible"
+          },
+          {
+            "t": "Base laissée ouverte",
+            "d": "Sans mot de passe",
+            "ton": "attaque"
+          },
+          {
+            "t": "Accès coupé",
+            "d": "Après le signalement",
+            "ton": "defense"
+          }
+        ]
+      },
+      {
+        "type": "parade",
+        "titre": "Si ton PC a pu être infecté",
+        "items": [
+          "Analyser l'appareil avec un antivirus à jour",
+          "Changer ses mots de passe depuis un appareil sain",
+          "Fermer les sessions ouvertes sur ses comptes",
+          "Activer la double authentification ou les passkeys"
+        ]
+      }
+    ]
+  },
+  {
     "id": "2026-11-26-fragnesia",
     "date": "2026-11-26",
     "ts": "2026-11-26T07:50:33+01:00",
