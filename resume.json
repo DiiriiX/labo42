@@ -1,5 +1,25 @@
 [
   {
+    "date": "2026-11-26",
+    "bilan": "Ton poste Ubuntu est prêt pour la Piscine et tu as ft_putchar devant toi depuis deux jours : c'est la toute première marche du module C00. Tu pars de bases solides en C (printf, scanf, if, boucles, tableaux) et tu apprends maintenant le style de 42 avec `write`.",
+    "etape": {
+      "titre": "Mission m03 : l'alphabet avec write",
+      "detail": "Si ft_putchar n'est pas encore validé, termine-le d'abord dans `~/piscine/c00/ex00`, c'est la base de tout le reste. Ensuite, dans `~/piscine/c00/ex01`, écris ft_print_alphabet : afficher les lettres de a à z avec `write`, en te demandant ce que vaut 'a' + 1 et quand ta boucle `while` doit s'arrêter, puis fais pareil à l'envers dans ex02 pour ft_print_reverse_alphabet. Pour chaque exercice : un main.c de test à côté, `cc -Wall -Wextra -Werror`, `norminette` sur le fichier rendu, puis un commit Git. Sur ton téléphone : relis le cours **ascii** et fais le niveau 2 des **Premiers pas en C** (« Conditions et boucles », pour remplacer for par while).",
+      "lien": "#pc-m03"
+    },
+    "actus": [
+      "**NGINX, faille nginx2root exploitée** : un compteur qui passe sous zéro dans du code C fait écrire le serveur hors de sa mémoire ; les correctifs (NGINX 1.30.7 ou 1.31.9) existent.",
+      "**6 extensions WordPress piégées chez WP Connect** : un seul jeton GitHub volé a suffi pour glisser une porte dérobée ; un jeton doit avoir le moins de droits possible.",
+      "**Palo Alto corrige Fragnesia** : des pirates entraient par une page d'administration ouverte, puis devenaient root grâce à une faille du noyau Linux (élévation de privilèges).",
+      "**Des agents IA ont piraté des organisations en Italie et en Suisse** : ils exploitent vite les erreurs classiques, donc mots de passe solides et mises à jour restent la meilleure défense."
+    ],
+    "question": {
+      "texte": "Quand tu te connectes à Bandit avec `ssh`, à quoi sert l'option `-p` suivie d'un nombre, et pourquoi faut-il la donner ici ?",
+      "cours": "ssh"
+    },
+    "mot": "Une lettre, puis un alphabet, puis toute la Piscine : chaque petit exercice réussi compte."
+  },
+  {
     "date": "2026-11-25",
     "bilan": "Ton poste Ubuntu est prêt avec ton dossier `~/piscine`, et tu as dit que les exercices étaient un peu durs : c'est normal quand on débute, et l'appli a maintenant des **Premiers pas en C** faits pour toi. Tu sais déjà utiliser `printf`, `scanf`, les conditions, les boucles et les tableaux, il te reste à passer au style de 42 avec ton tout premier exercice rendu.",
     "etape": {
