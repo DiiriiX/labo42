@@ -1,5 +1,130 @@
 [
   {
+    "id": "2026-11-27-todoist",
+    "date": "2026-11-27",
+    "ts": "2026-11-27T19:49:33+01:00",
+    "cat": "Cyber",
+    "theme": "intrusion",
+    "importance": 2,
+    "titre": "Todoist : un pirate entré par un accès de développeur",
+    "resume": "L'appli de listes de tâches Todoist confirme une intrusion les 22 et 23 novembre. Le pirate a utilisé un identifiant de développeur volé, lié au système qui stocke le code source, puis a modifié des automatisations dans trois dépôts pour obtenir d'autres accès, jusqu'à un compte administrateur et l'infrastructure cloud.\n\nIl a téléchargé les e-mails et les mots de passe hachés (SHA1 salé) d'environ 6 % des utilisateurs, surtout de vieux comptes. Il a aussi fouillé les tâches pour trouver des clés d'API et des jetons. Todoist a retiré SHA1, désactivé ces mots de passe et révoqué les jetons.",
+    "pourquoi": "Un seul identifiant de développeur volé a suffi pour remonter jusqu'à l'administration : c'est pour ça qu'on ne laisse jamais traîner un jeton GitHub ou un mot de passe dans son code. Et SHA1, même salé, est trop rapide à casser : tu verras dans le cours sur le hachage pourquoi on préfère des algorithmes lents comme bcrypt.",
+    "cours": "hachage",
+    "source": "Cyberattaque.org",
+    "url": "https://www.cyberattaque.org/todoist-une-cyberattaque-expose-les-donnees-de-milliers-dutilisateurs/",
+    "schemas": [
+      {
+        "type": "chaine",
+        "titre": "Comment le pirate est monté",
+        "etapes": [
+          {
+            "t": "Identifiant volé",
+            "d": "accès dev au code source",
+            "ton": "attaque"
+          },
+          {
+            "t": "3 dépôts modifiés",
+            "d": "pour voler d'autres accès",
+            "ton": "attaque"
+          },
+          {
+            "t": "Compte administrateur",
+            "d": "puis le cloud et les bases",
+            "ton": "attaque"
+          },
+          {
+            "t": "Fichier téléchargé",
+            "d": "comptes de 6 % des utilisateurs",
+            "ton": "attaque"
+          },
+          {
+            "t": "Alerte et riposte",
+            "d": "jetons révoqués, SHA1 retiré",
+            "ton": "defense"
+          }
+        ]
+      },
+      {
+        "type": "dates",
+        "titre": "Les dates clés (heure UTC)",
+        "items": [
+          {
+            "date": "22 nov. 14h04",
+            "t": "Premier usage de l'accès volé",
+            "ton": "attaque"
+          },
+          {
+            "date": "23 nov. 12h45",
+            "t": "Données des comptes copiées",
+            "ton": "attaque"
+          },
+          {
+            "date": "23 nov. 17h01",
+            "t": "Faux compte admin détecté",
+            "ton": "defense"
+          },
+          {
+            "date": "24 novembre",
+            "t": "Jetons révoqués, alertes",
+            "ton": "defense"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "2026-11-27-buffalo-grill",
+    "date": "2026-11-27",
+    "ts": "2026-11-27T19:49:33+01:00",
+    "cat": "Cyber",
+    "theme": "fuite",
+    "importance": 2,
+    "titre": "Buffalo Grill alerte ses clients après un incident chez Brevo",
+    "resume": "La chaîne de restaurants Buffalo Grill prévient tous ses clients : quelqu'un a eu accès sans autorisation à l'outil de Brevo, l'entreprise française qui envoie ses e-mails. Noms, e-mails, téléphones et codes postaux ont pu être exposés, mais pas les données bancaires ni les mots de passe.\n\nBuffalo Grill dit qu'une dizaine de clients seraient touchés, sans savoir lesquels, d'où l'alerte générale. Brevo avait déjà reconnu en septembre une faille dans sa connexion SSO, qui avait touché 138 comptes clients ; le lien entre les deux n'est pas confirmé.",
+    "pourquoi": "C'est une attaque par un sous-traitant : l'entreprise n'est pas piratée elle-même, mais un prestataire qui a ses données. Avec un nom, un e-mail et un téléphone, un pirate peut écrire des messages de phishing très crédibles, comme tu le vois dans le cours sur le phishing.",
+    "cours": "phishing",
+    "source": "Cyberattaque.org",
+    "url": "https://www.cyberattaque.org/buffalo-grill-la-cyberattaque-chez-brevo-pousse-lenseigne-a-alerter-tous-ses-clients/",
+    "schemas": [
+      {
+        "type": "cibles",
+        "titre": "Ce qui a pu être exposé",
+        "centre": {
+          "t": "Outil Brevo",
+          "d": "envoi d'e-mails de Buffalo Grill",
+          "ton": "attaque"
+        },
+        "autour": [
+          {
+            "t": "Nom et prénom"
+          },
+          {
+            "t": "Adresse e-mail"
+          },
+          {
+            "t": "Téléphone"
+          },
+          {
+            "t": "Code postal"
+          },
+          {
+            "t": "Pas de carte bancaire",
+            "ton": "defense"
+          }
+        ]
+      },
+      {
+        "type": "parade",
+        "titre": "Se protéger du phishing qui suit",
+        "items": [
+          "Se méfier d'une promo ou d'un remboursement inattendu",
+          "Vérifier l'adresse de l'expéditeur avant de cliquer",
+          "Aller sur le site en tapant soi-même l'adresse"
+        ]
+      }
+    ]
+  },
+  {
     "id": "2026-11-27-cloud-one",
     "date": "2026-11-27",
     "ts": "2026-11-27T14:50:06+01:00",
