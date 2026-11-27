@@ -49,17 +49,17 @@
         "titre": "Les dates clés (heure UTC)",
         "items": [
           {
-            "date": "22 nov. 14h04",
-            "t": "Premier usage de l'accès volé",
+            "date": "22 nov. 14h",
+            "t": "Premier usage de l'accès",
             "ton": "attaque"
           },
           {
-            "date": "23 nov. 12h45",
+            "date": "23 nov. 12h",
             "t": "Données des comptes copiées",
             "ton": "attaque"
           },
           {
-            "date": "23 nov. 17h01",
+            "date": "23 nov. 17h",
             "t": "Faux compte admin détecté",
             "ton": "defense"
           },
