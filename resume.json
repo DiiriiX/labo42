@@ -1,5 +1,25 @@
 [
   {
+    "date": "2026-11-27",
+    "bilan": "Tu as ft_putchar et l'alphabet avec `write` devant toi : ce sont les premières marches du module C00, et chaque exercice te fait pratiquer la boucle de 42 (main.c de test, `cc -Wall -Wextra -Werror`, `norminette`, commit). Tu pars de bases solides en C (printf, scanf, if, boucles, tableaux) et tu passes maintenant, pas à pas, au style de la Piscine.",
+    "etape": {
+      "titre": "Mission m04 : les chiffres et les négatifs",
+      "detail": "Si l'alphabet (m03) n'est pas encore validé, termine-le d'abord, puis passe à m04. Dans `~/piscine/c00/ex03`, écris ft_print_numbers qui affiche les chiffres de 0 à 9 avec `write` ; demande-toi bien ce qui différencie le caractère '0' du nombre 0. Ensuite, dans `ex04`, écris ft_is_negative qui affiche N ou P selon le nombre reçu, avec un main.c qui teste un nombre négatif, un positif et 0, puis `norminette` et un commit pour chacun. Sur ton téléphone : relis le cours **ascii** et lis le sujet ft_is_negative dans l'atelier avant de t'asseoir au PC.",
+      "lien": "#pc-m04"
+    },
+    "actus": [
+      "**Cloud de l'armée de l'air américaine piraté** : dans le cloud, celui qui contrôle la console de gestion contrôle tout, c'est pour ça que les comptes d'administration sont les plus protégés.",
+      "**OPCO EP coupe ses services après une cyberattaque** : se couper soi-même pour contenir l'attaque est un réflexe de réponse à incident ; un faux e-mail « OPCO » qui demande un RIB, c'est du phishing.",
+      "**Drupal : une nouvelle faille déjà exploitée** : le premier correctif était incomplet ; il faut mettre à jour ou bloquer /core/install.php, puis lire les journaux.",
+      "**SAP : des pirates sur son GitHub** : des jetons volés ont suffi pour toucher au code ; un jeton doit avoir le moins de droits possible."
+    ],
+    "question": {
+      "texte": "Dans `write(1, &c, 1)`, que représente le premier `1`, et où irait le texte si tu mettais `2` à la place ?",
+      "cours": "write"
+    },
+    "mot": "Dix chiffres et une lettre N ou P : ce sont de petits exercices, mais ils te font gagner des réflexes pour toute la Piscine."
+  },
+  {
     "date": "2026-11-26",
     "bilan": "Ton poste Ubuntu est prêt pour la Piscine et tu as ft_putchar devant toi depuis deux jours : c'est la toute première marche du module C00. Tu pars de bases solides en C (printf, scanf, if, boucles, tableaux) et tu apprends maintenant le style de 42 avec `write`.",
     "etape": {
