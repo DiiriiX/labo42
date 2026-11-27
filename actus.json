@@ -1,5 +1,120 @@
 [
   {
+    "id": "2026-11-27-cloud-one",
+    "date": "2026-11-27",
+    "ts": "2026-11-27T14:50:06+01:00",
+    "cat": "Cyber",
+    "theme": "cloud",
+    "importance": 2,
+    "titre": "Armée de l'air américaine : son cloud Cloud One piraté",
+    "resume": "Selon l'agence Reuters, des pirates sont entrés dans Cloud One, la grande plateforme cloud de l'armée de l'air des États-Unis. Elle regroupe des services de Microsoft, Amazon, Oracle et Google, et fait tourner des dizaines d'applications : personnel, paie, logistique, suivi des munitions.\n\nL'intrusion a été découverte ces dernières semaines, pendant une mise à jour du système. D'après une source, les pirates ont utilisé une faille logicielle pour atteindre la couche centrale qui gère la plateforme. On ne sait pas encore qui ils sont ni si des données ont été volées.",
+    "pourquoi": "Dans le cloud, celui qui contrôle la console de gestion contrôle tout ce qui tourne dessus : c'est pour ça que ces comptes d'administration sont les plus protégés. Les mesures prises ici (bloquer les changements, retirer des droits d'administrateur) sont le réflexe de défense quand on ne connaît pas encore l'étendue d'une intrusion.",
+    "cours": "cloud",
+    "source": "Gulf News (d'après Reuters)",
+    "url": "https://gulfnews.com/world/americas/hackers-breach-one-of-us-militarys-largest-cloud-computing-platforms-putting-sensitive-military-data-at-risk-1.500763342",
+    "schemas": [
+      {
+        "type": "chaine",
+        "titre": "Comment l'intrusion s'est passée",
+        "etapes": [
+          {
+            "t": "Faille logicielle",
+            "d": "laquelle : pas encore connue",
+            "ton": "attaque"
+          },
+          {
+            "t": "Couche de gestion atteinte",
+            "d": "le cœur de la plateforme",
+            "ton": "attaque"
+          },
+          {
+            "t": "Découverte",
+            "d": "pendant une mise à jour",
+            "ton": "neutre"
+          },
+          {
+            "t": "Réaction",
+            "d": "migrations et mises à jour gelées",
+            "ton": "defense"
+          }
+        ]
+      },
+      {
+        "type": "cibles",
+        "titre": "Ce qui tourne sur Cloud One",
+        "centre": {
+          "t": "Cloud One",
+          "d": "Microsoft, Amazon, Oracle, Google",
+          "ton": "cible"
+        },
+        "autour": [
+          {
+            "t": "Dossiers du personnel"
+          },
+          {
+            "t": "Paie"
+          },
+          {
+            "t": "Logistique, maintenance"
+          },
+          {
+            "t": "Suivi des munitions",
+            "d": "plus de 200 sites"
+          },
+          {
+            "t": "Données radar"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "2026-11-27-opco-ep",
+    "date": "2026-11-27",
+    "ts": "2026-11-27T14:50:06+01:00",
+    "cat": "Cyber",
+    "theme": "intrusion",
+    "importance": 2,
+    "titre": "OPCO EP coupe ses services après une cyberattaque",
+    "resume": "OPCO EP, l'organisme d'État qui finance la formation et gère les contrats d'apprentissage de 442 700 entreprises françaises (pharmacies, boulangeries, cabinets médicaux…), dit faire face à un incident de cybersécurité. Il a lui-même coupé l'accès à plusieurs plateformes et les rouvre petit à petit.\n\nLes portails des entreprises, des centres de formation et des apprentis étaient inaccessibles le 26 novembre. Aucun vol de données n'est confirmé et aucun groupe de pirates n'a revendiqué l'attaque pour l'instant.",
+    "pourquoi": "Couper soi-même ses services pour contenir une attaque, c'est une décision classique de l'équipe de réponse à incident : on perd du service, mais on empêche l'attaquant d'aller plus loin. Et un futur apprenti ou alternant passe souvent par un OPCO : un faux e-mail « OPCO » qui demande un RIB ou un mot de passe, c'est du phishing.",
+    "cours": "phishing",
+    "source": "Cyberattaque.org",
+    "url": "https://www.cyberattaque.org/cyberattaque-chez-opco-ep-lorganisme-qui-accompagne-442-700-entreprises-francaises-suspend-ses-services/",
+    "schemas": [
+      {
+        "type": "chiffres",
+        "titre": "OPCO EP en chiffres",
+        "items": [
+          {
+            "n": "442 700",
+            "t": "entreprises suivies",
+            "ton": "cible"
+          },
+          {
+            "n": "2,5 M",
+            "t": "salariés concernés",
+            "ton": "cible"
+          },
+          {
+            "n": "4",
+            "t": "portails inaccessibles",
+            "ton": "attaque"
+          }
+        ]
+      },
+      {
+        "type": "parade",
+        "titre": "Si tu reçois un message « OPCO »",
+        "items": [
+          "Ne jamais changer un RIB sur simple demande par e-mail",
+          "Ne jamais envoyer ton identifiant ou ton mot de passe",
+          "Vérifier en passant par le site officiel, pas par le lien reçu"
+        ]
+      }
+    ]
+  },
+  {
     "id": "2026-11-27-drupal-sa019",
     "date": "2026-11-27",
     "ts": "2026-11-27T11:43:26+01:00",
