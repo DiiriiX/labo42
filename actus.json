@@ -1,5 +1,187 @@
 [
   {
+    "id": "2026-11-27-nfs2root",
+    "date": "2026-11-27",
+    "ts": "2026-11-27T22:43:44+01:00",
+    "cat": "Cyber",
+    "theme": "faille",
+    "importance": 2,
+    "titre": "NFS2ROOT : une faille Linux trouvée par l'ANSSI",
+    "resume": "Une faille vieille de 12 ans (CVE-2026-99362) touche le serveur de fichiers réseau NFS du noyau Linux, présent depuis la version 3.16. Un pirate qui peut joindre le port TCP 2049 envoie des requêtes piégées qui font déborder une zone de mémoire, puis fait exécuter une commande avec les droits root quand il ferme la connexion.\n\nElle a été trouvée par Jérémy Jean, de l'ANSSI, qui a proposé le correctif en août. Aucune attaque n'est signalée pour l'instant. Il faut installer les noyaux corrigés (6.12.117, 6.18.61, 7.3.2) et redémarrer, ou fermer le port 2049 si on n'a pas besoin de NFS.",
+    "pourquoi": "C'est un dépassement de tampon en C dans le noyau : exactement le genre de bug qui arrive quand on écrit plus loin que la taille d'un tableau. Et elle a été trouvée par un chercheur de l'ANSSI, un des métiers de la cyber en France que tu peux viser.",
+    "cours": "serveur",
+    "source": "BleepingComputer",
+    "url": "https://www.bleepingcomputer.com/news/security/new-nfs2root-linux-flaw-can-let-attackers-gain-root-privileges/",
+    "schemas": [
+      {
+        "type": "chaine",
+        "titre": "Comment l'attaque marche",
+        "etapes": [
+          {
+            "t": "Port 2049 ouvert",
+            "d": "serveur NFS 4.1 ou 4.2 actif",
+            "ton": "cible"
+          },
+          {
+            "t": "Requêtes piégées",
+            "d": "la mémoire déborde",
+            "ton": "attaque"
+          },
+          {
+            "t": "Commande cachée",
+            "d": "posée dans la mémoire libérée",
+            "ton": "attaque"
+          },
+          {
+            "t": "Connexion fermée",
+            "d": "le noyau lance la commande en root",
+            "ton": "attaque"
+          },
+          {
+            "t": "Noyau à jour",
+            "d": "puis redémarrage",
+            "ton": "defense"
+          }
+        ]
+      },
+      {
+        "type": "parade",
+        "titre": "Se protéger",
+        "items": [
+          "Mettre à jour le noyau de sa distribution, puis redémarrer",
+          "Limiter le port TCP 2049 aux machines de confiance",
+          "Arrêter le service nfs-server si on n'utilise pas NFS"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "2026-11-27-pcloud",
+    "date": "2026-11-27",
+    "ts": "2026-11-27T22:43:44+01:00",
+    "cat": "Cyber",
+    "theme": "intrusion",
+    "importance": 2,
+    "titre": "pCloud : son gestionnaire de mots de passe attaqué",
+    "resume": "Dans la nuit du 26 au 27 novembre, des utilisateurs de pCloud Pass, le gestionnaire de mots de passe du service suisse pCloud, ont reçu une alerte « nouvel appareil connecté » pour un appareil inconnu nommé « pd », parfois même avec la double authentification activée.\n\npCloud confirme une attaque, qu'il dit contenue : des adresses e-mail d'un nombre limité d'utilisateurs ont été exposées et des connexions ont été tentées. Selon pCloud, les coffres sont chiffrés sur l'appareil avec le mot de passe maître, qu'il ne garde pas, donc les mots de passe n'ont pas été volés. On ne sait pas encore comment les pirates sont entrés.",
+    "pourquoi": "Le chiffrement « zero-knowledge » (chiffré sur ton appareil, la clé ne quitte jamais ta tête) est ce qui protège les mots de passe même quand les serveurs sont touchés. Et des adresses e-mail volées servent presque toujours ensuite à des faux messages de « support » : c'est le phishing.",
+    "cours": "phishing",
+    "source": "Cyberattaque.org",
+    "url": "https://www.cyberattaque.org/pcloud-confirme-une-cyberattaque-contre-son-gestionnaire-de-mots-de-passe/",
+    "schemas": [
+      {
+        "type": "cibles",
+        "titre": "Ce qui est touché ou non",
+        "centre": {
+          "t": "pCloud Pass",
+          "d": "attaque contenue selon pCloud",
+          "ton": "attaque"
+        },
+        "autour": [
+          {
+            "t": "Adresses e-mail",
+            "d": "exposées (nombre limité)",
+            "ton": "attaque"
+          },
+          {
+            "t": "Connexions tentées",
+            "d": "appareil inconnu « pd »",
+            "ton": "attaque"
+          },
+          {
+            "t": "Coffres chiffrés",
+            "d": "intacts selon pCloud",
+            "ton": "defense"
+          },
+          {
+            "t": "Stockage pCloud",
+            "d": "non touché selon pCloud",
+            "ton": "defense"
+          }
+        ]
+      },
+      {
+        "type": "parade",
+        "titre": "Si tu utilises pCloud Pass",
+        "items": [
+          "Déconnecter les appareils inconnus de son compte",
+          "Changer son mot de passe maître depuis l'appli ou le site officiel",
+          "Activer la double authentification",
+          "Se méfier des messages qui disent venir du support de pCloud"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "2026-11-27-paruvendu",
+    "date": "2026-11-27",
+    "ts": "2026-11-27T22:43:44+01:00",
+    "cat": "Cyber",
+    "theme": "fuite",
+    "importance": 2,
+    "titre": "ParuVendu : des données d'utilisateurs exposées",
+    "resume": "Le site français de petites annonces ParuVendu a détecté et bloqué un accès non autorisé le 24 novembre. Il a prévenu la CNIL le 26, puis ses membres le 27.\n\nPeuvent être exposés : nom, prénom, e-mail, téléphone, ville ou adresse, mots de passe hachés et historiques de connexion, d'actions et de contacts sur le site. ParuVendu dit qu'aucune donnée de paiement n'est concernée. Le nombre de personnes touchées et la méthode des pirates ne sont pas connus.",
+    "pourquoi": "Le site garde les mots de passe sous forme hachée, pas en clair : c'est la règle de base que tu verras dans le cours sur le hachage. Avec des noms, des téléphones et l'historique des annonces, les pirates peuvent écrire de faux messages très crédibles aux vendeurs et aux acheteurs.",
+    "cours": "hachage",
+    "source": "FrenchBreaches",
+    "url": "https://frenchbreaches.com/alertes/paruvendu-cyberattaque-fuite-donnees-utilisateurs-mwz0kuc607gk9tp9vlx",
+    "schemas": [
+      {
+        "type": "dates",
+        "titre": "Les dates clés",
+        "items": [
+          {
+            "date": "24 novembre",
+            "t": "Accès détecté et bloqué",
+            "ton": "attaque"
+          },
+          {
+            "date": "26 novembre",
+            "t": "CNIL prévenue",
+            "ton": "defense"
+          },
+          {
+            "date": "27 novembre",
+            "t": "Membres prévenus",
+            "ton": "defense"
+          }
+        ]
+      },
+      {
+        "type": "cibles",
+        "titre": "Les données exposées",
+        "centre": {
+          "t": "ParuVendu",
+          "d": "accès non autorisé",
+          "ton": "attaque"
+        },
+        "autour": [
+          {
+            "t": "Identité",
+            "d": "nom, prénom"
+          },
+          {
+            "t": "Contact",
+            "d": "e-mail, téléphone, ville"
+          },
+          {
+            "t": "Mots de passe hachés",
+            "d": "inutilisables selon le site"
+          },
+          {
+            "t": "Historiques",
+            "d": "connexions, actions, contacts"
+          },
+          {
+            "t": "Paiement",
+            "d": "non concerné selon le site",
+            "ton": "defense"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "2026-11-27-todoist",
     "date": "2026-11-27",
     "ts": "2026-11-27T19:49:33+01:00",
