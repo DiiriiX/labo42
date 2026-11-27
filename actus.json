@@ -1,5 +1,99 @@
 [
   {
+    "id": "2026-11-27-drupal-sa019",
+    "date": "2026-11-27",
+    "ts": "2026-11-27T11:43:26+01:00",
+    "cat": "Cyber",
+    "theme": "faille",
+    "importance": 2,
+    "titre": "Drupal : une nouvelle faille déjà exploitée",
+    "resume": "Drupal, un logiciel très utilisé pour faire des sites web, publie un deuxième correctif pour son installeur (CVE-2026-136716, alerte SA-CORE-2026-019). Le premier correctif, sorti une semaine plus tôt, laissait encore des chemins d'attaque ouverts sur les sites mal ou pas complètement installés.\n\nDrupal dit que la faille est déjà exploitée : un pirate peut prendre le contrôle du site. Il faut passer en version 10.6.23, 11.3.23 ou 11.4.14, ou au moins bloquer l'accès à la page /core/install.php, puis vérifier le compte administrateur n° 1 et les journaux.",
+    "pourquoi": "Un correctif peut être incomplet : les attaquants regardent ce qui a été changé et cherchent le chemin oublié, c'est un réflexe de pentesteur. Lire les journaux pour trouver une connexion anormale, c'est le travail de défense vu dans le cours sur les logs.",
+    "cours": "logs",
+    "source": "BleepingComputer",
+    "url": "https://www.bleepingcomputer.com/news/security/drupal-warns-of-new-access-bypass-flaw-exploited-in-attacks/",
+    "schemas": [
+      {
+        "type": "chaine",
+        "titre": "Pourquoi un 2e correctif",
+        "etapes": [
+          {
+            "t": "1re faille de l'installeur",
+            "d": "CVE-2026-132165, corrigée",
+            "ton": "attaque"
+          },
+          {
+            "t": "Correctif incomplet",
+            "d": "installations inhabituelles",
+            "ton": "cible"
+          },
+          {
+            "t": "Nouvelle faille exploitée",
+            "d": "CVE-2026-136716",
+            "ton": "attaque"
+          },
+          {
+            "t": "2e correctif publié",
+            "d": "10.6.23, 11.3.23, 11.4.14",
+            "ton": "defense"
+          }
+        ]
+      },
+      {
+        "type": "parade",
+        "titre": "Ce que doit faire un admin",
+        "items": [
+          "Mettre Drupal à jour vers une version corrigée",
+          "Sinon, bloquer l'accès à /core/install.php",
+          "Vérifier l'e-mail du compte administrateur n° 1",
+          "Chercher dans les journaux des accès ou changements anormaux"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "2026-11-27-sap-github",
+    "date": "2026-11-27",
+    "ts": "2026-11-27T11:43:26+01:00",
+    "cat": "Cyber",
+    "theme": "intrusion",
+    "importance": 2,
+    "titre": "SAP : des pirates sur son GitHub",
+    "resume": "SAP, le géant allemand des logiciels d'entreprise, confirme une activité suspecte dans son informatique et mène une enquête. Selon le journal Der Spiegel, des pirates ont utilisé des jetons de connexion volés à des employés pour copier et modifier du code source sur GitHub.\n\nSelon la presse, SAP a limité l'accès à GitHub, arrêté certaines tâches automatiques et changé ses clés de signature. SAP dit n'avoir vu aucun accès aux données de ses clients ; ces détails techniques ne sont pas confirmés par l'entreprise.",
+    "pourquoi": "Un jeton GitHub volé suffit à toucher au code, comme dans l'affaire 1Password de cette semaine : c'est pour ça qu'on donne aux jetons le moins de droits possible, comme celui de ta synchro Labo 42. Protéger son compte Git fait partie du métier de développeur.",
+    "cours": "git",
+    "source": "Le Monde Informatique",
+    "url": "https://www.lemondeinformatique.fr/cybersecurite-conformite/cyberattaque-chez-sap-des-soupcons-d-acces-au-code-source-sur-github",
+    "schemas": [
+      {
+        "type": "chaine",
+        "titre": "Ce que rapporte la presse",
+        "etapes": [
+          {
+            "t": "Jetons d'employés volés",
+            "d": "selon Der Spiegel",
+            "ton": "attaque"
+          },
+          {
+            "t": "Accès à GitHub",
+            "d": "code copié et modifié",
+            "ton": "attaque"
+          },
+          {
+            "t": "Activité suspecte détectée",
+            "d": "enquête « Project Granite »",
+            "ton": "cible"
+          },
+          {
+            "t": "Accès limités, clés changées",
+            "d": "selon Handelsblatt",
+            "ton": "defense"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "2026-11-27-pages",
     "date": "2026-11-27",
     "ts": "2026-11-27T07:43:48+01:00",
