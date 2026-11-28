@@ -1,5 +1,119 @@
 [
   {
+    "id": "2026-11-28-meett-toulouse",
+    "date": "2026-11-28",
+    "ts": "2026-11-28T07:44:10+01:00",
+    "cat": "Cyber",
+    "theme": "fuite",
+    "importance": 2,
+    "titre": "MEETT Toulouse : des mots de passe volés en clair",
+    "resume": "Le parc des expositions de Toulouse, MEETT, confirme une fuite de données. Un pirate a utilisé une faille dans la boutique en ligne d'un de ses prestataires de billetterie et a lu sa base de données. MEETT l'a appris le 26 novembre.\n\nLe pirate a eu les noms, adresses e-mail, adresses postales et mots de passe des visiteurs, rangés en clair, sans aucun hachage. Il n'y avait pas de données bancaires. Les mots de passe ont été annulés, la CNIL prévenue et une plainte déposée.",
+    "pourquoi": "Un mot de passe rangé en clair se lit directement dès que la base est volée : c'est pour ça qu'on le stocke toujours haché. Et si tu as réutilisé ce mot de passe ailleurs, tous ces comptes sont en danger.",
+    "cours": "hachage",
+    "source": "FrenchBreaches",
+    "url": "https://frenchbreaches.com/alertes/meett-toulouse-cyberattaque-fuite-donnees-billetterie-mwz859tb4pp7h5a6wc",
+    "schemas": [
+      {
+        "type": "chaine",
+        "titre": "Comment la fuite est arrivée",
+        "etapes": [
+          {
+            "t": "Boutique en ligne",
+            "d": "chez le prestataire de billetterie",
+            "ton": "cible"
+          },
+          {
+            "t": "Faille utilisée",
+            "d": "dans l'application de la boutique",
+            "ton": "attaque"
+          },
+          {
+            "t": "Base de données lue",
+            "d": "mots de passe en clair",
+            "ton": "attaque"
+          },
+          {
+            "t": "Mots de passe annulés",
+            "d": "serveurs isolés, CNIL prévenue",
+            "ton": "defense"
+          }
+        ]
+      },
+      {
+        "type": "parade",
+        "titre": "Se protéger",
+        "items": [
+          "Choisir un nouveau mot de passe à la prochaine connexion à la billetterie",
+          "Changer ce mot de passe partout où tu l'as réutilisé",
+          "Se méfier des e-mails qui imitent MEETT ou Toulouse Événements",
+          "Côté développeur : ne jamais ranger un mot de passe sans le hacher"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "2026-11-28-flandre-communes",
+    "date": "2026-11-28",
+    "ts": "2026-11-28T07:44:10+01:00",
+    "cat": "Cyber",
+    "theme": "fuite",
+    "importance": 2,
+    "titre": "Belgique : des données de communes flamandes volées",
+    "resume": "Des pirates disent avoir volé les données de 32 communes de Flandre, soit plus de 900 000 personnes. Ils seraient passés par une faille non corrigée sur un serveur de Total Waste Solutions, un prestataire qui gère des données pour le recyclage des déchets.\n\nLe gouvernement flamand a signalé l'incident au CCB, le centre de cybersécurité belge, le 16 novembre. Les fichiers contiendraient noms, adresses, dates de naissance et numéros du registre national. Les chiffres viennent des pirates et ne sont pas confirmés.",
+    "pourquoi": "Un seul prestataire mal protégé suffit à exposer des dizaines de communes : c'est l'attaque par la chaîne d'approvisionnement. Et une faille connue mais non corrigée reste la porte d'entrée la plus courante.",
+    "cours": "triade",
+    "source": "FrenchBreaches",
+    "url": "https://frenchbreaches.com/blog/cyberattaque-belgique-flandre-communes-fuite-donnees",
+    "schemas": [
+      {
+        "type": "cibles",
+        "titre": "Ce qui serait exposé",
+        "centre": {
+          "t": "Total Waste Solutions",
+          "d": "serveur avec une faille non corrigée",
+          "ton": "attaque"
+        },
+        "autour": [
+          {
+            "t": "Noms et adresses"
+          },
+          {
+            "t": "Dates de naissance"
+          },
+          {
+            "t": "Registre national",
+            "d": "numéro d'identité belge"
+          },
+          {
+            "t": "Cartes d'identité",
+            "d": "leurs numéros"
+          }
+        ]
+      },
+      {
+        "type": "chiffres",
+        "titre": "Les chiffres annoncés",
+        "items": [
+          {
+            "n": "32",
+            "t": "communes visées",
+            "ton": "cible"
+          },
+          {
+            "n": "900 568",
+            "t": "personnes (non confirmé)",
+            "ton": "attaque"
+          },
+          {
+            "n": "16 nov.",
+            "t": "signalement au CCB",
+            "ton": "neutre"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "2026-11-27-nfs2root",
     "date": "2026-11-27",
     "ts": "2026-11-27T22:43:44+01:00",
@@ -1196,567 +1310,6 @@
           "Activer la double authentification ou les passkeys",
           "Réduire les machines et services exposés à Internet",
           "Surveiller les connexions et le trafic inhabituels"
-        ]
-      }
-    ]
-  },
-  {
-    "id": "2026-11-25-1password",
-    "date": "2026-11-25",
-    "ts": "2026-11-25T22:48:55+01:00",
-    "cat": "Cyber",
-    "theme": "intrusion",
-    "importance": 2,
-    "titre": "1Password : des données clients volées via GitHub",
-    "resume": "1Password est un gestionnaire de mots de passe très utilisé. Le 19 novembre, l'entreprise a vu que le compte GitHub professionnel d'un employé était piraté. Avec ce compte, le pirate a lu du code source privé, accédé au système CI/CD (qui construit et déploie les logiciels) et glissé du code malveillant dans des services internes.\n\nCe code a copié des données de comptes : noms, e-mails, identifiants, dates de connexion, clés publiques et des jetons de liens d'invitation ou de récupération. Les coffres de mots de passe et leurs clés de chiffrement ne sont pas touchés, selon 1Password. Pas besoin de changer son mot de passe, mais il faut se méfier des faux mails « sécurisez votre compte ».",
-    "pourquoi": "Un seul compte GitHub piraté a suffi pour toucher le cœur d'une entreprise de sécurité : protège ton compte GitHub avec la double authentification dès maintenant. Et comme le coffre est chiffré, le vol n'a pas donné les mots de passe : c'est la confidentialité de la triade, défendue par le chiffrement.",
-    "cours": "git",
-    "source": "BleepingComputer",
-    "url": "https://www.bleepingcomputer.com/news/security/1password-customer-data-stolen-after-employee-github-account-breach/",
-    "schemas": [
-      {
-        "type": "chaine",
-        "titre": "Comment le pirate est entré",
-        "etapes": [
-          {
-            "t": "Compte GitHub piraté",
-            "d": "Celui d'un employé de 1Password",
-            "ton": "attaque"
-          },
-          {
-            "t": "Code privé et CI/CD",
-            "d": "Code source lu, déploiement atteint",
-            "ton": "attaque"
-          },
-          {
-            "t": "Code malveillant injecté",
-            "d": "Dans des services internes",
-            "ton": "attaque"
-          },
-          {
-            "t": "Données de comptes copiées",
-            "d": "Noms, e-mails, jetons…",
-            "ton": "cible"
-          },
-          {
-            "t": "Coffres intacts",
-            "d": "Ils restent chiffrés",
-            "ton": "defense"
-          }
-        ]
-      },
-      {
-        "type": "parade",
-        "titre": "Ce que peuvent faire les clients",
-        "items": [
-          "Ne pas cliquer sur un mail qui demande de « sécuriser » le compte",
-          "Ouvrir l'appli ou le site 1Password directement, pas un lien",
-          "Ne jamais donner mot de passe maître, Secret Key ou code reçu",
-          "Signaler une invitation ou une récupération de compte inattendue"
-        ]
-      }
-    ]
-  },
-  {
-    "id": "2026-11-25-lnb",
-    "date": "2026-11-25",
-    "ts": "2026-11-25T22:48:55+01:00",
-    "cat": "Cyber",
-    "theme": "fuite",
-    "importance": 2,
-    "titre": "Basket : un pirate menace la LNB via une notification",
-    "resume": "Un pirate qui se fait appeler « Alduin » dit avoir volé les données d'environ 40 000 utilisateurs de la Ligue nationale de basket (LNB). Des supporters ont reçu une notification au nom et au logo de la LNB, titrée « Cyberattaque en Cours », qui menace de publier les données si la ligue ne paie pas, avec un compte à rebours d'environ 71 heures.\n\nLes données revendiquées : noms, e-mails, téléphones, dates de naissance, pays, type d'abonnement. Pas de mots de passe ni de données bancaires dans la description. La LNB n'a pas encore confirmé, et on ne sait pas comment le pirate est entré.",
-    "pourquoi": "Ton appli Labo 42 envoie aussi des notifications : si quelqu'un vole la clé d'envoi (comme ta clé VAPID), il peut écrire à tous les abonnés. C'est pour ça qu'une clé secrète se range dans les secrets du dépôt, jamais dans le code.",
-    "cours": "phishing",
-    "source": "Cyberattaque.org",
-    "url": "https://www.cyberattaque.org/ligue-nationale-de-basket-un-hacker-revendique-40-000-comptes-et-diffuse-une-notification-de-chantage-aux-supporters/",
-    "schemas": [
-      {
-        "type": "chiffres",
-        "titre": "Ce que dit le pirate",
-        "items": [
-          {
-            "n": "40 000",
-            "t": "Comptes revendiqués",
-            "ton": "attaque"
-          },
-          {
-            "n": "71 h",
-            "t": "Compte à rebours affiché",
-            "ton": "attaque"
-          },
-          {
-            "n": "0",
-            "t": "Confirmation de la LNB",
-            "ton": "neutre"
-          }
-        ]
-      },
-      {
-        "type": "parade",
-        "titre": "Si tu as un compte LNB",
-        "items": [
-          "Se méfier des appels ou mails qui citent tes infos de supporter",
-          "Ne jamais payer ni répondre à un message de chantage",
-          "Ne pas réutiliser ailleurs le mot de passe de ce compte"
-        ]
-      }
-    ]
-  },
-  {
-    "id": "2026-11-25-septeo",
-    "date": "2026-11-25",
-    "ts": "2026-11-25T19:43:45+01:00",
-    "cat": "Cyber",
-    "theme": "intrusion",
-    "importance": 2,
-    "titre": "Septeo : des données clients volées chez un éditeur français",
-    "resume": "Septeo est un éditeur français de logiciels pour les professionnels (plus de 400 000 clients). Le 22 novembre à 14 h, sa filiale Septeo IT Solutions (ex-RG System) a détecté une intrusion dans son outil interne de gestion des clients. L'accès a été coupé le jour même, mais des données ont été copiées.\n\nOnt fuité : des fiches de contacts clients, des informations de facturation et le détail de tickets d'assistance. Selon Septeo, les logiciels livrés aux clients ne sont pas touchés. Une plainte est annoncée.",
-    "pourquoi": "Avec des tickets d'assistance et des factures, un pirate peut écrire un faux mail très crédible (« votre RIB a changé »). C'est du phishing ciblé, le sujet de ton cours : vérifier une demande par un autre canal connu est le bon réflexe.",
-    "cours": "phishing",
-    "source": "Cyberattaque.org",
-    "url": "https://www.cyberattaque.org/cyberattaque-chez-septeo-lediteur-francais-de-logiciels-professionnels-victime-dun-vol-de-donnees/",
-    "schemas": [
-      {
-        "type": "cibles",
-        "titre": "Ce qui a été copié",
-        "centre": {
-          "t": "Outil clients Septeo IT",
-          "d": "intrusion le 22 novembre",
-          "ton": "attaque"
-        },
-        "autour": [
-          {
-            "t": "Fiches contacts",
-            "d": "clients professionnels",
-            "ton": "cible"
-          },
-          {
-            "t": "Facturation",
-            "ton": "cible"
-          },
-          {
-            "t": "Tickets d'assistance",
-            "ton": "cible"
-          },
-          {
-            "t": "Logiciels livrés",
-            "d": "non touchés selon Septeo",
-            "ton": "defense"
-          }
-        ]
-      },
-      {
-        "type": "parade",
-        "titre": "Les bons réflexes pour les clients",
-        "items": [
-          "Se méfier des mails qui citent un vrai ticket ou une vraie facture",
-          "Vérifier tout changement de RIB par un numéro déjà connu",
-          "Prévenir les équipes du risque de phishing ciblé"
-        ]
-      }
-    ]
-  },
-  {
-    "id": "2026-11-25-locservice",
-    "date": "2026-11-25",
-    "ts": "2026-11-25T19:43:45+01:00",
-    "cat": "Cyber",
-    "theme": "fuite",
-    "importance": 2,
-    "titre": "LocService : des liens vers des dossiers de location volés",
-    "resume": "LocService est un site français qui met en relation propriétaires et locataires. Un pirate a utilisé une faille dans un de ses outils internes pour copier plusieurs bases de données. L'intrusion a été vue le 30 octobre et la fuite confirmée le 2 novembre ; l'entreprise l'a annoncée par mail.\n\nOnt fuité : noms, e-mails, téléphones, factures, certaines adresses IP et des liens de partage vers des dossiers DossierFacile. Les mots de passe et les données bancaires ne seraient pas touchés. Même d'anciens comptes sont concernés, car les factures sont gardées 10 ans.",
-    "pourquoi": "Un lien de partage, c'est une clé : celui qui l'a peut ouvrir le dossier, d'où l'intérêt de pouvoir le désactiver. Cela rejoint la triade du cours : ici, c'est la confidentialité qui est attaquée.",
-    "cours": "triade",
-    "source": "Cyberattaque.org",
-    "url": "https://www.cyberattaque.org/locservice-confirme-une-cyberattaque-des-liens-vers-les-dossiers-de-location-exposes/",
-    "schemas": [
-      {
-        "type": "dates",
-        "titre": "Les dates de l'attaque",
-        "items": [
-          {
-            "date": "30 octobre",
-            "t": "Intrusion détectée",
-            "ton": "attaque"
-          },
-          {
-            "date": "2 novembre",
-            "t": "Fuite confirmée",
-            "ton": "attaque"
-          },
-          {
-            "date": "24 novembre",
-            "t": "Annonce publique",
-            "ton": "neutre"
-          }
-        ]
-      },
-      {
-        "type": "parade",
-        "titre": "Ce que peuvent faire les locataires",
-        "items": [
-          "Sur DossierFacile, couper les liens de partage inutiles",
-          "Se méfier d'un faux propriétaire qui demande documents ou dépôt",
-          "Ne jamais payer de dépôt de garantie avant une vraie visite"
-        ]
-      }
-    ]
-  },
-  {
-    "id": "2026-11-25-vmware-vcenter-esx",
-    "date": "2026-11-25",
-    "ts": "2026-11-25T14:43:47+01:00",
-    "cat": "Cyber",
-    "theme": "faille",
-    "importance": 2,
-    "titre": "VMware : trois nouvelles failles critiques à corriger",
-    "resume": "VMware (Broadcom) fait des logiciels qui font tourner beaucoup de machines virtuelles en entreprise. Son bulletin du 24 novembre corrige 23 failles, dont 4 critiques. Trois sont notées 9,8 sur 10 : une dans vCenter (CVE-2026-123903), exploitable sans compte, et deux dans ESX, exploitables par le réseau.\n\nCe n'est pas la faille de vCenter déjà exploitée depuis septembre : celle-ci est nouvelle. Broadcom ne signale pas d'attaque pour l'instant. Il faut installer les mises à jour ; pour ESX 8.0, on peut aussi n'autoriser que l'adresse du vCenter sur le port 9080.",
-    "pourquoi": "Tu installeras toi-même une machine virtuelle avec Born2beroot : VMware fait la même chose, à grande échelle, pour des entreprises entières. La parade sur le port 9080 montre aussi à quoi sert un pare-feu : n'ouvrir un port qu'aux machines qui en ont besoin.",
-    "cours": "ports",
-    "source": "IT-Connect",
-    "url": "https://www.it-connect.fr/vmware-vcenter-esx-cve-2026-123903-failles-novembre/",
-    "schemas": [
-      {
-        "type": "chiffres",
-        "titre": "Le bulletin en chiffres",
-        "items": [
-          {
-            "n": "23",
-            "t": "failles corrigées",
-            "ton": "neutre"
-          },
-          {
-            "n": "4",
-            "t": "failles critiques",
-            "ton": "attaque"
-          },
-          {
-            "n": "9,8/10",
-            "t": "note des 3 plus graves",
-            "ton": "attaque"
-          },
-          {
-            "n": "0",
-            "t": "attaque signalée",
-            "ton": "defense"
-          }
-        ]
-      },
-      {
-        "type": "parade",
-        "titre": "Ce que font les administrateurs",
-        "items": [
-          "Mettre à jour vCenter et ESX vers les versions corrigées",
-          "Sur ESX 8.0 : port 9080 ouvert seulement pour l'adresse du vCenter",
-          "Ne pas confondre avec la faille de septembre : les deux sont à corriger"
-        ]
-      }
-    ]
-  },
-  {
-    "id": "2026-11-25-drupal-installeur",
-    "date": "2026-11-25",
-    "ts": "2026-11-25T11:43:35+01:00",
-    "cat": "Cyber",
-    "theme": "faille",
-    "importance": 3,
-    "titre": "Drupal : une faille critique exploitée pour pirater des sites",
-    "resume": "Drupal est un logiciel très utilisé pour créer des sites web. Une faille (CVE-2026-132165) touche son fichier d'installation, install.php : dans certains cas, un visiteur inconnu peut s'en servir pour réinstaller Drupal, puis prendre le contrôle du site ou y lancer son propre code.\n\nL'équipe de sécurité de Drupal confirme des attaques sur de vrais sites depuis le 19 novembre. L'agence américaine CISA l'a ajoutée à sa liste des failles exploitées. Il faut mettre Drupal à jour, ou au moins bloquer l'accès à /core/install.php.",
-    "pourquoi": "C'est le genre de faille que tu étudieras côté web : une page oubliée sur le serveur suffit à tout perdre. Côté défense, tu vois aussi qu'une règle simple (bloquer une adresse) protège en attendant la mise à jour.",
-    "cours": "http",
-    "source": "BleepingComputer",
-    "url": "https://www.bleepingcomputer.com/news/security/hackers-now-exploit-critical-drupal-rce-flaw-to-hijack-sites/",
-    "schemas": [
-      {
-        "type": "chaine",
-        "titre": "Comment le site est piraté",
-        "etapes": [
-          {
-            "t": "Page install.php",
-            "d": "laissée accessible sur le site",
-            "ton": "cible"
-          },
-          {
-            "t": "Le pirate l'ouvre",
-            "d": "sans aucun compte",
-            "ton": "attaque"
-          },
-          {
-            "t": "Il réinstalle Drupal",
-            "d": "dans certaines conditions",
-            "ton": "attaque"
-          },
-          {
-            "t": "Site sous son contrôle",
-            "d": "ou son code lancé dessus",
-            "ton": "attaque"
-          },
-          {
-            "t": "Parade",
-            "d": "mise à jour ou install.php bloqué",
-            "ton": "defense"
-          }
-        ]
-      },
-      {
-        "type": "dates",
-        "titre": "Les dates clés",
-        "items": [
-          {
-            "date": "19 novembre",
-            "t": "premières attaques vues",
-            "ton": "attaque"
-          },
-          {
-            "date": "24 novembre",
-            "t": "ajoutée à la liste CISA",
-            "ton": "neutre"
-          },
-          {
-            "date": "27 novembre",
-            "t": "date limite des agences US",
-            "ton": "defense"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "id": "2026-11-25-quimper-cyberattaque",
-    "date": "2026-11-25",
-    "ts": "2026-11-25T11:43:35+01:00",
-    "cat": "Cyber",
-    "theme": "intrusion",
-    "importance": 2,
-    "titre": "Quimper et son agglomération touchées par une cyberattaque",
-    "resume": "La ville de Quimper et l'agglomération Quimper Bretagne Occidentale (14 communes, environ 100 000 habitants, dans le Finistère) ont annoncé le 23 novembre une activité malveillante sur leurs systèmes. Les outils informatiques internes sont surtout touchés, ce qui peut ralentir les démarches administratives.\n\nLes services publics continuent de fonctionner. On ne sait pas encore comment les pirates sont entrés, ni si des données ont été volées. L'ANSSI a été prévenue et des experts sécurisent le réseau.",
-    "pourquoi": "Les mairies sont des cibles fréquentes en France, et c'est souvent là que travaillent les équipes de réponse à incident. Tu vois la triade en action : ici, c'est surtout la disponibilité des outils qui est touchée.",
-    "cours": "triade",
-    "source": "Cyberattaque.org",
-    "url": "https://www.cyberattaque.org/quimper-et-son-agglomeration-victimes-dune-cyberattaque-qui-perturbe-leurs-systemes-informatiques/",
-    "schemas": [
-      {
-        "type": "cibles",
-        "titre": "Ce qui est touché",
-        "centre": {
-          "t": "Cyberattaque",
-          "d": "détectée le 23 novembre",
-          "ton": "attaque"
-        },
-        "autour": [
-          {
-            "t": "Ville de Quimper"
-          },
-          {
-            "t": "L'agglomération",
-            "d": "14 communes"
-          },
-          {
-            "t": "Outils internes",
-            "d": "surtout eux"
-          },
-          {
-            "t": "Démarches",
-            "d": "peuvent être ralenties"
-          }
-        ]
-      },
-      {
-        "type": "chaine",
-        "titre": "La réaction des collectivités",
-        "etapes": [
-          {
-            "t": "Activité suspecte",
-            "d": "repérée sur le réseau",
-            "ton": "attaque"
-          },
-          {
-            "t": "Protections lancées",
-            "d": "dès la découverte",
-            "ton": "defense"
-          },
-          {
-            "t": "ANSSI prévenue",
-            "ton": "defense"
-          },
-          {
-            "t": "Experts sur place",
-            "d": "pour remettre les systèmes",
-            "ton": "defense"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "id": "2026-11-25-cia-osint",
-    "date": "2026-11-25",
-    "ts": "2026-11-25T11:43:35+01:00",
-    "cat": "Cyber",
-    "theme": "intrusion",
-    "importance": 2,
-    "titre": "CIA : un système d'analyse piraté avec un outil d'IA",
-    "resume": "D'après le New York Times, des pirates ont pénétré un système de la CIA qui sert à analyser des informations publiques (le renseignement en sources ouvertes, ou OSINT). D'autres agences de renseignement américaines seraient aussi touchées.\n\nL'attaque aurait été menée avec ARTEX, un outil de test d'intrusion qui utilise l'IA. Selon la source, aucune donnée classée secrète n'a été exposée. La CIA n'a pas encore réagi et personne n'a été désigné comme responsable.",
-    "pourquoi": "Les outils de test d'intrusion servent aux pentesteurs, mais aussi aux pirates : avec l'IA, ils vont plus vite. C'est une des raisons pour lesquelles tu apprendras l'IA après le réseau et la cyber.",
-    "cours": "ia",
-    "source": "BleepingComputer",
-    "url": "https://www.bleepingcomputer.com/news/security/hackers-reportedly-breached-cia-intelligence-analysis-system/",
-    "schemas": [
-      {
-        "type": "cibles",
-        "titre": "Les agences touchées",
-        "centre": {
-          "t": "Outil ARTEX",
-          "d": "test d'intrusion avec IA",
-          "ton": "attaque"
-        },
-        "autour": [
-          {
-            "t": "CIA",
-            "d": "système d'analyse OSINT",
-            "ton": "cible"
-          },
-          {
-            "t": "ODNI",
-            "d": "direction du renseignement",
-            "ton": "cible"
-          },
-          {
-            "t": "NGA",
-            "d": "renseignement géographique",
-            "ton": "cible"
-          }
-        ]
-      },
-      {
-        "type": "parade",
-        "titre": "Ce qu'on sait, ce qu'on ignore",
-        "items": [
-          "Connu : un outil de test d'intrusion avec IA a servi.",
-          "Selon la source : rien de classé secret n'est exposé.",
-          "Inconnu : comment les pirates sont entrés.",
-          "Inconnu : qui est derrière l'attaque."
-        ]
-      }
-    ]
-  },
-  {
-    "id": "2026-11-25-pix-fuite",
-    "date": "2026-11-25",
-    "ts": "2026-11-25T07:48:09+01:00",
-    "cat": "Cyber",
-    "theme": "fuite",
-    "importance": 2,
-    "titre": "Pix : les données de 44 000 élèves en fuite",
-    "resume": "Un pirate nommé « Cruel » affirme avoir récupéré des données liées à Pix, la plateforme française qui évalue les compétences numériques des élèves. Il parle de 43 940 élèves et 1 692 membres du personnel dans 55 établissements : noms, dates de naissance, classes, établissements, rôles.\n\nPix n'a pas encore confirmé. Les extraits ne contiennent ni mot de passe ni jeton de connexion, et rien ne montre que les serveurs centraux de Pix ont été piratés : un compte avec beaucoup de droits ou un export par un tiers sont aussi possibles.",
-    "pourquoi": "Avec un nom, une classe et un établissement, un pirate peut écrire un faux mail très crédible à un élève ou un prof : c'est ton cours sur le phishing. Et tu verras qu'un seul compte avec trop de droits suffit parfois à tout exposer.",
-    "cours": "phishing",
-    "source": "Cyberattaque.org",
-    "url": "https://www.cyberattaque.org/pix-les-donnees-de-44-000-eleves-dans-55-etablissements-francais-en-fuite/",
-    "schemas": [
-      {
-        "type": "chiffres",
-        "titre": "Ce que le pirate revendique",
-        "items": [
-          {
-            "n": "43 940",
-            "t": "fiches d'élèves",
-            "ton": "attaque"
-          },
-          {
-            "n": "1 692",
-            "t": "membres du personnel",
-            "ton": "attaque"
-          },
-          {
-            "n": "55",
-            "t": "établissements",
-            "ton": "cible"
-          },
-          {
-            "n": "0",
-            "t": "mot de passe dans l'extrait",
-            "ton": "defense"
-          }
-        ]
-      },
-      {
-        "type": "parade",
-        "titre": "Si tu reçois un mail « Pix »",
-        "items": [
-          "Ne clique pas sur un lien qui demande ton mot de passe Pix.",
-          "Va sur pix.fr en tapant l'adresse toi-même.",
-          "Un mail qui cite ta classe n'est pas forcément vrai.",
-          "Préviens ton établissement si un message te paraît bizarre."
-        ]
-      }
-    ]
-  },
-  {
-    "id": "2026-11-25-checkpoint-parefeu",
-    "date": "2026-11-25",
-    "ts": "2026-11-25T07:48:09+01:00",
-    "cat": "Cyber",
-    "theme": "intrusion",
-    "importance": 2,
-    "titre": "Check Point : des pirates aux commandes de pare-feu",
-    "resume": "GreyNoise suit une campagne baptisée GT13 contre les serveurs qui pilotent les pare-feu Check Point. Au moins 22 organisations dans le monde, dont en France, ont été touchées entre octobre et début novembre, et le pirate garde encore l'accès chez beaucoup d'entre elles.\n\nIl a utilisé une faille de contournement d'authentification dans SmartConsole (CVE-2026-16232) pour lancer des scripts sur ces serveurs. Il a copié la base du pare-feu et l'autorité de certification interne, et a essayé de désactiver les règles de sécurité.",
-    "pourquoi": "Le pare-feu protège tout le réseau : celui qui contrôle son serveur de gestion peut ouvrir toutes les portes. C'est pour ça qu'on n'expose jamais une interface d'administration à Internet, comme tu le feras avec UFW et SSH dans Born2beroot.",
-    "cours": "parefeu",
-    "source": "Cyber Security News",
-    "url": "https://cybersecuritynews.com/check-point-security-management-servers/",
-    "schemas": [
-      {
-        "type": "chaine",
-        "titre": "Comment le pirate a procédé",
-        "etapes": [
-          {
-            "t": "Un serveur HFS piraté",
-            "d": "faille CVE-2026-61500, le 2 octobre",
-            "ton": "attaque"
-          },
-          {
-            "t": "SmartConsole contourné",
-            "d": "faille CVE-2026-16232",
-            "ton": "attaque"
-          },
-          {
-            "t": "Scripts sur le serveur",
-            "d": "30 scripts Python, 100 tâches",
-            "ton": "attaque"
-          },
-          {
-            "t": "Base et certificats copiés",
-            "d": "règles de sécurité visées",
-            "ton": "cible"
-          },
-          {
-            "t": "Parade : corriger, filtrer",
-            "d": "accès admin depuis IP sûres",
-            "ton": "defense"
-          }
-        ]
-      },
-      {
-        "type": "chiffres",
-        "titre": "La campagne GT13 en chiffres",
-        "items": [
-          {
-            "n": "22",
-            "t": "organisations touchées",
-            "ton": "cible"
-          },
-          {
-            "n": "99",
-            "t": "adresses IP du pirate",
-            "ton": "attaque"
-          },
-          {
-            "n": "30",
-            "t": "scripts Python",
-            "ton": "attaque"
-          }
         ]
       }
     ]
