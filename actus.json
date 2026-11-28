@@ -1,5 +1,56 @@
 [
   {
+    "id": "2026-11-28-hibp-azure",
+    "date": "2026-11-28",
+    "ts": "2026-11-28T11:43:58+01:00",
+    "cat": "Cyber",
+    "theme": "cloud",
+    "importance": 2,
+    "titre": "Have I Been Pwned demande de changer les clés API",
+    "resume": "Have I Been Pwned, le site qui dit si ton adresse e-mail est dans une fuite, a écrit le 25 novembre aux clients qui ont une clé API. Il utilisait Azure API Management Classic, le service de Microsoft touché par une faille exploitée qui pouvait exposer les clés et les secrets rangés dedans.\n\nMicrosoft a corrigé le 19 novembre, mais une clé déjà volée reste valable. HIBP ne sait pas si ses clés ont été prises et n'a vu aucune utilisation anormale. Rien n'indique que sa base ou des mots de passe ont été volés. Il conseille de renouveler sa clé.",
+    "pourquoi": "Une clé API est comme un mot de passe pour un programme : si elle fuit, quelqu'un peut se faire passer pour toi. Corriger la faille ne suffit pas, il faut aussi changer les secrets qui ont pu être lus.",
+    "cours": "triade",
+    "source": "Cyberattaque.org",
+    "url": "https://www.cyberattaque.org/have-i-been-pwned-alerte-ses-clients-sur-un-risque-de-vol-didentifiants/",
+    "schemas": [
+      {
+        "type": "dates",
+        "titre": "De la faille à l'alerte",
+        "items": [
+          {
+            "date": "18 novembre",
+            "t": "Faille trouvée par Microsoft",
+            "ton": "attaque"
+          },
+          {
+            "date": "19 novembre",
+            "t": "Correctif déployé",
+            "ton": "defense"
+          },
+          {
+            "date": "21 novembre",
+            "t": "Guide pour changer les clés",
+            "ton": "neutre"
+          },
+          {
+            "date": "25 novembre",
+            "t": "HIBP prévient ses clients",
+            "ton": "cible"
+          }
+        ]
+      },
+      {
+        "type": "parade",
+        "titre": "Ce que HIBP conseille",
+        "items": [
+          "Renouveler sa clé API depuis le tableau de bord",
+          "Mettre la nouvelle clé dans ses programmes (l'ancienne ne marche plus)",
+          "Regarder les journaux d'activité pour repérer un usage anormal"
+        ]
+      }
+    ]
+  },
+  {
     "id": "2026-11-28-meett-toulouse",
     "date": "2026-11-28",
     "ts": "2026-11-28T07:44:10+01:00",
